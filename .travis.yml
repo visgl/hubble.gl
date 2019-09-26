@@ -1,0 +1,30 @@
+language: node_js
+dist: precise
+os: linux
+group: stable
+sudo: required
+dist: trusty
+env:
+  - CXX=g++-6
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-6
+    - mesa-utils
+    - xvfb
+    - libgl1-mesa-dri
+    - libglapi-mesa
+    - libosmesa6
+    - libxi-dev
+install:
+  - yarn bootstrap
+node_js:
+  - 13.9
+services:
+  - xvfb
+before_script:
+  - "curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | sudo bash"
+script:
+  - npm run test ci
