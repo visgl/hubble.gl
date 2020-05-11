@@ -37,6 +37,11 @@ export default class HubbleGl {
     this.capture = this.capture.bind(this);
     this.start = this.start.bind(this);
     this.stop = this.stop.bind(this);
+    this.setRecorder = this.setRecorder.bind(this);
+  }
+
+  setRecorder(recorder) {
+    this.recorder = recorder;
   }
 
   start(startTimeMs = 0) {
@@ -58,7 +63,11 @@ export default class HubbleGl {
    * @param {(nextTimeMs: number) => void} proceedToNextFrame
    */
   capture(proceedToNextFrame) {
+    console.log(`outside-hubble-capture ${this.capturing} ${this.recorder.isRecording()}`);
+
     if (!this.capturing && this.recorder.isRecording()) {
+      console.log('hubble-capture');
+
       this.capturing = true;
       // capture current canvas, i.e.
       // const can = document.getElementsByClassName('mapboxgl-canvas')[0];
@@ -66,12 +75,14 @@ export default class HubbleGl {
       this.recorder.capture(this.deck.canvas).then(data => {
         this.capturing = false;
         if (data.kind === 'step') {
+          console.log(`data.nextTimeMs === ${data.nextTimeMs}`);
           this.deck.animationLoop.timeline.setTime(data.nextTimeMs);
           proceedToNextFrame(data.nextTimeMs);
         } else if (data.error === 'STOP') {
+          console.log('data.error === STOP');
           this.stop();
         } else {
-          console.error(data);
+          console.log(data);
         }
       });
     }

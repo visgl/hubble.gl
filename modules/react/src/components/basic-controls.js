@@ -18,24 +18,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import React from 'react';
-// import {WebMEncoder, PreviewEncoder} from 'hubble.gl';
-// import EncoderDropdown from './encoder-dropdown';
+import React, {useState, useEffect} from 'react';
+import {WebMEncoder, PreviewEncoder} from '@hubble.gl/core';
+import EncoderDropdown from './encoder-dropdown';
 
 export default function BasicControls({adapter, busy, setBusy}) {
-  // const [encoder, setEncoder] = useState('webm');
-  // useEffect(() => {
-  //   if (encoder === 'preview') {
-  //     adapter.setEncoder(PreviewEncoder);
-  //   } else if (encoder === 'webm') {
-  //     adapter.setEncoder(WebMEncoder);
-  //   }
-  // });
-
-  const onPreview = () => {
-    adapter.preview();
-    setBusy(true);
-  };
+  const [encoder, setEncoder] = useState('webm');
+  useEffect(() => {
+    if (encoder === 'preview') {
+      adapter.setEncoder(PreviewEncoder);
+    } else if (encoder === 'webm') {
+      adapter.setEncoder(WebMEncoder);
+    }
+  });
 
   const onRender = () => {
     adapter.render();
@@ -49,10 +44,7 @@ export default function BasicControls({adapter, busy, setBusy}) {
 
   return (
     <div>
-      <button disabled={busy} onClick={onPreview}>
-        Preview
-      </button>
-      {/* <EncoderDropdown disabled={busy} encoder={encoder} setEncoder={setEncoder} /> */}
+      <EncoderDropdown disabled={busy} encoder={encoder} setEncoder={setEncoder} />
       <button disabled={busy} onClick={onRender}>
         Render
       </button>

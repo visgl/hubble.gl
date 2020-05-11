@@ -51,6 +51,10 @@ export class VideoCapture {
     this._getNextTimeMs = this._getNextTimeMs.bind(this);
     this._step = this._step.bind(this);
     this.capture = this.capture.bind(this);
+    // this.setEncoder = this.setEncoder.bind(this);
+    this.start = this.start.bind(this);
+    this.stop = this.stop.bind(this);
+    this.save = this.save.bind(this);
   }
 
   setRecordingLengthMs(recordingLengthMs) {
@@ -62,9 +66,10 @@ export class VideoCapture {
     this.recordingLengthMs = recordingLengthMs;
   }
 
-  setEncoder(encoder) {
+  static withEncoder(recorder, encoder) {
+    return new VideoCapture(encoder, recorder.recordingLengthMs);
     // this.encoder.dispose(); TODO: Should we dispose?
-    this.encoder = encoder;
+    // this.encoder = encoder;
   }
 
   // True if recording, false otherwise.
@@ -105,6 +110,7 @@ export class VideoCapture {
    * @returns {Promise<import('types').CaptureStep>}
    */
   async capture(canvas) {
+    console.log('video-capture');
     if (!this.isRecording()) {
       return {kind: 'error', error: 'NOT_RECORDING'};
     }

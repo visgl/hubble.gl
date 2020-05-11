@@ -1,6 +1,7 @@
 import React, {useState, useRef} from 'react';
 import DeckGL from '@deck.gl/react';
-import {DeckAdapter, WebMEncoder} from '@hubble.gl/core';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import {DeckAdapter} from 'hubble.gl';
 import {useNextFrame, BasicControls} from '@hubble.gl/react';
 import {sceneBuilder} from './scene';
 
@@ -12,7 +13,7 @@ const INITIAL_VIEW_STATE = {
   pitch: 60
 };
 
-const adapter = new DeckAdapter(sceneBuilder, WebMEncoder);
+const adapter = new DeckAdapter(sceneBuilder);
 
 export default function App() {
   const deckgl = useRef(null);

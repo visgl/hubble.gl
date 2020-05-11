@@ -17,11 +17,13 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+/* eslint-disable no-console */
 import {Timeline} from '@luma.gl/engine';
 import HubbleGl from '../hubblegl';
 import {PreviewEncoder} from '../encoders';
 // eslint-disable-next-line no-unused-vars
 import {DeckScene} from '../scene';
+import {VideoCapture} from '../capture/video-capture';
 
 export default class DeckAdapter {
   /** @type {HubbleGl} */
@@ -32,14 +34,15 @@ export default class DeckAdapter {
   sceneBuilder;
   /** @type {import('../encoders').FrameEncoder} */
   encoder;
-  /** @type {typeof import('../encoders').FrameEncoder} */
-  Encoder;
+  shouldAnimate;
+
   af;
 
   constructor(sceneBuilder, Encoder = PreviewEncoder, encoderSettings = {}) {
     this.sceneBuilder = sceneBuilder;
     this.encoderSettings = encoderSettings;
-    this.Encoder = Encoder;
+    this.encoder = new Encoder(encoderSettings);
+    this.shouldAnimate = true;
     this.getProps = this.getProps.bind(this);
     this.render = this.render.bind(this);
     this.preview = this.preview.bind(this);
@@ -66,7 +69,7 @@ export default class DeckAdapter {
           // console.log('adapter')
           setReady(true);
         }),
-      _animate: true
+      _animate: this.shouldAnimate
     };
   }
 
@@ -81,10 +84,8 @@ export default class DeckAdapter {
     this.af = requestAnimationFrame(() => onNextFrame());
   }
 
-  /**
-   * @param {number} startTimeMs
-   */
   render(startTimeMs) {
+    this.shouldAnimate = true;
     this.hubblegl.start(startTimeMs);
   }
 
@@ -96,24 +97,27 @@ export default class DeckAdapter {
    * @param {() => void} callback
    */
   stop(callback) {
+    this.shouldAnimate = false;
     this.hubblegl.stop(callback);
   }
 
   setEncoder(Encoder, encoderSettings = undefined) {
+    this.shouldAnimate = false;
     if (!encoderSettings) {
       encoderSettings = this.encoderSettings;
     }
     this.encoder = new Encoder(encoderSettings);
-    this.hubblegl.recorder.setEncoder(this.encoder);
+    this.hubblegl.setRecorder(VideoCapture.withEncoder(this.hubblegl.recorder, this.encoder));
     // TODO: setEncoder is WIP
     // this.hubblegl = new HubbleGl({
-    //   deck: this.hubblegl.deck,
+    //   deck: this.deck,
     //   recordingLengthMs: this.scene.length,
     //   encoder: this.encoder
     // });
   }
 
   async _deckOnLoad(deck) {
+    this.deck = deck;
     const animationLoop = deck.animationLoop;
     animationLoop.attachTimeline(new Timeline());
     animationLoop.timeline.setTime(0);
@@ -138,6 +142,7 @@ export default class DeckAdapter {
       return null;
     }
     const frame = this.scene.keyframes.camera.getFrame();
+    console.log('camera-state');
     return frame;
   }
 
@@ -153,6 +158,7 @@ export default class DeckAdapter {
    */
   _onAfterRender(proceedToNextFrame) {
     if (this.hubblegl) {
+      console.log('after render');
       this.hubblegl.capture(proceedToNextFrame);
     }
   }

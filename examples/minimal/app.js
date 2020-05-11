@@ -1,6 +1,6 @@
 import React, {useState, useRef} from 'react';
 import DeckGL from '@deck.gl/react';
-import {DeckAdapter, WebMEncoder} from '@hubble.gl/core';
+import {DeckAdapter} from '@hubble.gl/core';
 import {useNextFrame, BasicControls} from '@hubble.gl/react';
 import {sceneBuilder} from './scene';
 
@@ -12,7 +12,7 @@ const INITIAL_VIEW_STATE = {
   bearing: 0
 };
 
-const adapter = new DeckAdapter(sceneBuilder, WebMEncoder);
+const adapter = new DeckAdapter(sceneBuilder);
 
 export default function App() {
   const deckgl = useRef(null);
