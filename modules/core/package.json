@@ -1,6 +1,6 @@
 {
   "name": "@hubble.gl/core",
-  "version": "1.0.0",
+  "version": "1.0.1-alpha.0",
   "description": "hubble.gl core library classes",
   "license": "MIT",
   "repository": {
@@ -30,9 +30,9 @@
     "build-bundle": "webpack --display=minimal --config ../../scripts/bundle.config.js"
   },
   "dependencies": {
+    "@luma.gl/engine": "^8.1.2",
     "downloadjs": "^1.4.7",
     "popmotion": "^8.6.10",
-    "@luma.gl/engine": "^8.1.2",
     "webm-writer": "^0.2.2"
   }
 }
