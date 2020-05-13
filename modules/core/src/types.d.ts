@@ -40,15 +40,6 @@ interface DeckSceneParams {
   renderLayers: (scene: DeckScene) => any[]
 }
 
-interface KeplerSceneParams {
-  animationLoop: any
-  length: number
-  keyframes: any[]
-  data: any
-  filters: any[]
-  getFrame: (keplerGl: any, keyframes: any[], filters: any[]) => any
-}
-
 
 // declare module 'src/hubble.gl' {
 //   interface IFrameEncoder extends Encoder {

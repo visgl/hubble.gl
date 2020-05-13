@@ -1,4 +1,4 @@
-// Copyright (c) 2020 Uber Technologies, Inc.
+// Copyright (c) 2019 Uber Technologies, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -17,4 +17,29 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-export {default as DeckScene} from './deck-scene';
+
+import {combineReducers, createStore, applyMiddleware, compose} from 'redux';
+import {routerReducer, routerMiddleware} from 'react-router-redux';
+import {browserHistory} from 'react-router';
+
+import thunk from 'redux-thunk';
+import window from 'global/window';
+import {taskMiddleware} from 'react-palm/tasks';
+
+import demoReducer from './reducers/index';
+
+const reducers = combineReducers({
+  demo: demoReducer,
+  routing: routerReducer
+});
+
+export const middlewares = [taskMiddleware, thunk, routerMiddleware(browserHistory)];
+
+export const enhancers = [applyMiddleware(...middlewares)];
+
+const initialState = {};
+
+// add redux devtools
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+export default createStore(reducers, initialState, composeEnhancers(...enhancers));

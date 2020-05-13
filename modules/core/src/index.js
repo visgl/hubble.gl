@@ -40,4 +40,4 @@ export {
   ScatterPlotLayerKeyframes
 } from './keyframes';
 
-export {DeckScene, KeplerScene} from './scene';
+export {DeckScene} from './scene';
