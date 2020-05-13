@@ -6,6 +6,7 @@
   "repository": "https://github.com/uber/hubble.gl.git",
   "author": "Chris Gervang <chr@uber.com>",
   "license": "MIT",
+  "private": "true",
   "scripts": {
     "bootstrap": "PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn && ocular-bootstrap",
     "checkjs": "tsc --noEmit --allowJs --checkJs --target ES5 src/*.js",
