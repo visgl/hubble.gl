@@ -1,7 +1,7 @@
 {
   "name": "hubble.gl",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "description": "Hubble.gl is a powerful open source animation tool for large-scale data sets.",
   "repository": "https://github.com/uber/hubble.gl.git",
   "author": "Chris Gervang <chr@uber.com>",
