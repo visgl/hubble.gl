@@ -2,7 +2,7 @@
   "name": "hubble.gl-website",
   "version": "0.0.0",
   "description": "Website for hubble.gl",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "keywords": [
     "ocular"
   ],
