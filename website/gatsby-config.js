@@ -26,9 +26,9 @@ module.exports = {
         PROJECT_NAME: 'hubble.gl',
         PROJECT_ORG: 'uber',
         PROJECT_ORG_LOGO: 'images/visgl-logo.png',
-        PROJECT_URL: 'https://github.com/uber/hubble.gl',
+        PROJECT_URL: 'https://hubble.gl',
         PROJECT_DESC: 'High quality client-side 3d animation and video rendering',
-        PATH_PREFIX: '/hubble.gl',
+        PATH_PREFIX: '/',
         THEME_OVERRIDES: '',
 
         GA_TRACKING: null,
@@ -48,7 +48,10 @@ module.exports = {
           {name: 'react-map-gl', url: 'https://visgl.github.io/react-map-gl'}
         ],
 
-        ADDITIONAL_LINKS: [{name: 'Blog', href: 'http://medium.com/vis-gl', index: 3}],
+        ADDITIONAL_LINKS: [
+          {name: 'Showcase', href: "/showcase", index: 1},
+          {name: 'Blog', href: 'http://medium.com/vis-gl', index: 4}
+        ],
 
         STYLESHEETS: [''],
         EXAMPLES: [
