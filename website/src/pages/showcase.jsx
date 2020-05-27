@@ -1,11 +1,14 @@
 import React from 'react'
 
-import { H1, H3, P } from 'gatsby-theme-ocular/components';
+import { H1, H3, P, A } from 'gatsby-theme-ocular/components';
 
 export default function Showcase() {
     return (
         <div style={{padding: "64px 64px 0 64px"}}>
-            <H1 style={{marginTop: "64px", marginBottom: "48px"}}>Showcase</H1>
+            <H1 style={{marginTop: "64px"}}>Showcase</H1>
+            <P style={{marginBottom: "48px", font: "normal 14px/20px 'Uber Move',Helvetica,Arial,sans-serif"}}>
+                These videos demonstrate polished animations made with hubble.gl and light post processing. Video editors and presentation software can be used to add text, dissolve between clips, and combine multiple renderings. Learn more about these techniques in the <A href="/docs/post-processing">post processing</A> guide.
+            </P>
             <div style={{display: "flex", flexWrap: "wrap"}}>
                 <Video name="Network Evolution" source="Uber Elevate" src="https://drive.google.com/file/d/11fsNGWiYD73-APOcpcOGt7SyrfF5wLzf/preview" />
                 <Video name="LA Trip Movement" source="Uber Elevate" src="https://drive.google.com/file/d/1Np-z441mpgAL7MiZe3cchSVc_NnWRSni/preview" />

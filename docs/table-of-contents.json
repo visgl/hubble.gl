@@ -13,6 +13,14 @@
       ]
     },
     {
+      "title": "Guide Book",
+      "entries": [
+        {
+          "entry": "docs/post-processing"
+        }
+      ]
+    },
+    {
       "title": "@hubble.gl/core",
       "chapters": [
         {
