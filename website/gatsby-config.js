@@ -55,16 +55,16 @@ module.exports = {
 
         STYLESHEETS: [''],
         EXAMPLES: [
-          {
-            title: 'Minimal Example',
-            path: 'examples/minimal/',
-            image: 'images/visgl-logo.png',
-            componentUrl: resolve('../examples/minimal/app.js')
-          },
+          // {
+          //   title: 'Minimal Example',
+          //   path: 'examples/minimal/',
+          //   image: 'images/visgl-logo.png',
+          //   componentUrl: resolve('../examples/minimal/app.js')
+          // },
           {
             title: 'Terrain Example',
             path: 'examples/terrain/',
-            image: 'images/visgl-logo.png',
+            image: 'images/demo-thumb-terrain.jpg',
             componentUrl: resolve('../examples/terrain/app.js')
           }
         ],
