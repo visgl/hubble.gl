@@ -1,8 +1,0 @@
-node_modules/
-**/dist*/**/*.js
-dist.js
-*.min.js
-*.md
-
-public/
-.cache/
