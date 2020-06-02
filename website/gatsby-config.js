@@ -39,7 +39,7 @@ module.exports = {
 
         HOME_PATH: '/',
         LINK_TO_GET_STARTED: '/docs',
-        HOME_MARKDOWN: resolve('./src/home.md'),
+        INDEX_PAGE_URL: resolve(__dirname, './templates/index.jsx'),
 
         PROJECTS: [
           {name: 'deck.gl', url: 'https://deck.gl'},
