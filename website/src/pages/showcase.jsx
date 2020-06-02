@@ -10,6 +10,7 @@ export default function Showcase() {
                 These videos demonstrate polished animations made with hubble.gl and light post processing. Video editors and presentation software can be used to add text, dissolve between clips, and combine multiple renderings. Learn more about these techniques in the <A href="/docs/post-processing">post processing</A> guide.
             </P>
             <div style={{display: "flex", flexWrap: "wrap"}}>
+                <Video name="LA Airspace" source="Uber Elevate" src="https://drive.google.com/file/d/1vFiFQkGvrQZJ6iFrU0vq2O3P-oU738wO/preview" />
                 <Video name="Network Evolution" source="Uber Elevate" src="https://drive.google.com/file/d/11fsNGWiYD73-APOcpcOGt7SyrfF5wLzf/preview" />
                 <Video name="LA Trip Movement" source="Uber Elevate" src="https://drive.google.com/file/d/1Np-z441mpgAL7MiZe3cchSVc_NnWRSni/preview" />
                 <Video name="LA Connections" source="Uber Elevate" src="https://drive.google.com/file/d/1AHbR-5XhbU11gr1uslQn8Ujlbh4xN7-b/preview" />
