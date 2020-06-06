@@ -853,6 +853,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.3.1":
+  version "7.10.2"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.10.2.tgz#d103f21f2602497d38348a32e008637d506db839"
+  integrity sha512-6sF3uQw2ivImfVIl62RZ7MXhO2tap69WeWK57vAaimT6AZbE4FbqjdEJIN1UqoD6wI6B+1n9UiagafH1sxjOtg==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@^7.4.0", "@babel/template@^7.8.3", "@babel/template@^7.8.6":
   version "7.8.6"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.8.6.tgz#86b22af15f828dfb086474f964dcc3e39c43ce2b"
@@ -1645,6 +1652,30 @@
     npmlog "^4.1.2"
     write-file-atomic "^2.3.0"
 
+"@loaders.gl/core@^2.1.6":
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/@loaders.gl/core/-/core-2.1.6.tgz#9c3e0cf5a1aebb672c50876ab75fd35033b8672c"
+  integrity sha512-1uxlSZ3dKbraWmvsOsBeSfJxR/+mXjDCsDLkl8N9QzXeN1nIer3siDPLqckox4MMsPxPo5uo1Be8iwORAUo3VQ==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+    "@loaders.gl/loader-utils" "2.1.6"
+
+"@loaders.gl/loader-utils@2.1.6", "@loaders.gl/loader-utils@^2.1.3":
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/@loaders.gl/loader-utils/-/loader-utils-2.1.6.tgz#8eb5a9a2215b3c94c3bb548767cbc276e3701a5c"
+  integrity sha512-V9ZJH60HwSmSIw2jqNDMFpDqZVfy02WZ1/1e2ENw3PODE8ubNqs1bQ8nFj9omqwVMPF7fBVLvzoeoGrpeW0gfQ==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+    "@probe.gl/stats" "^3.2.1"
+
+"@loaders.gl/video@2.2.0-alpha.1":
+  version "2.2.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/@loaders.gl/video/-/video-2.2.0-alpha.1.tgz#1bb09e9e507605a72c6e8a13b34926b69c717191"
+  integrity sha512-4NDe3fNPOTS4MvPxlxrbqr/kKgkB9tOVY2in/s/oYBo0uiDK+WSU0AztnyKxF1b/EsHzTEIzhOEhjvSwbgRQgQ==
+  dependencies:
+    "@loaders.gl/loader-utils" "^2.1.3"
+    gifshot "^0.4.5"
+
 "@luma.gl/constants@8.1.2":
   version "8.1.2"
   resolved "https://registry.yarnpkg.com/@luma.gl/constants/-/constants-8.1.2.tgz#729fb10ba6dc6946ccb2745f4b4d22c2f4b021d7"
@@ -1837,7 +1868,7 @@
     "@babel/runtime" "^7.0.0"
     probe.gl "3.2.1"
 
-"@probe.gl/stats@3.2.1":
+"@probe.gl/stats@3.2.1", "@probe.gl/stats@^3.2.1":
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/@probe.gl/stats/-/stats-3.2.1.tgz#4e95c75513229ebb01384045e89524a466c022eb"
   integrity sha512-tXe5krgbodxtVdUVWG4oIicMoCHNGp7QYkaHSDrUeTfJVqYuZz99T6r7qmn0bCo4wQlzn936jJ+QiAltHxatig==
@@ -4847,6 +4878,11 @@ getpass@^0.1.1:
   integrity sha1-Xv+OPmhNVprkyysSgmBOi6YhSfo=
   dependencies:
     assert-plus "^1.0.0"
+
+gifshot@^0.4.5:
+  version "0.4.5"
+  resolved "https://registry.yarnpkg.com/gifshot/-/gifshot-0.4.5.tgz#e3cb570203a3b139ff3069d7578098a29c03b0f8"
+  integrity sha1-48tXAgOjsTn/MGnXV4CYopwDsPg=
 
 git-raw-commits@2.0.0:
   version "2.0.0"

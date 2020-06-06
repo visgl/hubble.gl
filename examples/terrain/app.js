@@ -1,6 +1,6 @@
 import React, {useState, useRef} from 'react';
 import DeckGL from '@deck.gl/react';
-import {DeckAdapter, WebMEncoder} from '@hubble.gl/core';
+import {DeckAdapter, GifEncoder} from '@hubble.gl/core';
 import {useNextFrame, BasicControls} from '@hubble.gl/react';
 import {sceneBuilder} from './scene';
 
@@ -12,7 +12,7 @@ const INITIAL_VIEW_STATE = {
   pitch: 60
 };
 
-const adapter = new DeckAdapter(sceneBuilder, WebMEncoder);
+const adapter = new DeckAdapter(sceneBuilder, GifEncoder, {framerate: 15});
 
 export default function App() {
   const deckgl = useRef(null);

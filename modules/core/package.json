@@ -30,6 +30,8 @@
     "build-bundle": "webpack --display=minimal --config ../../scripts/bundle.config.js"
   },
   "dependencies": {
+    "@loaders.gl/core": "^2.1.6",
+    "@loaders.gl/video": "2.2.0-alpha.1",
     "@luma.gl/engine": "^8.1.2",
     "downloadjs": "^1.4.7",
     "popmotion": "^8.6.10",

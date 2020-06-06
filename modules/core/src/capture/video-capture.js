@@ -92,6 +92,7 @@ export class VideoCapture {
 
   // Start recording.  Pass in lengthMs of recording and on-stop callback.
   start(startTimeMs = 0, filename = undefined) {
+    console.time('capture');
     console.log(`Starting recording for ${this.recordingLengthMs}ms.`);
     this.filename = filename || guid();
     this.timeMs = startTimeMs;
@@ -134,17 +135,20 @@ export class VideoCapture {
    * @param {{ (blob: Blob): boolean }} [callback]
    */
   save(callback) {
+    console.timeEnd('capture');
     if (!callback) {
       /**
        * @param {Blob} blob
        */
       callback = blob => {
+        console.timeEnd('save');
         if (blob) {
           download(blob, this.filename + this.encoder.extension, this.encoder.mimeType);
         }
         return false;
       };
     }
+    console.time('save');
     this.encoder.save().then(callback);
   }
 }

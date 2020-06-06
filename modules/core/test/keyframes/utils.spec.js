@@ -73,11 +73,7 @@ test('Keyframes#merge', t => {
   const noop = () => {};
   const timings1 = [0, 1, 2];
   const easings1 = [noop, noop];
-  const keyframes1 = [
-    {a: '', b: true},
-    {a: 'a', b: false},
-    {a: '2', b: true}
-  ];
+  const keyframes1 = [{a: '', b: true}, {a: 'a', b: false}, {a: '2', b: true}];
 
   const expectedMergedKeyframes1 = [
     [0, {a: '', b: true, ease: undefined}],
