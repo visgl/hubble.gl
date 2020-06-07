@@ -41,21 +41,19 @@ class WebMEncoder extends FrameEncoder {
     this.extension = '.webm';
     this.mimeType = 'video/webm';
 
+    this.videoWriter = null;
+    this.start = this.start.bind(this);
+    this.add = this.add.bind(this);
+    this.save = this.save.bind(this);
+  }
+
+  start() {
     this.videoWriter = new WebMWriter({
       quality: this.quality,
       fileWriter: null,
       fd: null,
       frameRate: this.framerate
     });
-
-    this.start = this.start.bind(this);
-    this.add = this.add.bind(this);
-    this.save = this.save.bind(this);
-    this.dispose = this.dispose.bind(this);
-  }
-
-  start() {
-    this.dispose();
   }
 
   /** @param {HTMLCanvasElement} canvas */
@@ -69,15 +67,6 @@ class WebMEncoder extends FrameEncoder {
    */
   async save() {
     return this.videoWriter.complete();
-  }
-
-  dispose() {
-    this.videoWriter = new WebMWriter({
-      quality: this.quality,
-      fileWriter: null,
-      fd: null,
-      frameRate: this.framerate
-    });
   }
 }
 
