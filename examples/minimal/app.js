@@ -14,6 +14,18 @@ const INITIAL_VIEW_STATE = {
 
 const adapter = new DeckAdapter(sceneBuilder);
 
+const encoderSettings = {
+  animationLengthMs: 15000,
+  startOffsetMs: 0,
+  framerate: 30,
+  webm: {
+    quality: 0.8
+  },
+  jpeg: {
+    quality: 0.8
+  }
+};
+
 export default function App() {
   const deckgl = useRef(null);
   const [ready, setReady] = useState(false);
@@ -34,7 +46,14 @@ export default function App() {
         {...adapter.getProps(deckgl, setReady, nextFrame)}
       />
       <div style={{position: 'absolute'}}>
-        {ready && <BasicControls adapter={adapter} busy={busy} setBusy={setBusy} />}
+        {ready && (
+          <BasicControls
+            adapter={adapter}
+            busy={busy}
+            setBusy={setBusy}
+            encoderSettings={encoderSettings}
+          />
+        )}
       </div>
     </div>
   );
