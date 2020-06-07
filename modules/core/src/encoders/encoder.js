@@ -23,10 +23,6 @@ export default class Encoder {
   start() {
     throw new Error('Encoder: Implement a start function');
   }
-  /** @type {() => void} */
-  stop() {
-    throw new Error('Encoder: Implement a stop function');
-  }
   /** @type {(canvas: HTMLCanvasElement) => Promise<void>} */
   async add(canvas) {
     throw new Error('Encoder: Implement an add function');
@@ -34,9 +30,5 @@ export default class Encoder {
   /** @type {() => Promise<any>} */
   async save() {
     throw new Error('Encoder: Implement a save function');
-  }
-  /** @type {() => void} */
-  dispose() {
-    throw new Error('Encoder: Implement a dispose function');
   }
 }

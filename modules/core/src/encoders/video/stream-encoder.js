@@ -45,11 +45,12 @@ class StreamEncoder extends FrameEncoder {
     this.start = this.start.bind(this);
     this.add = this.add.bind(this);
     this.save = this.save.bind(this);
-    this.dispose = this.dispose.bind(this);
   }
 
   start() {
-    this.dispose();
+    this.stream = null;
+    this.mediaRecorder = null;
+    this.chunks = [];
   }
 
   /**
@@ -83,12 +84,6 @@ class StreamEncoder extends FrameEncoder {
     });
 
     return waiting;
-  }
-
-  dispose() {
-    this.stream = null;
-    this.mediaRecorder = null;
-    this.chunks = [];
   }
 }
 
