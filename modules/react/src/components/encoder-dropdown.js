@@ -26,6 +26,8 @@ export default function EncoderDropdown({disabled, encoder, setEncoder}) {
     <select disabled={disabled} value={encoder} onChange={e => setEncoder(e.currentTarget.value)}>
       <option value="preview">Preview</option>
       <option value="webm">WebM</option>
+      <option value="jpeg">JPEG Sequence</option>
+      <option value="png">PNG Sequence</option>
     </select>
   );
 }
