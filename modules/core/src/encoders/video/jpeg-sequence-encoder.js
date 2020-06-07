@@ -24,6 +24,10 @@ class JPEGSequenceEncoder extends TarEncoder {
     super(settings);
     this.mimeType = 'image/jpeg';
     this.extension = '.jpg';
+    this.quality = 0.8;
+    if (settings.jpeg && settings.jpeg.quality) {
+      this.quality = settings.jpeg.quality;
+    }
   }
 }
 

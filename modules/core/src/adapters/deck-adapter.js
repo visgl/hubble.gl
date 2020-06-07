@@ -19,15 +19,12 @@
 // THE SOFTWARE.
 /* eslint-disable no-console */
 import {Timeline} from '@luma.gl/engine';
-import HubbleGl from '../hubblegl';
 import {PreviewEncoder} from '../encoders';
 // eslint-disable-next-line no-unused-vars
 import {DeckScene} from '../scene';
 import {VideoCapture} from '../capture/video-capture';
 
 export default class DeckAdapter {
-  /** @type {HubbleGl} */
-  hubblegl;
   /** @type {DeckScene} */
   scene;
   /** @type {(animationLoop: any) => Promise<DeckScene> | DeckScene} */
@@ -38,16 +35,15 @@ export default class DeckAdapter {
 
   af;
 
-  constructor(sceneBuilder, Encoder = PreviewEncoder, encoderSettings = {}) {
+  constructor(sceneBuilder) {
     this.sceneBuilder = sceneBuilder;
-    this.encoderSettings = encoderSettings;
-    this.encoder = new Encoder(encoderSettings);
+    this.videoCapture = new VideoCapture();
+
     this.shouldAnimate = true;
     this.getProps = this.getProps.bind(this);
     this.render = this.render.bind(this);
     this.preview = this.preview.bind(this);
     this.stop = this.stop.bind(this);
-    this.setEncoder = this.setEncoder.bind(this);
     this._deckOnLoad = this._deckOnLoad.bind(this);
     this._getViewState = this._getViewState.bind(this);
     this._getLayers = this._getLayers.bind(this);
@@ -84,9 +80,15 @@ export default class DeckAdapter {
     this.af = requestAnimationFrame(() => onNextFrame());
   }
 
-  render(startTimeMs) {
+  render(Encoder = PreviewEncoder, encoderSettings = {}, onStop = undefined) {
     this.shouldAnimate = true;
-    this.hubblegl.start(startTimeMs);
+
+    if (!encoderSettings.animationLengthMs) {
+      encoderSettings.animationLengthMs = this.scene.length;
+    }
+
+    this.videoCapture.render(Encoder, encoderSettings, onStop);
+    this.scene.animationLoop.timeline.setTime(encoderSettings.startOffsetMs);
   }
 
   preview() {
@@ -98,22 +100,7 @@ export default class DeckAdapter {
    */
   stop(callback) {
     this.shouldAnimate = false;
-    this.hubblegl.stop(callback);
-  }
-
-  setEncoder(Encoder, encoderSettings = undefined) {
-    this.shouldAnimate = false;
-    if (!encoderSettings) {
-      encoderSettings = this.encoderSettings;
-    }
-    this.encoder = new Encoder(encoderSettings);
-    this.hubblegl.setRecorder(VideoCapture.withEncoder(this.hubblegl.recorder, this.encoder));
-    // TODO: setEncoder is WIP
-    // this.hubblegl = new HubbleGl({
-    //   deck: this.deck,
-    //   recordingLengthMs: this.scene.length,
-    //   encoder: this.encoder
-    // });
+    this.videoCapture.stop(callback);
   }
 
   async _deckOnLoad(deck) {
@@ -123,22 +110,16 @@ export default class DeckAdapter {
     animationLoop.timeline.setTime(0);
 
     await Promise.resolve(this.sceneBuilder(animationLoop)).then(scene => {
-      this._applyScene(deck, scene);
+      this._applyScene(scene);
     });
   }
 
-  _applyScene(deck, scene) {
+  _applyScene(scene) {
     this.scene = scene;
-    this.encoder = new this.Encoder(this.encoderSettings);
-    this.hubblegl = new HubbleGl({
-      deck,
-      recordingLengthMs: this.scene.length,
-      encoder: this.encoder
-    });
   }
 
   _getViewState() {
-    if (!this.hubblegl || !this.scene) {
+    if (!this.videoCapture || !this.scene) {
       return null;
     }
     const frame = this.scene.keyframes.camera.getFrame();
@@ -147,7 +128,7 @@ export default class DeckAdapter {
   }
 
   _getLayers() {
-    if (!this.hubblegl || !this.scene) {
+    if (!this.videoCapture || !this.scene) {
       return [];
     }
     return this.scene.renderLayers();
@@ -157,9 +138,12 @@ export default class DeckAdapter {
    * @param {(nextTimeMs: number) => void} proceedToNextFrame
    */
   _onAfterRender(proceedToNextFrame) {
-    if (this.hubblegl) {
-      console.log('after render');
-      this.hubblegl.capture(proceedToNextFrame);
+    if (this.videoCapture) {
+      // console.log('after render');
+      this.videoCapture.capture(this.deck.canvas, nextTimeMs => {
+        this.scene.animationLoop.timeline.setTime(nextTimeMs);
+        proceedToNextFrame(nextTimeMs);
+      });
     }
   }
 }

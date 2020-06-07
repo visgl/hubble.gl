@@ -29,6 +29,8 @@ export class VideoCapture {
   recordingLengthMs;
   /** @type {boolean} */
   recording;
+  /** @type {boolean} */
+  capturing;
   /** @type {number} */
   timeMs;
   /** @type {number} */
@@ -38,101 +40,109 @@ export class VideoCapture {
   /** @type {string} */
   filename;
 
-  /**
-   * @param {FrameEncoder} encoder
-   * @param {number} recordingLengthMs
-   */
-  constructor(encoder, recordingLengthMs) {
-    this.setRecordingLengthMs(recordingLengthMs);
+  constructor() {
     this.recording = false;
+    this.capturing = false;
     this.timeMs = 0;
-    this.encoder = encoder;
+    this.encoder = null;
 
     this._getNextTimeMs = this._getNextTimeMs.bind(this);
     this._step = this._step.bind(this);
+    this._capture = this._capture.bind(this);
     this.capture = this.capture.bind(this);
-    // this.setEncoder = this.setEncoder.bind(this);
-    this.start = this.start.bind(this);
+    this.render = this.render.bind(this);
     this.stop = this.stop.bind(this);
     this.save = this.save.bind(this);
   }
 
-  setRecordingLengthMs(recordingLengthMs) {
-    if (recordingLengthMs <= 0) {
+  parseEncoderSettings(encoderSettings) {
+    const parsedSettings = encoderSettings;
+
+    if (!parsedSettings.startOffsetMs) {
+      parsedSettings.startOffsetMs = 0;
+    }
+    this.timeMs = parsedSettings.startOffsetMs;
+
+    if (!parsedSettings.filename) {
+      parsedSettings.filename = guid();
+    }
+    this.filename = parsedSettings.filename;
+
+    if (parsedSettings.animationLengthMs <= 0) {
       throw new Error(
-        `Invalid recording length in ms (${recordingLengthMs}).  Must be greater than 0.`
+        `Invalid recording length in ms (${parsedSettings.animationLengthMs}).  Must be greater than 0.`
       );
     }
-    this.recordingLengthMs = recordingLengthMs;
-  }
+    this.recordingLengthMs = parsedSettings.animationLengthMs;
 
-  static withEncoder(recorder, encoder) {
-    return new VideoCapture(encoder, recorder.recordingLengthMs);
-    // this.encoder.dispose(); TODO: Should we dispose?
-    // this.encoder = encoder;
+    return parsedSettings;
   }
 
   // True if recording, false otherwise.
   isRecording() {
     return this.recording;
   }
-  /**
-   * @returns {import('types').CaptureStep}
-   */
-  _step() {
-    // generating next frame timestamp
-    this.timeMs = this._getNextTimeMs();
-    if (this.timeMs > this.recordingLengthMs) {
-      return {kind: 'error', error: 'STOP'};
-    }
-    return {kind: 'step', nextTimeMs: this.timeMs};
-  }
-
-  // Get next time MS based on current time MS and framerate
-  // @return time in milliseconds for next frame.
-  _getNextTimeMs() {
-    const frameLengthMs = parseInt(1000.0 / this.encoder.framerate, 10);
-    return this.timeMs + frameLengthMs;
-  }
-
-  // Start recording.  Pass in lengthMs of recording and on-stop callback.
-  start(startTimeMs = 0, filename = undefined) {
-    console.log(`Starting recording for ${this.recordingLengthMs}ms.`);
-    this.filename = filename || guid();
-    this.timeMs = startTimeMs;
-    this.encoder.start();
-    this.recording = true;
-  }
 
   /**
-   * Capture the current canvas.
-   * @param {HTMLCanvasElement} canvas
-   * @returns {Promise<import('types').CaptureStep>}
+   * Start recording.
+   *  @param {typeof FrameEncoder} Encoder
+   *  @param {import('types').FrameEncoderSettings} encoderSettings
    */
-  async capture(canvas) {
-    console.log('video-capture');
+  render(Encoder, encoderSettings, onStop = undefined) {
     if (!this.isRecording()) {
-      return {kind: 'error', error: 'NOT_RECORDING'};
+      encoderSettings = this.parseEncoderSettings(encoderSettings);
+
+      console.log(`Starting recording for ${this.recordingLengthMs}ms.`);
+      this.onStop = onStop;
+      this.encoder = new Encoder(encoderSettings);
+      this.recording = true;
+      this.encoder.start();
     }
-    // getting blob from canvas
-    return await this.encoder
-      .add(canvas)
-      .then(this._step)
-      .catch(reason => ({kind: 'error', error: reason}));
+  }
+
+  /**
+   * Capture a frame of the canvas.
+   * @param {(nextTimeMs: number) => void} proceedToNextFrame
+   */
+  capture(canvas, proceedToNextFrame) {
+    // console.log(`outside-hubble-capture ${this.capturing} ${this.isRecording()}`);
+
+    if (!this.capturing && this.isRecording()) {
+      // console.log('hubble-capture');
+
+      this.capturing = true;
+      // capture current canvas, i.e.
+      // const can = document.getElementsByClassName('mapboxgl-canvas')[0];
+      // const can = document.getElementById('default-deckgl-overlay');
+      this._capture(canvas).then(data => {
+        this.capturing = false;
+        if (data.kind === 'step') {
+          console.log(`data.nextTimeMs === ${data.nextTimeMs}`);
+          proceedToNextFrame(data.nextTimeMs);
+        } else if (data.error === 'STOP') {
+          console.log('data.error === STOP');
+          this.stop(this.onStop);
+        } else {
+          console.log(data);
+        }
+      });
+    }
   }
 
   /**
    * Stop and save recording. Execute callback if provided.
    * @param {() => void} callback
    */
-  stop(callback) {
-    console.log(`Stopping recording.  Recorded for ${this.recordingLengthMs}ms.`);
-    this.recording = false;
-    this.save();
+  stop(callback = undefined) {
+    if (this.isRecording()) {
+      console.log(`Stopping recording.  Recorded for ${this.recordingLengthMs}ms.`);
+      this.recording = false;
+      this.save();
 
-    if (callback) {
-      // eslint-disable-next-line callback-return
-      callback();
+      if (callback) {
+        // eslint-disable-next-line callback-return
+        callback();
+      }
     }
   }
 
@@ -153,19 +163,40 @@ export class VideoCapture {
     }
     this.encoder.save().then(callback);
   }
-}
 
-// NOTES
-// let success = this.capture(canvas);
-// if (!success) {
-//   setTimeout(() => {
-//     let success = this.capture(canvas);
-//     console.log('Retry!', success);
-//   }, 2000);
-// }
-// let tries = 0;
-// while (!success && tries < 3) {
-//   console.log('Retry!');
-//   success = this.capture(canvas);
-//   tries++;
-// }
+  /**
+   * Capture the current canvas.
+   * @param {HTMLCanvasElement} canvas
+   * @returns {Promise<import('types').CaptureStep>}
+   */
+  async _capture(canvas) {
+    // console.log('video-capture');
+    if (!this.isRecording()) {
+      return {kind: 'error', error: 'NOT_RECORDING'};
+    }
+    // getting blob from canvas
+    return await this.encoder
+      .add(canvas)
+      .then(this._step)
+      .catch(reason => ({kind: 'error', error: reason}));
+  }
+
+  /**
+   * @returns {import('types').CaptureStep}
+   */
+  _step() {
+    // generating next frame timestamp
+    this.timeMs = this._getNextTimeMs();
+    if (this.timeMs > this.recordingLengthMs) {
+      return {kind: 'error', error: 'STOP'};
+    }
+    return {kind: 'step', nextTimeMs: this.timeMs};
+  }
+
+  // Get next time MS based on current time MS and framerate
+  // @return time in milliseconds for next frame.
+  _getNextTimeMs() {
+    const frameLengthMs = parseInt(1000.0 / this.encoder.framerate, 10);
+    return this.timeMs + frameLengthMs;
+  }
+}
