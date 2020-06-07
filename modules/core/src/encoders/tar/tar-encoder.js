@@ -39,11 +39,11 @@ class TarEncoder extends FrameEncoder {
     this.start = this.start.bind(this);
     this.add = this.add.bind(this);
     this.save = this.save.bind(this);
-    this.dispose = this.dispose.bind(this);
   }
 
   start() {
-    this.dispose();
+    this.tape = new Tar();
+    this.count = 0;
   }
 
   /** @param {HTMLCanvasElement} canvas */
@@ -55,7 +55,7 @@ class TarEncoder extends FrameEncoder {
     const waitingForLoad = new Promise((resolve, reject) => {
       // filtering out blank canvases
       if (checkIfBlank(b64)) {
-        reject('BLANK');
+        // reject('BLANK');
       }
 
       fileReader.onload = () => {
@@ -73,11 +73,6 @@ class TarEncoder extends FrameEncoder {
 
   async save() {
     return Promise.resolve(this.tape.save());
-  }
-
-  dispose() {
-    this.tape = new Tar();
-    this.count = 0;
   }
 }
 

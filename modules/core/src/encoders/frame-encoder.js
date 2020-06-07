@@ -35,7 +35,6 @@ export default class FrameEncoder extends Encoder {
   /** @param {import('types').FrameEncoderSettings} settings */
   constructor(settings = {}) {
     super();
-    this.quality = settings.quality || 0.8;
     this.framerate = settings.framerate || 30;
     this.getMimeType = this.getMimeType.bind(this);
   }

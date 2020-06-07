@@ -21,8 +21,11 @@
 import FrameEncoder from '../frame-encoder';
 export default class PreviewEncoder extends FrameEncoder {
   af;
-  start() {}
-  stop() {}
+  start() {
+    if (this.af) {
+      cancelAnimationFrame(this.af);
+    }
+  }
   async add(canvas) {
     const animationFrame = new Promise(resolve => {
       if (this.af) {
@@ -33,11 +36,9 @@ export default class PreviewEncoder extends FrameEncoder {
     return animationFrame;
   }
   async save() {
-    await Promise.resolve();
-  }
-  dispose() {
     if (this.af) {
       cancelAnimationFrame(this.af);
     }
+    await Promise.resolve();
   }
 }

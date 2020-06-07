@@ -21,15 +21,27 @@ type DeckGl = {
   }; canvas: any;
 }
 
-interface FrameEncoderSettings {
-  quality?: number
-  framerate?: number
-}
+type FrameEncoderSettings = Partial<EncoderSettings>
 
-interface HubbleGlSettings {
-  deck: any // instance of deckgl
-  recordingLengthMs: number
-  encoder: FrameEncoder
+interface EncoderSettings {
+  animationLengthMs: number
+  startOffsetMs: number
+  filename: string
+  framerate: number
+  jpeg: {
+    quality: number
+  },
+  webm: {
+    quality: number
+  }
+  // gif: {
+  //   numWorkers: number,
+  //   sampleInterval: number,
+  //   resize: {
+  //     width: number,
+  //     height: number
+  //   }
+  // },
 }
 
 interface DeckSceneParams {

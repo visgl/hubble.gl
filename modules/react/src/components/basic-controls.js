@@ -18,41 +18,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import React from 'react';
-// import {WebMEncoder, PreviewEncoder} from 'hubble.gl';
-// import EncoderDropdown from './encoder-dropdown';
+import React, {useState} from 'react';
+import {
+  WebMEncoder,
+  JPEGSequenceEncoder,
+  PNGSequenceEncoder,
+  PreviewEncoder
+} from '@hubble.gl/core';
+import EncoderDropdown from './encoder-dropdown';
 
-export default function BasicControls({adapter, busy, setBusy}) {
-  // const [encoder, setEncoder] = useState('webm');
-  // useEffect(() => {
-  //   if (encoder === 'preview') {
-  //     adapter.setEncoder(PreviewEncoder);
-  //   } else if (encoder === 'webm') {
-  //     adapter.setEncoder(WebMEncoder);
-  //   }
-  // });
-
-  const onPreview = () => {
-    adapter.preview();
-    setBusy(true);
-  };
+export default function BasicControls({adapter, busy, setBusy, encoderSettings}) {
+  const [encoder, setEncoder] = useState('webm');
 
   const onRender = () => {
-    adapter.render();
+    if (encoder === 'preview') {
+      adapter.render(PreviewEncoder, encoderSettings, () => setBusy(false));
+    } else if (encoder === 'webm') {
+      adapter.render(WebMEncoder, encoderSettings, () => setBusy(false));
+    } else if (encoder === 'jpeg') {
+      adapter.render(JPEGSequenceEncoder, encoderSettings, () => setBusy(false));
+    } else if (encoder === 'png') {
+      adapter.render(PNGSequenceEncoder, encoderSettings, () => setBusy(false));
+    }
+
     setBusy(true);
   };
 
   const onStop = () => {
     adapter.stop(() => setBusy(false));
-    setBusy(false);
   };
 
   return (
     <div>
-      <button disabled={busy} onClick={onPreview}>
-        Preview
-      </button>
-      {/* <EncoderDropdown disabled={busy} encoder={encoder} setEncoder={setEncoder} /> */}
+      <EncoderDropdown disabled={busy} encoder={encoder} setEncoder={setEncoder} />
       <button disabled={busy} onClick={onRender}>
         Render
       </button>
