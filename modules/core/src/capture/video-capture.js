@@ -117,10 +117,10 @@ export class VideoCapture {
       this._capture(canvas).then(data => {
         this.capturing = false;
         if (data.kind === 'step') {
-          console.log(`data.nextTimeMs === ${data.nextTimeMs}`);
+          console.log(`data.nextTimeMs: ${data.nextTimeMs}`);
           proceedToNextFrame(data.nextTimeMs);
         } else if (data.error === 'STOP') {
-          console.log('data.error === STOP');
+          console.log('data.error: STOP');
           this.stop(this.onStop);
         } else {
           console.log(data);

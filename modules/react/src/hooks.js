@@ -17,14 +17,10 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-/* eslint-disable no-console */
 
 import {useState, useCallback} from 'react';
 
 export function useNextFrame() {
   const [, updateState] = useState();
-  return useCallback(() => {
-    console.log('use-next-state');
-    updateState({});
-  }, []);
+  return useCallback(() => updateState({}), []);
 }

@@ -29,11 +29,8 @@ export default class DeckAdapter {
   scene;
   /** @type {(animationLoop: any) => Promise<DeckScene> | DeckScene} */
   sceneBuilder;
-  /** @type {import('../encoders').FrameEncoder} */
-  encoder;
+  /** @type {boolean} */
   shouldAnimate;
-
-  af;
 
   constructor(sceneBuilder) {
     this.sceneBuilder = sceneBuilder;
@@ -67,17 +64,6 @@ export default class DeckAdapter {
         }),
       _animate: this.shouldAnimate
     };
-  }
-
-  /**
-   * TODO: see if this can be removed once setEncoder works.
-   * @param {() => void} onNextFrame
-   */
-  update(onNextFrame) {
-    if (this.af) {
-      cancelAnimationFrame(this.af);
-    }
-    this.af = requestAnimationFrame(() => onNextFrame());
   }
 
   render(Encoder = PreviewEncoder, encoderSettings = {}, onStop = undefined) {
@@ -114,6 +100,7 @@ export default class DeckAdapter {
     });
   }
 
+  // TODO: allow user to change scenes at runtime.
   _applyScene(scene) {
     this.scene = scene;
   }
@@ -123,7 +110,7 @@ export default class DeckAdapter {
       return null;
     }
     const frame = this.scene.keyframes.camera.getFrame();
-    console.log('camera-state');
+    // console.log('camera-state');
     return frame;
   }
 

@@ -33,10 +33,6 @@ export default function App() {
   const [busy, setBusy] = useState(false);
   const nextFrame = useNextFrame();
 
-  if (busy) {
-    adapter.update(nextFrame);
-  }
-
   return (
     <div style={{position: 'relative'}}>
       <DeckGL
