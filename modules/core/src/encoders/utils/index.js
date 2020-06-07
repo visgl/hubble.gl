@@ -42,7 +42,7 @@ export function getBase64(canvas, type, quality) {
  */
 export function checkIfBlank(b64) {
   if (b64.length < 100000) {
-    console.error('SMALL IMAGE!', b64, b64.length);
+    console.warn('Possibly blank image!', b64, b64.length);
     return true;
   }
   return false;

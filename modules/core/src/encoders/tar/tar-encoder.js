@@ -55,7 +55,7 @@ class TarEncoder extends FrameEncoder {
     const waitingForLoad = new Promise((resolve, reject) => {
       // filtering out blank canvases
       if (checkIfBlank(b64)) {
-        reject('BLANK');
+        // reject('BLANK');
       }
 
       fileReader.onload = () => {
