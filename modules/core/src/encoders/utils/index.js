@@ -62,3 +62,21 @@ export function getBlob(base64, type) {
   }
   return new Blob([arr], {type});
 }
+
+export function supportedMimeTypes() {
+  const types = [
+    'video/webm',
+    'audio/webm',
+    'video/webm;codecs=vp8',
+    'video/webm;codecs=daala',
+    'video/webm;codecs=h264',
+    'audio/webm;codecs=opus',
+    'video/mpeg',
+    'image/webp'
+  ];
+
+  return types.filter(type => {
+    // @ts-ignore
+    return MediaRecorder.isTypeSupported(type);
+  });
+}
