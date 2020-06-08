@@ -49,10 +49,17 @@ function getKeyframes(animationLoop, data) {
 }
 
 export async function sceneBuilder(animationLoop) {
-  const length = 5000;
   const data = await fetch(
     'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/bart-lines.json'
   ).then(x => x.json());
   const keyframes = getKeyframes(animationLoop, data);
-  return new DeckScene({animationLoop, length, keyframes, data, renderLayers});
+  return new DeckScene({
+    animationLoop,
+    keyframes,
+    data,
+    renderLayers,
+    lengthMs: 5000,
+    width: 720,
+    height: 480
+  });
 }

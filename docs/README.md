@@ -59,10 +59,10 @@ function getKeyframes(animationLoop, data) {
 }
 
 export function sceneBuilder(animationLoop) {
-  const length = 5000;
+  const lengthMs = 5000;
   const data = [{sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}];
   const keyframes = getKeyframes(animationLoop, data);
-  return new DeckScene({animationLoop, length, keyframes, data, renderLayers});
+  return new DeckScene({animationLoop, keyframes, data, renderLayers, lengthMs, width: 1920, height: 1080});
 }
 ```
 
@@ -80,25 +80,24 @@ import {sceneBuilder} from './scene';
 
 const adapter = new DeckAdapter(sceneBuilder, WebMEncoder);
 
+/** @type {import('@hubble.gl/core/src/types').FrameEncoderSettings} */
+const encoderSettings = {
+  framerate: 30
+}
+
 export default function App() {
   const deckgl = useRef(null);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const nextFrame = useNextFrame();
 
-  if (busy) {
-    adapter.update(nextFrame);
-  }
-
   return (
     <div style={{position: 'relative'}}>
       <DeckGL
-        width={1920}
-        height={1080}
         ref={deckgl}
         {...adapter.getProps(deckgl, setReady, nextFrame)}
       />
-      <div style={{position: 'absolute'}}>{ready && <BasicControls adapter={adapter} busy={busy} setBusy={setBusy} />}</div>
+      <div style={{position: 'absolute'}}>{ready && <BasicControls adapter={adapter} busy={busy} setBusy={setBusy} encoderSettings={encoderSettings}/>}</div>
     </div>
   );
 }

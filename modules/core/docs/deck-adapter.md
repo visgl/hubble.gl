@@ -3,7 +3,7 @@
 ## Constructor
 
 ```js
-new DeckAdapter(sceneBuilder, Encoder, encoderSettings);
+new DeckAdapter(sceneBuilder);
 ```
 
 ## Parameters
@@ -18,20 +18,12 @@ async function sceneBuilder(animationLoop) {
   const data = await fetch(...)
   const keyframes = {}
   const renderLayers = ...
-  const length = 5000 // ms
-  return new DeckScene({animationLoop, length, keyframes, data, renderLayers})
+  const lengthMs = 5000 // ms
+  const width = 1920 // px
+  const height = 1080 // px
+  return new DeckScene({animationLoop, keyframes, data, renderLayers, lengthMs, width, height})
 }
 ```
-
-##### `Encoder` (`typeof FrameEncoder`, Optional)
-
-* Default: `PreviewEncoder`
-
-FrameEncoder class for capturing deck canvas. See [Encoders]()
-
-##### `encoderSettings` (`FrameEncoderSettings`, Optional)
-
-* Default: `{}` (See `FrameEncoder` for internal defaults)
 
 ## Methods
 
@@ -47,25 +39,15 @@ Parameters:
 
 * `onNextFrame` (`(nextTimeMs: number) => void`) - Callback indicating the next frame in a rendering should be displayed.
 
-##### `update`
-
-Call in react render when recording to request a new frame.
-
-Parameters:
-
-* `onNextFrame` (`(nextTimeMs: number) => void`) - Callback indicating the next frame in a rendering should be displayed.
-
 ##### `render`
 
 Start rendering.
 
 Parameters:
 
-* `startTimeMs` (`number`, Optional) - Offset the animation. Defaults to 0.
+* `Encoder` (`typeof FrameEncoder`, Optional) - Default: `PreviewEncoder`. FrameEncoder class for capturing deck canvas. See [Encoders](/docs/encoder)
 
-##### `preview`
-
-Preview rendering.
+* `encoderSettings` (`FrameEncoderSettings`, Optional) - Default: `{}` (See [Encoder Overview](/docs/encoder) for internal defaults)
 
 ##### `stop`
 

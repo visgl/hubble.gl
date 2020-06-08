@@ -2,6 +2,12 @@
 
 A WebM video format encoder that inherits [FrameEncoder]().
 
+## FrameEncoderSettings
+
+In addition to the top level [FrameEncoderSettings](/docs/encoder), these settings are available under the `webm` namespace.
+
+* `quality` - See member note. Defaults to 0.8. 
+
 ## Members
 
 * `extension` - `".webm"`

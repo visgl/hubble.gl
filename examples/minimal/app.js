@@ -14,9 +14,8 @@ const INITIAL_VIEW_STATE = {
 
 const adapter = new DeckAdapter(sceneBuilder);
 
+/** @type {import('@hubble.gl/core/src/types').FrameEncoderSettings} */
 const encoderSettings = {
-  animationLengthMs: 15000,
-  startOffsetMs: 0,
   framerate: 30,
   webm: {
     quality: 0.8
