@@ -26,3 +26,4 @@ export {default as WebMEncoder} from './video/webm-encoder';
 export {default as StreamEncoder} from './video/stream-encoder';
 export {default as FrameEncoder} from './frame-encoder';
 export {default as PreviewEncoder} from './utils/preview-encoder';
+export {default as GifEncoder} from './video/gif-encoder';
