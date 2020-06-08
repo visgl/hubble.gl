@@ -25,14 +25,16 @@ import {FrameEncoder} from '../encoders';
 import {guid} from './utils';
 
 export class VideoCapture {
-  /** @type {number} */
-  recordingLengthMs;
   /** @type {boolean} */
   recording;
   /** @type {boolean} */
   capturing;
   /** @type {number} */
   timeMs;
+  /** @type {number} */
+  endTimeMs;
+  /** @type {number} */
+  durationMs;
   /** @type {number} */
   framerate;
   /** @type {FrameEncoder} */
@@ -55,7 +57,11 @@ export class VideoCapture {
     this.save = this.save.bind(this);
   }
 
-  parseEncoderSettings(encoderSettings) {
+  /**
+   * @param {import('types').FrameEncoderSettings} encoderSettings
+   * @param {number} sceneLengthMs
+   */
+  parseEncoderSettings(encoderSettings, sceneLengthMs) {
     const parsedSettings = encoderSettings;
 
     if (!parsedSettings.startOffsetMs) {
@@ -63,17 +69,28 @@ export class VideoCapture {
     }
     this.timeMs = parsedSettings.startOffsetMs;
 
+    if (parsedSettings.durationMs) {
+      this.endTimeMs = parsedSettings.startOffsetMs + parsedSettings.durationMs;
+    } else {
+      parsedSettings.durationMs = sceneLengthMs - parsedSettings.startOffsetMs;
+      this.endTimeMs = sceneLengthMs;
+    }
+    if (this.endTimeMs > sceneLengthMs) {
+      throw new Error(
+        `Recording end time (${this.endTimeMs}) cannot be greater then scene length (${sceneLengthMs})`
+      );
+    }
+    if (parsedSettings.durationMs <= 0) {
+      throw new Error(
+        `Invalid recording length in ms (${parsedSettings.durationMs}).  Must be greater than 0.`
+      );
+    }
+    this.durationMs = parsedSettings.durationMs;
+
     if (!parsedSettings.filename) {
       parsedSettings.filename = guid();
     }
     this.filename = parsedSettings.filename;
-
-    if (parsedSettings.animationLengthMs <= 0) {
-      throw new Error(
-        `Invalid recording length in ms (${parsedSettings.animationLengthMs}).  Must be greater than 0.`
-      );
-    }
-    this.recordingLengthMs = parsedSettings.animationLengthMs;
 
     return parsedSettings;
   }
@@ -85,14 +102,16 @@ export class VideoCapture {
 
   /**
    * Start recording.
-   *  @param {typeof FrameEncoder} Encoder
-   *  @param {import('types').FrameEncoderSettings} encoderSettings
+   * @param {typeof FrameEncoder} Encoder
+   * @param {import('types').FrameEncoderSettings} encoderSettings
+   * @param {number} sceneLengthMs
+   * @param {() => void} onStop
    */
-  render(Encoder, encoderSettings, onStop = undefined) {
+  render(Encoder, encoderSettings, sceneLengthMs, onStop = undefined) {
     if (!this.isRecording()) {
-      encoderSettings = this.parseEncoderSettings(encoderSettings);
+      encoderSettings = this.parseEncoderSettings(encoderSettings, sceneLengthMs);
 
-      console.log(`Starting recording for ${this.recordingLengthMs}ms.`);
+      console.log(`Starting recording for ${this.durationMs}ms.`);
       this.onStop = onStop;
       this.encoder = new Encoder(encoderSettings);
       this.recording = true;
@@ -135,7 +154,7 @@ export class VideoCapture {
    */
   stop(callback = undefined) {
     if (this.isRecording()) {
-      console.log(`Stopping recording.  Recorded for ${this.recordingLengthMs}ms.`);
+      console.log(`Stopping recording.  Recorded for ${this.durationMs}ms.`);
       this.recording = false;
       this.save();
 
@@ -190,7 +209,7 @@ export class VideoCapture {
   _step() {
     // generating next frame timestamp
     this.timeMs = this._getNextTimeMs();
-    if (this.timeMs > this.recordingLengthMs) {
+    if (this.timeMs > this.endTimeMs) {
       return {kind: 'error', error: 'STOP'};
     }
     return {kind: 'step', nextTimeMs: this.timeMs};

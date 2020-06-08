@@ -24,8 +24,8 @@ type DeckGl = {
 type FrameEncoderSettings = Partial<EncoderSettings>
 
 interface EncoderSettings {
-  animationLengthMs: number
-  startOffsetMs: number
+  startOffsetMs?: number
+  durationMs?: number  
   filename: string
   framerate: number
   jpeg: {
@@ -46,7 +46,9 @@ interface EncoderSettings {
 
 interface DeckSceneParams {
   animationLoop: any
-  length: number
+  lengthMs: number
+  width: number
+  height: number
   keyframes: any
   data: any
   renderLayers: (scene: DeckScene) => any[]
@@ -54,7 +56,9 @@ interface DeckSceneParams {
 
 interface KeplerSceneParams {
   animationLoop: any
-  length: number
+  lengthMs: number
+  width: number
+  height: number
   keyframes: any[]
   data: any
   filters: any[]
