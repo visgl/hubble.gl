@@ -2,6 +2,12 @@
 
 A photo sequence encoder that inherits [TarEncoder](). Saves each frame as a photo contained in a `".tar"` archive.
 
+## FrameEncoderSettings
+
+In addition to the top level [FrameEncoderSettings](/docs/encoder), these settings are available under the `jpeg` namespace.
+
+* `quality` - See member note. Defaults to 0.8. 
+
 ## Members
 
 * `extension` - `".jpeg"`
