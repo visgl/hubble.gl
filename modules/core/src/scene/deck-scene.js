@@ -19,13 +19,15 @@
 // THE SOFTWARE.
 export default class DeckScene {
   /** @param {import('types').DeckSceneParams} params */
-  constructor({animationLoop, length, keyframes, data, renderLayers}) {
+  constructor({animationLoop, keyframes, data, renderLayers, lengthMs, width, height}) {
     this.animationLoop = animationLoop;
     this.keyframes = keyframes;
     this.data = data;
     this._renderLayers = renderLayers;
-    this.length = length;
     this.renderLayers = this.renderLayers.bind(this);
+    this.lengthMs = lengthMs;
+    this.width = width;
+    this.height = height;
   }
 
   renderLayers() {

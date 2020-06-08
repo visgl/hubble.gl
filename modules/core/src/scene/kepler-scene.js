@@ -19,14 +19,16 @@
 // THE SOFTWARE.
 export default class KeplerScene {
   /** @param {import('types').KeplerSceneParams} params */
-  constructor({animationLoop, length, keyframes, data, filters, getFrame}) {
+  constructor({animationLoop, keyframes, data, filters, getFrame, lengthMs, width, height}) {
     this.animationLoop = animationLoop;
     this.keyframes = keyframes;
     this.data = data;
     this._getFrame = getFrame;
     this.filters = filters;
-    this.length = length;
     this.getFrame = this.getFrame.bind(this);
+    this.lengthMs = lengthMs;
+    this.width = width;
+    this.height = height;
   }
 
   /**

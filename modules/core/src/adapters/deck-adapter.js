@@ -32,6 +32,9 @@ export default class DeckAdapter {
   /** @type {boolean} */
   shouldAnimate;
 
+  /**
+   * @param {(animationLoop: any) => DeckScene | Promise<DeckScene>} sceneBuilder
+   */
   constructor(sceneBuilder) {
     this.sceneBuilder = sceneBuilder;
     this.videoCapture = new VideoCapture();
@@ -53,7 +56,7 @@ export default class DeckAdapter {
    * @param {(nextTimeMs: number) => void} onNextFrame
    */
   getProps(deckRef, setReady, onNextFrame) {
-    return {
+    const props = {
       viewState: this._getViewState(),
       layers: this._getLayers(),
       onAfterRender: () => this._onAfterRender(onNextFrame),
@@ -64,16 +67,22 @@ export default class DeckAdapter {
         }),
       _animate: this.shouldAnimate
     };
+
+    if (this.scene) {
+      props.width = this.scene.width;
+      props.height = this.scene.height;
+    }
+    return props;
   }
 
+  /**
+   * @param {typeof import('../encoders').FrameEncoder} Encoder
+   * @param {import('types').FrameEncoderSettings} encoderSettings
+   * @param {() => void} onStop
+   */
   render(Encoder = PreviewEncoder, encoderSettings = {}, onStop = undefined) {
     this.shouldAnimate = true;
-
-    if (!encoderSettings.animationLengthMs) {
-      encoderSettings.animationLengthMs = this.scene.length;
-    }
-
-    this.videoCapture.render(Encoder, encoderSettings, onStop);
+    this.videoCapture.render(Encoder, encoderSettings, this.scene.lengthMs, onStop);
     this.scene.animationLoop.timeline.setTime(encoderSettings.startOffsetMs);
   }
 
@@ -106,7 +115,7 @@ export default class DeckAdapter {
   }
 
   _getViewState() {
-    if (!this.videoCapture || !this.scene) {
+    if (!this.scene) {
       return null;
     }
     const frame = this.scene.keyframes.camera.getFrame();
@@ -115,7 +124,7 @@ export default class DeckAdapter {
   }
 
   _getLayers() {
-    if (!this.videoCapture || !this.scene) {
+    if (!this.scene) {
       return [];
     }
     return this.scene.renderLayers();
@@ -125,12 +134,10 @@ export default class DeckAdapter {
    * @param {(nextTimeMs: number) => void} proceedToNextFrame
    */
   _onAfterRender(proceedToNextFrame) {
-    if (this.videoCapture) {
-      // console.log('after render');
-      this.videoCapture.capture(this.deck.canvas, nextTimeMs => {
-        this.scene.animationLoop.timeline.setTime(nextTimeMs);
-        proceedToNextFrame(nextTimeMs);
-      });
-    }
+    // console.log('after render');
+    this.videoCapture.capture(this.deck.canvas, nextTimeMs => {
+      this.scene.animationLoop.timeline.setTime(nextTimeMs);
+      proceedToNextFrame(nextTimeMs);
+    });
   }
 }

@@ -15,10 +15,9 @@ const INITIAL_VIEW_STATE = {
 
 const adapter = new DeckAdapter(sceneBuilder);
 
+/** @type {import('@hubble.gl/core/src/types').EncoderSettings} */
 const encoderSettings = {
-  animationLengthMs: 15000,
-  startOffsetMs: 0,
-  framerate: 30,
+  framerate: 10,
   webm: {
     quality: 0.8
   },
@@ -36,8 +35,6 @@ export default function App() {
   return (
     <div style={{position: 'relative'}}>
       <DeckGL
-        width={720}
-        height={480}
         ref={deckgl}
         initialViewState={INITIAL_VIEW_STATE}
         {...adapter.getProps(deckgl, setReady, nextFrame)}
