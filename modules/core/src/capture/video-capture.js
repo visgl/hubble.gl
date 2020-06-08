@@ -41,12 +41,15 @@ export class VideoCapture {
   encoder;
   /** @type {string} */
   filename;
+  /** @type {import('types').FrameEncoderSettings} */
+  encoderSettings;
 
   constructor() {
     this.recording = false;
     this.capturing = false;
     this.timeMs = 0;
     this.encoder = null;
+    this.encoderSettings = null;
 
     this._getNextTimeMs = this._getNextTimeMs.bind(this);
     this._step = this._step.bind(this);
@@ -62,7 +65,7 @@ export class VideoCapture {
    * @param {number} sceneLengthMs
    */
   parseEncoderSettings(encoderSettings, sceneLengthMs) {
-    const parsedSettings = encoderSettings;
+    const parsedSettings = {...encoderSettings};
 
     if (!parsedSettings.startOffsetMs) {
       parsedSettings.startOffsetMs = 0;
@@ -110,11 +113,10 @@ export class VideoCapture {
   render(Encoder, encoderSettings, sceneLengthMs, onStop = undefined) {
     if (!this.isRecording()) {
       console.time('render');
-      encoderSettings = this.parseEncoderSettings(encoderSettings, sceneLengthMs);
-
+      this.encoderSettings = this.parseEncoderSettings(encoderSettings, sceneLengthMs);
       console.log(`Starting recording for ${this.durationMs}ms.`);
       this.onStop = onStop;
-      this.encoder = new Encoder(encoderSettings);
+      this.encoder = new Encoder(this.encoderSettings);
       this.recording = true;
       this.encoder.start();
     }
@@ -157,6 +159,7 @@ export class VideoCapture {
     if (this.isRecording()) {
       console.log(`Stopping recording.  Recorded for ${this.durationMs}ms.`);
       this.recording = false;
+      this.encoderSettings = null;
       this.save();
 
       if (callback) {
