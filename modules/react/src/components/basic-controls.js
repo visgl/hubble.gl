@@ -23,12 +23,13 @@ import {
   WebMEncoder,
   JPEGSequenceEncoder,
   PNGSequenceEncoder,
-  PreviewEncoder
+  PreviewEncoder,
+  GifEncoder
 } from '@hubble.gl/core';
 import EncoderDropdown from './encoder-dropdown';
 
 export default function BasicControls({adapter, busy, setBusy, encoderSettings}) {
-  const [encoder, setEncoder] = useState('webm');
+  const [encoder, setEncoder] = useState('gif');
 
   const onRender = () => {
     if (encoder === 'preview') {
@@ -39,6 +40,8 @@ export default function BasicControls({adapter, busy, setBusy, encoderSettings})
       adapter.render(JPEGSequenceEncoder, encoderSettings, () => setBusy(false));
     } else if (encoder === 'png') {
       adapter.render(PNGSequenceEncoder, encoderSettings, () => setBusy(false));
+    } else if (encoder === 'gif') {
+      adapter.render(GifEncoder, encoderSettings, () => setBusy(false));
     }
 
     setBusy(true);
