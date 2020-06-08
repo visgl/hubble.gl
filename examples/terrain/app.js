@@ -23,6 +23,9 @@ const encoderSettings = {
   },
   jpeg: {
     quality: 0.8
+  },
+  gif: {
+    sampleInterval: 1000
   }
 };
 

@@ -34,14 +34,12 @@ interface EncoderSettings {
   webm: {
     quality: number
   }
-  // gif: {
-  //   numWorkers: number,
-  //   sampleInterval: number,
-  //   resize: {
-  //     width: number,
-  //     height: number
-  //   }
-  // },
+  gif: {
+    numWorkers: number,
+    sampleInterval: number,
+    width: number,
+    height: number
+  },
 }
 
 interface DeckSceneParams {

@@ -109,6 +109,7 @@ export class VideoCapture {
    */
   render(Encoder, encoderSettings, sceneLengthMs, onStop = undefined) {
     if (!this.isRecording()) {
+      console.time('render');
       encoderSettings = this.parseEncoderSettings(encoderSettings, sceneLengthMs);
 
       console.log(`Starting recording for ${this.durationMs}ms.`);
@@ -169,7 +170,7 @@ export class VideoCapture {
    * @param {{ (blob: Blob): boolean }} [callback]
    */
   save(callback) {
-    console.timeEnd('capture');
+    console.timeEnd('render');
     if (!callback) {
       /**
        * @param {Blob} blob

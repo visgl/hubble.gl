@@ -8,6 +8,16 @@ export default class GifEncoder extends FrameEncoder {
     this.mimeType = 'image/gif';
     this.extension = '.gif';
     this.gifBuilder = null;
+    this.options = {};
+
+    if (settings.gif) {
+      this.options = settings.gif;
+    }
+
+    this.options.width = this.options.width || 720;
+    this.options.height = this.options.height || 480;
+    this.options.numWorkers = this.options.numWorkers || 4;
+    this.options.sampleInterval = this.options.sampleInterval || 10;
 
     // this.source = settings.source
     this.source = 'images';
@@ -15,11 +25,14 @@ export default class GifEncoder extends FrameEncoder {
     this.start = this.start.bind(this);
     this.add = this.add.bind(this);
     this.save = this.save.bind(this);
-    this.dispose = this.dispose.bind(this);
   }
 
   start() {
-    this.gifBuilder = new GIFBuilder({source: this.source, width: 720, height: 480, numWorkers: 4});
+    this.gifBuilder = new GIFBuilder({
+      source: this.source,
+      ...this.options,
+      interval: 1 / this.framerate
+    });
   }
 
   /** @param {HTMLCanvasElement} canvas */
@@ -32,9 +45,5 @@ export default class GifEncoder extends FrameEncoder {
 
   async save() {
     return this.gifBuilder.build();
-  }
-
-  dispose() {
-    this.gifBuilder = null;
   }
 }
