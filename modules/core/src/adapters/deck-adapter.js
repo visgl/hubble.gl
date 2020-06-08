@@ -83,7 +83,7 @@ export default class DeckAdapter {
   render(Encoder = PreviewEncoder, encoderSettings = {}, onStop = undefined) {
     this.shouldAnimate = true;
     this.videoCapture.render(Encoder, encoderSettings, this.scene.lengthMs, onStop);
-    this.scene.animationLoop.timeline.setTime(encoderSettings.startOffsetMs);
+    this.scene.animationLoop.timeline.setTime(this.videoCapture.encoderSettings.startOffsetMs);
   }
 
   preview() {
