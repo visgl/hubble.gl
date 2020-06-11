@@ -44,7 +44,6 @@ class JPEGSequenceEncoder extends FrameEncoder {
   async add(canvas) {
     const mimeType = 'image/jpeg';
     const extension = '.jpg';
-    // getting blob from base64 encoding
     const buffer = await canvasToArrayBuffer(canvas, mimeType);
     const filename = pad(this.tarBuilder.count) + extension;
     this.tarBuilder.addFile(buffer, filename);
