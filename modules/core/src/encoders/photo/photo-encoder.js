@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 import FrameEncoder from '../frame-encoder';
-import {getBase64, getBlob, checkIfBlank} from '../utils';
+import {canvasToArrayBuffer} from '../utils';
 
 class PhotoEncoder extends FrameEncoder {
   /** @type {Blob} */
@@ -34,11 +34,8 @@ class PhotoEncoder extends FrameEncoder {
   /** @param {HTMLCanvasElement} canvas */
   async add(canvas) {
     // Adding a frame just overwrites old image
-    const b64 = getBase64(canvas, this.getMimeType(), this.quality);
-    if (checkIfBlank(b64)) {
-      return Promise.reject('BLANK');
-    }
-    this.blob = getBlob(b64, this.getMimeType());
+    const buffer = await canvasToArrayBuffer(canvas, this.getMimeType(), this.quality);
+    this.blob = new Blob([buffer], {type: this.getMimeType()});
     return Promise.resolve();
   }
 

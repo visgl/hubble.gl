@@ -17,17 +17,41 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-import TarEncoder from '../tar/tar-encoder';
-class JPEGSequenceEncoder extends TarEncoder {
+import FrameEncoder from '../frame-encoder';
+import TARBuilder from '../tar/tar-builder';
+import {pad, canvasToArrayBuffer} from '../utils';
+class JPEGSequenceEncoder extends FrameEncoder {
+  /** @type {TARBuilder} */
+  tarBuilder;
+
   /** @param {import('types').FrameEncoderSettings} settings */
   constructor(settings) {
     super(settings);
-    this.mimeType = 'image/jpeg';
-    this.extension = '.jpg';
+    this.mimeType = TARBuilder.properties.mimeType;
+    this.extension = `.${TARBuilder.properties.extensions[0]}`;
     this.quality = 0.8;
     if (settings.jpeg && settings.jpeg.quality) {
       this.quality = settings.jpeg.quality;
     }
+    this.tarBuilder = null;
+  }
+
+  start() {
+    this.tarBuilder = new TARBuilder({});
+  }
+
+  /** @param {HTMLCanvasElement} canvas */
+  async add(canvas) {
+    const mimeType = 'image/jpeg';
+    const extension = '.jpg';
+    // getting blob from base64 encoding
+    const buffer = await canvasToArrayBuffer(canvas, mimeType);
+    const filename = pad(this.tarBuilder.count) + extension;
+    this.tarBuilder.addFile(buffer, filename);
+  }
+
+  async save() {
+    return this.tarBuilder.build();
   }
 }
 
