@@ -1,5 +1,4 @@
 import Tar from './tar';
-import {pad} from '../../encoders/utils';
 
 const TAR_BUILDER_OPTIONS = {
   recordsPerBlock: 20
@@ -27,34 +26,17 @@ export default class TARBuilder {
    */
   constructor(options) {
     this.options = {...TAR_BUILDER_OPTIONS, ...options};
-
     this.tape = new Tar(this.options.recordsPerBlock);
     this.count = 0;
   }
 
   /**
-   * @param {Blob} file
-   * @param {string} extension
+   * @param {File} file
    */
-  async add(file, extension) {
-    const fileReader = new FileReader();
-    const waitingForLoad = new Promise((resolve, reject) => {
-      // filtering out blank canvases
-      // if (checkIfBlank(b64)) {
-      //   reject('BLANK');
-      // }
-
-      fileReader.onload = () => {
-        if (fileReader.result instanceof ArrayBuffer) {
-          this.tape.append(pad(this.count) + extension, new Uint8Array(fileReader.result));
-        }
-
-        this.count++;
-        resolve();
-      };
-    });
-    fileReader.readAsArrayBuffer(file);
-    await waitingForLoad;
+  async add(file) {
+    const buffer = await file.arrayBuffer();
+    this.tape.append(file.name, new Uint8Array(buffer));
+    this.count++;
   }
 
   async build() {

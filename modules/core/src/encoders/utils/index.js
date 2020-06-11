@@ -33,7 +33,7 @@ export function pad(n) {
  * @param {string} type
  * @param {number} quality
  */
-export function getBase64(canvas, type, quality) {
+export function getBase64(canvas, type, quality = undefined) {
   return canvas.toDataURL(type, quality).split(',')[1];
 }
 
@@ -61,4 +61,20 @@ export function getBlob(base64, type) {
     arr[i] = binStr.charCodeAt(i);
   }
   return new Blob([arr], {type});
+}
+
+/**
+ * @param {string} base64
+ * @param {string} filename
+ * @param {string} type
+ */
+export function b64ToFile(base64, filename, type) {
+  const binStr = atob(base64);
+  const len = binStr.length;
+  const arr = new Uint8Array(len);
+
+  for (let i = 0; i < len; i++) {
+    arr[i] = binStr.charCodeAt(i);
+  }
+  return new File([arr], filename, {type});
 }
