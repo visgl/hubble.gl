@@ -31,11 +31,11 @@ export default class TARBuilder {
   }
 
   /**
-   * @param {File} file
+   * @param {ArrayBuffer} buffer
+   * @param {string} filename
    */
-  async add(file) {
-    const buffer = await file.arrayBuffer();
-    this.tape.append(file.name, new Uint8Array(buffer));
+  addFile(buffer, filename) {
+    this.tape.append(filename, new Uint8Array(buffer));
     this.count++;
   }
 

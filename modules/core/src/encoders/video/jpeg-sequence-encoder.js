@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 import FrameEncoder from '../frame-encoder';
 import TARBuilder from '../tar/tar-builder';
-import {getBase64, pad, b64ToFile} from '../utils';
+import {pad, canvasToArrayBuffer} from '../utils';
 class JPEGSequenceEncoder extends FrameEncoder {
   /** @type {TARBuilder} */
   tarBuilder;
@@ -45,10 +45,9 @@ class JPEGSequenceEncoder extends FrameEncoder {
     const mimeType = 'image/jpeg';
     const extension = '.jpg';
     // getting blob from base64 encoding
-    const b64 = getBase64(canvas, mimeType, this.quality);
+    const buffer = await canvasToArrayBuffer(canvas, mimeType);
     const filename = pad(this.tarBuilder.count) + extension;
-    const file = b64ToFile(b64, filename, mimeType);
-    await this.tarBuilder.add(file);
+    this.tarBuilder.addFile(buffer, filename);
   }
 
   async save() {

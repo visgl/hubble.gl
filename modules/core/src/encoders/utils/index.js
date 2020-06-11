@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 
 /* eslint-disable no-console */
-/* global console, Blob, atob */
+/* global console */
 
 /**
  * @param {number} n
@@ -33,8 +33,10 @@ export function pad(n) {
  * @param {string} type
  * @param {number} quality
  */
-export function getBase64(canvas, type, quality = undefined) {
-  return canvas.toDataURL(type, quality).split(',')[1];
+export async function canvasToArrayBuffer(canvas, type, quality = undefined) {
+  const base64 = canvas.toDataURL(type, quality);
+  const response = await fetch(base64);
+  return await response.arrayBuffer();
 }
 
 /**
@@ -46,35 +48,4 @@ export function checkIfBlank(b64) {
     return true;
   }
   return false;
-}
-
-/**
- * @param {string} base64
- * @param {string} type
- */
-export function getBlob(base64, type) {
-  const binStr = atob(base64);
-  const len = binStr.length;
-  const arr = new Uint8Array(len);
-
-  for (let i = 0; i < len; i++) {
-    arr[i] = binStr.charCodeAt(i);
-  }
-  return new Blob([arr], {type});
-}
-
-/**
- * @param {string} base64
- * @param {string} filename
- * @param {string} type
- */
-export function b64ToFile(base64, filename, type) {
-  const binStr = atob(base64);
-  const len = binStr.length;
-  const arr = new Uint8Array(len);
-
-  for (let i = 0; i < len; i++) {
-    arr[i] = binStr.charCodeAt(i);
-  }
-  return new File([arr], filename, {type});
 }
