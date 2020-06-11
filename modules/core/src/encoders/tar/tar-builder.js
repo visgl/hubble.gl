@@ -39,7 +39,10 @@ export default class TARBuilder {
     this.count++;
   }
 
+  /**
+   * @returns {Promise<ArrayBuffer>}
+   */
   async build() {
-    return Promise.resolve(this.tape.save());
+    return new Response(this.tape.save()).arrayBuffer();
   }
 }
