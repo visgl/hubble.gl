@@ -20,9 +20,20 @@
 
 ## Hubble.gl Additions
 
+### Core Library
+
+We will make additions to the `hubble.gl/core` to integrate between the core library classes and kepler.gl.
+
+- Kepler Adapter
+  - We'll need some way to hook hubble.gl into the rendering life cycle of kepler. We may be able to use the DeckAdapter directly with some modifications or create a KeplerAdapter to account for incompatible edge cases.
+- Kepler Scene
+  - In addition to deck.gl `layers`, kepler adds support for data `filters` in animation scenes.
+- Kepler Keyframes
+- [Team to determine additional tasks, as necessary]
+
 ### React Components
 
-All of these components are new. They will use styled-components with theme properties that match kepler.gl names.
+All of these components are new. They will use styled-components with theme properties that match kepler.gl names. Ideally, they work standalone in the in the `@hubble.gl/react` package, and either integrated with kepler in `@hubble.gl/kepler` or `kepler.gl` directly.
 
 - Render Settings Panel
   - React state temporary for user modifications (allows “cancel” feature)
