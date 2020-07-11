@@ -12,30 +12,30 @@ Building Hubble.gl locally from the source requires node.js `>=10`.
 We use [yarn](https://yarnpkg.com/en/docs/install) to manage the dependencies.
 
 ```bash
-# Clone your fork of the hubble.gl repository
+# 1. Clone your fork of the hubble.gl repository
 git clone git git@github.com:<github username>/hubble.gl.git
 
-# Move to the directory where you put hubble.gl
+# 2. Move to the directory where you put hubble.gl
 cd hubble.gl
 
-# Add the main repository as an upstream remote
+# 3. Add the main repository as an upstream remote
 git remote add upstream "git@github.com:uber/hubble.gl.git"
 
-# Change to the master branch if not already on it (starts on master by default)
+# 4. Change to the master branch if not already on it (starts on master by default)
 git checkout master
 
-# Installs JavaScript dependencies
+# 5. Installs JavaScript dependencies
 yarn
 yarn bootstrap
 
-# Tests to make sure install went smoothly
+# 6. Tests to make sure install went smoothly
 yarn test
 
-# Hubble.gl is intended for use with mapbox https://www.mapbox.com/
+# 7. Hubble.gl is intended for use with mapbox https://www.mapbox.com/
 export MapboxAccessToken=<your_access_token_here>
 
-# Start up hubble.gl example project
-# Optional: cd to a directory within the examples folder
+# 8. Start up hubble.gl example project
+# Optional: cd to a directory within the examples folder. If done, repeat steps 5 & 6
 yarn start-local
 ```
 
