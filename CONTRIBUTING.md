@@ -26,16 +26,18 @@ git checkout master
 
 # 5. Installs JavaScript dependencies
 yarn
+
+# 6. Installs other JavaScript dependencies
 yarn bootstrap
 
-# 6. Tests to make sure install went smoothly
+# 7. Tests to make sure install went smoothly
 yarn test
 
-# 7. Hubble.gl is intended for use with mapbox https://www.mapbox.com/
+# 8. Hubble.gl is intended for use with mapbox https://www.mapbox.com/
 export MapboxAccessToken=<your_access_token_here>
 
-# 8. Start up hubble.gl example project
-# Optional: cd to a directory within the examples folder. If done, repeat steps 5 & 6
+# 9. Start up hubble.gl example project
+# Optional: cd to a directory within the examples folder. If you do, repeat step 5 before doing this next step
 yarn start-local
 ```
 
