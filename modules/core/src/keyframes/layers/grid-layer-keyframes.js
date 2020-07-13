@@ -19,12 +19,6 @@
 // THE SOFTWARE.
 import LayerKeyframes from './layer-keyframes';
 export default class GridLayerKeyframes extends LayerKeyframes {
-  activeFeatures = {
-    elevationScale: false,
-    opacity: false,
-    coverage: false
-  };
-
   constructor(props) {
     super({...props, features: ['elevationScale', 'opacity', 'coverage']});
   }
