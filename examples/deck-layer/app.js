@@ -3,7 +3,6 @@ import DeckGL from '@deck.gl/react';
 import {DeckAdapter} from '@hubble.gl/core';
 import {useNextFrame, BasicControls} from '@hubble.gl/react';
 import {sceneBuilder} from './scene';
-import {layers} from './layers';
 import {vignette, fxaa} from '@luma.gl/shadertools';
 import {PostProcessEffect} from '@deck.gl/core';
 
@@ -55,7 +54,6 @@ export default function App() {
           // blendFunc: [GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA]
         }}
         effects={[vignetteEffect, aaEffect]}
-        layers={layers}
         {...adapter.getProps(deckgl, setReady, nextFrame)}
       />
       <div style={{position: 'absolute'}}>
