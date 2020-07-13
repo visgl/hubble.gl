@@ -30,7 +30,7 @@ export async function sceneBuilder(animationLoop) {
     animationLoop,
     keyframes,
     lengthMs: 5000,
-    width: 720,
+    width: 640,
     height: 480
   });
 }
