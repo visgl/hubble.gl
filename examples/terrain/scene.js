@@ -93,7 +93,7 @@ export const sceneBuilder = animationLoop => {
     data,
     renderLayers,
     lengthMs,
-    width: 720,
+    width: 640,
     height: 480
   });
 };
