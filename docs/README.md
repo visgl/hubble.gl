@@ -16,7 +16,7 @@ npm install hubble.gl
 
 ## Basic Scene
 
-To creating an animation and render you will need to first create a [deck.gl](https://deck.gl/#/documentation/getting-started/installation) or [kepler.gl](https://docs.kepler.gl/#basic-usage) project. Then you will need to create a `sceneBuilder` function for each scene where you'll define all of the elements of your animation, including any async data fetching.
+To create an animation and render you will need to first create a [deck.gl](https://deck.gl/docs/get-started/getting-started) or [kepler.gl](https://docs.kepler.gl/#basic-usage) project. Then you will need to create a `sceneBuilder` function for each scene where you'll define all of the elements of your animation, including any async data fetching.
 
 ```js
 // scene.js
