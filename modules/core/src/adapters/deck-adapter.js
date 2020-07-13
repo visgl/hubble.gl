@@ -57,8 +57,6 @@ export default class DeckAdapter {
    */
   getProps(deckRef, setReady, onNextFrame) {
     const props = {
-      viewState: this._getViewState(),
-      layers: this._getLayers(),
       onAfterRender: () => this._onAfterRender(onNextFrame),
       onLoad: () =>
         this._deckOnLoad(deckRef.current.deck).then(() => {
@@ -67,6 +65,17 @@ export default class DeckAdapter {
         }),
       _animate: this.shouldAnimate
     };
+
+    // Animating the camera is optional, but if a keyframe is defined then viewState is controlled by camera keyframe.
+    if (this.scene && this.scene.keyframes.camera) {
+      props.viewState = this._getViewState();
+    }
+
+    // Only replace layers when use defines scene layers
+    // TODO: Could potentially concat instead of replace, but layers are supposed to be static.
+    if (this.scene && this.scene.hasLayers()) {
+      props.layers = this._getLayers();
+    }
 
     if (this.scene) {
       props.width = this.scene.width;
@@ -119,7 +128,6 @@ export default class DeckAdapter {
       return null;
     }
     const frame = this.scene.keyframes.camera.getFrame();
-    // console.log('camera-state');
     return frame;
   }
 

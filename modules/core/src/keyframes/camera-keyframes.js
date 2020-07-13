@@ -20,9 +20,11 @@
 import Keyframes from './keyframes';
 
 export default class CameraKeyFrames extends Keyframes {
-  constructor(props) {
+  constructor({timings, keyframes, easings}) {
     super({
-      ...props,
+      timings,
+      keyframes,
+      easings,
       features: ['latitude', 'longitude', 'zoom', 'pitch', 'bearing']
     });
   }

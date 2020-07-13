@@ -3,6 +3,9 @@ import DeckGL from '@deck.gl/react';
 import {DeckAdapter} from '@hubble.gl/core';
 import {useNextFrame, BasicControls} from '@hubble.gl/react';
 import {sceneBuilder} from './scene';
+import {layers} from './layers';
+import {vignette, fxaa} from '@luma.gl/shadertools';
+import {PostProcessEffect} from '@deck.gl/core';
 
 const INITIAL_VIEW_STATE = {
   longitude: -122.4,
@@ -28,6 +31,9 @@ const encoderSettings = {
   }
 };
 
+const aaEffect = new PostProcessEffect(fxaa, {});
+const vignetteEffect = new PostProcessEffect(vignette, {});
+
 export default function App() {
   const deckgl = useRef(null);
   const [ready, setReady] = useState(false);
@@ -41,6 +47,15 @@ export default function App() {
         height={480}
         ref={deckgl}
         initialViewState={INITIAL_VIEW_STATE}
+        parameters={{
+          depthTest: false,
+          clearColor: [61 / 255, 20 / 255, 76 / 255, 1]
+          // blend: true,
+          // blendEquation: GL.FUNC_ADD,
+          // blendFunc: [GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA]
+        }}
+        effects={[vignetteEffect, aaEffect]}
+        layers={layers}
         {...adapter.getProps(deckgl, setReady, nextFrame)}
       />
       <div style={{position: 'absolute'}}>

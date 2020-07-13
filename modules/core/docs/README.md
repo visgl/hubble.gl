@@ -2,11 +2,11 @@
 
 #### Adapter
 
- - [DeckAdapter](/hubble.gl/modules/main/docs/deck-adapter)
+ - [DeckAdapter](/modules/core/docs/deck-adapter)
 
 #### Scene
 
- - [DeckScene](/hubble.gl/modules/main/docs/deck-scene)
+ - [DeckScene](/modules/core/docs/scene/deck-scene)
 
 
 
