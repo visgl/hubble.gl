@@ -20,11 +20,6 @@
 import LayerKeyframes from './layer-keyframes';
 
 export default class ScatterPlotLayerKeyframes extends LayerKeyframes {
-  activeProps = {
-    radius: false,
-    opacity: false
-  };
-
   constructor(props) {
     super({...props, features: ['radius', 'opacity']});
   }
