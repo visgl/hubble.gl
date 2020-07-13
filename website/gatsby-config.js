@@ -62,6 +62,12 @@ module.exports = {
             componentUrl: resolve('../examples/camera/app.js')
           },
           {
+            title: 'Animate Layer',
+            path: 'examples/deck-layer/',
+            image: 'images/demo-thumb-animate-layers.png',
+            componentUrl: resolve('../examples/deck-layer/app.js')
+          },
+          {
             title: 'Landmark Tour',
             path: 'examples/terrain/',
             image: 'images/demo-thumb-terrain.jpg',
