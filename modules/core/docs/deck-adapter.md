@@ -10,7 +10,7 @@ new DeckAdapter(sceneBuilder);
 
 ##### `sceneBuilder` (`(animationLoop) => Promise<DeckScene> | DeckScene`)
 
-Function to build scene, async or sync.
+Function to build scene, async or sync. See [DeckScene](/modules/core/docs/scene/deck-scene) for more information.
 
 ```js
 async function sceneBuilder(animationLoop) {

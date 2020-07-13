@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 export default class DeckScene {
   /** @param {import('types').DeckSceneParams} params */
-  constructor({animationLoop, keyframes, data, renderLayers, lengthMs, width, height}) {
+  constructor({animationLoop, keyframes, data, renderLayers = undefined, lengthMs, width, height}) {
     this.animationLoop = animationLoop;
     this.keyframes = keyframes;
     this.data = data;
@@ -28,6 +28,10 @@ export default class DeckScene {
     this.lengthMs = lengthMs;
     this.width = width;
     this.height = height;
+  }
+
+  hasLayers() {
+    return Boolean(this._renderLayers);
   }
 
   renderLayers() {
