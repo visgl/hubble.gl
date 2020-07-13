@@ -1,30 +1,6 @@
 import {DeckScene, LayerKeyframes} from '@hubble.gl/core';
-import {PathLayer} from '@deck.gl/layers';
+import {renderLayers} from './layers';
 import {easing} from 'popmotion';
-import {rgb} from 'd3-color';
-
-function renderLayers(scene) {
-  const path = scene.keyframes.path.getFrame();
-  return [
-    new PathLayer({
-      id: 'path-layer',
-      data: scene.data,
-      widthScale: path.widthScale,
-      opacity: path.opacity,
-      widthMinPixels: 2,
-      getPath: d => d.path,
-      getColor: d => {
-        const color = rgb(d.color);
-        return [color.r, color.g, color.b, 255];
-      },
-      getWidth: d => 5,
-      updateTriggers: {
-        widthScale: path.widthScale,
-        opacity: path.opacity
-      }
-    })
-  ];
-}
 
 function getKeyframes(animationLoop, data) {
   const path = new LayerKeyframes({
@@ -51,9 +27,10 @@ function getKeyframes(animationLoop, data) {
 }
 
 export async function sceneBuilder(animationLoop) {
-  const data = await fetch(
-    'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/bart-lines.json'
-  ).then(x => x.json());
+  // const data = await fetch(
+  //   'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/bart-lines.json'
+  // ).then(x => x.json());
+  const data = {};
   const keyframes = getKeyframes(animationLoop, data);
   return new DeckScene({
     animationLoop,
