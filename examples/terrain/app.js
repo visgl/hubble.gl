@@ -2,7 +2,7 @@ import React, {useState, useRef} from 'react';
 import DeckGL from '@deck.gl/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import {DeckAdapter} from 'hubble.gl';
-import {useNextFrame, BasicControls} from '@hubble.gl/react';
+import {useNextFrame, BasicControls, ResolutionGuide} from '@hubble.gl/react';
 import {sceneBuilder} from './scene';
 
 const INITIAL_VIEW_STATE = {
@@ -37,6 +37,9 @@ export default function App() {
 
   return (
     <div style={{position: 'relative'}}>
+      <div style={{position: 'absolute'}}>
+        <ResolutionGuide />
+      </div>
       <DeckGL
         ref={deckgl}
         initialViewState={INITIAL_VIEW_STATE}

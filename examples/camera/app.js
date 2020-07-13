@@ -1,7 +1,7 @@
 import React, {useState, useRef} from 'react';
 import DeckGL from '@deck.gl/react';
 import {DeckAdapter} from '@hubble.gl/core';
-import {useNextFrame, BasicControls} from '@hubble.gl/react';
+import {useNextFrame, BasicControls, ResolutionGuide} from '@hubble.gl/react';
 import {sceneBuilder} from './scene';
 import {layers} from './layers';
 import {vignette, fxaa} from '@luma.gl/shadertools';
@@ -42,9 +42,10 @@ export default function App() {
 
   return (
     <div style={{position: 'relative'}}>
+      <div style={{position: 'absolute'}}>
+        <ResolutionGuide />
+      </div>
       <DeckGL
-        width={720}
-        height={480}
         ref={deckgl}
         initialViewState={INITIAL_VIEW_STATE}
         parameters={{
