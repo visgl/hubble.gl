@@ -20,6 +20,7 @@ There are plenty of free converters out there. The ones written in this guide wi
 **Step 2: Click the "..." option to open up a menu**
 
 **Step 3: Select the filetype that you want. We recommend GIF/MP4 for use in your presentations**
+
 **Step 4: Click Convert**
 ![Convertio Step 2, 3, & 4](images/convertio-step2-3-4.jpg)
 
