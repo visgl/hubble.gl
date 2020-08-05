@@ -43,4 +43,4 @@ There are plenty of free converters out there. The ones written in this guide wi
 ![GIFMaker Step 6](images/gifmaker-step6.jpg)
 
 ### Convert PNG sequence to GIF
-See "Convert JPEG sequence to mp4" section
+See "Convert JPEG sequence to GIF" section
