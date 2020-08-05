@@ -20,7 +20,7 @@
 import Keyframes from '../keyframes';
 export default class LayerKeyframes extends Keyframes {
   layerId;
-  constructor({layerId, timings, keyframes, easings, features}) {
+  constructor({layerId, features, timings, keyframes, easings}) {
     super({timings, keyframes, easings, features});
     this.layerId = layerId;
   }

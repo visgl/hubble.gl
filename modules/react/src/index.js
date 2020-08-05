@@ -18,5 +18,5 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-export {EncoderDropdown, BasicControls} from './components';
+export {EncoderDropdown, BasicControls, ResolutionGuide} from './components';
 export {useNextFrame} from './hooks';
