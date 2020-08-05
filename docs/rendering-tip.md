@@ -18,6 +18,7 @@ There are plenty of free converters out there. The ones written in this guide wi
 ![Convertio Step 1](images/convertio-step1.jpg)
 
 **Step 2: Click the "..." option to open up a menu**
+
 **Step 3: Select the filetype that you want. We recommend GIF/MP4 for use in your presentations**
 **Step 4: Click Convert**
 ![Convertio Step 2, 3, & 4](images/convertio-step2-3-4.jpg)
@@ -26,14 +27,17 @@ There are plenty of free converters out there. The ones written in this guide wi
 There are plenty of free converters out there. The ones written in this guide will be based off of: https://gifmaker.me/
 
 **Step 1: Untar the file. On Windows a tool like [7-Zip](https://www.7-zip.org/) can be used**
+
 **Step 2: Click on Upload Images**
 ![GIFMaker Step 2](images/gifmaker-step2.jpg)
 
 **Step 3: Select all the images in the folder that was created**
+
 **Step 4: Open all the images**
 ![GIFMaker Step 3 & 4](images/gifmaker-step3-4.jpg)
 
 **Step 4a: A preview will be generated at the top. Settings such as order and pacing can be adjusted if anything looks wrong**
+
 **Step 5: Click on "Create GIF Animation"**
 
 ![GIFMaker Step 4a & 5](images/gifmaker-step4a-5.jpg)
