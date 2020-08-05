@@ -1,6 +1,7 @@
 # Rendering Tips
 Hubble offers the following options to render your visualizations:
-- GIF & MP4
+- GIF
+- MP4
 - WebM video
 - PNG sequence
 - JPEG sequence
