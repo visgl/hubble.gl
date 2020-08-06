@@ -1,14 +1,13 @@
 # Rendering Tips
 Hubble offers the following options to render your visualizations:
 - GIF
-- MP4
 - WebM video
 - PNG sequence
 - JPEG sequence
 
 If you would like to use the exports in a presentation we recommend the following steps:
 
-### GIF & MP4
+### GIF
 Usable as is. Feel free to add it to your presentation, notebook, or showcase!
 
 ### Convert WebM
