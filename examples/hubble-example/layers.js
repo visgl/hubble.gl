@@ -8,14 +8,11 @@ const stationData =
 const zipCodeData =
   'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/sf-zipcodes.json';
 
-
-
-  const DATA_URL = {
-    BUILDINGS:
-      'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/trips/buildings.json', // eslint-disable-line
-    TRIPS: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/trips/trips-v7.json' // eslint-disable-line
-  };
-  
+const DATA_URL = {
+  BUILDINGS:
+    'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/trips/buildings.json', // eslint-disable-line
+  TRIPS: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/trips/trips-v7.json' // eslint-disable-line
+};
 
 export const layers = [
   new PolygonLayer({
