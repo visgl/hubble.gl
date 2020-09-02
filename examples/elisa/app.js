@@ -3,19 +3,18 @@ import {DeckAdapter} from 'hubble.gl';
 import {useNextFrame, BasicControls} from '@hubble.gl/react';
 import {sceneBuilder} from './scene';
 
-import DeckGL from "@deck.gl/react";
-import { ScenegraphLayer } from "@deck.gl/mesh-layers";
+import DeckGL from '@deck.gl/react';
+import {ScenegraphLayer} from '@deck.gl/mesh-layers';
 
-import { GLTFLoader } from '@loaders.gl/gltf';
-import { registerLoaders } from "@loaders.gl/core";
-import { StaticMap } from "react-map-gl";
+import {GLTFLoader} from '@loaders.gl/gltf';
+import {registerLoaders} from '@loaders.gl/core';
+import {StaticMap} from 'react-map-gl';
 
 registerLoaders([GLTFLoader]);
 
-const MAPBOX_STYLE =
-  'https://97morningstar.github.io/dataRepo/style.json';
+const MAPBOX_STYLE = 'https://97morningstar.github.io/dataRepo/style.json';
 
-const GLTF_URL = "/data/out.glb";
+const GLTF_URL = '/data/out.glb';
 
 const adapter = new DeckAdapter(sceneBuilder);
 
@@ -39,45 +38,43 @@ const encoderSettings = {
   }
 };
 
-
 export default function App() {
+  const deckgl = useRef(null);
+  const [ready, setReady] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const nextFrame = useNextFrame();
 
-const deckgl = useRef(null);
-const [ready, setReady] = useState(false);
-const [busy, setBusy] = useState(false);
-const nextFrame = useNextFrame();
+  console.log(deck, ready, busy, nextFrame);
 
-console.log(deck, ready, busy, nextFrame);
-
-    const scenegraphLayer = new ScenegraphLayer({
-      id: "scene",
-      scenegraph: GLTF_URL,
-      data:  [
-        {
-          geometry: {
-            type: "Point",
-            coordinates: [6.2410395, 51.8742355, -100]
-          }
+  const scenegraphLayer = new ScenegraphLayer({
+    id: 'scene',
+    scenegraph: GLTF_URL,
+    data: [
+      {
+        geometry: {
+          type: 'Point',
+          coordinates: [6.2410395, 51.8742355, -100]
         }
-      ],
-      getPosition: f => [6.2410395, 51.8742355, -100],
-      sizeScale: 12,
-      getOrientation: [0, 100, 90],
-      getTranslation: [97, 50, 100],
-      getScale: [0.45, 0.45, 0.45]
-    });
-    return (
-      <div>
-  
+      }
+    ],
+    getPosition: f => [6.2410395, 51.8742355, -100],
+    sizeScale: 12,
+    getOrientation: [0, 100, 90],
+    getTranslation: [97, 50, 100],
+    getScale: [0.45, 0.45, 0.45]
+  });
+  return (
+    <div>
       <DeckGL
         ref={deckgl}
         initialViewState={initialViewState}
         layers={[scenegraphLayer]}
         {...adapter.getProps(deckgl, setReady, nextFrame)}
       >
-        <StaticMap 
-          mapStyle={MAPBOX_STYLE} 
-          mapboxApiAccessToken="pk.eyJ1IjoicGlvbmVlci1tZSIsImEiOiJjanA0OXMwM2IwcW5qM2tvYnAyYndpdXMxIn0.bqxGkqM2ozOVT57GuVzEjw" />
+        <StaticMap
+          mapStyle={MAPBOX_STYLE}
+          mapboxApiAccessToken="pk.eyJ1IjoicGlvbmVlci1tZSIsImEiOiJjanA0OXMwM2IwcW5qM2tvYnAyYndpdXMxIn0.bqxGkqM2ozOVT57GuVzEjw"
+        />
       </DeckGL>
 
       <div style={{position: 'absolute'}}>
@@ -90,10 +87,6 @@ console.log(deck, ready, busy, nextFrame);
           />
         )}
       </div>
-
-      </div>
-    );
-  
+    </div>
+  );
 }
-
-
