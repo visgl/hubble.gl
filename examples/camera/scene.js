@@ -24,13 +24,15 @@ export async function sceneBuilder(animationLoop) {
       easings: [easing.easeInOut]
     })
   };
-  animationLoop.timeline.attachAnimation(keyframes.camera);
+
+  const currentCamera = animationLoop.timeline.attachAnimation(keyframes.camera);
 
   return new DeckScene({
     animationLoop,
     keyframes,
     lengthMs: 5000,
     width: 640,
-    height: 480
+    height: 480,
+    currentCamera
   });
 }

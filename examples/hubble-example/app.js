@@ -106,7 +106,6 @@ export default function App({
   const [time, setTime] = useState(0);
   const [animation] = useState({});
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
-  const [enabled, setEnabled] = useState(false);
 
   const animate = () => {
     setTime(t => (t + animationSpeed) % loopLength);
@@ -199,7 +198,7 @@ export default function App({
           setViewState(viewState);
         }}
       
-        {...adapter.getProps(deckgl, setReady, nextFrame, enabled)}
+        {...adapter.getProps(deckgl, setReady, nextFrame)}
       >
         <StaticMap
           ref={map}

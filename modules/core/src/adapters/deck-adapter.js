@@ -28,7 +28,7 @@ import {VideoCapture} from '../capture/video-capture';
 export default class DeckAdapter {
   /** @type {DeckScene} */
   scene;
-  /** @type {(animationLoop: any, defaultViewState: any) => Promise<DeckScene> | DeckScene} */
+  /** @type {(animationLoop: any) => Promise<DeckScene> | DeckScene} */
   sceneBuilder;
   /** @type {boolean} */
   shouldAnimate;
@@ -56,7 +56,7 @@ export default class DeckAdapter {
    * @param {(ready: boolean) => void} setReady
    * @param {(nextTimeMs: number) => void} onNextFrame
    */
-  getProps(deckRef, setReady, onNextFrame, enabled) {
+  getProps(deckRef, setReady, onNextFrame) {
     const props = {
       onAfterRender: () => this._onAfterRender(onNextFrame),
       onLoad: () =>
@@ -66,7 +66,7 @@ export default class DeckAdapter {
       _animate: this.shouldAnimate
     };
 
-    // Animating the camera is optional, but if a keyframe is defined then viewState is controlled by camera keyframe. CHANGED
+    // Animating the camera is optional, but if a keyframe is defined then viewState is controlled by camera keyframe.
     if (this.scene && this.scene.keyframes.camera && this.enabled) {
 
       props.controller = false;
@@ -90,12 +90,15 @@ export default class DeckAdapter {
    * @param {typeof import('../encoders').FrameEncoder} Encoder
    * @param {import('types').FrameEncoderSettings} encoderSettings
    * @param {() => void} onStop
+   * @param {() => void} updateCamera
    */
   render(Encoder = PreviewEncoder, encoderSettings = {}, onStop = undefined, updateCamera = undefined) {
 
-    this.scene.animationLoop.timeline.detachAnimation(this.scene.currentCamera);
-    this.scene.keyframes.camera = updateCamera(this.scene.keyframes.camera);
-    this.scene.currentCamera =  this.scene.animationLoop.timeline.attachAnimation(this.scene.keyframes.camera)
+    if(updateCamera != undefined){ // Optional camera and keyframes defined by the user at runtime
+      this.scene.animationLoop.timeline.detachAnimation(this.scene.currentCamera);
+      this.scene.keyframes.camera = updateCamera(this.scene.keyframes.camera);
+      this.scene.currentCamera =  this.scene.animationLoop.timeline.attachAnimation(this.scene.keyframes.camera)
+    }
 
     const innerOnStop = (params) => {
       this.enabled = false;
@@ -106,7 +109,7 @@ export default class DeckAdapter {
     this.shouldAnimate = true;
     this.videoCapture.render(Encoder, encoderSettings, this.scene.lengthMs, innerOnStop);
     this.scene.animationLoop.timeline.setTime(this.videoCapture.encoderSettings.startOffsetMs);
-    this._onEnabled();
+    this.enabled = true;
   }
 
   preview() {
@@ -125,13 +128,11 @@ export default class DeckAdapter {
   async _deckOnLoad(deck) {
     this.deck = deck;
 
-    console.log('this.deck', this.deck);
-
     const animationLoop = deck.animationLoop;
     animationLoop.attachTimeline(new Timeline());
     animationLoop.timeline.setTime(0);
 
-    await Promise.resolve(this.sceneBuilder(animationLoop, this.deck.props.viewState)).then(
+    await Promise.resolve(this.sceneBuilder(animationLoop)).then(
       scene => {
         this._applyScene(scene);
       }
@@ -162,14 +163,9 @@ export default class DeckAdapter {
    * @param {(nextTimeMs: number) => void} proceedToNextFrame
    */
   _onAfterRender(proceedToNextFrame) {
-    // console.log('after render');
     this.videoCapture.capture(this.deck.canvas, nextTimeMs => {
       this.scene.animationLoop.timeline.setTime(nextTimeMs);
       proceedToNextFrame(nextTimeMs);
     });
-  }
-
-  _onEnabled() {
-    this.enabled = true;
   }
 }

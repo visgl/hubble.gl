@@ -17,20 +17,21 @@ export async function sceneBuilder(animationLoop) {
         {
           longitude: 6.2410395,
           latitude: 51.8742355,
-          zoom: 24,
+          zoom: 23,
           bearing: 100,
-          pitch: 70
+          pitch: 60
         }
       ],
       easings: [easing.easeInOut]
     })
   };
-  animationLoop.timeline.attachAnimation(keyframes.camera);
+  const currentCamera = animationLoop.timeline.attachAnimation(keyframes.camera);
 
   return new DeckScene({
     animationLoop,
     keyframes,
     lengthMs: 5000,
-    data
+    data,
+    currentCamera
   });
 }

@@ -10,6 +10,9 @@ import {GLTFLoader} from '@loaders.gl/gltf';
 import {registerLoaders} from '@loaders.gl/core';
 import {StaticMap} from 'react-map-gl';
 
+import {CameraKeyframes} from '@hubble.gl/core';
+import {easing} from 'popmotion';
+
 registerLoaders([GLTFLoader]);
 
 const MAPBOX_STYLE = 'https://97morningstar.github.io/dataRepo/style.json';
@@ -18,7 +21,7 @@ const GLTF_URL = '/data/out.glb';
 
 const adapter = new DeckAdapter(sceneBuilder);
 
-const initialViewState = {
+const INITIAL_VIEW_STATE = {
   longitude: 6.2410395,
   latitude: 51.8742355,
   zoom: 18,
@@ -42,6 +45,7 @@ export default function App() {
   const deckgl = useRef(null);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
   const nextFrame = useNextFrame();
 
   console.log(deck, ready, busy, nextFrame);
@@ -63,12 +67,47 @@ export default function App() {
     getTranslation: [97, 50, 100],
     getScale: [0.45, 0.45, 0.45]
   });
+
+  const updateCamera = (prevCamera) => {
+    // Set by User
+  prevCamera = new CameraKeyframes({
+        timings: [0, 5000],
+        keyframes: [
+          {
+            longitude: viewState.longitude,
+            latitude: viewState.latitude,
+            zoom: viewState.zoom,
+            pitch: viewState.pitch,
+            bearing: viewState.bearing
+          },
+          {
+            longitude: viewState.longitude,
+            latitude: viewState.latitude,
+            zoom: viewState.zoom,
+            bearing: viewState.bearing + 92,
+            pitch: viewState.pitch // up to 45/50
+          }
+        ],
+        easings: [easing.easeInOut]
+      });
+   
+    return prevCamera;
+  }
+
   return (
     <div>
       <DeckGL
         ref={deckgl}
-        initialViewState={initialViewState}
+        initialViewState={INITIAL_VIEW_STATE}
         layers={[scenegraphLayer]}
+
+        viewState={viewState}
+        onViewStateChange={({viewState}) => {
+          setViewState(viewState);
+        }}
+
+        controller={true}
+
         {...adapter.getProps(deckgl, setReady, nextFrame)}
       >
         <StaticMap
@@ -84,6 +123,7 @@ export default function App() {
             busy={busy}
             setBusy={setBusy}
             encoderSettings={encoderSettings}
+            updateCamera={updateCamera}
           />
         )}
       </div>
