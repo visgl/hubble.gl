@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 export default class DeckScene {
-  /** @param {import('types').DeckSceneParams} params */ // add params interface
+  /** @param {import('types').DeckSceneParams} params */
   constructor({animationLoop, keyframes, data, renderLayers = undefined, lengthMs, width, height, currentCamera = undefined}) {
     this.animationLoop = animationLoop;
     this.keyframes = keyframes;

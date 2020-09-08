@@ -63,7 +63,7 @@ export default function App() {
             latitude: viewState.latitude,
             zoom: viewState.zoom,
             bearing: viewState.bearing + 92,
-            pitch: viewState.pitch // up to 45/50
+            pitch: viewState.pitch
           }
         ],
         easings: [easing.easeInOut]

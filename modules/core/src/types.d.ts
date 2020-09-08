@@ -42,7 +42,7 @@ interface EncoderSettings {
   },
 }
 
-interface DeckSceneParams { // add 
+interface DeckSceneParams {
   animationLoop: any
   lengthMs: number
   width: number
