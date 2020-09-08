@@ -83,9 +83,6 @@ export default function App() {
         parameters={{
           depthTest: false,
           clearColor: [61 / 255, 20 / 255, 76 / 255, 1]
-          // blend: true,
-          // blendEquation: GL.FUNC_ADD,
-          // blendFunc: [GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA]
         }}
 
         viewState={viewState}

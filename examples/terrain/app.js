@@ -1,6 +1,5 @@
 import React, {useState, useRef} from 'react';
 import DeckGL from '@deck.gl/react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import {DeckAdapter} from 'hubble.gl';
 import {useNextFrame, BasicControls, ResolutionGuide} from '@hubble.gl/react';
 import {sceneBuilder} from './scene';
@@ -58,7 +57,7 @@ export default function App() {
             latitude: viewState.latitude,
             zoom: viewState.zoom,
             bearing: viewState.bearing + 92,
-            pitch: viewState.pitch // up to 45/50
+            pitch: viewState.pitch
           }
         ],
         easings: [easing.easeInOut]

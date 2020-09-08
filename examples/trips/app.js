@@ -1,9 +1,13 @@
+/** This is based on the deckgl building example that uses the tripsLayer and polygonLayer
+ * You can find it here https://deck.gl/examples/trips-layer/
+ * Source code: https://github.com/visgl/deck.gl/tree/master/examples/website/trips
+ */
+
 import React, {useState, useRef, useEffect} from 'react';
 import DeckGL from '@deck.gl/react';
 import {DeckAdapter} from '@hubble.gl/core';
 import {useNextFrame, BasicControls, ResolutionGuide} from '@hubble.gl/react';
 import {sceneBuilder} from './scene';
-// import {layers} from './layers';
 import {AmbientLight, PointLight, LightingEffect} from '@deck.gl/core';
 import {StaticMap} from 'react-map-gl';
 import {PolygonLayer} from '@deck.gl/layers';
@@ -12,15 +16,11 @@ import {TripsLayer} from '@deck.gl/geo-layers';
 import {CameraKeyframes} from '@hubble.gl/core';
 import {easing} from 'popmotion';
 
-// Try to make it draggable
-
-import {Controller} from 'deck.gl';
-
 // Source data CSV
 const DATA_URL = {
   BUILDINGS:
-    'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/trips/buildings.json', // eslint-disable-line
-  TRIPS: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/trips/trips-v7.json' // eslint-disable-line
+    'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/trips/buildings.json',
+  TRIPS: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/trips/trips-v7.json'
 };
 
 const ambientLight = new AmbientLight({
@@ -87,13 +87,9 @@ const encoderSettings = {
 const adapter = new DeckAdapter(sceneBuilder);
 
 export default function App({
-  buildings = DATA_URL.BUILDINGS,
-  trips = DATA_URL.TRIPS,
-  trailLength = 180,
-  initialViewState = INITIAL_VIEW_STATE,
   mapStyle = 'mapbox://styles/mapbox/dark-v9',
   theme = DEFAULT_THEME,
-  loopLength = 1800, // unit corresponds to the timestamp in source data
+  loopLength = 1800,
   animationSpeed = 1
 }) {
   const deckgl = useRef(null);
@@ -153,7 +149,6 @@ export default function App({
   ];
 
   const updateCamera = (prevCamera) => {
-
     // Set by User
   prevCamera = new CameraKeyframes({
         timings: [0, 5000],
@@ -169,8 +164,8 @@ export default function App({
             longitude: viewState.longitude,
             latitude: viewState.latitude,
             zoom: viewState.zoom,
-            bearing: viewState.bearing + 192,
-            pitch: viewState.pitch // up to 45/50
+            bearing: viewState.bearing + 180,
+            pitch: viewState.pitch
           }
         ],
         easings: [easing.easeInOut]
@@ -205,7 +200,6 @@ export default function App({
           reuseMaps
           mapStyle={mapStyle}
           preventStyleDiffing={true}
-          mapboxApiAccessToken="pk.eyJ1IjoicGlvbmVlci1tZSIsImEiOiJjanA0OXMwM2IwcW5qM2tvYnAyYndpdXMxIn0.bqxGkqM2ozOVT57GuVzEjw"
         />
       </DeckGL>
 

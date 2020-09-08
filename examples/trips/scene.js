@@ -14,13 +14,12 @@ export async function sceneBuilder(animationLoop) {
           pitch: 30,
           bearing: 0
         },
-
         {
           longitude: -74,
           latitude: 40.72,
           zoom: 11.8,
           bearing: 35,
-          pitch: 45 // up to 45/50
+          pitch: 45
         }
       ],
       easings: [easing.easeInOut]

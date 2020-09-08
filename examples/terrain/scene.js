@@ -85,7 +85,6 @@ function getKeyframes(animationLoop, data) {
 export const sceneBuilder = animationLoop => {
   const lengthMs = 15000;
   const data = {};
-  // set up keyframes
   const keyframes = getKeyframes(animationLoop, data);
   return new DeckScene({
     animationLoop,
