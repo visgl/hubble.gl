@@ -29,7 +29,7 @@ const config = {
   },
 
   plugins: [
-    new HtmlWebpackPlugin({title: 'hubble.gl trips example'}),
+    new HtmlWebpackPlugin({title: 'hubble.gl deck trips example'}),
     // Optional: Enables reading mapbox token from environment variable
     new webpack.EnvironmentPlugin(['MapboxAccessToken'])
   ]
