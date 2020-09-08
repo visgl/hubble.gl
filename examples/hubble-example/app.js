@@ -169,7 +169,7 @@ export default function App({
             longitude: viewState.longitude,
             latitude: viewState.latitude,
             zoom: viewState.zoom,
-            bearing: viewState.bearing + 92,
+            bearing: viewState.bearing + 192,
             pitch: viewState.pitch // up to 45/50
           }
         ],
