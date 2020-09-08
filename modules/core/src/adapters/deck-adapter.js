@@ -1,4 +1,3 @@
-// @ts-nocheck
 // Copyright (c) 2020 Uber Technologies, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,6 +31,8 @@ export default class DeckAdapter {
   sceneBuilder;
   /** @type {boolean} */
   shouldAnimate;
+  /** @type {boolean} */
+  enabled;
 
   /**
    * @param {(animationLoop: any) => DeckScene | Promise<DeckScene>} sceneBuilder
@@ -40,6 +41,7 @@ export default class DeckAdapter {
     this.sceneBuilder = sceneBuilder;
     this.videoCapture = new VideoCapture();
     this.shouldAnimate = true;
+    this.enabled = false;
     this.getProps = this.getProps.bind(this);
     this.render = this.render.bind(this);
     this.preview = this.preview.bind(this);
@@ -48,7 +50,6 @@ export default class DeckAdapter {
     this._getViewState = this._getViewState.bind(this);
     this._getLayers = this._getLayers.bind(this);
     this._applyScene = this._applyScene.bind(this);
-    this.enabled = false;
   }
 
   /**
@@ -89,15 +90,15 @@ export default class DeckAdapter {
   /**
    * @param {typeof import('../encoders').FrameEncoder} Encoder
    * @param {import('types').FrameEncoderSettings} encoderSettings
-   * @param {() => void} onStop
-   * @param {() => void} updateCamera
+   * @param {(params: any) => void} onStop
+   * @param {(prevCamera: any) => void} updateCamera
    */
   render(Encoder = PreviewEncoder, encoderSettings = {}, onStop = undefined, updateCamera = undefined) {
-
-    if(updateCamera != undefined){ // Optional camera and keyframes defined by the user at runtime
+   
+    if(updateCamera){ // Optional camera and keyframes defined by the user at runtime
       this.scene.animationLoop.timeline.detachAnimation(this.scene.currentCamera);
       this.scene.keyframes.camera = updateCamera(this.scene.keyframes.camera);
-      this.scene.currentCamera =  this.scene.animationLoop.timeline.attachAnimation(this.scene.keyframes.camera)
+      this.scene.currentCamera =  this.scene.animationLoop.timeline.attachAnimation(this.scene.keyframes.camera);
     }
 
     const innerOnStop = (params) => {

@@ -28,7 +28,7 @@ import {
 } from '@hubble.gl/core';
 import EncoderDropdown from './encoder-dropdown';
 
-export default function BasicControls({adapter, busy, setBusy, encoderSettings, updateCamera}) {
+export default function BasicControls({adapter, busy, setBusy, encoderSettings, updateCamera = undefined}) {
   const [encoder, setEncoder] = useState('gif');
 
   const onRender = () => {

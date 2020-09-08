@@ -42,13 +42,14 @@ interface EncoderSettings {
   },
 }
 
-interface DeckSceneParams {
+interface DeckSceneParams { // add 
   animationLoop: any
   lengthMs: number
   width: number
   height: number
   keyframes: any
   data: any
+  currentCamera: any
   renderLayers: (scene: DeckScene) => any[]
 }
 

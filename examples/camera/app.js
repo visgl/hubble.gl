@@ -42,7 +42,7 @@ export default function App() {
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
 
-  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
+  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE); //Added to maintain user's interactions with viewState
 
   const nextFrame = useNextFrame();
 
