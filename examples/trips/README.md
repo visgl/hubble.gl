@@ -60,7 +60,9 @@ the [documentation of TripsLayer](../../../docs/layers/trips-layer.md).
 
 2. Add the prop method `updateCamera` to `BasicControls `component (optional)
 
-`            updateCamera={updateCamera}`
+```
+updateCamera={updateCamera}
+```
 
 3. Add the optional method to start the camera from the current `viewState `(optional)
 
