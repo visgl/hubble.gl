@@ -38,3 +38,80 @@ yarn start-local
 ### Data format
 Sample data is stored in [deck.gl Example Data](https://github.com/visgl/deck.gl-data/tree/master/examples/trips). To use your own data, check out
 the [documentation of TripsLayer](../../../docs/layers/trips-layer.md).
+
+### How to add this feature to a hubble.gl example
+
+1. Add to the props to `DeckGl `component
+
+
+```
+        viewState={viewState}
+        onViewStateChange={({viewState}) => {
+          setViewState(viewState);
+        }}
+
+        controller={true}
+```
+
+    1.1 Add the `viewState` state
+
+    `	  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
+    `
+
+2. Add the prop to `BasicControls `component (optional)
+
+`            updateCamera={updateCamera}`
+
+3. Add the optional method to start the camera from the current `viewState `(optional)
+
+```
+const updateCamera = (prevCamera) => {
+    // Set by User
+  prevCamera = new CameraKeyframes({
+        timings: [0, 5000],
+        keyframes: [
+          {
+            longitude: viewState.longitude,
+            latitude: viewState.latitude,
+            zoom: viewState.zoom,
+            pitch: viewState.pitch,
+            bearing: viewState.bearing
+          },
+          {
+            longitude: viewState.longitude,
+            latitude: viewState.latitude,
+            zoom: viewState.zoom,
+            bearing: viewState.bearing + 92,
+            pitch: viewState.pitch // up to 45/50
+          }
+        ],
+        easings: [easing.easeInOut]
+      });
+   
+    return prevCamera;
+  }
+```
+    3.1. Imports to app
+
+    ```
+            import {CameraKeyframes} from '@hubble.gl/core';
+            import {easing} from 'popmotion';
+    ```
+
+4. Fix this line when attaching the camera to the timeline
+
+`  const currentCamera = animationLoop.timeline.attachAnimation(keyframes.camera);`
+
+    4.1. Add as prop to `DeckScene`
+
+    ```
+    return new DeckScene({
+        animationLoop,
+        keyframes,
+        lengthMs: 5000,
+        width: 1280,
+        height: 720,
+        currentCamera  // Here
+    });
+    ```
+
