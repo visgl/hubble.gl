@@ -18,13 +18,15 @@ Other options can be found at [using with Mapbox GL](../../../docs/get-started/u
 ### Installation
 
 ```bash
-# install dependencies within hubble.hl root
+# install dependencies within hubble.gl root
 npm install
 # or
 yarn
 yarn bootstrap
-# To install example go to the folder cd examples/trips
-yarn # do this once per example
+# To install example go to the folder 
+cd examples/trips
+# do this once per example
+yarn 
 # To run the example
 yarn start-local
 ```
