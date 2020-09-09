@@ -5,6 +5,8 @@ on [deck.gl](http://deck.gl) website.
 
 Users can drag, zoom in and zoom out, change pitch and bearing from within the deckgl canvas. The camera will start at the last position (viewState) the user was at, improving the experience of exporting the camera movements.
 
+![](https://user-images.githubusercontent.com/26909101/92542712-25c01d00-f20f-11ea-9aee-1bc2806685dc.gif)
+
 ### Usage
 
 Copy the content of this folder to your project. 
