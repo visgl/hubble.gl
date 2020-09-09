@@ -41,7 +41,7 @@ the [documentation of TripsLayer](../../../docs/layers/trips-layer.md).
 
 ### How to add this feature to a hubble.gl example
 
-1. Add to the props to `DeckGl `component
+1. Add to props of the `DeckGl `component
 
 
 ```
@@ -49,16 +49,16 @@ the [documentation of TripsLayer](../../../docs/layers/trips-layer.md).
         onViewStateChange={({viewState}) => {
           setViewState(viewState);
         }}
-
         controller={true}
 ```
 
-    1.1 Add the `viewState` state
+1.1 Add the `viewState` state to App.js
 
-    `	  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
-    `
+```
+    	  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
+```
 
-2. Add the prop to `BasicControls `component (optional)
+2. Add the prop method `updateCamera` to `BasicControls `component (optional)
 
 `            updateCamera={updateCamera}`
 
@@ -91,7 +91,7 @@ const updateCamera = (prevCamera) => {
     return prevCamera;
   }
 ```
-    3.1. Imports to app
+3.1. Imports
 
     ```
             import {CameraKeyframes} from '@hubble.gl/core';
@@ -102,7 +102,7 @@ const updateCamera = (prevCamera) => {
 
 `  const currentCamera = animationLoop.timeline.attachAnimation(keyframes.camera);`
 
-    4.1. Add as prop to `DeckScene`
+4.1. Add as prop to `DeckScene`
 
     ```
     return new DeckScene({
