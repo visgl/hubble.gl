@@ -1,6 +1,10 @@
 This is a minimal standalone version of the [TripsLayer example](https://deck.gl/#/examples/core-layers/trips-layer)
 on [deck.gl](http://deck.gl) website.
 
+### Purpose
+
+Users can drag, zoom in and zoom out, change pitch and bearing from within the deckgl canvas. The camera will start at the last position (viewState) the user was at, improving the experience of exporting the camera movements.
+
 ### Usage
 
 Copy the content of this folder to your project. 
