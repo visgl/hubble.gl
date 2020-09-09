@@ -93,10 +93,10 @@ const updateCamera = (prevCamera) => {
 ```
 3.1. Imports
 
-    ```
-            import {CameraKeyframes} from '@hubble.gl/core';
-            import {easing} from 'popmotion';
-    ```
+```
+     import {CameraKeyframes} from '@hubble.gl/core';
+     import {easing} from 'popmotion';
+```
 
 4. Fix this line when attaching the camera to the timeline
 
@@ -104,14 +104,14 @@ const updateCamera = (prevCamera) => {
 
 4.1. Add as prop to `DeckScene`
 
-    ```
-    return new DeckScene({
-        animationLoop,
-        keyframes,
-        lengthMs: 5000,
-        width: 1280,
-        height: 720,
-        currentCamera  // Here
-    });
-    ```
+```
+return new DeckScene({
+     animationLoop,
+     keyframes,
+     lengthMs: 5000,
+     width: 1280,
+     height: 720,
+     currentCamera  // Here
+});
+```
 
