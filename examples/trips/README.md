@@ -102,7 +102,9 @@ const updateCamera = (prevCamera) => {
 
 4. Fix this line when attaching the camera to the timeline
 
-`  const currentCamera = animationLoop.timeline.attachAnimation(keyframes.camera);`
+```
+const currentCamera = animationLoop.timeline.attachAnimation(keyframes.camera);
+```
 
 4.1. Add as prop to `DeckScene`
 
