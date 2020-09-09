@@ -1,4 +1,4 @@
-This is a minimal standalone version of the [TripsLayer example](https://deck.gl/#/examples/core-layers/trips-layer)
+This is a minimal standalone version of the [TripsLayer example](https://deck.gl/examples/trips-layer/)
 on [deck.gl](http://deck.gl) website.
 
 ### Purpose
