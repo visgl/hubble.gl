@@ -27,7 +27,7 @@ import Button from 'kepler.gl';
 
 // Redux stores/actions
 import {connect as keplerGlConnect} from 'kepler.gl';
-// import {connect} from 'react-redux';
+import {connect} from 'react-redux';
 import toggleHubbleExportModal from 'kepler.gl'; // TODO make custom action
 
 // import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
@@ -93,5 +93,5 @@ console.log("mapStateToProps", mapStateToProps)
 console.log("mapDispatchToProps", mapDispatchToProps)
 
 // keplerGlConnect is a wrapper of Redux's standard connect w/ access to Kepler's Redux store
-// export default connect(mapStateToProps, mapDispatchToProps)(withTheme(HubbleExport));
-export default keplerGlConnect(mapStateToProps, mapDispatchToProps)(withTheme(HubbleExport));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(HubbleExport));
+// export default keplerGlConnect(mapStateToProps, mapDispatchToProps); // Object(...) is not a function

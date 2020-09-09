@@ -40,7 +40,7 @@ import {
 import {loadCloudMap} from 'kepler.gl/actions';
 import {CLOUD_PROVIDERS} from './cloud-providers';
 
-// import HubbleExport from './components/hubble-export'
+import HubbleExport from './components/hubble-export'
 
 const KeplerGl = require('kepler.gl/components').injectComponents([
   replaceLoadDataModal(),
@@ -360,7 +360,7 @@ class App extends Component {
     return (
       <ThemeProvider theme={theme}>
         <h1>Use this button to export an animation using Hubble</h1>
-          {/* <HubbleExport /> */}
+          <HubbleExport />
         <GlobalStyle
           // this is to apply the same modal style as kepler.gl core
           // because styled-components doesn't always return a node

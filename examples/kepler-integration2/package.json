@@ -1,0 +1,25 @@
+{
+  "scripts": {
+    "start": "webpack-dev-server --progress --hot --open",
+    "start-local": "webpack-dev-server --env.local --progress --hot --open"
+  },
+  "dependencies": {
+    "@luma.gl/debug": "^8.2.0",
+    "@luma.gl/shadertools": "^8.2.0",
+    "d3-color": "^1.4.1",
+    "deck.gl": "^8.2.2",
+    "kepler.gl": "^2.3.2",
+    "react": "^16.13.1",
+    "styled-components": "^5.2.0"
+  },
+  "devDependencies": {
+    "@babel/plugin-syntax-class-properties": "^7.8.3",
+    "@babel/preset-env": "^7.9.4",
+    "@babel/preset-react": "^7.9.4",
+    "babel-loader": "^8.0.5",
+    "html-webpack-plugin": "^3.0.7",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.11"
+  }
+}
