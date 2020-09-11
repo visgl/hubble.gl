@@ -49,6 +49,7 @@ interface DeckSceneParams {
   height: number
   keyframes: any
   data: any
+  currentCamera: any
   renderLayers: (scene: DeckScene) => any[]
 }
 
