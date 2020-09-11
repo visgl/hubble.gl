@@ -24,7 +24,6 @@ export async function sceneBuilder(animationLoop) {
       easings: [easing.easeInOut]
     })
   };
-
   const currentCamera = animationLoop.timeline.attachAnimation(keyframes.camera);
 
   return new DeckScene({
