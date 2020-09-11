@@ -28,20 +28,20 @@ import {
 } from '@hubble.gl/core';
 import EncoderDropdown from './encoder-dropdown';
 
-export default function BasicControls({adapter, busy, setBusy, encoderSettings}) {
+export default function BasicControls({adapter, busy, setBusy, encoderSettings, updateCamera = undefined}) {
   const [encoder, setEncoder] = useState('gif');
 
   const onRender = () => {
     if (encoder === 'preview') {
-      adapter.render(PreviewEncoder, encoderSettings, () => setBusy(false));
+      adapter.render(PreviewEncoder, encoderSettings, () => setBusy(false), updateCamera);
     } else if (encoder === 'webm') {
-      adapter.render(WebMEncoder, encoderSettings, () => setBusy(false));
+      adapter.render(WebMEncoder, encoderSettings, () => setBusy(false), updateCamera);
     } else if (encoder === 'jpeg') {
-      adapter.render(JPEGSequenceEncoder, encoderSettings, () => setBusy(false));
+      adapter.render(JPEGSequenceEncoder, encoderSettings, () => setBusy(false), updateCamera);
     } else if (encoder === 'png') {
-      adapter.render(PNGSequenceEncoder, encoderSettings, () => setBusy(false));
+      adapter.render(PNGSequenceEncoder, encoderSettings, () => setBusy(false), updateCamera);
     } else if (encoder === 'gif') {
-      adapter.render(GifEncoder, encoderSettings, () => setBusy(false));
+      adapter.render(GifEncoder, encoderSettings, () => setBusy(false), updateCamera);
     }
 
     setBusy(true);

@@ -1,9 +1,12 @@
 import React, {useState, useRef} from 'react';
 import DeckGL from '@deck.gl/react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import {DeckAdapter} from 'hubble.gl';
 import {useNextFrame, BasicControls, ResolutionGuide} from '@hubble.gl/react';
 import {sceneBuilder} from './scene';
+
+import {CameraKeyframes} from '@hubble.gl/core';
+import {easing} from 'popmotion';
+
 
 const INITIAL_VIEW_STATE = {
   latitude: 46.24,
@@ -33,7 +36,35 @@ export default function App() {
   const deckgl = useRef(null);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
+
   const nextFrame = useNextFrame();
+
+  const updateCamera = (prevCamera) => {
+    // Set by User
+  prevCamera = new CameraKeyframes({
+        timings: [0, 5000],
+        keyframes: [
+          {
+            longitude: viewState.longitude,
+            latitude: viewState.latitude,
+            zoom: viewState.zoom,
+            pitch: viewState.pitch,
+            bearing: viewState.bearing
+          },
+          {
+            longitude: viewState.longitude,
+            latitude: viewState.latitude,
+            zoom: viewState.zoom,
+            bearing: viewState.bearing + 92,
+            pitch: viewState.pitch
+          }
+        ],
+        easings: [easing.easeInOut]
+      });
+   
+    return prevCamera;
+  }
 
   return (
     <div style={{position: 'relative'}}>
@@ -43,6 +74,13 @@ export default function App() {
       <DeckGL
         ref={deckgl}
         initialViewState={INITIAL_VIEW_STATE}
+
+        viewState={viewState}
+        onViewStateChange={({viewState}) => {
+          setViewState(viewState);
+        }}
+        controller={true}
+
         {...adapter.getProps(deckgl, setReady, nextFrame)}
       />
       <div style={{position: 'absolute'}}>
@@ -52,6 +90,7 @@ export default function App() {
             busy={busy}
             setBusy={setBusy}
             encoderSettings={encoderSettings}
+            updateCamera={updateCamera}
           />
         )}
       </div>

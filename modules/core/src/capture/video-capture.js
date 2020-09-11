@@ -159,6 +159,7 @@ export class VideoCapture {
     if (this.isRecording()) {
       console.log(`Stopping recording.  Recorded for ${this.durationMs}ms.`);
       this.recording = false;
+      this.capturing = false; // Added to fix an intermittent bug
       this.encoderSettings = null;
       this.save();
 

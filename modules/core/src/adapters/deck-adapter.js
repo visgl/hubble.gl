@@ -31,6 +31,8 @@ export default class DeckAdapter {
   sceneBuilder;
   /** @type {boolean} */
   shouldAnimate;
+  /** @type {boolean} */
+  enabled;
 
   /**
    * @param {(animationLoop: any) => DeckScene | Promise<DeckScene>} sceneBuilder
@@ -38,8 +40,8 @@ export default class DeckAdapter {
   constructor(sceneBuilder) {
     this.sceneBuilder = sceneBuilder;
     this.videoCapture = new VideoCapture();
-
     this.shouldAnimate = true;
+    this.enabled = false;
     this.getProps = this.getProps.bind(this);
     this.render = this.render.bind(this);
     this.preview = this.preview.bind(this);
@@ -60,14 +62,15 @@ export default class DeckAdapter {
       onAfterRender: () => this._onAfterRender(onNextFrame),
       onLoad: () =>
         this._deckOnLoad(deckRef.current.deck).then(() => {
-          // console.log('adapter')
           setReady(true);
         }),
       _animate: this.shouldAnimate
     };
 
     // Animating the camera is optional, but if a keyframe is defined then viewState is controlled by camera keyframe.
-    if (this.scene && this.scene.keyframes.camera) {
+    if (this.scene && this.scene.keyframes.camera && this.enabled) {
+
+      props.controller = false;
       props.viewState = this._getViewState();
     }
 
@@ -87,12 +90,27 @@ export default class DeckAdapter {
   /**
    * @param {typeof import('../encoders').FrameEncoder} Encoder
    * @param {import('types').FrameEncoderSettings} encoderSettings
-   * @param {() => void} onStop
+   * @param {(params: any) => void} onStop
+   * @param {(prevCamera: any) => void} updateCamera
    */
-  render(Encoder = PreviewEncoder, encoderSettings = {}, onStop = undefined) {
+  render(Encoder = PreviewEncoder, encoderSettings = {}, onStop = undefined, updateCamera = undefined) {
+   
+    if(updateCamera){ // Optional camera and keyframes defined by the user at runtime
+      this.scene.animationLoop.timeline.detachAnimation(this.scene.currentCamera);
+      this.scene.keyframes.camera = updateCamera(this.scene.keyframes.camera);
+      this.scene.currentCamera =  this.scene.animationLoop.timeline.attachAnimation(this.scene.keyframes.camera);
+    }
+
+    const innerOnStop = (params) => {
+      this.enabled = false;
+      if (onStop) {
+        onStop(params)
+      }
+    }
     this.shouldAnimate = true;
-    this.videoCapture.render(Encoder, encoderSettings, this.scene.lengthMs, onStop);
+    this.videoCapture.render(Encoder, encoderSettings, this.scene.lengthMs, innerOnStop);
     this.scene.animationLoop.timeline.setTime(this.videoCapture.encoderSettings.startOffsetMs);
+    this.enabled = true;
   }
 
   preview() {
@@ -103,19 +121,23 @@ export default class DeckAdapter {
    * @param {() => void} callback
    */
   stop(callback) {
+    this.enabled = false;
     this.shouldAnimate = false;
     this.videoCapture.stop(callback);
   }
 
   async _deckOnLoad(deck) {
     this.deck = deck;
+
     const animationLoop = deck.animationLoop;
     animationLoop.attachTimeline(new Timeline());
     animationLoop.timeline.setTime(0);
 
-    await Promise.resolve(this.sceneBuilder(animationLoop)).then(scene => {
-      this._applyScene(scene);
-    });
+    await Promise.resolve(this.sceneBuilder(animationLoop)).then(
+      scene => {
+        this._applyScene(scene);
+      }
+    );
   }
 
   // TODO: allow user to change scenes at runtime.
@@ -142,7 +164,6 @@ export default class DeckAdapter {
    * @param {(nextTimeMs: number) => void} proceedToNextFrame
    */
   _onAfterRender(proceedToNextFrame) {
-    // console.log('after render');
     this.videoCapture.capture(this.deck.canvas, nextTimeMs => {
       this.scene.animationLoop.timeline.setTime(nextTimeMs);
       proceedToNextFrame(nextTimeMs);

@@ -7,6 +7,9 @@ import {layers} from './layers';
 import {vignette, fxaa} from '@luma.gl/shadertools';
 import {PostProcessEffect} from '@deck.gl/core';
 
+import {CameraKeyframes} from '@hubble.gl/core';
+import {easing} from 'popmotion';
+
 const INITIAL_VIEW_STATE = {
   longitude: -122.4,
   latitude: 37.74,
@@ -38,7 +41,36 @@ export default function App() {
   const deckgl = useRef(null);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
+
+  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE); //Added to maintain user's interactions with viewState
+
   const nextFrame = useNextFrame();
+
+  const updateCamera = (prevCamera) => {
+    // Set by User
+  prevCamera = new CameraKeyframes({
+        timings: [0, 5000],
+        keyframes: [
+          {
+            longitude: viewState.longitude,
+            latitude: viewState.latitude,
+            zoom: viewState.zoom,
+            pitch: viewState.pitch,
+            bearing: viewState.bearing
+          },
+          {
+            longitude: viewState.longitude,
+            latitude: viewState.latitude,
+            zoom: viewState.zoom,
+            bearing: viewState.bearing + 92,
+            pitch: viewState.pitch
+          }
+        ],
+        easings: [easing.easeInOut]
+      });
+   
+    return prevCamera;
+  }
 
   return (
     <div style={{position: 'relative'}}>
@@ -51,10 +83,14 @@ export default function App() {
         parameters={{
           depthTest: false,
           clearColor: [61 / 255, 20 / 255, 76 / 255, 1]
-          // blend: true,
-          // blendEquation: GL.FUNC_ADD,
-          // blendFunc: [GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA]
         }}
+
+        viewState={viewState}
+        onViewStateChange={({viewState}) => {
+          setViewState(viewState);
+        }}
+        controller={true}
+
         effects={[vignetteEffect, aaEffect]}
         layers={layers}
         {...adapter.getProps(deckgl, setReady, nextFrame)}
@@ -66,6 +102,7 @@ export default function App() {
             busy={busy}
             setBusy={setBusy}
             encoderSettings={encoderSettings}
+            updateCamera={updateCamera}
           />
         )}
       </div>
