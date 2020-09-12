@@ -7,7 +7,6 @@ import {sceneBuilder} from './scene';
 import {CameraKeyframes} from '@hubble.gl/core';
 import {easing} from 'popmotion';
 
-
 const INITIAL_VIEW_STATE = {
   latitude: 46.24,
   longitude: -122.18,
@@ -40,31 +39,31 @@ export default function App() {
 
   const nextFrame = useNextFrame();
 
-  const updateCamera = (prevCamera) => {
+  const updateCamera = prevCamera => {
     // Set by User
-  prevCamera = new CameraKeyframes({
-        timings: [0, 5000],
-        keyframes: [
-          {
-            longitude: viewState.longitude,
-            latitude: viewState.latitude,
-            zoom: viewState.zoom,
-            pitch: viewState.pitch,
-            bearing: viewState.bearing
-          },
-          {
-            longitude: viewState.longitude,
-            latitude: viewState.latitude,
-            zoom: viewState.zoom,
-            bearing: viewState.bearing + 92,
-            pitch: viewState.pitch
-          }
-        ],
-        easings: [easing.easeInOut]
-      });
-   
+    prevCamera = new CameraKeyframes({
+      timings: [0, 5000],
+      keyframes: [
+        {
+          longitude: viewState.longitude,
+          latitude: viewState.latitude,
+          zoom: viewState.zoom,
+          pitch: viewState.pitch,
+          bearing: viewState.bearing
+        },
+        {
+          longitude: viewState.longitude,
+          latitude: viewState.latitude,
+          zoom: viewState.zoom,
+          bearing: viewState.bearing + 92,
+          pitch: viewState.pitch
+        }
+      ],
+      easings: [easing.easeInOut]
+    });
+
     return prevCamera;
-  }
+  };
 
   return (
     <div style={{position: 'relative'}}>
@@ -74,13 +73,11 @@ export default function App() {
       <DeckGL
         ref={deckgl}
         initialViewState={INITIAL_VIEW_STATE}
-
         viewState={viewState}
-        onViewStateChange={({viewState}) => {
-          setViewState(viewState);
+        onViewStateChange={({viewState: vs}) => {
+          setViewState(vs);
         }}
         controller={true}
-
         {...adapter.getProps(deckgl, setReady, nextFrame)}
       />
       <div style={{position: 'absolute'}}>
