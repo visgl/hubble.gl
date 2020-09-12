@@ -148,31 +148,31 @@ export default function App({
     })
   ];
 
-  const updateCamera = (prevCamera) => {
+  const updateCamera = prevCamera => {
     // Set by User
-  prevCamera = new CameraKeyframes({
-        timings: [0, 5000],
-        keyframes: [
-          {
-            longitude: viewState.longitude,
-            latitude: viewState.latitude,
-            zoom: viewState.zoom,
-            pitch: viewState.pitch,
-            bearing: viewState.bearing
-          },
-          {
-            longitude: viewState.longitude,
-            latitude: viewState.latitude,
-            zoom: viewState.zoom,
-            bearing: viewState.bearing + 180,
-            pitch: viewState.pitch
-          }
-        ],
-        easings: [easing.easeInOut]
-      });
-   
+    prevCamera = new CameraKeyframes({
+      timings: [0, 5000],
+      keyframes: [
+        {
+          longitude: viewState.longitude,
+          latitude: viewState.latitude,
+          zoom: viewState.zoom,
+          pitch: viewState.pitch,
+          bearing: viewState.bearing
+        },
+        {
+          longitude: viewState.longitude,
+          latitude: viewState.latitude,
+          zoom: viewState.zoom,
+          bearing: viewState.bearing + 180,
+          pitch: viewState.pitch
+        }
+      ],
+      easings: [easing.easeInOut]
+    });
+
     return prevCamera;
-  }
+  };
 
   return (
     <div style={{position: 'relative'}}>
@@ -184,23 +184,16 @@ export default function App({
         ref={deckgl}
         layers={layers}
         effects={theme.effects}
-
         controller={true}
         width={640}
         height={480}
         viewState={viewState}
-        onViewStateChange={({viewState}) => {
-          setViewState(viewState);
+        onViewStateChange={({viewState: vs}) => {
+          setViewState(vs);
         }}
-      
         {...adapter.getProps(deckgl, setReady, nextFrame)}
       >
-        <StaticMap
-          ref={map}
-          reuseMaps
-          mapStyle={mapStyle}
-          preventStyleDiffing={true}
-        />
+        <StaticMap ref={map} reuseMaps mapStyle={mapStyle} preventStyleDiffing={true} />
       </DeckGL>
 
       <div style={{position: 'absolute'}}>

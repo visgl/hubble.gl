@@ -39,34 +39,34 @@ export default function App() {
   const deckgl = useRef(null);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE); //Added to maintain user's interactions with viewState
+  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE); // Added to maintain user's interactions with viewState
   const nextFrame = useNextFrame();
 
-  const updateCamera = (prevCamera) => {
+  const updateCamera = prevCamera => {
     // Set by User
-  prevCamera = new CameraKeyframes({
-        timings: [0, 5000],
-        keyframes: [
-          {
-            longitude: viewState.longitude,
-            latitude: viewState.latitude,
-            zoom: viewState.zoom,
-            pitch: viewState.pitch,
-            bearing: viewState.bearing
-          },
-          {
-            longitude: viewState.longitude,
-            latitude: viewState.latitude,
-            zoom: viewState.zoom,
-            bearing: viewState.bearing + 92,
-            pitch: viewState.pitch
-          }
-        ],
-        easings: [easing.easeInOut]
-      });
-   
+    prevCamera = new CameraKeyframes({
+      timings: [0, 5000],
+      keyframes: [
+        {
+          longitude: viewState.longitude,
+          latitude: viewState.latitude,
+          zoom: viewState.zoom,
+          pitch: viewState.pitch,
+          bearing: viewState.bearing
+        },
+        {
+          longitude: viewState.longitude,
+          latitude: viewState.latitude,
+          zoom: viewState.zoom,
+          bearing: viewState.bearing + 92,
+          pitch: viewState.pitch
+        }
+      ],
+      easings: [easing.easeInOut]
+    });
+
     return prevCamera;
-  }
+  };
 
   return (
     <div style={{position: 'relative'}}>
@@ -83,8 +83,8 @@ export default function App() {
           // blendFunc: [GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA]
         }}
         viewState={viewState}
-        onViewStateChange={({viewState}) => {
-          setViewState(viewState);
+        onViewStateChange={({viewState: vs}) => {
+          setViewState(vs);
         }}
         controller={true}
         effects={[vignetteEffect, aaEffect]}
