@@ -19,7 +19,16 @@
 // THE SOFTWARE.
 export default class DeckScene {
   /** @param {import('types').DeckSceneParams} params */
-  constructor({animationLoop, keyframes, data, renderLayers = undefined, lengthMs, width, height, currentCamera = undefined}) {
+  constructor({
+    animationLoop,
+    keyframes,
+    data,
+    renderLayers = undefined,
+    lengthMs,
+    width,
+    height,
+    currentCamera = undefined
+  }) {
     this.animationLoop = animationLoop;
     this.keyframes = keyframes;
     this.data = data;

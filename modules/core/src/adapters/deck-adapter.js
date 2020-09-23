@@ -92,20 +92,27 @@ export default class DeckAdapter {
    * @param {(params: any) => void} onStop
    * @param {(prevCamera: any) => void} updateCamera
    */
-  render(Encoder = PreviewEncoder, encoderSettings = {}, onStop = undefined, updateCamera = undefined) {
-   
-    if(updateCamera){ // Optional camera and keyframes defined by the user at runtime
+  render(
+    Encoder = PreviewEncoder,
+    encoderSettings = {},
+    onStop = undefined,
+    updateCamera = undefined
+  ) {
+    if (updateCamera) {
+      // Optional camera and keyframes defined by the user at runtime
       this.scene.animationLoop.timeline.detachAnimation(this.scene.currentCamera);
       this.scene.keyframes.camera = updateCamera(this.scene.keyframes.camera);
-      this.scene.currentCamera =  this.scene.animationLoop.timeline.attachAnimation(this.scene.keyframes.camera);
+      this.scene.currentCamera = this.scene.animationLoop.timeline.attachAnimation(
+        this.scene.keyframes.camera
+      );
     }
 
-    const innerOnStop = (params) => {
+    const innerOnStop = params => {
       this.enabled = false;
       if (onStop) {
-        onStop(params)
+        onStop(params);
       }
-    }
+    };
     this.shouldAnimate = true;
     this.videoCapture.render(Encoder, encoderSettings, this.scene.lengthMs, innerOnStop);
     this.scene.animationLoop.timeline.setTime(this.videoCapture.encoderSettings.startOffsetMs);
@@ -132,11 +139,9 @@ export default class DeckAdapter {
     animationLoop.attachTimeline(new Timeline());
     animationLoop.timeline.setTime(0);
 
-    await Promise.resolve(this.sceneBuilder(animationLoop)).then(
-      scene => {
-        this._applyScene(scene);
-      }
-    );
+    await Promise.resolve(this.sceneBuilder(animationLoop)).then(scene => {
+      this._applyScene(scene);
+    });
   }
 
   // TODO: allow user to change scenes at runtime.

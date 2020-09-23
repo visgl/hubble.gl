@@ -16,7 +16,8 @@
       "title": "Guide Book",
       "entries": [
         {
-          "entry": "docs/post-processing"
+          "entry": "docs/post-processing",
+          "entry": "docs/rendering-tip"
         }
       ]
     },
