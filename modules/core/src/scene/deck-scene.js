@@ -44,10 +44,6 @@ export default class DeckScene {
     return Boolean(this._renderLayers);
   }
 
-  hasLayers() {
-    return Boolean(this._renderLayers);
-  }
-
   renderLayers() {
     return this._renderLayers(this);
   }
