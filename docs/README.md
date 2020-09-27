@@ -6,7 +6,7 @@ Hubble.gl is a JavaScript library for animating data visualizations.
 
 - **Easy Integration:** Stand up scenes within deck.gl or kepler.gl, then animate any aspect of it. Empower users to animate without code with UI components included in this library.
 
-- **Client Side Library:** Videos render and encode directly in the web browser. User data never leaves their machine. Since nothing runs on a server sites can scale without computation costs.
+- **Client Side Library:** Videos render and encode directly in the web browser. User data never leaves their machine. Since nothing runs on a server, sites can scale without computation costs.
 
 ## Installation
 
