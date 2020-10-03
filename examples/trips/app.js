@@ -3,10 +3,10 @@
  * Source code: https://github.com/visgl/deck.gl/tree/master/examples/website/trips
  */
 
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useCallback} from 'react';
 import DeckGL from '@deck.gl/react';
 import {DeckAdapter} from '@hubble.gl/core';
-import {useNextFrame, BasicControls, ResolutionGuide} from '@hubble.gl/react';
+import {useNextFrame, BasicControls} from '@hubble.gl/react';
 import {sceneBuilder} from './scene';
 import {AmbientLight, PointLight, LightingEffect} from '@deck.gl/core';
 import {StaticMap} from 'react-map-gl';
@@ -15,6 +15,9 @@ import {TripsLayer} from '@deck.gl/geo-layers';
 
 import {CameraKeyframes} from '@hubble.gl/core';
 import {easing} from 'popmotion';
+
+import {MapboxLayer} from '@deck.gl/mapbox';
+import GL from '@luma.gl/constants';
 
 // Source data CSV
 const DATA_URL = {
@@ -86,14 +89,26 @@ const encoderSettings = {
 
 const adapter = new DeckAdapter(sceneBuilder);
 
+// Try to convert function to class
+// React.createRef
+//
+// useCallback
+// take onMaplOan outside of the class and call it to onMapLoans prop
+// equivalent to componentDidMount
+//
+// useEffect
+// similar to compontnetDidMount???
+
 export default function App({
   mapStyle = 'mapbox://styles/mapbox/dark-v9',
   theme = DEFAULT_THEME,
   loopLength = 1800,
   animationSpeed = 1
 }) {
-  const deckgl = useRef(null);
-  const map = useRef(null);
+  const [glContext, setGLContext] = useState();
+
+  const deckRef = useRef(null);
+  const mapRef = useRef(null);
 
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -102,6 +117,14 @@ export default function App({
   const [time, setTime] = useState(0);
   const [animation] = useState({});
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
+
+  const onMapLoad = useCallback(() => {
+    // Component did mount
+    const map = mapRef.current.getMap();
+    const deck = deckRef.current.deck;
+    map.addLayer(new MapboxLayer({id: 'my-deck', deck}));
+    map.on('render', () => adapter.onAfterRender(nextFrame));
+  }, []);
 
   const animate = () => {
     setTime(t => (t + animationSpeed) % loopLength);
@@ -127,7 +150,7 @@ export default function App({
       getPath: d => d.path,
       getTimestamps: d => d.timestamps,
       getColor: d => (d.vendor === 0 ? theme.trailColor0 : theme.trailColor1),
-      opacity: 0.3,
+      opacity: 1,
       widthMinPixels: 2,
       rounded: true,
       trailLength: 180,
@@ -176,12 +199,8 @@ export default function App({
 
   return (
     <div style={{position: 'relative'}}>
-      <div style={{position: 'absolute'}}>
-        <ResolutionGuide />
-      </div>
-
       <DeckGL
-        ref={deckgl}
+        ref={deckRef}
         layers={layers}
         effects={theme.effects}
         controller={true}
@@ -191,9 +210,26 @@ export default function App({
         onViewStateChange={({viewState: vs}) => {
           setViewState(vs);
         }}
-        {...adapter.getProps(deckgl, setReady, nextFrame)}
+        {...adapter.getProps(deckRef, setReady)}
+        onWebGLInitialized={setGLContext}
+        parameters={{
+          depthTest: true,
+          // clearColor: [61 / 255, 20 / 255, 76 / 255, 1]
+          blend: true,
+          // blendEquation: GL.FUNC_ADD,
+          blendFunc: [GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA]
+        }}
       >
-        <StaticMap ref={map} reuseMaps mapStyle={mapStyle} preventStyleDiffing={true} />
+        {glContext && (
+          <StaticMap
+            ref={mapRef}
+            reuseMaps
+            mapStyle={mapStyle}
+            preventStyleDiffing={true}
+            gl={glContext}
+            onLoad={onMapLoad}
+          />
+        )}
       </DeckGL>
 
       <div style={{position: 'absolute'}}>

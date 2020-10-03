@@ -57,15 +57,19 @@ export default class DeckAdapter {
    * @param {(ready: boolean) => void} setReady
    * @param {(nextTimeMs: number) => void} onNextFrame
    */
-  getProps(deckRef, setReady, onNextFrame) {
+  getProps(deckRef, setReady, onNextFrame = undefined) {
     const props = {
-      onAfterRender: () => this._onAfterRender(onNextFrame),
       onLoad: () =>
         this._deckOnLoad(deckRef.current.deck).then(() => {
           setReady(true);
         }),
       _animate: this.shouldAnimate
     };
+
+    if (onNextFrame) {
+      // Remove the underscore to make it public? Please verify
+      props.onAfterRender = () => this.onAfterRender(onNextFrame);
+    }
 
     // Animating the camera is optional, but if a keyframe is defined then viewState is controlled by camera keyframe.
     if (this.scene && this.scene.keyframes.camera && this.enabled) {
@@ -167,7 +171,7 @@ export default class DeckAdapter {
   /**
    * @param {(nextTimeMs: number) => void} proceedToNextFrame
    */
-  _onAfterRender(proceedToNextFrame) {
+  onAfterRender(proceedToNextFrame) {
     this.videoCapture.capture(this.deck.canvas, nextTimeMs => {
       this.scene.animationLoop.timeline.setTime(nextTimeMs);
       proceedToNextFrame(nextTimeMs);
