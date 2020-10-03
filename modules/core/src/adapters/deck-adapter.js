@@ -66,9 +66,10 @@ export default class DeckAdapter {
       _animate: this.shouldAnimate
     };
 
-    if(onNextFrame){ // Remove the underscore to make it public? Please verify
+    if (onNextFrame) {
+      // Remove the underscore to make it public? Please verify
       props.onAfterRender = () => this.onAfterRender(onNextFrame);
-     }
+    }
 
     // Animating the camera is optional, but if a keyframe is defined then viewState is controlled by camera keyframe.
     if (this.scene && this.scene.keyframes.camera && this.enabled) {
