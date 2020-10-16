@@ -1,6 +1,6 @@
 # Keyframes
 
-The Keyframes class extends the luma.gl [Keyframes](https://luma.gl/docs/api-reference/engine/animation/key-frames) class and offers many additional features on top of luma's. In your application, extend from hubble.gl's Keyframes as shown in the `CameraKeyFrames` example. Add `features` to animate, such as `latitude`. When designing your scene, keyframe values are required for each feature you define. When constructing anything based on `Keyframes` the `layerId` property may be provided, which should match the layer id of the deck.gl layer you're animating.
+The Keyframes class extends the luma.gl [Keyframes](https://luma.gl/docs/api-reference/engine/animation/key-frames) class and offers many additional features on top of luma's. In your application, extend from hubble.gl's Keyframes as shown in the `CameraKeyFrames` example. Add `features` to animate, such as `latitude`. When designing your scene, keyframe values are required for each feature you define.
 
 ## Usage
 
