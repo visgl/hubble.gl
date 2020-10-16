@@ -54,7 +54,7 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-react": "^7.10",
     "lerna": "^3.16.4",
-    "ocular-dev-tools": "^0.1.8",
+    "ocular-dev-tools": "^0.1.10",
     "pre-commit": "^1.2.2",
     "pre-push": "^0.1.1",
     "prettier": "^1.18.2",
