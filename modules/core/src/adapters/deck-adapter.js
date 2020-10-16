@@ -18,7 +18,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 /* eslint-disable no-console */
-import {Timeline} from '@luma.gl/engine';
 import {PreviewEncoder} from '../encoders';
 // eslint-disable-next-line no-unused-vars
 import {DeckScene} from '../scene';
@@ -140,7 +139,7 @@ export default class DeckAdapter {
     this.deck = deck;
 
     const animationLoop = deck.animationLoop;
-    animationLoop.attachTimeline(new Timeline());
+    animationLoop.timeline.pause();
     animationLoop.timeline.setTime(0);
 
     await Promise.resolve(this.sceneBuilder(animationLoop)).then(scene => {
