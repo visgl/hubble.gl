@@ -14,14 +14,16 @@ Usable as is. Feel free to add it to your presentation, notebook, or showcase!
 There are plenty of free converters out there. The ones written in this guide will be based off of: https://convertio.co/
 
 **Step 1: Pick your WebM file**
-![Convertio Step 1](/images/convertio-step1.jpg)
+
+<img src="/images/convertio-step1.jpg" alt="Convertio Step 1" width="600px">
 
 **Step 2: Click the "..." option to open up a menu**
 
 **Step 3: Select the filetype that you want. We recommend GIF/MP4 for use in your presentations**
 
 **Step 4: Click Convert**
-![Convertio Step 2, 3, & 4](/images/convertio-step2-3-4.jpg)
+
+<img src="/images/convertio-step2-3-4.jpg" alt="Convertio Step 2, 3, & 4" width="600px">
 
 ### Convert JPEG sequence to GIF
 There are plenty of free converters out there. The ones written in this guide will be based off of: https://gifmaker.me/
@@ -29,22 +31,23 @@ There are plenty of free converters out there. The ones written in this guide wi
 **Step 1: Untar the file. On Windows a tool like [7-Zip](https://www.7-zip.org/) can be used**
 
 **Step 2: Click on Upload Images**
-![GIFMaker Step 2](/images/gifmaker-step2.jpg)
+<img src="/images/gifmaker-step2.jpg" alt="GIFMaker Step 2" width="600px">
 
 **Step 3: Select all the images in the folder that was created**
 
 **Step 4: Open all the images**
-![GIFMaker Step 3 & 4](/images/gifmaker-step3-4.jpg)
+
+<img src="/images/gifmaker-step3-4.jpg" alt="GIFMaker Step 3 & 4" width="600px">
 
 **Step 4a: A preview will be generated at the top. Settings such as order and pacing can be adjusted if anything looks wrong**
 
 **Step 5: Click on "Create GIF Animation"**
 
-![GIFMaker Step 4a & 5](/images/gifmaker-step4a-5.jpg)
+<img src="/images/gifmaker-step4a-5.jpg" alt="GIFMaker Step 4a & 5" width="600px">
 
 **Step 6: Click on "Download the GIF"**
 
-![GIFMaker Step 6](/images/gifmaker-step6.jpg)
+<img src="/images/gifmaker-step6.jpg" alt="GIFMaker Step 6" width="600px">
 
 ### Convert PNG sequence to GIF
 See "Convert JPEG sequence to GIF" section

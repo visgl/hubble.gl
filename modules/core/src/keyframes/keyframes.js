@@ -24,7 +24,7 @@ class Keyframes extends LumaKeyFrames {
   activeFeatures = {};
   constructor({features, timings, keyframes, easings}) {
     super([]);
-    this.setActiveFeatures = this.setActiveFeatures.bind(this);
+    this._setActiveFeatures = this._setActiveFeatures.bind(this);
     this.getFrame = this.getFrame.bind(this);
 
     if (keyframes.length === 0) {
@@ -40,12 +40,12 @@ class Keyframes extends LumaKeyFrames {
       return activeFeatures;
     }, {});
 
-    this.setActiveFeatures(keyframes);
+    this._setActiveFeatures(keyframes);
     const _keyframes = merge(_timings, keyframes, _easings);
     this.setKeyFrames(_keyframes);
   }
 
-  setActiveFeatures(keyframes) {
+  _setActiveFeatures(keyframes) {
     const firstKeyframe = keyframes[0];
     this.activeFeatures = Object.keys(firstKeyframe).reduce((activeFeatures, key) => {
       // activate only keys that are expected

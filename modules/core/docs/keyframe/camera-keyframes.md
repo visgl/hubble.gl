@@ -31,3 +31,7 @@ Parameters:
   * `bearing` (Number)
 
 * `easings` (`Array<() => void`) - "N-1" easing functions between keyframes.
+
+## More Info
+
+See hubble.gl Keyframes and [luma.gl Keyframes](https://luma.gl/docs/api-reference/engine/animation/key-frames) for more information.
