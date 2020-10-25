@@ -24,20 +24,11 @@ import styled, {ThemeProvider} from 'styled-components';
 import window from 'global/window';
 import {connect} from 'react-redux';
 import {theme} from 'kepler.gl/styles';
-import {FormLink} from './components/announcement';
 import {replaceLoadDataModal} from './factories/load-data-modal';
 import {replaceMapControl} from './factories/map-control';
 import {replacePanelHeader} from './factories/panel-header';
 import {AUTH_TOKENS} from './constants/default-settings';
-import {
-  loadRemoteMap,
-  loadSampleConfigurations,
-  onExportFileSuccess,
-  onLoadCloudMapSuccess
-} from './actions';
-
-import {loadCloudMap} from 'kepler.gl/actions';
-import {CLOUD_PROVIDERS} from './cloud-providers';
+import {loadSampleConfigurations} from './actions';
 
 import HubbleExport from './components/hubble-export';
 
@@ -50,18 +41,11 @@ const KeplerGl = require('kepler.gl/components').injectComponents([
 // Sample data
 /* eslint-disable no-unused-vars */
 import sampleTripData, {testCsvData, sampleTripDataConfig} from './data/sample-trip-data';
-import sampleGeojson from './data/sample-small-geojson';
-import sampleGeojsonPoints from './data/sample-geojson-points';
-import sampleGeojsonConfig from './data/sample-geojson-config';
-import sampleH3Data, {config as h3MapConfig} from './data/sample-hex-id-csv';
-import sampleS2Data, {config as s2MapConfig, dataId as s2DataId} from './data/sample-s2-data';
 import sampleAnimateTrip from './data/sample-animate-trip-data';
-import sampleIconCsv, {config as savedMapConfig} from './data/sample-icon-csv';
-import {addDataToMap, addNotification} from 'kepler.gl/actions';
+import {addDataToMap} from 'kepler.gl/actions';
 import {processCsvData, processGeojson} from 'kepler.gl/processors';
 /* eslint-enable no-unused-vars */
 
-const BannerKey = `banner-${FormLink}`;
 const keplerGlGetState = state => state.demo.keplerGl;
 
 const GlobalStyle = styled.div`
@@ -95,7 +79,6 @@ const GlobalStyle = styled.div`
 
 class App extends Component {
   state = {
-    showBanner: false,
     width: window.innerWidth,
     height: window.innerHeight
   };
@@ -103,85 +86,20 @@ class App extends Component {
   componentDidMount() {
     // if we pass an id as part of the url
     // we ry to fetch along map configurations
-    const {params: {id, provider} = {}, location: {query = {}} = {}} = this.props;
-
-    const cloudProvider = CLOUD_PROVIDERS.find(c => c.name === provider);
-    if (cloudProvider) {
-      this.props.dispatch(
-        loadCloudMap({
-          loadParams: query,
-          provider: cloudProvider,
-          onSuccess: onLoadCloudMapSuccess
-        })
-      );
-      return;
-    }
+    const {params: {id} = {}, location: {} = {}} = this.props;
 
     // Load sample using its id
     if (id) {
       this.props.dispatch(loadSampleConfigurations(id));
     }
 
-    // Load map using a custom
-    if (query.mapUrl) {
-      // TODO?: validate map url
-      this.props.dispatch(loadRemoteMap({dataUrl: query.mapUrl}));
-    }
-
-    // delay zs to show the banner
-    if (!window.localStorage.getItem(BannerKey)) {
-      window.setTimeout(this._showBanner, 3000);
-    }
     // load sample data
-    // this._loadSampleData();
-
-    // Notifications
-    // this._loadMockNotifications();
-  }
-
-  _showBanner = () => {
-    this.setState({showBanner: true});
-  };
-
-  _hideBanner = () => {
-    this.setState({showBanner: false});
-  };
-
-  _disableBanner = () => {
-    this._hideBanner();
-    window.localStorage.setItem(BannerKey, 'true');
-  };
-
-  _loadMockNotifications = () => {
-    const notifications = [
-      [{message: 'Welcome to Kepler.gl'}, 3000],
-      [{message: 'Something is wrong', type: 'error'}, 1000],
-      [{message: 'I am getting better', type: 'warning'}, 1000],
-      [{message: 'Everything is fine', type: 'success'}, 1000]
-    ];
-
-    this._addNotifications(notifications);
-  };
-
-  _addNotifications(notifications) {
-    if (notifications && notifications.length) {
-      const [notification, timeout] = notifications[0];
-
-      window.setTimeout(() => {
-        this.props.dispatch(addNotification(notification));
-        this._addNotifications(notifications.slice(1));
-      }, timeout);
-    }
+    this._loadSampleData();
   }
 
   _loadSampleData() {
     this._loadPointData();
-    // this._loadGeojsonData();
-    // this._loadTripGeoJson();
-    // this._loadIconData();
-    // this._loadH3HexagonData();
-    // this._loadS2Data();
-    this._loadScenegraphLayer();
+    this._loadTripGeoJson();
   }
 
   _loadPointData() {
@@ -203,66 +121,6 @@ class App extends Component {
     );
   }
 
-  _loadScenegraphLayer() {
-    this.props.dispatch(
-      addDataToMap({
-        datasets: {
-          info: {
-            label: 'Sample Scenegraph Ducks',
-            id: 'test_trip_data'
-          },
-          data: processCsvData(testCsvData)
-        },
-        config: {
-          version: 'v1',
-          config: {
-            visState: {
-              layers: [
-                {
-                  type: '3D',
-                  config: {
-                    dataId: 'test_trip_data',
-                    columns: {
-                      lat: 'gps_data.lat',
-                      lng: 'gps_data.lng'
-                    },
-                    isVisible: true
-                  }
-                }
-              ],
-              filters: [
-                {
-                  id: 'me',
-                  dataId: 'test_trip_data',
-                  name: 'tpep_pickup_datetime',
-                  type: 'timeRange',
-                  enlarged: true
-                }
-              ]
-            }
-          }
-        }
-      })
-    );
-  }
-
-  _loadIconData() {
-    // load icon data and config and process csv file
-    this.props.dispatch(
-      addDataToMap({
-        datasets: [
-          {
-            info: {
-              label: 'Icon Data',
-              id: 'test_icon_data'
-            },
-            data: processCsvData(sampleIconCsv)
-          }
-        ]
-      })
-    );
-  }
-
   _loadTripGeoJson() {
     this.props.dispatch(
       addDataToMap({
@@ -275,78 +133,6 @@ class App extends Component {
       })
     );
   }
-
-  _loadGeojsonData() {
-    // load geojson
-    this.props.dispatch(
-      addDataToMap({
-        datasets: [
-          {
-            info: {label: 'Bart Stops Geo', id: 'bart-stops-geo'},
-            data: processGeojson(sampleGeojsonPoints)
-          },
-          {
-            info: {label: 'SF Zip Geo', id: 'sf-zip-geo'},
-            data: processGeojson(sampleGeojson)
-          }
-        ],
-        options: {
-          keepExistingConfig: true
-        },
-        config: sampleGeojsonConfig
-      })
-    );
-  }
-
-  _loadH3HexagonData() {
-    // load h3 hexagon
-    this.props.dispatch(
-      addDataToMap({
-        datasets: [
-          {
-            info: {
-              label: 'H3 Hexagons V2',
-              id: 'h3-hex-id'
-            },
-            data: processCsvData(sampleH3Data)
-          }
-        ],
-        config: h3MapConfig,
-        options: {
-          keepExistingConfig: true
-        }
-      })
-    );
-  }
-
-  _loadS2Data() {
-    // load s2
-    this.props.dispatch(
-      addDataToMap({
-        datasets: [
-          {
-            info: {
-              label: 'S2 Data',
-              id: s2DataId
-            },
-            data: processCsvData(sampleS2Data)
-          }
-        ],
-        config: s2MapConfig,
-        options: {
-          keepExistingConfig: true
-        }
-      })
-    );
-  }
-
-  _toggleCloudModal = () => {
-    // TODO: this lives only in the demo hence we use the state for now
-    // REFCOTOR using redux
-    this.setState({
-      cloudModalOpen: !this.state.cloudModalOpen
-    });
-  };
 
   _getMapboxRef = (mapbox, index) => {
     if (!mapbox) {
@@ -395,9 +181,6 @@ class App extends Component {
                   getState={keplerGlGetState}
                   width={width}
                   height={height}
-                  cloudProviders={CLOUD_PROVIDERS}
-                  onExportToCloudSuccess={onExportFileSuccess}
-                  onLoadCloudMapSuccess={onLoadCloudMapSuccess}
                 />
               )}
             </AutoSizer>

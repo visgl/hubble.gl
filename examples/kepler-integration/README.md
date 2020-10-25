@@ -5,12 +5,6 @@ This is the src code of kepler.gl demo app. You can copy this folder out and run
 #### 1. Install
 
 ```sh
-npm install
-```
-
-or
-
-```sh
 yarn
 ```
 
@@ -25,5 +19,11 @@ export MapboxAccessToken=<your_mapbox_token>
 #### 3. Start the app
 
 ```sh
-npm start
+yarn start
+```
+
+or
+
+```sh
+yarn start-local
 ```

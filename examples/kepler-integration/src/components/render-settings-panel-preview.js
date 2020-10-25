@@ -23,6 +23,8 @@ import React, {Component} from 'react';
 // Map Component
 import DeckGL from '@deck.gl/react';
 
+import {layerConfigChange} from 'kepler.gl/actions';
+
 import {MapView, OrthographicView} from '@deck.gl/core';
 import {TileLayer} from '@deck.gl/geo-layers';
 import {BitmapLayer} from '@deck.gl/layers';
@@ -31,8 +33,6 @@ export class RenderSettingsPanelPreview extends Component {
   constructor(props) {
     super(props);
 
-    this.mapData = this.props.mapData;
-
     this.state = {
       timestamp: {
         latitude: 47.65,
@@ -40,21 +40,31 @@ export class RenderSettingsPanelPreview extends Component {
       }
     };
 
+    this._onLayerSetDomain = this._onLayerSetDomain.bind(this);
+    this._renderLayer = this._renderLayer.bind(this);
+
     // this.adapter = new DeckAdapter(this.props.sceneBuilder);
   }
 
   componentDidMount() {
     this.forceUpdate();
   }
-  _renderLayer = (overlays, idx) => {
-    const datasets = this.mapData.visState.datasets;
-    const layers = this.mapData.visState.layers;
-    const layerData = this.mapData.visState.layerData;
-    const hoverInfo = this.mapData.visState.hoverInfo;
-    const clicked = this.mapData.visState.clicked;
-    const mapState = this.mapData.mapState;
-    const interactionConfig = this.mapData.visState.interactionConfig;
-    const animationConfig = this.mapData.visState.animationConfig;
+
+  _onLayerSetDomain = (idx, colorDomain) => {
+    layerConfigChange(this.props.mapData.visState.layers[idx], {
+      colorDomain
+    });
+  };
+
+  _renderLayer(overlays, idx) {
+    const datasets = this.props.mapData.visState.datasets;
+    const layers = this.props.mapData.visState.layers;
+    const layerData = this.props.mapData.visState.layerData;
+    const hoverInfo = this.props.mapData.visState.hoverInfo;
+    const clicked = this.props.mapData.visState.clicked;
+    const mapState = this.props.mapData.mapState;
+    const interactionConfig = this.props.mapData.visState.interactionConfig;
+    const animationConfig = this.props.mapData.visState.animationConfig;
 
     const layer = layers[idx];
     const data = layerData[idx];
@@ -77,7 +87,7 @@ export class RenderSettingsPanelPreview extends Component {
       objectHovered
     });
     return overlays.concat(layerOverlay || []);
-  };
+  }
 
   // This is provisional -
   // [ADD] TileLayer to the array of layers
@@ -107,16 +117,16 @@ export class RenderSettingsPanelPreview extends Component {
   //   interactionConfig,
   render() {
     // const mapStyle = this.mapData.mapStyle;
-    const mapState = this.mapData.mapState;
+    const mapState = this.props.mapData.mapState;
     // const layers = this.mapData.visState.layers;
     // const layerData = this.mapData.visState.layerData;
-    const layerOrder = this.mapData.visState.layerOrder;
+    const layerOrder = this.props.mapData.visState.layerOrder;
     // const animationConfig = this.mapData.visState.animationConfig;
     const useDevicePixels = false;
 
     // Map data
-    const mapboxApiAccessToken = this.mapData.mapStyle.mapboxApiAccessToken;
-    const mapboxApiUrl = this.mapData.mapStyle.mapboxApiUrl;
+    const mapboxApiAccessToken = this.props.mapData.mapStyle.mapboxApiAccessToken;
+    const mapboxApiUrl = this.props.mapData.mapStyle.mapboxApiUrl;
 
     // define trip and geojson layers
     let deckGlLayers = [];
@@ -124,7 +134,7 @@ export class RenderSettingsPanelPreview extends Component {
     const TEXT_DATA = [
       {
         text: 'Dataset\nTitle', // TODO make this an input and parse their str. Ex: new line becomes \n
-        position: this.mapData.mapState.target, // TODO RESEARCH coordinate system prop. Change to x,y,z. Also look up Coordinate origin in layer base class documentation
+        position: this.props.mapData.mapState.target, // TODO RESEARCH coordinate system prop. Change to x,y,z. Also look up Coordinate origin in layer base class documentation
         color: [255, 0, 0] // TODO temporarily red
       }
     ];
@@ -149,7 +159,7 @@ export class RenderSettingsPanelPreview extends Component {
       // getTileData: ({x, y, z}) => {return load(`http://d90016be4e11c76b57d0311404f546f06afbae25.basemaps.cartocdn.com/dark_all/${z}/${x}/${y}.png`);},
 
       data: [
-        `http://{d90016be4e11c76b57d0311404f546f06afbae25}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png`
+        `http://d90016be4e11c76b57d0311404f546f06afbae25.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png`
       ],
 
       renderSubLayers: props => {
@@ -186,9 +196,11 @@ export class RenderSettingsPanelPreview extends Component {
     }
 
     // deckGlLayers[3] = timestamp;
-    deckGlLayers[2] = deckGlLayers[1];
-    deckGlLayers[1] = deckGlLayers[0];
-    deckGlLayers[0] = tileLayer;
+    // deckGlLayers[2] = deckGlLayers[1];
+    // deckGlLayers[1] = deckGlLayers[0];
+    // deckGlLayers[0] = tileLayer;
+
+    deckGlLayers.unshift(tileLayer);
 
     // var i;
     // for (i = 0; i < deckGlLayers.length; i++) {

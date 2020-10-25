@@ -18,16 +18,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import {push} from 'react-router-redux';
-import {request, text as requestText, json as requestJson} from 'd3-request';
-import {loadFiles, toggleModal} from 'kepler.gl/actions';
+import {text as requestText, json as requestJson} from 'd3-request';
+import {toggleModal} from 'kepler.gl/actions';
 
 import {
   LOADING_SAMPLE_ERROR_MESSAGE,
   LOADING_SAMPLE_LIST_ERROR_MESSAGE,
   MAP_CONFIG_URL
 } from './constants/default-settings';
-import {parseUri} from './utils/url';
 
 // CONSTANTS
 export const INIT = 'INIT';
@@ -35,10 +33,6 @@ export const LOAD_REMOTE_RESOURCE_SUCCESS = 'LOAD_REMOTE_RESOURCE_SUCCESS';
 export const LOAD_REMOTE_RESOURCE_ERROR = 'LOAD_REMOTE_RESOURCE_ERROR';
 export const LOAD_MAP_SAMPLE_FILE = 'LOAD_MAP_SAMPLE_FILE';
 export const SET_SAMPLE_LOADING_STATUS = 'SET_SAMPLE_LOADING_STATUS';
-
-// Sharing
-export const PUSHING_FILE = 'PUSHING_FILE';
-export const CLOUD_LOGIN_SUCCESS = 'CLOUD_LOGIN_SUCCESS';
 
 // ACTIONS
 export function initApp() {
@@ -79,33 +73,6 @@ export function setLoadingMapStatus(isMapLoading) {
 }
 
 /**
- * Actions passed to kepler.gl, called
- *
- * Note: exportFile is called on both saving and sharing
- *
- * @param {*} param0
- */
-export function onExportFileSuccess({response = {}, provider, options}) {
-  return dispatch => {
-    // if isPublic is true, use share Url
-    if (options.isPublic && provider.getShareUrl) {
-      dispatch(push(provider.getShareUrl(false)));
-    } else if (!options.isPublic && provider.getMapUrl) {
-      // if save private map to storage, use map url
-      dispatch(push(provider.getMapUrl(false)));
-    }
-  };
-}
-
-export function onLoadCloudMapSuccess({response, provider, loadParams}) {
-  return dispatch => {
-    if (provider.getMapUrl) {
-      const mapUrl = provider.getMapUrl(false, loadParams);
-      dispatch(push(mapUrl));
-    }
-  };
-}
-/**
  * this method detects whther the response status is < 200 or > 300 in case the error
  * is not caught by the actualy request framework
  * @param response the response
@@ -118,64 +85,6 @@ function detectResponseError(response) {
       message: response.body || response.message || response
     };
   }
-}
-
-// This can be moved into Kepler.gl to provide ability to load data from remote URLs
-/**
- * The method is able to load both data and kepler.gl files.
- * It uses loadFile action to dispatcha and add new datasets/configs
- * to the kepler.gl instance
- * @param options
- * @param {string} options.dataUrl the URL to fetch data from. Current supoprted file type json,csv, kepler.json
- * @returns {Function}
- */
-export function loadRemoteMap(options) {
-  return dispatch => {
-    dispatch(setLoadingMapStatus(true));
-    // breakdown url into url+query params
-    loadRemoteRawData(options.dataUrl).then(
-      // In this part we turn the response into a FileBlob
-      // so we can use it to call loadFiles
-      ([file, url]) => {
-        const {file: filename} = parseUri(url);
-        dispatch(loadFiles([new File([file], filename)])).then(() =>
-          dispatch(setLoadingMapStatus(false))
-        );
-      },
-      error => {
-        const {target = {}} = error;
-        const {status, responseText} = target;
-        dispatch(loadRemoteResourceError({status, message: responseText}, options.dataUrl));
-      }
-    );
-  };
-}
-
-/**
- * Load a file from a remote URL
- * @param url
- * @returns {Promise<any>}
- */
-function loadRemoteRawData(url) {
-  if (!url) {
-    // TODO: we should return reject with an appropriate error
-    return Promise.resolve(null);
-  }
-
-  return new Promise((resolve, reject) => {
-    request(url, (error, result) => {
-      if (error) {
-        reject(error);
-        return;
-      }
-      const responseError = detectResponseError(result);
-      if (responseError) {
-        reject(responseError);
-        return;
-      }
-      resolve([result.response, url]);
-    });
-  });
 }
 
 // The following methods are only used to load SAMPLES
@@ -195,17 +104,7 @@ function loadRemoteRawData(url) {
  */
 export function loadSample(options, pushRoute = true) {
   return (dispatch, getState) => {
-    const {routing} = getState();
-    if (options.id && pushRoute) {
-      dispatch(push(`/demo/${options.id}${routing.locationBeforeTransitions.search}`));
-    }
-    // if the sample has a kepler.gl config file url we load it
-    if (options.keplergl) {
-      dispatch(loadRemoteMap({dataUrl: options.keplergl}));
-    } else {
-      dispatch(loadRemoteSampleMap(options));
-    }
-
+    dispatch(loadRemoteSampleMap(options));
     dispatch(setLoadingMapStatus(true));
   };
 }

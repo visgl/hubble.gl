@@ -149,13 +149,6 @@ export const loadRemoteResourceSuccess = (state, action) => {
 };
 
 export const loadRemoteResourceError = (state, action) => {
-  const {error, url} = action;
-
-  const errorNote = {
-    type: 'error',
-    message: error.message || `Error loading ${url}`
-  };
-
   return {
     ...state,
     app: {
@@ -165,10 +158,7 @@ export const loadRemoteResourceError = (state, action) => {
     keplerGl: {
       ...state.keplerGl, // in case you keep multiple instances
       map: {
-        ...state.keplerGl.map,
-        uiState: uiStateUpdaters.addNotificationUpdater(state.keplerGl.map.uiState, {
-          payload: errorNote
-        })
+        ...state.keplerGl.map
       }
     }
   };
