@@ -80,7 +80,8 @@ class ExportVideoModal extends Component {
         borderRadius: theme.panelBorderRadius || '2px'
       },
       overlay: {
-        backgroundColor: 'rgba(0, 0, 0, .5)'
+        backgroundColor: 'rgba(0, 0, 0, .5)',
+        zIndex: (this.props.theme && this.props.theme.modalOverLayZ) || 1000
       }
     })
   );

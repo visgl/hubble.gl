@@ -77,6 +77,16 @@ const GlobalStyle = styled.div`
   }
 `;
 
+const WindowSize = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+`;
+
 class App extends Component {
   state = {
     width: window.innerWidth,
@@ -157,35 +167,30 @@ class App extends Component {
           // because styled-components doesn't always return a node
           // https://github.com/styled-components/styled-components/issues/617
           ref={node => {
-            node ? (this.root = node) : null;
+            if (node) {
+              this.root = node;
+            }
           }}
         >
-          <div
-            style={{
-              transition: 'margin 1s, height 1s',
-              position: 'absolute',
-              width: '100%',
-              height: '90%',
-              left: 0,
-              top: '10%'
-            }}
-          >
-            <AutoSizer>
-              {({height, width}) => (
-                <KeplerGl
-                  mapboxApiAccessToken={AUTH_TOKENS.MAPBOX_TOKEN}
-                  id="map"
-                  /*
-                   * Specify path to keplerGl state, because it is not mount at the root
-                   */
-                  getState={keplerGlGetState}
-                  width={width}
-                  height={height}
-                />
-              )}
-            </AutoSizer>
-          </div>
-          <ExportVideo />
+          <WindowSize>
+            <ExportVideo />
+            <div style={{transition: 'margin 1s, height 1s', flex: 1}}>
+              <AutoSizer>
+                {({height, width}) => (
+                  <KeplerGl
+                    mapboxApiAccessToken={AUTH_TOKENS.MAPBOX_TOKEN}
+                    id="map"
+                    /*
+                     * Specify path to keplerGl state, because it is not mount at the root
+                     */
+                    getState={keplerGlGetState}
+                    width={width}
+                    height={height}
+                  />
+                )}
+              </AutoSizer>
+            </div>
+          </WindowSize>
         </GlobalStyle>
       </ThemeProvider>
     );

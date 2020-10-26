@@ -23,7 +23,7 @@ export function parseSetCameraType(strCameraType, viewState) {
   // Converts mapState object to turf friendly Point obj (GEOJSON)
   const turfPoint = point([modifiedViewState.longitude, modifiedViewState.latitude]);
   if (match[0] === 'Orbit') {
-    modifiedViewState.bearing = parseInt(match[1]);
+    modifiedViewState.bearing = parseInt(match[1], 10);
   }
 
   // TODO future option that'll allow user to set X distance (km OR miles) directionally. Options inside turf

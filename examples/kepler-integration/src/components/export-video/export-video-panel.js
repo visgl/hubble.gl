@@ -22,68 +22,35 @@ import React, {Component} from 'react';
 import styled, {withTheme} from 'styled-components';
 import {Button, Icons} from 'kepler.gl/components';
 
-import {sceneBuilder} from './scene'; // Not yet part of standard library. TODO when updated
 import ExportVideoPanelSettings from './export-video-panel-settings';
+import ExportVideoPanelFooter from './export-video-panel-footer';
 import {ExportVideoPanelPreview} from './export-video-panel-preview'; // Not yet part of standard library. TODO when updated
 import {parseSetCameraType} from './parse-set-camera-type';
+import {DEFAULT_PADDING, DEFAULT_ICON_BUTTON_HEIGHT} from './constants';
 
-import {CameraKeyframes} from '@hubble.gl/core';
 import {easing} from 'popmotion';
 
 import {
+  DeckAdapter,
+  DeckScene,
+  CameraKeyframes,
   WebMEncoder,
   JPEGSequenceEncoder,
   PNGSequenceEncoder,
-  PreviewEncoder
-  // GifEncoder
+  PreviewEncoder,
+  GifEncoder
 } from '@hubble.gl/core';
-import {DeckAdapter} from 'hubble.gl';
 
-import {DEFAULT_TIME_FORMAT} from 'kepler.gl';
-import moment from 'moment';
+// import {DEFAULT_TIME_FORMAT} from 'kepler.gl';
+// import moment from 'moment';
 import {messages} from 'kepler.gl/localization';
 import {IntlProvider} from 'react-intl';
 
-const DEFAULT_BUTTON_HEIGHT = '32px';
-const DEFAULT_BUTTON_WIDTH = '64px';
-const DEFAULT_PADDING = '32px';
-const DEFAULT_ROW_GAP = '16px';
-
-const INITIAL_VIEW_STATE = {
-  longitude: -122.4,
-  latitude: 37.74,
-  zoom: 1,
-  pitch: 30,
-  bearing: 0
-};
-
-const adapter = new DeckAdapter(sceneBuilder);
-
-const encoderSettings = {
-  framerate: 30,
-  webm: {
-    quality: 0.8
-  },
-  jpeg: {
-    quality: 0.8
-  },
-  gif: {
-    sampleInterval: 1000
-  },
-  filename: `${'Default Video Name' + ' '}${moment()
-    .format(DEFAULT_TIME_FORMAT)
-    .toString()}`
-};
-
-function preview(updateCamera) {
-  adapter.render(PreviewEncoder, encoderSettings, () => {}, updateCamera);
-}
-
-function setFileNameDeckAdapter(name) {
-  encoderSettings.filename = `${name} ${moment()
-    .format(DEFAULT_TIME_FORMAT)
-    .toString()}`;
-}
+// function setFileNameDeckAdapter(name) {
+//   encoderSettings.filename = `${name} ${moment()
+//     .format(DEFAULT_TIME_FORMAT)
+//     .toString()}`;
+// }
 
 /* function setResolution(resolution){
   if(resolution === 'Good (540p)'){
@@ -97,21 +64,6 @@ function setFileNameDeckAdapter(name) {
     adapter.scene.height = 1080;
   }
 }*/
-
-// This is temporary, for showing purposes on Friday, resolution settings should be in a separate function,
-// only because we are against the clock.
-// TODO: refactor
-function render(settingsdata, updateCamera) {
-  //  setResolution(settingsdata.resolution); // Remove this
-
-  if (settingsdata.mediaType === 'WebM Video') {
-    adapter.render(WebMEncoder, encoderSettings, () => {}, updateCamera);
-  } else if (settingsdata.mediaType === 'PNG Sequence') {
-    adapter.render(PNGSequenceEncoder, encoderSettings, () => {}, updateCamera);
-  } else if (settingsdata.mediaType === 'JPEG Sequence') {
-    adapter.render(JPEGSequenceEncoder, encoderSettings, () => {}, updateCamera);
-  }
-}
 
 // TODO:
 
@@ -137,16 +89,10 @@ const PanelCloseInner = styled.div`
   padding: ${DEFAULT_PADDING} ${DEFAULT_PADDING} 0 ${DEFAULT_PADDING};
 `;
 
-const PanelClose = ({buttonHeight, handleClose}) => (
+const PanelClose = ({handleClose}) => (
   <PanelCloseInner className="export-video-panel__close">
-    <IconButton
-      className="export-video-panel__button"
-      link
-      onClick={() => {
-        handleClose();
-      }}
-    >
-      <Icons.Delete height={buttonHeight} />
+    <IconButton className="export-video-panel__button" link onClick={handleClose}>
+      <Icons.Delete height={DEFAULT_ICON_BUTTON_HEIGHT} />
     </IconButton>
   </PanelCloseInner>
 );
@@ -169,9 +115,11 @@ const PanelBodyInner = styled.div`
 
 const PanelBody = ({
   mapData,
+  encoderSettings,
+  adapter,
   setViewState,
   setMediaType,
-  setCamera,
+  setCameraPreset,
   setFileName /* , setQuality*/,
   settingsData
 }) => (
@@ -180,59 +128,15 @@ const PanelBody = ({
       mapData={mapData}
       encoderSettings={encoderSettings}
       adapter={adapter}
-      setViewState={setViewState} /* ref={sce}*/
+      setViewState={setViewState}
     />
-    <ExportVideoPanelSettings 
+    <ExportVideoPanelSettings
       setMediaType={setMediaType}
-      setCamera={setCamera}
+      setCameraPreset={setCameraPreset}
       setFileName={setFileName} /* , setQuality*/
       settingsData={settingsData}
     />
   </PanelBodyInner>
-);
-
-const PanelFooterInner = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: ${DEFAULT_ROW_GAP};
-  padding: ${DEFAULT_PADDING};
-`;
-
-const ButtonGroup = styled.div`
-  display: flex;
-`;
-
-const PanelFooter = ({handleClose, handlePreviewVideo, handleRenderVideo}) => (
-  <PanelFooterInner className="export-video-panel__footer">
-    <Button
-      width={DEFAULT_BUTTON_WIDTH}
-      height={DEFAULT_BUTTON_HEIGHT}
-      secondary
-      className={'export-video-button'}
-      onClick={handlePreviewVideo}
-    >
-      Preview
-    </Button>
-    <ButtonGroup>
-      <Button
-        width={DEFAULT_BUTTON_WIDTH}
-        height={DEFAULT_BUTTON_HEIGHT}
-        link
-        className={'export-video-button'}
-        onClick={handleClose}
-      >
-        Cancel
-      </Button>
-      <Button
-        width={DEFAULT_BUTTON_WIDTH}
-        height={DEFAULT_BUTTON_HEIGHT}
-        className={'export-video-button'}
-        onClick={handleRenderVideo}
-      >
-        Render
-      </Button>
-    </ButtonGroup>
-  </PanelFooterInner>
 );
 
 const Panel = styled.div`
@@ -240,38 +144,51 @@ const Panel = styled.div`
 `;
 
 class ExportVideoPanel extends Component {
+  static defaultProps = {
+    settingsWidth: 980
+  };
+
   constructor(props) {
     super(props);
 
-    this.state = {
-      mediaType: 'WebM Video',
-      camera: 'None',
-      fileName: 'Video Name', 
-      //  quality: "High (720p)",
-      viewState: INITIAL_VIEW_STATE
-    };
-
     this.setMediaTypeState = this.setMediaTypeState.bind(this);
-    this.setCamera = this.setCamera.bind(this);
+    this.setCameraPreset = this.setCameraPreset.bind(this);
     this.setFileName = this.setFileName.bind(this);
     // this.setQuality = this.setQuality.bind(this);
-    this.updateCamera = this.updateCamera.bind(this);
+    this.getCameraKeyframes = this.getCameraKeyframes.bind(this);
+    this.getDeckScene = this.getDeckScene.bind(this);
     this.onPreviewVideo = this.onPreviewVideo.bind(this);
     this.onRenderVideo = this.onRenderVideo.bind(this);
+
+    this.state = {
+      mediaType: 'GIF',
+      cameraPreset: 'None',
+      fileName: 'Video Name',
+      //  quality: "High (720p)",
+      viewState: this.props.mapData.mapState,
+      durationMs: 1000,
+      encoderSettings: {
+        framerate: 30,
+        webm: {
+          quality: 0.8
+        },
+        jpeg: {
+          quality: 0.8
+        },
+        gif: {
+          sampleInterval: 1000
+        },
+        filename: 'kepler.gl'
+      },
+      adapter: new DeckAdapter(this.getDeckScene)
+    };
   }
 
-  static defaultProps = {
-    settingsWidth: 980,
-    buttonHeight: '16px'
-  };
+  getCameraKeyframes(prevCamera = undefined) {
+    const {viewState, cameraPreset, durationMs} = this.state;
 
-  updateCamera(prevCamera) {
-    const viewState = this.state.viewState;
-    const strCameraType = this.state.camera;
-
-    // Set by User
-    prevCamera = new CameraKeyframes({
-      timings: [0, 1000], // TODO change to 5000 later. 1000 for dev testing
+    return new CameraKeyframes({
+      timings: [0, durationMs],
       keyframes: [
         {
           longitude: viewState.longitude,
@@ -280,11 +197,26 @@ class ExportVideoPanel extends Component {
           pitch: viewState.pitch,
           bearing: viewState.bearing
         },
-        parseSetCameraType(strCameraType, viewState)
+        parseSetCameraType(cameraPreset, viewState)
       ],
       easings: [easing.easeInOut]
     });
-    return prevCamera;
+  }
+
+  getDeckScene(animationLoop) {
+    const keyframes = {
+      camera: this.getCameraKeyframes()
+    };
+    const currentCamera = animationLoop.timeline.attachAnimation(keyframes.camera);
+
+    return new DeckScene({
+      animationLoop,
+      keyframes,
+      lengthMs: this.state.durationMs, // TODO change to 5000 later. 1000 for dev testing
+      width: 480,
+      height: 460,
+      currentCamera
+    });
   }
 
   setMediaTypeState(media) {
@@ -292,16 +224,16 @@ class ExportVideoPanel extends Component {
       mediaType: media
     });
   }
-  setCamera(option) {
+  setCameraPreset(option) {
     this.setState({
-      camera: option
+      cameraPreset: option
     });
   }
   setFileName(name) {
     this.setState({
       fileName: name.target.value
     });
-    setFileNameDeckAdapter(name.target.value);
+    // setFileNameDeckAdapter(name.target.value);
   }
   /* setQuality(resolution){
     this.setState({
@@ -311,38 +243,52 @@ class ExportVideoPanel extends Component {
   }*/
 
   onPreviewVideo() {
-    preview(this.updateCamera)
+    const {adapter, encoderSettings} = this.state;
+
+    const onStop = () => {};
+    adapter.render(PreviewEncoder, encoderSettings, onStop, this.getCameraKeyframes);
   }
 
   onRenderVideo() {
-    const settingsData = {
-      mediaType: this.state.mediaType,
-      camera: this.state.camera,
-      fileName: this.state.fileName,
-      resolution: this.state.quality
-    };
-    render(settingsData, this.updateCamera)
+    const {adapter, encoderSettings, mediaType} = this.state;
+    let Encoder = PreviewEncoder;
+    const onStop = () => {};
+
+    if (mediaType === 'WebM Video') {
+      Encoder = WebMEncoder;
+    } else if (mediaType === 'PNG Sequence') {
+      Encoder = PNGSequenceEncoder;
+    } else if (mediaType === 'JPEG Sequence') {
+      Encoder = JPEGSequenceEncoder;
+    } else if (mediaType === 'GIF') {
+      Encoder = GifEncoder;
+    }
+
+    adapter.render(Encoder, encoderSettings, onStop, this.getCameraKeyframes);
   }
 
   render() {
-    const {buttonHeight, settingsWidth, handleClose} = this.props;
+    const {settingsWidth, handleClose, mapData} = this.props;
     const settingsData = {
       mediaType: this.state.mediaType,
-      camera: this.state.camera,
+      cameraPreset: this.state.cameraPreset,
       fileName: this.state.fileName,
       resolution: this.state.quality
     };
+
+    const {exportSettings, adapter} = this.state;
 
     return (
       <IntlProvider locale="en" messages={messages.en}>
         <Panel settingsWidth={settingsWidth} className="export-video-panel">
-          <PanelClose buttonHeight={buttonHeight} handleClose={handleClose} />{' '}
-          {/* handleClose for X button */}
+          <PanelClose handleClose={handleClose} />
           <StyledTitle className="export-video-panel__title">Export Video</StyledTitle>
           <PanelBody
-            mapData={this.props.mapData}
+            mapData={mapData}
+            exportSettings={exportSettings}
+            adapter={adapter}
             setMediaType={this.setMediaTypeState}
-            setCamera={this.setCamera}
+            setCameraPreset={this.setCameraPreset}
             setFileName={this.setFileName}
             //  setQuality={this.setQuality}
             settingsData={settingsData}
@@ -350,12 +296,11 @@ class ExportVideoPanel extends Component {
               this.setState({viewState});
             }}
           />
-          <PanelFooter
+          <ExportVideoPanelFooter
             handleClose={handleClose}
             handlePreviewVideo={this.onPreviewVideo}
             handleRenderVideo={this.onRenderVideo}
-          />{' '}
-          {/* handleClose for Cancel button */}
+          />
         </Panel>
       </IntlProvider>
     );

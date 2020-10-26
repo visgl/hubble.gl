@@ -85,6 +85,7 @@ function detectResponseError(response) {
       message: response.body || response.message || response
     };
   }
+  return undefined;
 }
 
 // The following methods are only used to load SAMPLES

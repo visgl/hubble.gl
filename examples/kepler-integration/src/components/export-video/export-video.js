@@ -84,9 +84,9 @@ export class ExportVideo extends Component {
           mapData={this.props.mapData}
         />
         <h1>
-          Use this button to export an animation using Hubble{' '}
+          Use this button to export an animation using Hubble
           <button onClick={() => this.handleOpen()}>Export</button>
-        </h1>{' '}
+        </h1>
         {/* anonymous function to bind state onclick  */}
       </div>
     );

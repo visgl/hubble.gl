@@ -52,11 +52,11 @@ export class ExportVideoPanelPreview extends Component {
     this.forceUpdate();
   }
 
-  _onLayerSetDomain = (idx, colorDomain) => {
+  _onLayerSetDomain(idx, colorDomain) {
     layerConfigChange(this.props.mapData.visState.layers[idx], {
       colorDomain
     });
-  };
+  }
 
   _renderLayer(overlays, idx) {
     const datasets = this.props.mapData.visState.datasets;
@@ -127,19 +127,19 @@ export class ExportVideoPanelPreview extends Component {
     const useDevicePixels = false;
 
     // Map data
-    const mapboxApiAccessToken = this.props.mapData.mapStyle.mapboxApiAccessToken;
-    const mapboxApiUrl = this.props.mapData.mapStyle.mapboxApiUrl;
+    // const mapboxApiAccessToken = this.props.mapData.mapStyle.mapboxApiAccessToken;
+    // const mapboxApiUrl = this.props.mapData.mapStyle.mapboxApiUrl;
 
     // define trip and geojson layers
     let deckGlLayers = [];
 
-    const TEXT_DATA = [
-      {
-        text: 'Dataset\nTitle', // TODO make this an input and parse their str. Ex: new line becomes \n
-        position: this.props.mapData.mapState.target, // TODO RESEARCH coordinate system prop. Change to x,y,z. Also look up Coordinate origin in layer base class documentation
-        color: [255, 0, 0] // TODO temporarily red
-      }
-    ];
+    // const TEXT_DATA = [
+    //   {
+    //     text: 'Dataset\nTitle', // TODO make this an input and parse their str. Ex: new line becomes \n
+    //     position: this.props.mapData.mapState.target, // TODO RESEARCH coordinate system prop. Change to x,y,z. Also look up Coordinate origin in layer base class documentation
+    //     color: [255, 0, 0] // TODO temporarily red
+    //   }
+    // ];
 
     // TODO Timestamp does not work with current implementation
     // const timestamp = new TextLayer({
