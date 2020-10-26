@@ -24,7 +24,6 @@ import styled, {withTheme} from 'styled-components';
 import {createSelector} from 'reselect';
 import Modal from 'react-modal';
 import {DIMENSIONS} from 'kepler.gl';
-import ExportVideoPanel from './export-video-panel';
 
 const ModalContainer = styled.div`
   position: relative;
@@ -87,7 +86,7 @@ class ExportVideoModal extends Component {
   );
 
   render() {
-    const {isOpen, handleClose} = this.props;
+    const {isOpen, children} = this.props;
 
     const modalStyles = this.modalStylesSelector(this.props);
     return (
@@ -106,12 +105,7 @@ class ExportVideoModal extends Component {
               );
             }}
           >
-            <ExportVideoPanel
-              handleClose={() => {
-                handleClose();
-              }}
-              mapData={this.props.mapData}
-            />
+            {children}
           </Modal>
         ) : null}
       </ModalContainer>

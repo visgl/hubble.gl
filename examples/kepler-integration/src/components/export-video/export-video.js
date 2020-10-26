@@ -23,6 +23,7 @@ import React, {Component} from 'react';
 // Modal aesthetics
 import {withTheme} from 'styled-components';
 import ExportVideoModal from './export-video-modal';
+import {ExportVideoPanelContainer} from './export-video-panel-container';
 
 // Redux stores/actions
 // import {connect as keplerGlConnect} from 'kepler.gl';
@@ -63,6 +64,8 @@ export class ExportVideo extends Component {
     this.state = {
       isOpen: false
     };
+    this.handleClose = this.handleClose.bind(this);
+    this.handleOpen = this.handleOpen.bind(this);
   }
 
   // NOTE: This commented out code is here to connect to Redux store in future
@@ -78,14 +81,12 @@ export class ExportVideo extends Component {
   render() {
     return (
       <div>
-        <ExportVideoModal
-          isOpen={this.state.isOpen}
-          handleClose={this.handleClose.bind(this)}
-          mapData={this.props.mapData}
-        />
+        <ExportVideoModal isOpen={this.state.isOpen}>
+          <ExportVideoPanelContainer handleClose={this.handleClose} mapData={this.props.mapData} />
+        </ExportVideoModal>
         <h1>
           Use this button to export an animation using Hubble
-          <button onClick={() => this.handleOpen()}>Export</button>
+          <button onClick={this.handleOpen}>Export</button>
         </h1>
         {/* anonymous function to bind state onclick  */}
       </div>

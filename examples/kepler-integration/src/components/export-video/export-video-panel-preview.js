@@ -42,17 +42,14 @@ export class ExportVideoPanelPreview extends Component {
 
     this._onLayerSetDomain = this._onLayerSetDomain.bind(this);
     this._renderLayer = this._renderLayer.bind(this);
-
-    // this.adapter = new DeckAdapter(this.props.sceneBuilder);
   }
 
   componentDidMount() {
-    const mapState = this.props.mapData.mapState;
-    this.props.setViewState(mapState);
     this.forceUpdate();
   }
 
   _onLayerSetDomain(idx, colorDomain) {
+    // TODO: this isn't dispatched to the redux store yet.
     layerConfigChange(this.props.mapData.visState.layers[idx], {
       colorDomain
     });
