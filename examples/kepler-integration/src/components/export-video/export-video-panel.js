@@ -138,9 +138,9 @@ const PanelCloseInner = styled.div`
 `;
 
 const PanelClose = ({buttonHeight, handleClose}) => (
-  <PanelCloseInner className="render-settings-panel__close">
+  <PanelCloseInner className="export-video-panel__close">
     <IconButton
-      className="render-settings-panel__button"
+      className="export-video-panel__button"
       link
       onClick={() => {
         handleClose();
@@ -175,7 +175,7 @@ const PanelBody = ({
   setFileName /* , setQuality*/,
   settingsData
 }) => (
-  <PanelBodyInner className="render-settings-panel__body">
+  <PanelBodyInner className="export-video-panel__body">
     <ExportVideoPanelPreview
       mapData={mapData}
       encoderSettings={encoderSettings}
@@ -203,12 +203,12 @@ const ButtonGroup = styled.div`
 `;
 
 const PanelFooter = ({handleClose, handlePreviewVideo, handleRenderVideo}) => (
-  <PanelFooterInner className="render-settings-panel__footer">
+  <PanelFooterInner className="export-video-panel__footer">
     <Button
       width={DEFAULT_BUTTON_WIDTH}
       height={DEFAULT_BUTTON_HEIGHT}
       secondary
-      className={'render-settings-button'}
+      className={'export-video-button'}
       onClick={handlePreviewVideo}
     >
       Preview
@@ -218,7 +218,7 @@ const PanelFooter = ({handleClose, handlePreviewVideo, handleRenderVideo}) => (
         width={DEFAULT_BUTTON_WIDTH}
         height={DEFAULT_BUTTON_HEIGHT}
         link
-        className={'render-settings-button'}
+        className={'export-video-button'}
         onClick={handleClose}
       >
         Cancel
@@ -226,7 +226,7 @@ const PanelFooter = ({handleClose, handlePreviewVideo, handleRenderVideo}) => (
       <Button
         width={DEFAULT_BUTTON_WIDTH}
         height={DEFAULT_BUTTON_HEIGHT}
-        className={'render-settings-button'}
+        className={'export-video-button'}
         onClick={handleRenderVideo}
       >
         Render
@@ -239,7 +239,7 @@ const Panel = styled.div`
   width: ${props => props.settingsWidth}px;
 `;
 
-class RenderSettingsPanel extends Component {
+class ExportVideoPanel extends Component {
   constructor(props) {
     super(props);
 
@@ -335,10 +335,10 @@ class RenderSettingsPanel extends Component {
 
     return (
       <IntlProvider locale="en" messages={messages.en}>
-        <Panel settingsWidth={settingsWidth} className="render-settings-panel">
+        <Panel settingsWidth={settingsWidth} className="export-video-panel">
           <PanelClose buttonHeight={buttonHeight} handleClose={handleClose} />{' '}
           {/* handleClose for X button */}
-          <StyledTitle className="render-settings-panel__title">Export Video</StyledTitle>
+          <StyledTitle className="export-video-panel__title">Export Video</StyledTitle>
           <PanelBody
             mapData={this.props.mapData}
             setMediaType={this.setMediaTypeState}
@@ -362,4 +362,4 @@ class RenderSettingsPanel extends Component {
   }
 }
 
-export default withTheme(RenderSettingsPanel);
+export default withTheme(ExportVideoPanel);

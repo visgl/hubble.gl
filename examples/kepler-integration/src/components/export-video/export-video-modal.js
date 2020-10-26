@@ -90,7 +90,7 @@ class ExportVideoModal extends Component {
 
     const modalStyles = this.modalStylesSelector(this.props);
     return (
-      <ModalContainer className="render-settings-modal" ref={this.root}>
+      <ModalContainer className="export-video-modal" ref={this.root}>
         {this.root.current ? (
           <Modal
             isOpen={isOpen}
