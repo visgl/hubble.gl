@@ -22,7 +22,7 @@ import React, {Component} from 'react';
 
 // Modal aesthetics
 import {withTheme} from 'styled-components';
-import RenderSettingsModal from './render-settings-modal';
+import ExportVideoModal from './export-video-modal';
 
 // Redux stores/actions
 // import {connect as keplerGlConnect} from 'kepler.gl';
@@ -56,7 +56,7 @@ const mapDispatchToProps = () => (dispatch, props) => {
   };
 };
 
-export class HubbleExport extends Component {
+export class ExportVideo extends Component {
   constructor(props) {
     super(props);
 
@@ -66,26 +66,26 @@ export class HubbleExport extends Component {
   }
 
   // NOTE: This commented out code is here to connect to Redux store in future
-  // handleClose() {this.props.toggleHubbleExportModal(false)} // X button in RenderSettingsModal was clicked
-  // handleExport() {this.props.toggleHubbleExportModal(true)} // Export button in Kepler UI was clicked
+  // handleClose() {this.props.toggleHubbleExportModal(false)} // X button in ExportVideoModal was clicked
+  // handleOpen() {this.props.toggleHubbleExportModal(true)} // Export button in Kepler UI was clicked
   handleClose() {
     this.setState({isOpen: false});
-  } // X button in RenderSettingsModal was clicked
-  handleExport() {
+  } // X button in ExportVideoModal was clicked
+  handleOpen() {
     this.setState({isOpen: true});
   } // Export button in Kepler UI was clicked
 
   render() {
     return (
       <div>
-        <RenderSettingsModal
+        <ExportVideoModal
           isOpen={this.state.isOpen}
           handleClose={this.handleClose.bind(this)}
           mapData={this.props.mapData}
         />
         <h1>
           Use this button to export an animation using Hubble{' '}
-          <button onClick={() => this.handleExport()}>Export</button>
+          <button onClick={() => this.handleOpen()}>Export</button>
         </h1>{' '}
         {/* anonymous function to bind state onclick  */}
       </div>
@@ -93,7 +93,7 @@ export class HubbleExport extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(HubbleExport));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(ExportVideo));
 // NOTE: This commented out code is here to connect to Redux store in future
 // keplerGlConnect is a wrapper of Redux's standard connect w/ access to Kepler's Redux store
 // export default keplerGlConnect(mapStateToProps, mapDispatchToProps); // Object(...) is not a function

@@ -20,11 +20,12 @@
 
 import React, {Component} from 'react';
 import styled, {withTheme} from 'styled-components';
-import {Button, Input, Icons, ItemSelector} from 'kepler.gl/components';
+import {Button, Icons} from 'kepler.gl/components';
 
 import {sceneBuilder} from './scene'; // Not yet part of standard library. TODO when updated
-import {RenderSettingsPanelPreview} from './render-settings-panel-preview'; // Not yet part of standard library. TODO when updated
-import {parseSetCameraType} from '../utils/parseSetCameraType';
+import ExportVideoPanelSettings from './export-video-panel-settings';
+import {ExportVideoPanelPreview} from './export-video-panel-preview'; // Not yet part of standard library. TODO when updated
+import {parseSetCameraType} from './parse-set-camera-type';
 
 import {CameraKeyframes} from '@hubble.gl/core';
 import {easing} from 'popmotion';
@@ -158,122 +159,35 @@ const StyledTitle = styled.div`
   padding: 0 ${DEFAULT_PADDING} 16px ${DEFAULT_PADDING};
 `;
 
-const StyledSection = styled.div`
-  align-self: center;
-  color: ${props => props.theme.labelColor};
-  font-weight: 500;
-  font-size: 13px;
-  margin-top: ${DEFAULT_PADDING};
-  margin-bottom: ${DEFAULT_ROW_GAP};
-`;
-
-const StyledLabelCell = styled.div`
-  align-self: center;
-  color: ${props => props.theme.labelColor};
-  font-weight: 400;
-  font-size: 11px;
-`;
-
-const StyledValueCell = styled.div`
-  align-self: center;
-  color: ${props => props.theme.textColor};
-  font-weight: 500;
-  font-size: 11px;
-  padding: 0 12px;
-`;
-
 const PanelBodyInner = styled.div`
   padding: 0 ${DEFAULT_PADDING};
   display: grid;
   grid-template-columns: 480px auto;
+  grid-template-rows: 460px;
   grid-column-gap: 20px;
-`;
-
-const InputGrid = styled.div`
-  display: grid;
-  grid-template-columns: 88px auto;
-  grid-template-rows: repeat(
-    ${props => props.rows},
-    ${props => (props.rowHeight ? props.rowHeight : '34px')}
-  );
-  grid-row-gap: ${DEFAULT_ROW_GAP};
 `;
 
 const PanelBody = ({
   mapData,
+  setViewState,
   setMediaType,
   setCamera,
   setFileName /* , setQuality*/,
-  settingsData,
-  setViewState
+  settingsData
 }) => (
   <PanelBodyInner className="render-settings-panel__body">
-    <div style={{width: '480px', height: '460px'}}>
-      <RenderSettingsPanelPreview
-        mapData={mapData}
-        encoderSettings={encoderSettings}
-        adapter={adapter}
-        setViewState={setViewState} /* ref={sce}*/
-      />
-    </div>
-    <div>
-      <StyledSection>Video Effects</StyledSection>
-      <InputGrid rows={2}>
-        <StyledLabelCell>Timestamp</StyledLabelCell> {/* TODO add functionality  */}
-        <ItemSelector
-          selectedItems={['None']}
-          options={['None', 'White', 'Black']}
-          multiSelect={false}
-          searchable={false}
-        />
-        <StyledLabelCell>Camera</StyledLabelCell> {/* TODO add functionality */}
-        <ItemSelector
-          selectedItems={settingsData.camera}
-          options={[
-            'None',
-            'Orbit (90º)',
-            'Orbit (180º)',
-            'Orbit (360º)',
-            'North to South',
-            'South to North',
-            'East to West',
-            'West to East',
-            'Zoom Out',
-            'Zoom In'
-          ]}
-          multiSelect={false}
-          searchable={false}
-          onChange={setCamera}
-        />
-      </InputGrid>
-      <StyledSection>Export Settings</StyledSection> {/* TODO add functionality  */}
-      <InputGrid rows={3}>
-        <StyledLabelCell>File Name</StyledLabelCell>
-        <Input placeholder={settingsData.fileName} onChange={setFileName} />
-        <StyledLabelCell>Media Type</StyledLabelCell> {/* TODO add functionality  */}
-        <ItemSelector
-          selectedItems={settingsData.mediaType}
-          options={['WebM Video', 'PNG Sequence', 'JPEG Sequence']}
-          multiSelect={false}
-          searchable={false}
-          onChange={setMediaType}
-        />
-        <StyledLabelCell>Quality</StyledLabelCell> {/* TODO add functionality  */}
-        <ItemSelector
-          selectedItems={settingsData.resolution}
-          options={['Good (540p)', 'High (720p)', 'Highest (1080p)']}
-          multiSelect={false}
-          searchable={false}
-          onChange={() => {}}
-        />
-      </InputGrid>
-      <InputGrid style={{marginTop: DEFAULT_ROW_GAP}} rows={2} rowHeight="18px">
-        <StyledLabelCell>Duration</StyledLabelCell> {/* TODO add functionality  */}
-        <StyledValueCell>00:00:30</StyledValueCell>
-        <StyledLabelCell>File Size</StyledLabelCell> {/* TODO add functionality  */}
-        <StyledValueCell>36 MB</StyledValueCell>
-      </InputGrid>
-    </div>
+    <ExportVideoPanelPreview
+      mapData={mapData}
+      encoderSettings={encoderSettings}
+      adapter={adapter}
+      setViewState={setViewState} /* ref={sce}*/
+    />
+    <ExportVideoPanelSettings 
+      setMediaType={setMediaType}
+      setCamera={setCamera}
+      setFileName={setFileName} /* , setQuality*/
+      settingsData={settingsData}
+    />
   </PanelBodyInner>
 );
 
@@ -288,14 +202,14 @@ const ButtonGroup = styled.div`
   display: flex;
 `;
 
-const PanelFooter = ({handleClose, settingsData, updateCamera}) => (
+const PanelFooter = ({handleClose, handlePreviewVideo, handleRenderVideo}) => (
   <PanelFooterInner className="render-settings-panel__footer">
     <Button
       width={DEFAULT_BUTTON_WIDTH}
       height={DEFAULT_BUTTON_HEIGHT}
       secondary
       className={'render-settings-button'}
-      onClick={() => preview(updateCamera)}
+      onClick={handlePreviewVideo}
     >
       Preview
     </Button>
@@ -305,9 +219,7 @@ const PanelFooter = ({handleClose, settingsData, updateCamera}) => (
         height={DEFAULT_BUTTON_HEIGHT}
         link
         className={'render-settings-button'}
-        onClick={() => {
-          handleClose();
-        }}
+        onClick={handleClose}
       >
         Cancel
       </Button>
@@ -315,7 +227,7 @@ const PanelFooter = ({handleClose, settingsData, updateCamera}) => (
         width={DEFAULT_BUTTON_WIDTH}
         height={DEFAULT_BUTTON_HEIGHT}
         className={'render-settings-button'}
-        onClick={() => render(settingsData, updateCamera)}
+        onClick={handleRenderVideo}
       >
         Render
       </Button>
@@ -334,8 +246,7 @@ class RenderSettingsPanel extends Component {
     this.state = {
       mediaType: 'WebM Video',
       camera: 'None',
-      fileName: 'Video Name',
-      cameraHandle: undefined,
+      fileName: 'Video Name', 
       //  quality: "High (720p)",
       viewState: INITIAL_VIEW_STATE
     };
@@ -345,6 +256,8 @@ class RenderSettingsPanel extends Component {
     this.setFileName = this.setFileName.bind(this);
     // this.setQuality = this.setQuality.bind(this);
     this.updateCamera = this.updateCamera.bind(this);
+    this.onPreviewVideo = this.onPreviewVideo.bind(this);
+    this.onRenderVideo = this.onRenderVideo.bind(this);
   }
 
   static defaultProps = {
@@ -397,6 +310,20 @@ class RenderSettingsPanel extends Component {
     setResolution(resolution);
   }*/
 
+  onPreviewVideo() {
+    preview(this.updateCamera)
+  }
+
+  onRenderVideo() {
+    const settingsData = {
+      mediaType: this.state.mediaType,
+      camera: this.state.camera,
+      fileName: this.state.fileName,
+      resolution: this.state.quality
+    };
+    render(settingsData, this.updateCamera)
+  }
+
   render() {
     const {buttonHeight, settingsWidth, handleClose} = this.props;
     const settingsData = {
@@ -425,8 +352,8 @@ class RenderSettingsPanel extends Component {
           />
           <PanelFooter
             handleClose={handleClose}
-            settingsData={settingsData}
-            updateCamera={this.updateCamera}
+            handlePreviewVideo={this.onPreviewVideo}
+            handleRenderVideo={this.onRenderVideo}
           />{' '}
           {/* handleClose for Cancel button */}
         </Panel>

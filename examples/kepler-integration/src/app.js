@@ -30,7 +30,7 @@ import {replacePanelHeader} from './factories/panel-header';
 import {AUTH_TOKENS} from './constants/default-settings';
 import {loadSampleConfigurations} from './actions';
 
-import HubbleExport from './components/hubble-export';
+import ExportVideo from './components/export-video/export-video';
 
 const KeplerGl = require('kepler.gl/components').injectComponents([
   replaceLoadDataModal(),
@@ -185,7 +185,7 @@ class App extends Component {
               )}
             </AutoSizer>
           </div>
-          <HubbleExport />
+          <ExportVideo />
         </GlobalStyle>
       </ThemeProvider>
     );

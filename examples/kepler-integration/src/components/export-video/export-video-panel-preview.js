@@ -29,7 +29,7 @@ import {MapView, OrthographicView} from '@deck.gl/core';
 import {TileLayer} from '@deck.gl/geo-layers';
 import {BitmapLayer} from '@deck.gl/layers';
 
-export class RenderSettingsPanelPreview extends Component {
+export class ExportVideoPanelPreview extends Component {
   constructor(props) {
     super(props);
 
@@ -47,6 +47,8 @@ export class RenderSettingsPanelPreview extends Component {
   }
 
   componentDidMount() {
+    const mapState = this.props.mapData.mapState;
+    this.props.setViewState(mapState);
     this.forceUpdate();
   }
 

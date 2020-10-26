@@ -22,15 +22,15 @@
 import React, {Component, createRef} from 'react';
 import styled, {withTheme} from 'styled-components';
 import {createSelector} from 'reselect';
-import RenderSettingsPanel from './render-settings-panel';
 import Modal from 'react-modal';
 import {DIMENSIONS} from 'kepler.gl';
+import ExportVideoPanel from './export-video-panel';
 
 const ModalContainer = styled.div`
   position: relative;
 `;
 
-class RenderSettingsModal extends Component {
+class ExportVideoModal extends Component {
   static defaultProps = {
     defaultSettingsPos: {top: '320px', left: '320px'},
     bottomBuffer: 212
@@ -105,7 +105,7 @@ class RenderSettingsModal extends Component {
               );
             }}
           >
-            <RenderSettingsPanel
+            <ExportVideoPanel
               handleClose={() => {
                 handleClose();
               }}
@@ -118,4 +118,4 @@ class RenderSettingsModal extends Component {
   }
 }
 
-export default withTheme(RenderSettingsModal);
+export default withTheme(ExportVideoModal);
