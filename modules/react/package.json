@@ -1,6 +1,6 @@
 {
   "name": "@hubble.gl/react",
-  "version": "1.1.0",
+  "version": "1.2.0-alpha.1",
   "description": "React components for hubble.gl",
   "license": "MIT",
   "repository": {

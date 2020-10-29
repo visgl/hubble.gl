@@ -17,12 +17,12 @@
     "deploy": "NODE_DEBUG=gh-pages gh-pages -d public"
   },
   "dependencies": {
-    "@deck.gl/core": "^8.2.2",
-    "@deck.gl/geo-layers": "^8.2.2",
-    "@deck.gl/layers": "^8.2.2",
-    "@deck.gl/mesh-layers": "^8.2.2",
-    "@deck.gl/react": "^8.2.2",
-    "@luma.gl/core": "^8.2.0",
+    "@deck.gl/core": "^8.3.4",
+    "@deck.gl/geo-layers": "^8.3.4",
+    "@deck.gl/layers": "^8.3.4",
+    "@deck.gl/mesh-layers": "^8.3.4",
+    "@deck.gl/react": "^8.3.4",
+    "@luma.gl/core": "^8.3.1",
     "d3-color": "^1.4.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

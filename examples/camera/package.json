@@ -4,10 +4,10 @@
     "start-local": "webpack-dev-server --env.local --progress --hot --open"
   },
   "dependencies": {
-    "@luma.gl/debug": "^8.2.0",
-    "@luma.gl/shadertools": "^8.2.0",
+    "@luma.gl/debug": "^8.3.1",
+    "@luma.gl/shadertools": "^8.3.1",
     "d3-color": "^1.4.1",
-    "deck.gl": "^8.2.2"
+    "deck.gl": "^8.3.4"
   },
   "devDependencies": {
     "@babel/plugin-syntax-class-properties": "^7.8.3",

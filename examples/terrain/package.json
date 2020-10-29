@@ -4,10 +4,8 @@
     "start-local": "webpack-dev-server --env.local --progress --hot --open"
   },
   "dependencies": {
-    "@deck.gl/geo-layers": "^8.2.2",
-    "@deck.gl/react": "^8.2.2",
-    "@luma.gl/engine": "^8.2.0",
-    "deck.gl": "^8.2.2"
+    "@luma.gl/engine": "^8.3.1",
+    "deck.gl": "^8.3.4"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",

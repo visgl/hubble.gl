@@ -1,22 +1,14 @@
 # Overview
 
-### FrameEncoderSettings
-
-* `startOffsetMs` (`number`, Optional) - Offset the animation. Defaults to 0.
-
-* `durationMs` (`number`, Optional) - Set to render a smaller duration than the whole clip. Defaults to scene length.  
-  
-* `filename`(`string`, Optional) - Filename for rendered video. Defaults to UUID.
-
-* `framerate` (`number`, Optional) - framerate of rendered video. Defaults to 30.
-
-See encoders for additional namespaced settings.
+Encoders are used to capture frames of an HTML canvas and construct them into videos. They're constructed and configured internally before each video capture. During capture, they provide asynchronous functions for adding frames and saving videos. See [DeckAdapter.render](/modules/core/docs/deck-adapter#render) for usage.
 
 ##### Video
 
-All encoder classes implement the [`Encoder`]() abstract class and inherit from the [`FrameEncoder`]() or [`TarEncoder`]() base classes.
+All encoder classes inherit from the [`FrameEncoder`](/modules/core/docs/encoder/frame-encoder) class.
 
  - WebMEncoder
+
+ - GIFEncoder
 
  - StreamEncoder
 
@@ -27,3 +19,7 @@ All encoder classes implement the [`Encoder`]() abstract class and inherit from 
 ##### Utility
 
  - PreviewEncoder
+
+### Attributions
+
+Encoders started as a fork of [CCapture.js](https://github.com/spite/ccapture.js), which is under MIT license.
