@@ -1,15 +1,22 @@
 # FrameEncoder
 
-A base class for encoders that implements the `Encoder` abstract class.
+A base class for encoders. Custom frame encoders may be implemented and used by Hubble as new capture technologies advance, or uncommon use cases need to be implemented.
 
 ## Constructor
 
 Parameters:
 
-* `quality` (Number, Optional)
+* `settings` (Object)
 
-* `framerate` (Number, Optional)
+  * `startOffsetMs` (`number`, Optional) - Offset the animation. Defaults to 0.
 
+  * `durationMs` (`number`, Optional) - Set to render a smaller duration than the whole clip. Defaults to scene length.
+
+  * `filename`(`string`, Optional) - Filename for rendered video. Defaults to UUID.
+
+  * `framerate` (`number`, Optional) - framerate of rendered video. Defaults to 30.
+
+See encoders for additional namespaced settings.
 
 ## Members
 
@@ -37,11 +44,29 @@ Generic quality value. For canvas capture see [HTMLCanvasElement.toDataURL](http
 
 ## Methods
 
-##### `getMimeType`
+##### start()
+
+Initialize a capture and flush the existing encoder state.
+
+##### add(canvas: HTMLCanvasElement): Promise<void>
+
+Add a canvas frame to an in-progress capture.
+
+Parameters:
+
+* `canvas` (`HTMLCanvasElement`) - The canvas to capture.
 
 Returns:
 
-`string` of mime type.
+* `Promise<void>` - Add is an async function. The promise will resolve when the frame capture is complete.
+
+##### save(): Promise<Blob | ArrayBuffer>
+
+Compile a video of the captured frames.
+
+Returns:
+
+* `Promise<Blob | ArrayBuffer>` - Save is an async function. The promise will resolve when the video is compiled and will contain a `Blob` or `ArrayBuffer` of the video content. See individual encoders for more details.
 
 ## Source
 

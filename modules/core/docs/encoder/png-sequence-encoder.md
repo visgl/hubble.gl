@@ -1,6 +1,10 @@
 # PNGSequenceEncoder
 
-A photo sequence encoder that inherits [TarEncoder](). Saves each frame as a photo contained in a `".tar"` archive.
+A photo sequence encoder that inherits [FrameEncoder](/modules/core/docs/encoder/frame-encoder). Saves each frame as a photo contained in a `".tar"` archive.
+
+## Constructor
+
+Construction of the encoder class is not required. Refer to [DeckAdapter.render](/modules/core/docs/deck-adapter#render) for usage. The constructor accepts a `FrameEncoderSettings` object.
 
 **Notes:**
 
