@@ -18,8 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import Encoder from './encoder';
-export default class FrameEncoder extends Encoder {
+export default class FrameEncoder {
   /** @type {string} */
   extension = '';
 
@@ -34,13 +33,19 @@ export default class FrameEncoder extends Encoder {
 
   /** @param {import('types').FrameEncoderSettings} settings */
   constructor(settings = {}) {
-    super();
     this.framerate = settings.framerate || 30;
-    this.getMimeType = this.getMimeType.bind(this);
   }
 
-  /** @type {() => string} */
-  getMimeType() {
-    return this.mimeType;
+  /** @type {() => void} */
+  start() {
+    throw new Error('Encoder: Implement a start function');
+  }
+  /** @type {(canvas: HTMLCanvasElement) => Promise<void>} */
+  async add(canvas) {
+    throw new Error('Encoder: Implement an add function');
+  }
+  /** @type {() => Promise<any>} */
+  async save() {
+    throw new Error('Encoder: Implement a save function');
   }
 }

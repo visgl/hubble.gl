@@ -34,8 +34,8 @@ class PhotoEncoder extends FrameEncoder {
   /** @param {HTMLCanvasElement} canvas */
   async add(canvas) {
     // Adding a frame just overwrites old image
-    const buffer = await canvasToArrayBuffer(canvas, this.getMimeType(), this.quality);
-    this.blob = new Blob([buffer], {type: this.getMimeType()});
+    const buffer = await canvasToArrayBuffer(canvas, this.mimeType, this.quality);
+    this.blob = new Blob([buffer], {type: this.mimeType});
     return Promise.resolve();
   }
 
