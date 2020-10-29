@@ -25,7 +25,7 @@ type FrameEncoderSettings = Partial<EncoderSettings>
 
 interface EncoderSettings {
   startOffsetMs?: number
-  durationMs?: number  
+  durationMs?: number
   filename: string
   framerate: number
   jpeg: {
@@ -72,18 +72,9 @@ interface KeplerSceneParams {
 //     mimeType: string;
 //     settings: Settings;
 //     constructor(settings: Settings);
-//     getMimeType: () => string;
 //   }
 
 //   export interface FrameEncoder implements IFrameEncoder {}
-// }
-
-// interface Encoder {
-//   start: () => void;
-//   stop: () => void;
-//   add: (canvas: HTMLCanvasElement) => Promise<void>;
-//   save: () => Promise<Blob>;
-//   dispose: () => void;
 // }
 
 // export module 'hubble.gl/src/encoders/FrameEncoder' {
@@ -93,7 +84,6 @@ interface KeplerSceneParams {
 //     mimeType: string;
 //     settings: Settings;
 //     constructor(settings: Settings);
-//     getMimeType: () => string;
 //   }
 
 //   interface FrameEncoder implements IFrameEncoder {}
