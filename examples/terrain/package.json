@@ -6,7 +6,7 @@
   "dependencies": {
     "@deck.gl/geo-layers": "^8.2.2",
     "@deck.gl/react": "^8.2.2",
-    "@luma.gl/engine": "^8.2.0",
+    "@luma.gl/engine": "^8.3.1",
     "deck.gl": "^8.2.2"
   },
   "devDependencies": {

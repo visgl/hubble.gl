@@ -40,7 +40,7 @@
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-react": "^7.12.1",
     "@babel/register": "^7.12.1",
-    "@luma.gl/engine": "^8.2.0",
+    "@luma.gl/engine": "^8.3.1",
     "@probe.gl/bench": "^3.2.1",
     "@probe.gl/test-utils": "^3.2.1",
     "babel-eslint": "^9.0.0",

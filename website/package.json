@@ -22,7 +22,7 @@
     "@deck.gl/layers": "^8.2.2",
     "@deck.gl/mesh-layers": "^8.2.2",
     "@deck.gl/react": "^8.2.2",
-    "@luma.gl/core": "^8.2.0",
+    "@luma.gl/core": "^8.3.1",
     "d3-color": "^1.4.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
