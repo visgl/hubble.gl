@@ -6,13 +6,13 @@ It's very straightforward to define new kinds of `Keyframe` classes, so hubble.g
 
 ##### Keyframes
 
-All keyframe classes inherit from the hubble.gl [`Keyframes`]() base class.
+All keyframe classes inherit from the hubble.gl [`Keyframes`](/modules/core/docs/keyframe/keyframes) base class.
 
  - CameraKeyframes
 
 ##### LayersKeyframes
 
-All layer keyframe classes inherit from the [`LayerKeyframes`]() base class. Each instance is associated with a deck.gl `layerId`.
+All layer keyframe classes inherit from the [`LayerKeyframes`](/modules/core/docs/keyframe/layer-keyframes) base class. Each instance is associated with a deck.gl `layerId`.
 
  - ScatterPlotLayerKeyframes
 

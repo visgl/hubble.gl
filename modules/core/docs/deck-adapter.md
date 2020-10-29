@@ -27,7 +27,7 @@ async function sceneBuilder(animationLoop) {
 
 ## Methods
 
-##### `getProps`
+##### `getProps(deckRef, setReady, onNextFrame): props`
 
 Supplies deck.gl properties from hubble.gl.
 
@@ -39,19 +39,31 @@ Parameters:
 
 * `onNextFrame` (`(nextTimeMs: number) => void`) - Callback indicating the next frame in a rendering should be displayed.
 
-##### `render`
+##### `render(Encoder, encoderSettings, onStop, updateCamera)`
 
 Start rendering.
 
 Parameters:
 
-* `Encoder` (`typeof FrameEncoder`, Optional) - Default: `PreviewEncoder`. FrameEncoder class for capturing deck canvas. See [Encoders](/docs/encoder)
+* **`Encoder` (`typeof FrameEncoder`, Optional) - Default: `PreviewEncoder`.**
 
-* `encoderSettings` (`FrameEncoderSettings`, Optional) - Default: `{}` (See [Encoder Overview](/docs/encoder) for internal defaults)
+Provide a FrameEncoder class for capturing deck canvas. See [Encoders Overview](/modules/core/docs/encoder) for options.
 
-##### `stop`
+* **`encoderSettings` (`Object`, Optional) - Default: `{}`.**
 
-Stop rendering and save.
+See [FrameEncoder](/modules/core/docs/encoder/frame-encoder#constructor-1) for internal defaults.
+
+* **`onStop` (`() => void`, Optional) - Default: `undefined`.**
+
+This function is called after the last frame is rendered. It does not get called when a render is interrupted with `stop()`.
+
+* **`updateCamera` (`(prevCamera: CameraKeyframes) => void`, Optional) - Default: `undefined`.**
+
+This function is called just prior to rendering. This is useful for redefining the camera's keyframes during an apps lifecycle in response to users interacting with the map.
+
+##### `stop(callback)`
+
+Interrupt rendering and saves partial result. This is useful for handling user interruptions.
 
 Parameters:
 

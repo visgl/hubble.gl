@@ -72,7 +72,7 @@
               "entry": "modules/core/docs/encoder/webm-encoder"
             },
             {
-              "entry": "modules/core/docs/encoder/tar-encoder"
+              "entry": "modules/core/docs/encoder/gif-encoder"
             },
             {
               "entry": "modules/core/docs/encoder/jpeg-sequence-encoder"

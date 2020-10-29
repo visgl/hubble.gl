@@ -74,11 +74,11 @@ With a `sceneBuilder` in hand, create a `DeckAdapter` and choose a `FrameEncoder
 // app.js
 import React, {useState, useRef} from 'react';
 import DeckGL from '@deck.gl/react';
-import {DeckAdapter, WebMEncoder} from 'hubble.gl';
+import {DeckAdapter} from 'hubble.gl';
 import {useNextFrame, BasicControls} from '@hubble.gl/react';
 import {sceneBuilder} from './scene';
 
-const adapter = new DeckAdapter(sceneBuilder, WebMEncoder);
+const adapter = new DeckAdapter(sceneBuilder);
 
 /** @type {import('@hubble.gl/core/src/types').FrameEncoderSettings} */
 const encoderSettings = {
