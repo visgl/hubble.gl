@@ -31,7 +31,7 @@
     "build-bundle": "webpack --display=minimal --config ../../scripts/bundle.config.js"
   },
   "peerDependencies": {
-    "@hubble.gl/core": "^1.0.0",
+    "@hubble.gl/core": "^1.1.0",
     "react": ">=16.8",
     "react-dom": ">=16.8"
   }
