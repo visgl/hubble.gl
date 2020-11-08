@@ -74,7 +74,8 @@ const PanelBody = ({
   setViewState,
   setMediaType,
   setCameraPreset,
-  setFileName /* , setQuality*/,
+  setFileName,
+  setQuality,
   settingsData
 }) => (
   <PanelBodyInner className="export-video-panel__body">
@@ -87,7 +88,8 @@ const PanelBody = ({
     <ExportVideoPanelSettings
       setMediaType={setMediaType}
       setCameraPreset={setCameraPreset}
-      setFileName={setFileName} /* , setQuality*/
+      setFileName={setFileName}
+      setQuality={setQuality}
       settingsData={settingsData}
     />
   </PanelBodyInner>
@@ -109,7 +111,7 @@ const ExportVideoPanel = ({
   setMediaTypeState,
   setCameraPreset,
   setFileName,
-  // setQuality,
+  setQuality,
   // Hubble Props
   exportSettings,
   adapter,
@@ -128,7 +130,7 @@ const ExportVideoPanel = ({
           setMediaType={setMediaTypeState}
           setCameraPreset={setCameraPreset}
           setFileName={setFileName}
-          //  setQuality={this.setQuality}
+          setQuality={setQuality}
           settingsData={settingsData}
           setViewState={setViewState}
         />

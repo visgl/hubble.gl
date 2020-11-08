@@ -52,16 +52,16 @@ export function parseSetCameraType(strCameraType, viewState) {
   if (setChecker.has(match[0])) {
     if (match[0] === 'East') {
       // TODO Temporary solution to catch this branch to master. Doesn't work for "East to North" for example if option allows in future
-      const translatedPoly = transformTranslate(turfPoint, 10000, 270);
+      const translatedPoly = transformTranslate(turfPoint, 10, 270);
       modifiedViewState.longitude = translatedPoly.geometry.coordinates[0];
     } else if (match[0] === 'South') {
-      const translatedPoly = transformTranslate(turfPoint, 10000, 0);
+      const translatedPoly = transformTranslate(turfPoint, 10, 0);
       modifiedViewState.latitude = translatedPoly.geometry.coordinates[1];
     } else if (match[0] === 'West') {
-      const translatedPoly = transformTranslate(turfPoint, 10000, 90);
+      const translatedPoly = transformTranslate(turfPoint, 10, 90);
       modifiedViewState.longitude = translatedPoly.geometry.coordinates[0];
     } else if (match[0] === 'North') {
-      const translatedPoly = transformTranslate(turfPoint, 10000, 180);
+      const translatedPoly = transformTranslate(turfPoint, 10, 180);
       modifiedViewState.latitude = translatedPoly.geometry.coordinates[1];
     }
   }

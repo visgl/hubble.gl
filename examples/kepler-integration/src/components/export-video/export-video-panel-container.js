@@ -45,30 +45,6 @@ import {
 //     .toString()}`;
 // }
 
-/* function setResolution(resolution){
-  if(resolution === 'Good (540p)'){
-    adapter.scene.width = 960;
-    adapter.scene.height = 540;
-  }else if(resolution === 'High (720p)'){
-    adapter.scene.width = 1280;
-    adapter.scene.height = 720;
-  }else if(resolution === 'Highest (1080p)'){
-    adapter.scene.width = 1920;
-    adapter.scene.height = 1080;
-  }
-}*/
-
-// TODO:
-
-// Changes Timestamp function
-// Camera function (preset keyframes) DONE
-// File Name function DONE
-// MediaType function DONE
-// Quality function
-// Set Duration function
-// Calculate File Size function
-// Render Function DONE
-
 export class ExportVideoPanelContainer extends Component {
   static defaultProps = {
     exportVideoWidth: 980
@@ -80,7 +56,7 @@ export class ExportVideoPanelContainer extends Component {
     this.setMediaTypeState = this.setMediaTypeState.bind(this);
     this.setCameraPreset = this.setCameraPreset.bind(this);
     this.setFileName = this.setFileName.bind(this);
-    // this.setQuality = this.setQuality.bind(this);
+    this.setQuality = this.setQuality.bind(this);
     this.getCameraKeyframes = this.getCameraKeyframes.bind(this);
     this.getDeckScene = this.getDeckScene.bind(this);
     this.onPreviewVideo = this.onPreviewVideo.bind(this);
@@ -90,7 +66,7 @@ export class ExportVideoPanelContainer extends Component {
       mediaType: 'GIF',
       cameraPreset: 'None',
       fileName: 'Video Name',
-      //  quality: "High (720p)",
+      quality: 'High (720p)',
       viewState: this.props.mapData.mapState,
       durationMs: 1000,
       encoderSettings: {
@@ -102,7 +78,9 @@ export class ExportVideoPanelContainer extends Component {
           quality: 0.8
         },
         gif: {
-          sampleInterval: 1000
+          sampleInterval: 1000,
+          width: 1280,
+          height: 720
         },
         filename: 'kepler.gl'
       },
@@ -161,12 +139,37 @@ export class ExportVideoPanelContainer extends Component {
     });
     // setFileNameDeckAdapter(name.target.value);
   }
-  /* setQuality(resolution){
+  setQuality(resolution) {
+    // NOTE: resolution is string user selects ex: 'Good (540p)'\
+    const {encoderSettings} = this.state;
+
+    let newWidth = encoderSettings.gif.width;
+    let newHeight = encoderSettings.gif.height;
+
+    if (resolution === 'Good (540p)') {
+      newWidth = 960;
+      newHeight = 540;
+    } else if (resolution === 'High (720p)') {
+      newWidth = 1280;
+      newHeight = 720;
+    } else if (resolution === 'Highest (1080p)') {
+      newWidth = 1920;
+      newHeight = 1080;
+    }
+
     this.setState({
-      quality: resolution
+      quality: resolution,
+      encoderSettings: {
+        ...encoderSettings,
+        gif: {
+          ...encoderSettings.gif,
+          width: newWidth,
+          height: newHeight
+        }
+        // TODO Add other encoders as needed. Not yet implemented
+      }
     });
-    setResolution(resolution);
-  }*/
+  }
 
   onPreviewVideo() {
     const {adapter, encoderSettings} = this.state;
@@ -219,7 +222,7 @@ export class ExportVideoPanelContainer extends Component {
         setMediaTypeState={this.setMediaTypeState}
         setCameraPreset={this.setCameraPreset}
         setFileName={this.setFileName}
-        // setQuality={this.setQuality}
+        setQuality={this.setQuality}
         // Hubble Props
         exportSettings={exportSettings}
         adapter={adapter}

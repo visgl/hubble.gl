@@ -1,6 +1,13 @@
 # Demo App
 
-This is the src code of kepler.gl demo app. You can copy this folder out and run it locally.
+This is a lite version of the kepler.gl demo app that includes hubble.gl features. In particular, presets to modify zoom, bearing, pitch, as well as latitude/longitude are demonstrated within a self-contained modal that can be accessed by clicking the "Export" button. Afterwards, animations can be exported in various formats such as GIF, WEBM, JPEG sequence, etc.
+
+TODO INSERT FINAL SCREENSHOT of UI
+
+TODO INSERT FINAL SCREENSHOT of modal
+
+A live demo can be viewed here:
+TODO
 
 #### 1. Install
 
