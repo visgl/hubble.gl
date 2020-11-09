@@ -1,3 +1,5 @@
+// Forked from kepler.gl 11/2020
+// https://github.com/keplergl/kepler.gl/tree/6c48c4225edc175657a8d8faf190c313ab40ede0/src/components
 // Copyright (c) 2020 Uber Technologies, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,39 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import {combineReducers, createStore, applyMiddleware, compose} from 'redux';
-import {enhanceReduxMiddleware} from 'kepler.gl/middleware';
-import thunk from 'redux-thunk';
-// eslint-disable-next-line no-unused-vars
-import window from 'global/window';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import Base from './base';
 
-import demoReducer from './reducers/index';
+export default class Search extends Component {
+  static propTypes = {
+    /** Set the height of the icon, ex. '16px' */
+    height: PropTypes.string
+  };
 
-const reducers = combineReducers({
-  demo: demoReducer
-});
+  static defaultProps = {
+    height: '16px',
+    predefinedClassName: 'data-ex-icons-search'
+  };
 
-export const middlewares = enhanceReduxMiddleware([thunk]);
-
-export const enhancers = [applyMiddleware(...middlewares)];
-
-const initialState = {};
-
-// eslint-disable-next-line prefer-const
-let composeEnhancers = compose;
-
-/**
- * comment out code below to enable Redux Devtools
- */
-
-if (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
-  composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-    actionsBlacklist: [
-      '@@kepler.gl/MOUSE_MOVE',
-      '@@kepler.gl/UPDATE_MAP',
-      '@@kepler.gl/LAYER_HOVER'
-    ]
-  });
+  render() {
+    return (
+      <Base {...this.props}>
+        <path d="M56.74,53.21l-3.53,3.53a1.67,1.67,0,0,1-2.35,0L40.21,46.09A24.32,24.32,0,0,0,46.1,40.2L56.74,50.85A1.66,1.66,0,0,1,56.74,53.21Z" />
+        <path d="M26.22,6.78A19.46,19.46,0,1,0,42.6,36.7a19.18,19.18,0,0,0,3.08-10.47A19.45,19.45,0,0,0,26.22,6.78ZM11.64,26.22A14.58,14.58,0,1,1,26.22,40.81,14.6,14.6,0,0,1,11.64,26.22Z" />
+      </Base>
+    );
+  }
 }
-
-export default createStore(reducers, initialState, composeEnhancers(...enhancers));

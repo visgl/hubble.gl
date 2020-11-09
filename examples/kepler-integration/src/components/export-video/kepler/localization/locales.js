@@ -1,3 +1,5 @@
+// Forked from kepler.gl 11/2020
+// https://github.com/keplergl/kepler.gl/tree/6c48c4225edc175657a8d8faf190c313ab40ede0/src/localization
 // Copyright (c) 2020 Uber Technologies, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,39 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import {combineReducers, createStore, applyMiddleware, compose} from 'redux';
-import {enhanceReduxMiddleware} from 'kepler.gl/middleware';
-import thunk from 'redux-thunk';
-// eslint-disable-next-line no-unused-vars
-import window from 'global/window';
-
-import demoReducer from './reducers/index';
-
-const reducers = combineReducers({
-  demo: demoReducer
-});
-
-export const middlewares = enhanceReduxMiddleware([thunk]);
-
-export const enhancers = [applyMiddleware(...middlewares)];
-
-const initialState = {};
-
-// eslint-disable-next-line prefer-const
-let composeEnhancers = compose;
+export const LOCALES = {
+  en: 'English',
+  fi: 'Suomi',
+  pt: 'Português',
+  es: 'Español',
+  ca: 'Català'
+};
 
 /**
- * comment out code below to enable Redux Devtools
+ * Localization can be passed to `KeplerGl` via uiState `locale`.
+ * Available languages are `en` and `fi`. Default language is `en`
+ * @constant
+ * @public
+ * @example
+ * ```js
+ * import {combineReducers} from 'redux';
+ * import {LOCALE_CODES} from 'kepler.gl/localization/locales';
+ *
+ * const customizedKeplerGlReducer = keplerGlReducer
+ *   .initialState({
+ *     uiState: {
+ *       // use Finnish locale
+ *       locale: LOCALE_CODES.fi
+ *     }
+ *   });
+ *
+ * ```
  */
 
-if (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
-  composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-    actionsBlacklist: [
-      '@@kepler.gl/MOUSE_MOVE',
-      '@@kepler.gl/UPDATE_MAP',
-      '@@kepler.gl/LAYER_HOVER'
-    ]
-  });
-}
-
-export default createStore(reducers, initialState, composeEnhancers(...enhancers));
+export const LOCALE_CODES = Object.keys(LOCALES).reduce((acc, key) => ({...acc, [key]: key}), {});

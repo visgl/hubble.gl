@@ -26,7 +26,7 @@ import {
   DEFAULT_BUTTON_HEIGHT,
   DEFAULT_BUTTON_WIDTH
 } from './constants';
-import {Button} from 'kepler.gl/components';
+import {Button} from './kepler/components';
 
 const PanelFooterInner = styled.div`
   display: flex;

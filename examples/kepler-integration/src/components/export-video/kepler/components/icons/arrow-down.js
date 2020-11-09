@@ -1,3 +1,5 @@
+// Forked from kepler.gl 11/2020
+// https://github.com/keplergl/kepler.gl/tree/6c48c4225edc175657a8d8faf190c313ab40ede0/src/components
 // Copyright (c) 2020 Uber Technologies, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,39 +20,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import {combineReducers, createStore, applyMiddleware, compose} from 'redux';
-import {enhanceReduxMiddleware} from 'kepler.gl/middleware';
-import thunk from 'redux-thunk';
-// eslint-disable-next-line no-unused-vars
-import window from 'global/window';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import Base from './base';
 
-import demoReducer from './reducers/index';
+export default class ArrowDown extends Component {
+  static propTypes = {
+    /** Set the height of the icon, ex. '16px' */
+    height: PropTypes.string
+  };
 
-const reducers = combineReducers({
-  demo: demoReducer
-});
+  static defaultProps = {
+    height: '16px',
+    predefinedClassName: 'data-ex-icons-arrowdown'
+  };
 
-export const middlewares = enhanceReduxMiddleware([thunk]);
-
-export const enhancers = [applyMiddleware(...middlewares)];
-
-const initialState = {};
-
-// eslint-disable-next-line prefer-const
-let composeEnhancers = compose;
-
-/**
- * comment out code below to enable Redux Devtools
- */
-
-if (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
-  composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-    actionsBlacklist: [
-      '@@kepler.gl/MOUSE_MOVE',
-      '@@kepler.gl/UPDATE_MAP',
-      '@@kepler.gl/LAYER_HOVER'
-    ]
-  });
+  render() {
+    return (
+      <Base {...this.props}>
+        <path
+          d="M13.1,17.5c0.4-0.4,1.1-0.4,1.6,0L32,34.8l17.4-17.4c0.4-0.4,1.1-0.4,1.6,0l4.7,4.7c0.4,0.4,0.4,1.1,0,1.6L32.8,46.7
+	c-0.4,0.4-1.1,0.4-1.6,0L8.3,23.8c-0.4-0.4-0.4-1.1,0-1.6L13.1,17.5z"
+        />{' '}
+      </Base>
+    );
+  }
 }
-
-export default createStore(reducers, initialState, composeEnhancers(...enhancers));

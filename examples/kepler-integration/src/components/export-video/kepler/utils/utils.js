@@ -1,3 +1,5 @@
+// Forked from kepler.gl 11/2020
+// https://github.com/keplergl/kepler.gl/tree/6c48c4225edc175657a8d8faf190c313ab40ede0/src/utils
 // Copyright (c) 2020 Uber Technologies, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,39 +20,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import {combineReducers, createStore, applyMiddleware, compose} from 'redux';
-import {enhanceReduxMiddleware} from 'kepler.gl/middleware';
-import thunk from 'redux-thunk';
-// eslint-disable-next-line no-unused-vars
+// @ts-ignore
 import window from 'global/window';
 
-import demoReducer from './reducers/index';
-
-const reducers = combineReducers({
-  demo: demoReducer
-});
-
-export const middlewares = enhanceReduxMiddleware([thunk]);
-
-export const enhancers = [applyMiddleware(...middlewares)];
-
-const initialState = {};
-
-// eslint-disable-next-line prefer-const
-let composeEnhancers = compose;
-
 /**
- * comment out code below to enable Redux Devtools
+ * Detect chrome
+ * @returns {boolean} - yes or no
  */
-
-if (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
-  composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-    actionsBlacklist: [
-      '@@kepler.gl/MOUSE_MOVE',
-      '@@kepler.gl/UPDATE_MAP',
-      '@@kepler.gl/LAYER_HOVER'
-    ]
-  });
+export function isChrome() {
+  // Chrome 1+
+  return window.chrome && window.chrome.webstore;
 }
 
-export default createStore(reducers, initialState, composeEnhancers(...enhancers));
+/**
+ * Converts non-arrays to arrays.  Leaves arrays alone.  Converts
+ * undefined values to empty arrays ([] instead of [undefined]).
+ * Otherwise, just returns [item] for non-array items.
+ *
+ * @param {*} item
+ * @returns {array} boom! much array. very indexed. so useful.
+ */
+export function toArray(item) {
+  if (Array.isArray(item)) {
+    return item;
+  }
+
+  if (typeof item === 'undefined' || item === null) {
+    return [];
+  }
+
+  return [item];
+}

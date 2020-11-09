@@ -22,8 +22,8 @@ import React from 'react';
 import styled, {withTheme} from 'styled-components';
 import {IntlProvider} from 'react-intl';
 
-import {messages} from 'kepler.gl/localization';
-import {Button, Icons} from 'kepler.gl/components';
+import {messages} from './kepler/localization';
+import {Button, Icons} from './kepler/components';
 
 import {DEFAULT_PADDING, DEFAULT_ICON_BUTTON_HEIGHT} from './constants';
 import ExportVideoPanelSettings from './export-video-panel-settings';

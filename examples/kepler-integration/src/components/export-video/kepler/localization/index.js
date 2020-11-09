@@ -1,3 +1,5 @@
+// Forked from kepler.gl 11/2020
+// https://github.com/keplergl/kepler.gl/tree/6c48c4225edc175657a8d8faf190c313ab40ede0/src/localization
 // Copyright (c) 2020 Uber Technologies, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,39 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import {combineReducers, createStore, applyMiddleware, compose} from 'redux';
-import {enhanceReduxMiddleware} from 'kepler.gl/middleware';
-import thunk from 'redux-thunk';
-// eslint-disable-next-line no-unused-vars
-import window from 'global/window';
+import en from './en';
+import {flattenMessages} from '../utils/locale-utils';
+import {LOCALE_CODES} from './locales';
 
-import demoReducer from './reducers/index';
+const enFlat = flattenMessages(en);
 
-const reducers = combineReducers({
-  demo: demoReducer
-});
+export const messages = Object.keys(LOCALE_CODES).reduce(
+  (acc, key) => ({
+    ...acc,
+    [key]: key === 'en' ? enFlat : {...enFlat, ...flattenMessages(require(`./${key}`).default)}
+  }),
+  {}
+);
 
-export const middlewares = enhanceReduxMiddleware([thunk]);
+export {LOCALE_CODES, LOCALES} from './locales';
 
-export const enhancers = [applyMiddleware(...middlewares)];
-
-const initialState = {};
-
-// eslint-disable-next-line prefer-const
-let composeEnhancers = compose;
-
-/**
- * comment out code below to enable Redux Devtools
- */
-
-if (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
-  composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-    actionsBlacklist: [
-      '@@kepler.gl/MOUSE_MOVE',
-      '@@kepler.gl/UPDATE_MAP',
-      '@@kepler.gl/LAYER_HOVER'
-    ]
-  });
-}
-
-export default createStore(reducers, initialState, composeEnhancers(...enhancers));
+export {default as FormattedMessage} from './formatted-message';

@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 
 import React from 'react';
-import {Input, ItemSelector} from 'kepler.gl/components';
+import {Input, ItemSelector} from './kepler/components';
 import styled, {withTheme} from 'styled-components';
 import {DEFAULT_PADDING, DEFAULT_ROW_GAP} from './constants';
 

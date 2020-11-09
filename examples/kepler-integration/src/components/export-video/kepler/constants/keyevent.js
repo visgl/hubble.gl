@@ -1,3 +1,5 @@
+// Forked from kepler.gl 11/2020
+// https://github.com/keplergl/kepler.gl/tree/6c48c4225edc175657a8d8faf190c313ab40ede0/src/constants
 // Copyright (c) 2020 Uber Technologies, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,39 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import {combineReducers, createStore, applyMiddleware, compose} from 'redux';
-import {enhanceReduxMiddleware} from 'kepler.gl/middleware';
-import thunk from 'redux-thunk';
-// eslint-disable-next-line no-unused-vars
 import window from 'global/window';
+/* eslint-disable no-use-before-define */
+const KeyEvent = Object.assign({}, window.KeyEvent);
+/* eslint-enable no-use-before-define */
 
-import demoReducer from './reducers/index';
+// event event.keyCode is deprecated, should use event.key in the future
+KeyEvent.DOM_VK_UP = KeyEvent.DOM_VK_UP || 38;
+KeyEvent.DOM_VK_DOWN = KeyEvent.DOM_VK_DOWN || 40;
+KeyEvent.DOM_VK_BACK_SPACE = KeyEvent.DOM_VK_BACK_SPACE || 8;
+KeyEvent.DOM_VK_RETURN = KeyEvent.DOM_VK_RETURN || 13;
+KeyEvent.DOM_VK_ENTER = KeyEvent.DOM_VK_ENTER || 14;
+KeyEvent.DOM_VK_ESCAPE = KeyEvent.DOM_VK_ESCAPE || 27;
+KeyEvent.DOM_VK_TAB = KeyEvent.DOM_VK_TAB || 9;
+KeyEvent.DOM_VK_DELETE = KeyEvent.DOM_VK_DELETE || 46;
 
-const reducers = combineReducers({
-  demo: demoReducer
-});
-
-export const middlewares = enhanceReduxMiddleware([thunk]);
-
-export const enhancers = [applyMiddleware(...middlewares)];
-
-const initialState = {};
-
-// eslint-disable-next-line prefer-const
-let composeEnhancers = compose;
-
-/**
- * comment out code below to enable Redux Devtools
- */
-
-if (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
-  composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-    actionsBlacklist: [
-      '@@kepler.gl/MOUSE_MOVE',
-      '@@kepler.gl/UPDATE_MAP',
-      '@@kepler.gl/LAYER_HOVER'
-    ]
-  });
-}
-
-export default createStore(reducers, initialState, composeEnhancers(...enhancers));
+export default KeyEvent;
