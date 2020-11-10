@@ -6,18 +6,18 @@
 
 ## Context
 
-The goal of the `@hubble.gl/react` package is to provide UI components that reduce the integration effort of adding video export features to vis.gl applications. Some of the design principles of these components are:
+The goal of the `@hubble.gl/react` package is to provide UI components that reduce integration effort required for adding video export features to vis.gl applications. Examples of components in this package:
 
-- Design generic components that can be reused between luma.gl, deck.gl, and kepler.gl applications
+- Generic components that can be reused between luma.gl, deck.gl, and kepler.gl applications
 
-- Deliver use-case specific components for upstream integration with kepler.gl (which utilize the generic components)
+- kepler.gl use-case specific components for drop-in integration.
 
-The initial set of components we're shipping are focused on specific use-cases for kepler.gl. Some features of a "kepler.gl-ready" component are:
+The initial set of components we're shipping are focused on specific use-cases for kepler.gl. Some features of these "kepler.gl-ready" component are:
 
 - Internationalization
 - Theme Inheritance
-- Redux Selectors
-- Reuse of existing Kepler.gl components
+- Kepler.gl Redux Store Connections
+- Reuse of Existing Kepler.gl Components
 
 The area this RFC discusses is specifically how an external library like, hubble.gl, can reuse React components written in kepler.gl. We'll explore two options: either fork kepler.gl code into the hubble.gl repo, or inject all kepler.gl dependencies into hubble.gl as props during runtime. There are pros/cons to both.
 
