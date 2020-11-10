@@ -20,6 +20,7 @@
 
 import React from 'react';
 import styled, {withTheme} from 'styled-components';
+
 import {
   DEFAULT_PADDING,
   DEFAULT_ROW_GAP,

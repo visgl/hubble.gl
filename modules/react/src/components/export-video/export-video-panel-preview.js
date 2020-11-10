@@ -19,8 +19,6 @@
 // THE SOFTWARE.
 
 import React, {Component} from 'react';
-
-// Map Component
 import DeckGL from '@deck.gl/react';
 
 // import {layerConfigChange} from 'kepler.gl/actions';

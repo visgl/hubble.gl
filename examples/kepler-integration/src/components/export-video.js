@@ -19,15 +19,13 @@
 // THE SOFTWARE.
 
 import React, {Component} from 'react';
-
-// Modal aesthetics
+import {connect} from 'react-redux';
 import {withTheme} from 'styled-components';
-import ExportVideoModal from './export-video-modal';
-import {ExportVideoPanelContainer} from './export-video-panel-container';
+
+import {ExportVideoModal, ExportVideoPanelContainer} from '@hubble.gl/react';
 
 // Redux stores/actions
 // import {connect as keplerGlConnect} from 'kepler.gl';
-import {connect} from 'react-redux';
 import toggleHubbleExportModal from 'kepler.gl'; // TODO make custom action
 
 const mapStateToProps = state => {
@@ -57,7 +55,7 @@ const mapDispatchToProps = () => (dispatch, props) => {
   };
 };
 
-export class ExportVideo extends Component {
+class ExportVideo extends Component {
   constructor(props) {
     super(props);
 
@@ -81,7 +79,7 @@ export class ExportVideo extends Component {
   render() {
     return (
       <div>
-        <ExportVideoModal isOpen={this.state.isOpen}>
+        <ExportVideoModal isOpen={this.state.isOpen} theme={this.props.theme}>
           <ExportVideoPanelContainer handleClose={this.handleClose} mapData={this.props.mapData} />
         </ExportVideoModal>
         <h1>

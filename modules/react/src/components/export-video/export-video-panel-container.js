@@ -19,12 +19,7 @@
 // THE SOFTWARE.
 
 import React, {Component} from 'react';
-import ExportVideoPanel from './export-video-panel';
-
-import {parseSetCameraType} from './parse-set-camera-type';
-
 import {easing} from 'popmotion';
-
 import {
   DeckAdapter,
   DeckScene,
@@ -35,6 +30,9 @@ import {
   PreviewEncoder,
   GifEncoder
 } from '@hubble.gl/core';
+
+import ExportVideoPanel from './export-video-panel';
+import {parseSetCameraType} from './parse-set-camera-type';
 
 // import {DEFAULT_TIME_FORMAT} from 'kepler.gl';
 // import moment from 'moment';
@@ -205,7 +203,7 @@ export class ExportVideoPanelContainer extends Component {
       resolution: this.state.quality
     };
 
-    const {exportSettings, adapter} = this.state;
+    const {adapter} = this.state;
 
     return (
       <ExportVideoPanel
@@ -224,7 +222,6 @@ export class ExportVideoPanelContainer extends Component {
         setFileName={this.setFileName}
         setQuality={this.setQuality}
         // Hubble Props
-        exportSettings={exportSettings}
         adapter={adapter}
         handlePreviewVideo={this.onPreviewVideo}
         handleRenderVideo={this.onRenderVideo}

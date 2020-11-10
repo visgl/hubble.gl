@@ -69,7 +69,6 @@ const PanelBodyInner = styled.div`
 
 const PanelBody = ({
   mapData,
-  encoderSettings,
   adapter,
   setViewState,
   setMediaType,
@@ -79,12 +78,7 @@ const PanelBody = ({
   settingsData
 }) => (
   <PanelBodyInner className="export-video-panel__body">
-    <ExportVideoPanelPreview
-      mapData={mapData}
-      encoderSettings={encoderSettings}
-      adapter={adapter}
-      setViewState={setViewState}
-    />
+    <ExportVideoPanelPreview mapData={mapData} adapter={adapter} setViewState={setViewState} />
     <ExportVideoPanelSettings
       setMediaType={setMediaType}
       setCameraPreset={setCameraPreset}
@@ -113,7 +107,6 @@ const ExportVideoPanel = ({
   setFileName,
   setQuality,
   // Hubble Props
-  exportSettings,
   adapter,
   handlePreviewVideo,
   handleRenderVideo
@@ -125,7 +118,6 @@ const ExportVideoPanel = ({
         <StyledTitle className="export-video-panel__title">Export Video</StyledTitle>
         <PanelBody
           mapData={mapData}
-          exportSettings={exportSettings}
           adapter={adapter}
           setMediaType={setMediaTypeState}
           setCameraPreset={setCameraPreset}

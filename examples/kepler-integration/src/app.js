@@ -30,7 +30,7 @@ import {replacePanelHeader} from './factories/panel-header';
 import {AUTH_TOKENS} from './constants/default-settings';
 import {loadSampleConfigurations} from './actions';
 
-import ExportVideo from './components/export-video/export-video';
+import ExportVideo from './components/export-video';
 
 const KeplerGl = require('kepler.gl/components').injectComponents([
   replaceLoadDataModal(),
