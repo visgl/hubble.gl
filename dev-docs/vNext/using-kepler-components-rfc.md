@@ -1,4 +1,4 @@
-# RFC: Integration - Using Kepler Common Components
+# RFC: Integration - Using Kepler.gl Components in External Libraries
 
 * Authors: Chris Gervang
 * Date: Nov, 2020
