@@ -32,7 +32,7 @@ import {
 } from '@hubble.gl/core';
 
 import ExportVideoPanel from './export-video-panel';
-import {parseSetCameraType} from './parse-set-camera-type';
+import {parseSetCameraType} from './utils';
 
 // import {DEFAULT_TIME_FORMAT} from 'kepler.gl';
 // import moment from 'moment';
@@ -203,7 +203,7 @@ export class ExportVideoPanelContainer extends Component {
       resolution: this.state.quality
     };
 
-    const {adapter} = this.state;
+    const {adapter, durationMs, encoderSettings, mediaType} = this.state;
 
     return (
       <ExportVideoPanel
@@ -225,6 +225,10 @@ export class ExportVideoPanelContainer extends Component {
         adapter={adapter}
         handlePreviewVideo={this.onPreviewVideo}
         handleRenderVideo={this.onRenderVideo}
+        durationMs={durationMs}
+        frameRate={encoderSettings.framerate}
+        resolution={[encoderSettings.gif.width, encoderSettings.gif.height]}
+        mediaType={mediaType}
       />
     );
   }

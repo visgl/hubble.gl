@@ -75,7 +75,11 @@ const PanelBody = ({
   setCameraPreset,
   setFileName,
   setQuality,
-  settingsData
+  settingsData,
+  durationMs,
+  frameRate,
+  resolution,
+  mediaType
 }) => (
   <PanelBodyInner className="export-video-panel__body">
     <ExportVideoPanelPreview mapData={mapData} adapter={adapter} setViewState={setViewState} />
@@ -85,6 +89,10 @@ const PanelBody = ({
       setFileName={setFileName}
       setQuality={setQuality}
       settingsData={settingsData}
+      durationMs={durationMs}
+      frameRate={frameRate}
+      resolution={resolution}
+      mediaType={mediaType}
     />
   </PanelBodyInner>
 );
@@ -109,7 +117,11 @@ const ExportVideoPanel = ({
   // Hubble Props
   adapter,
   handlePreviewVideo,
-  handleRenderVideo
+  handleRenderVideo,
+  durationMs,
+  frameRate,
+  resolution,
+  mediaType
 }) => {
   return (
     <IntlProvider locale="en" messages={messages.en}>
@@ -125,6 +137,10 @@ const ExportVideoPanel = ({
           setQuality={setQuality}
           settingsData={settingsData}
           setViewState={setViewState}
+          durationMs={durationMs}
+          frameRate={frameRate}
+          resolution={resolution}
+          mediaType={mediaType}
         />
         <ExportVideoPanelFooter
           handleClose={handleClose}

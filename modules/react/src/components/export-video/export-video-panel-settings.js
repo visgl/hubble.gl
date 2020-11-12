@@ -24,6 +24,8 @@ import styled, {withTheme} from 'styled-components';
 
 import {DEFAULT_PADDING, DEFAULT_ROW_GAP} from './constants';
 
+import {msConversion, estimateFileSize} from './utils';
+
 const StyledSection = styled.div`
   align-self: center;
   color: ${props => props.theme.labelColor};
@@ -63,7 +65,11 @@ const ExportVideoPanelSettings = ({
   setCameraPreset,
   setFileName,
   setQuality,
-  settingsData
+  settingsData,
+  durationMs,
+  frameRate,
+  resolution,
+  mediaType
 }) => (
   <div>
     <StyledSection>Video Effects</StyledSection>
@@ -119,9 +125,11 @@ const ExportVideoPanelSettings = ({
     </InputGrid>
     <InputGrid style={{marginTop: DEFAULT_ROW_GAP}} rows={2} rowHeight="18px">
       <StyledLabelCell>Duration</StyledLabelCell> {/* TODO add functionality  */}
-      <StyledValueCell>00:00:30</StyledValueCell>
+      <StyledValueCell>{msConversion(durationMs)}</StyledValueCell>
       <StyledLabelCell>File Size</StyledLabelCell> {/* TODO add functionality  */}
-      <StyledValueCell>36 MB</StyledValueCell>
+      <StyledValueCell>
+        {estimateFileSize(frameRate, resolution, durationMs, mediaType)}
+      </StyledValueCell>
     </InputGrid>
   </div>
 );

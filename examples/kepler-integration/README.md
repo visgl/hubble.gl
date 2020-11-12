@@ -26,11 +26,5 @@ export MapboxAccessToken=<your_mapbox_token>
 #### 3. Start the app
 
 ```sh
-yarn start
-```
-
-or
-
-```sh
 yarn start-local
 ```
