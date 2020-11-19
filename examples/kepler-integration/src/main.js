@@ -18,11 +18,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-export {
-  EncoderDropdown,
-  BasicControls,
-  ResolutionGuide,
-  ExportVideoModal,
-  ExportVideoPanelContainer
-} from './components';
-export {useNextFrame} from './hooks';
+import React from 'react';
+import document from 'global/document';
+import {Provider} from 'react-redux';
+import {render} from 'react-dom';
+import store from './store';
+import App from './app';
+
+const Root = () => (
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
+
+render(<Root />, document.body.appendChild(document.createElement('div')));

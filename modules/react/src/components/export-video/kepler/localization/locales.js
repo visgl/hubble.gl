@@ -1,3 +1,5 @@
+// Forked from kepler.gl 11/2020
+// https://github.com/keplergl/kepler.gl/tree/6c48c4225edc175657a8d8faf190c313ab40ede0/src/localization
 // Copyright (c) 2020 Uber Technologies, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,11 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-export {
-  EncoderDropdown,
-  BasicControls,
-  ResolutionGuide,
-  ExportVideoModal,
-  ExportVideoPanelContainer
-} from './components';
-export {useNextFrame} from './hooks';
+export const LOCALES = {
+  en: 'English',
+  fi: 'Suomi',
+  pt: 'Português',
+  es: 'Español',
+  ca: 'Català'
+};
+
+/**
+ * Localization can be passed to `KeplerGl` via uiState `locale`.
+ * Available languages are `en` and `fi`. Default language is `en`
+ * @constant
+ * @public
+ * @example
+ * ```js
+ * import {combineReducers} from 'redux';
+ * import {LOCALE_CODES} from 'kepler.gl/localization/locales';
+ *
+ * const customizedKeplerGlReducer = keplerGlReducer
+ *   .initialState({
+ *     uiState: {
+ *       // use Finnish locale
+ *       locale: LOCALE_CODES.fi
+ *     }
+ *   });
+ *
+ * ```
+ */
+
+export const LOCALE_CODES = Object.keys(LOCALES).reduce((acc, key) => ({...acc, [key]: key}), {});

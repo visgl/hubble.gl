@@ -18,11 +18,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-export {
-  EncoderDropdown,
-  BasicControls,
-  ResolutionGuide,
-  ExportVideoModal,
-  ExportVideoPanelContainer
-} from './components';
-export {useNextFrame} from './hooks';
+/**
+ * Generate a hash string based on number of character
+ * @param {number} count
+ * @returns {string} hash string
+ */
+export function generateHashId(count) {
+  return Math.random()
+    .toString(36)
+    .substr(count);
+}

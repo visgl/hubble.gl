@@ -44,7 +44,7 @@ Parameters:
 
 ##### `animationLoop` (Object)
 
-A deckgl `animationLoop` object.
+A lumagl `animationLoop` object.
 
 ##### `length` (Number)
 

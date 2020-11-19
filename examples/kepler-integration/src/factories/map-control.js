@@ -18,11 +18,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-export {
-  EncoderDropdown,
-  BasicControls,
-  ResolutionGuide,
-  ExportVideoModal,
-  ExportVideoPanelContainer
-} from './components';
-export {useNextFrame} from './hooks';
+import {MapControlFactory, withState} from 'kepler.gl/components';
+import CustomMapControl from '../components/map-control/map-control';
+
+export const CustomMapControlFactory = () =>
+  withState([], state => ({...state.demo.app}))(CustomMapControl);
+
+export function replaceMapControl() {
+  return [MapControlFactory, CustomMapControlFactory];
+}

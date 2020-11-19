@@ -1,3 +1,5 @@
+// Forked from kepler.gl 11/2020
+// https://github.com/keplergl/kepler.gl/tree/6c48c4225edc175657a8d8faf190c313ab40ede0/src/components
 // Copyright (c) 2020 Uber Technologies, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,11 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-export {
-  EncoderDropdown,
-  BasicControls,
-  ResolutionGuide,
-  ExportVideoModal,
-  ExportVideoPanelContainer
-} from './components';
-export {useNextFrame} from './hooks';
+const Accessor = {
+  IDENTITY_FN: input => input,
+
+  generateAccessor: field => object => object[field],
+
+  generateOptionToStringFor: function generateOptionToStringFor(prop) {
+    if (typeof prop === 'string') {
+      return this.generateAccessor(prop);
+    } else if (typeof prop === 'function') {
+      return prop;
+    }
+    return this.IDENTITY_FN;
+  },
+
+  valueForOption: (option, object) => {
+    if (typeof option === 'string') {
+      return object[option];
+    } else if (typeof option === 'function') {
+      return option(object);
+    }
+    return object;
+  }
+};
+
+export default Accessor;

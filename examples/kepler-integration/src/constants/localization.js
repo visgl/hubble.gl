@@ -18,11 +18,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-export {
-  EncoderDropdown,
-  BasicControls,
-  ResolutionGuide,
-  ExportVideoModal,
-  ExportVideoPanelContainer
-} from './components';
-export {useNextFrame} from './hooks';
+// Add english messages here, other languages will use these
+// if translations not available for every message
+const en = {
+  'sampleMapsTab.noData': 'No data ?',
+  'sampleMapsTab.trySampleData': 'Try sample data',
+  'sampleDataViewer.rowCount': ' {rowCount} rows'
+};
+
+export const messages = {
+  en,
+  fi: {
+    ...en,
+    'sampleMapsTab.noData': 'Ei aineistoja?',
+    'sampleMapsTab.trySampleData': 'Kokeile testiaineistoja',
+    'sampleDataViewer.rowCount': ' {rowCount} riviä'
+  },
+  ca: {
+    ...en,
+    'sampleMapsTab.noData': 'Cap dada?',
+    'sampleMapsTab.trySampleData': 'Prova dades de mostra',
+    'sampleDataViewer.rowCount': ' {rowCount} files'
+  },
+  es: {
+    ...en,
+    'sampleMapsTab.noData': 'Ningún dato?',
+    'sampleMapsTab.trySampleData': 'Prueba datos de muestra',
+    'sampleDataViewer.rowCount': ' {rowCount} files'
+  }
+};

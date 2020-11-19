@@ -1,3 +1,5 @@
+// Forked from kepler.gl 11/2020
+// https://github.com/keplergl/kepler.gl/tree/6c48c4225edc175657a8d8faf190c313ab40ede0/src/utils
 // Copyright (c) 2020 Uber Technologies, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,11 +20,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-export {
-  EncoderDropdown,
-  BasicControls,
-  ResolutionGuide,
-  ExportVideoModal,
-  ExportVideoPanelContainer
-} from './components';
-export {useNextFrame} from './hooks';
+// @ts-ignore
+import window from 'global/window';
+
+/**
+ * Detect chrome
+ * @returns {boolean} - yes or no
+ */
+export function isChrome() {
+  // Chrome 1+
+  return window.chrome && window.chrome.webstore;
+}
+
+/**
+ * Converts non-arrays to arrays.  Leaves arrays alone.  Converts
+ * undefined values to empty arrays ([] instead of [undefined]).
+ * Otherwise, just returns [item] for non-array items.
+ *
+ * @param {*} item
+ * @returns {array} boom! much array. very indexed. so useful.
+ */
+export function toArray(item) {
+  if (Array.isArray(item)) {
+    return item;
+  }
+
+  if (typeof item === 'undefined' || item === null) {
+    return [];
+  }
+
+  return [item];
+}
