@@ -12,7 +12,7 @@ Current techniques for defining animation keyframes are either easy-to-use but l
 
 ## Solution
 
-The ideal solution is one which can magically animate any change in visual appearance or data query. Ultimately, magic keyframes just needs to contain data that an application can reliably translate into a visual appearance and also interpolated between to transition from one keyframe to the next.
+The ideal solution is one which can magically animate any change in visual appearance or data query. Ultimately, a magic keyframe needs to translate into a fluid visual appearance, which can be interpolated to transition from one keyframe to the next.
 
 - Keyframe contains state representing appearance.
 - State can be interpolated between to transition animation.
