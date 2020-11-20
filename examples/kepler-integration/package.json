@@ -1,7 +1,9 @@
 {
   "scripts": {
     "start": "webpack-dev-server --progress --hot --open",
-    "start-local": "webpack-dev-server --env.local --progress --hot --open"
+    "start-local": "webpack-dev-server --env.local --progress --hot --open",
+    "clean": "rm -rf yarn.lock ./node_modules",
+    "bootstrap": "yarn clean && yarn"
   },
   "dependencies": {
     "@luma.gl/debug": "^8.3.1",
