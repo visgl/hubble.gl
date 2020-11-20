@@ -59,6 +59,7 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-react": "^7.10",
     "lerna": "^3.16.4",
+    "lodash": "4.17.19",
     "kepler.gl": "^2.3.2",
     "ocular-dev-tools": "^0.1.10",
     "pre-commit": "^1.2.2",
