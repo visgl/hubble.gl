@@ -1,13 +1,13 @@
 {
   "scripts": {
     "start": "webpack-dev-server --progress --hot --open",
-    "start-local": "webpack-dev-server --env.local --progress --hot --open"
+    "start-local": "webpack-dev-server --env.local --progress --hot --open",
+    "clean": "rm -rf yarn.lock ./node_modules",
+    "bootstrap": "yarn clean && yarn"
   },
   "dependencies": {
     "@luma.gl/debug": "^8.3.1",
-    "@luma.gl/shadertools": "^8.3.1",
-    "d3-color": "^1.4.1",
-    "deck.gl": "^8.3.4"
+    "d3-color": "^1.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.1",
