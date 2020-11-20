@@ -23,7 +23,7 @@ import React, {Component, createRef} from 'react';
 import Modal from 'react-modal';
 import styled, {ThemeProvider} from 'styled-components';
 import {createSelector} from 'reselect';
-import {DIMENSIONS} from './kepler/constants/default-settings';
+import {DIMENSIONS} from 'kepler.gl/constants';
 
 const ModalContainer = styled.div`
   position: relative;

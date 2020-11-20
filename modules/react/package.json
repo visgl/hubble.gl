@@ -52,6 +52,7 @@
     "@deck.gl/mesh-layers": "^8.2.0",
     "@deck.gl/react": "^8.2.0",
     "@hubble.gl/core": "^1.1.0",
+    "kepler.gl": ">=2.3.2",
     "react": ">=16.8",
     "react-dom": ">=16.8",
     "styled-components": ">=4.0"
