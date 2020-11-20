@@ -82,7 +82,12 @@ const PanelBody = ({
   mediaType
 }) => (
   <PanelBodyInner className="export-video-panel__body">
-    <ExportVideoPanelPreview mapData={mapData} adapter={adapter} setViewState={setViewState} />
+    <ExportVideoPanelPreview
+      mapData={mapData}
+      adapter={adapter}
+      setViewState={setViewState}
+      resolution={resolution}
+    />
     <ExportVideoPanelSettings
       setMediaType={setMediaType}
       setCameraPreset={setCameraPreset}

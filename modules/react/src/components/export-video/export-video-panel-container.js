@@ -67,6 +67,8 @@ export class ExportVideoPanelContainer extends Component {
       quality: 'High (720p)',
       viewState: this.props.mapData.mapState,
       durationMs: 1000,
+      canvasWidth: 1280, // canvas size changes resolution for everything but GIF (? unsure)
+      canvasHeight: 720,
       encoderSettings: {
         framerate: 30,
         webm: {
@@ -106,17 +108,20 @@ export class ExportVideoPanelContainer extends Component {
   }
 
   getDeckScene(animationLoop) {
+    const {canvasWidth, canvasHeight} = this.state;
+
     const keyframes = {
       camera: this.getCameraKeyframes()
     };
     const currentCamera = animationLoop.timeline.attachAnimation(keyframes.camera);
 
+    // TODO this scales canvas resolution but is only set once. Figure out how to update
     return new DeckScene({
       animationLoop,
       keyframes,
       lengthMs: this.state.durationMs, // TODO change to 5000 later. 1000 for dev testing
-      width: 480,
-      height: 460,
+      width: canvasWidth,
+      height: canvasHeight,
       currentCamera
     });
   }
@@ -138,7 +143,7 @@ export class ExportVideoPanelContainer extends Component {
     // setFileNameDeckAdapter(name.target.value);
   }
   setQuality(resolution) {
-    // NOTE: resolution is string user selects ex: 'Good (540p)'\
+    // NOTE: resolution parameter is string user selects ex: 'Good (540p)'\
     const {encoderSettings} = this.state;
 
     let newWidth = encoderSettings.gif.width;
@@ -155,8 +160,11 @@ export class ExportVideoPanelContainer extends Component {
       newHeight = 1080;
     }
 
+    // this.getDeckScene
     this.setState({
       quality: resolution,
+      canvasWidth: newWidth,
+      canvasHeight: newHeight,
       encoderSettings: {
         ...encoderSettings,
         gif: {
@@ -166,6 +174,7 @@ export class ExportVideoPanelContainer extends Component {
         }
         // TODO Add other encoders as needed. Not yet implemented
       }
+      // adapter: new DeckAdapter(this.getDeckScene)
     });
   }
 
@@ -203,8 +212,7 @@ export class ExportVideoPanelContainer extends Component {
       resolution: this.state.quality
     };
 
-    const {adapter, durationMs, encoderSettings, mediaType} = this.state;
-
+    const {adapter, durationMs, encoderSettings, mediaType, canvasWidth, canvasHeight} = this.state;
     return (
       <ExportVideoPanel
         // UI Props
@@ -227,7 +235,7 @@ export class ExportVideoPanelContainer extends Component {
         handleRenderVideo={this.onRenderVideo}
         durationMs={durationMs}
         frameRate={encoderSettings.framerate}
-        resolution={[encoderSettings.gif.width, encoderSettings.gif.height]}
+        resolution={[canvasWidth, canvasHeight]}
         mediaType={mediaType}
       />
     );

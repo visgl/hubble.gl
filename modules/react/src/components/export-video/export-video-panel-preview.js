@@ -219,11 +219,18 @@ export class ExportVideoPanelPreview extends Component {
     // };
 
     const style = {
-      position: 'relative'
+      position: 'relative',
+      width: this.props.resolution[0],
+      height: this.props.resolution[1]
     };
 
     return (
-      <div id="deck-canvas" style={{width: '480px', height: '460px', position: 'relative'}}>
+      // TODO add ternary logic for width/height that'll set aspect ratio of preview in deck-canvas. Or can it be dynamically scaled?
+      // maybe object-fit? https://www.w3schools.com/css/css3_object-fit.asp
+      <div
+        id="deck-canvas"
+        style={{width: '480px', height: '460px', position: 'relative', overflow: 'auto'}}
+      >
         <DeckGL
           ref={r => {
             this.deckgl = {current: r};
