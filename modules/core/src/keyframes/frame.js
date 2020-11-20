@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 
 /**
- * This pattern of frame definition is deprecated. Use
+ * This pattern of get frame definition is deprecated. Use Keyframes.getFrame instead.
  */
 import {transform} from 'popmotion';
 
