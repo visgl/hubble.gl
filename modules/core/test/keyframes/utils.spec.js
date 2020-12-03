@@ -78,7 +78,6 @@ test('Keyframes#merge', t => {
     {a: 'a', b: false},
     {a: '2', b: true}
   ];
-
   const expectedMergedKeyframes1 = [
     [0, {a: '', b: true, ease: undefined}],
     [1, {a: 'a', b: false, ease: noop}],

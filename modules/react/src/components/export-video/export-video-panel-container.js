@@ -119,7 +119,7 @@ export class ExportVideoPanelContainer extends Component {
     return new DeckScene({
       animationLoop,
       keyframes,
-      lengthMs: this.state.durationMs, // TODO change to 5000 later. 1000 for dev testing
+      lengthMs: this.state.durationMs,
       width: canvasWidth,
       height: canvasHeight,
       currentCamera
@@ -140,11 +140,10 @@ export class ExportVideoPanelContainer extends Component {
     this.setState({
       fileName: name.target.value
     });
-    // setFileNameDeckAdapter(name.target.value);
   }
   setQuality(resolution) {
     // NOTE: resolution parameter is string user selects ex: 'Good (540p)'\
-    const {encoderSettings} = this.state;
+    const {adapter, encoderSettings} = this.state;
 
     let newWidth = encoderSettings.gif.width;
     let newHeight = encoderSettings.gif.height;
@@ -160,7 +159,9 @@ export class ExportVideoPanelContainer extends Component {
       newHeight = 1080;
     }
 
-    // this.getDeckScene
+    adapter.scene.width = newWidth;
+    adapter.scene.height = newHeight;
+
     this.setState({
       quality: resolution,
       canvasWidth: newWidth,
@@ -180,7 +181,6 @@ export class ExportVideoPanelContainer extends Component {
 
   onPreviewVideo() {
     const {adapter, encoderSettings} = this.state;
-
     const onStop = () => {};
     adapter.render(PreviewEncoder, encoderSettings, onStop, this.getCameraKeyframes);
   }
@@ -212,7 +212,8 @@ export class ExportVideoPanelContainer extends Component {
       resolution: this.state.quality
     };
 
-    const {adapter, durationMs, encoderSettings, mediaType, canvasWidth, canvasHeight} = this.state;
+    const {adapter, durationMs, encoderSettings, mediaType, canvasWidth, canvasHeight, viewState} = this.state;
+
     return (
       <ExportVideoPanel
         // UI Props
@@ -220,8 +221,9 @@ export class ExportVideoPanelContainer extends Component {
         handleClose={handleClose}
         // Map Props
         mapData={mapData}
-        setViewState={viewState => {
-          this.setState({viewState});
+        viewState={viewState}
+        setViewState={vs => {
+          this.setState({viewState: vs.viewState});
         }}
         // Settings Props
         settingsData={settingsData}

@@ -11,6 +11,7 @@
     "global": "^4.3.0",
     "hubble.gl": "^1.1.0",
     "react-intl": "^3.12.0",
+    "react-map-gl": "^5.2.10",
     "react-markdown": "^4.2.2",
     "react-palm": "^3.3.6",
     "redux-actions": "^2.2.1",
