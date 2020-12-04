@@ -22,7 +22,16 @@ import React from 'react';
 import {Input, ItemSelector, Slider} from 'kepler.gl/components';
 import styled, {withTheme} from 'styled-components';
 
-import {DEFAULT_PADDING, DEFAULT_ROW_GAP} from './constants';
+import {
+  DEFAULT_PADDING,
+  DEFAULT_ROW_GAP,
+  GOOD_16_9,
+  GOOD_4_3,
+  HIGHEST_16_9,
+  HIGHEST_4_3,
+  HIGH_16_9,
+  HIGH_4_3
+} from './constants';
 
 import {msConversion, estimateFileSize} from './utils';
 
@@ -128,12 +137,12 @@ const ExportVideoPanelSettings = ({
       <ItemSelector
         selectedItems={settingsData.resolution}
         options={[
-          'Good 16:9 (540p)',
-          'High 16:9 (720p)',
-          'Highest 16:9 (1080p)',
-          'Good 4:3 (480p)',
-          'High 4:3 (960p)',
-          'Highest 4:3 (1440p)'
+          GOOD_16_9.label,
+          HIGH_16_9.label,
+          HIGHEST_16_9.label,
+          GOOD_4_3.label,
+          HIGH_4_3.label,
+          HIGHEST_4_3.label
         ]}
         multiSelect={false}
         searchable={false}

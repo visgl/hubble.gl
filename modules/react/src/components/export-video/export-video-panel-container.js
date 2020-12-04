@@ -33,6 +33,7 @@ import {
 
 import ExportVideoPanel from './export-video-panel';
 import {parseSetCameraType} from './utils';
+import {getQualitySettings, HIGH_16_9} from './constants';
 
 // import {DEFAULT_TIME_FORMAT} from 'kepler.gl';
 // import moment from 'moment';
@@ -65,7 +66,7 @@ export class ExportVideoPanelContainer extends Component {
       mediaType: 'GIF',
       cameraPreset: 'None',
       fileName: 'Video Name',
-      quality: 'High 16:9 (720p)',
+      qualitySettings: HIGH_16_9,
       viewState: this.props.mapData.mapState,
       durationMs: 1000,
       canvasWidth: 1280, // canvas size changes resolution for everything but GIF (? unsure)
@@ -145,38 +146,19 @@ export class ExportVideoPanelContainer extends Component {
       fileName: name.target.value
     });
   }
-  setQuality(resolution) {
+  setQuality(qualityLabel) {
     // NOTE: resolution parameter is string user selects ex: 'Good (540p)'\
     const {adapter, encoderSettings} = this.state;
 
-    let newWidth = encoderSettings.gif.width;
-    let newHeight = encoderSettings.gif.height;
-
-    if (resolution === 'Good 16:9 (540p)') {
-      newWidth = 960;
-      newHeight = 540;
-    } else if (resolution === 'High 16:9 (720p)') {
-      newWidth = 1280;
-      newHeight = 720;
-    } else if (resolution === 'Highest 16:9 (1080p)') {
-      newWidth = 1920;
-      newHeight = 1080;
-    } else if (resolution === 'Good 4:3 (480p)') {
-      newWidth = 640;
-      newHeight = 480;
-    } else if (resolution === 'High 4:3 (960p)') {
-      newWidth = 1280;
-      newHeight = 960;
-    } else if (resolution === 'Highest 4:3 (1440p)') {
-      newWidth = 1920;
-      newHeight = 1440;
-    }
+    const qualitySettings = getQualitySettings(qualityLabel);
+    const newWidth = qualitySettings.width;
+    const newHeight = qualitySettings.height;
 
     adapter.scene.width = newWidth;
     adapter.scene.height = newHeight;
 
     this.setState({
-      quality: resolution,
+      qualitySettings,
       canvasWidth: newWidth,
       canvasHeight: newHeight,
       encoderSettings: {
@@ -227,7 +209,7 @@ export class ExportVideoPanelContainer extends Component {
       mediaType: this.state.mediaType,
       cameraPreset: this.state.cameraPreset,
       fileName: this.state.fileName,
-      resolution: this.state.quality
+      resolution: this.state.qualitySettings.label
     };
 
     const {
