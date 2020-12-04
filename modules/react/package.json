@@ -1,6 +1,6 @@
 {
   "name": "@hubble.gl/react",
-  "version": "1.2.0-alpha.2",
+  "version": "1.2.0-alpha.3",
   "description": "React components for hubble.gl",
   "license": "MIT",
   "repository": {
@@ -50,9 +50,9 @@
     "@deck.gl/core": "^8.2.0",
     "@deck.gl/geo-layers": "^8.2.0",
     "@deck.gl/layers": "^8.2.0",
+    "@deck.gl/mapbox": "^8.3.8",
     "@deck.gl/mesh-layers": "^8.2.0",
     "@deck.gl/react": "^8.2.0",
-    "@deck.gl/mapbox": "^8.3.8",
     "@hubble.gl/core": "^1.1.0",
     "kepler.gl": ">=2.3.2",
     "react": ">=16.8",
