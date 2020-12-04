@@ -95,7 +95,11 @@ export class ExportVideoPanelPreview extends Component {
     // map.on('load', function () {
     //   map.resize();
     // });
-    map.on('render', () => this.props.adapter.onAfterRender(() => {this.forceUpdate()}));
+    map.on('render', () =>
+      this.props.adapter.onAfterRender(() => {
+        this.forceUpdate();
+      })
+    );
     map.resize();
     // map.setCenter([this.props.mapData.mapState.longitude, this.props.mapData.mapState.latitude]);
     // console.log("this.props.mapData.mapState", this.props.mapData.mapState)
@@ -129,12 +133,12 @@ export class ExportVideoPanelPreview extends Component {
         .reduce(this._renderLayer, []);
     }
 
-    const style = {
-      position: 'relative',
-      width: this.props.resolution[0],
-      height: this.props.resolution[1],
-      objectFit: 'fill'
-    };
+    // const style = {
+    //   position: 'relative',
+    //   width: this.props.resolution[0],
+    //   height: this.props.resolution[1],
+    //   objectFit: 'fill'
+    // };
 
     return (
       <div

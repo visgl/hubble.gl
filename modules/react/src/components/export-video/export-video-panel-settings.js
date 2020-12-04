@@ -127,7 +127,14 @@ const ExportVideoPanelSettings = ({
       <StyledLabelCell>Quality</StyledLabelCell>
       <ItemSelector
         selectedItems={settingsData.resolution}
-        options={['Good 16:9 (540p)', 'High 16:9 (720p)', 'Highest 16:9 (1080p)', 'Good 4:3 (480p)', 'High 4:3 (960p)', 'Highest 4:3 (1440p)']}
+        options={[
+          'Good 16:9 (540p)',
+          'High 16:9 (720p)',
+          'Highest 16:9 (1080p)',
+          'Good 4:3 (480p)',
+          'High 4:3 (960p)',
+          'Highest 4:3 (1440p)'
+        ]}
         multiSelect={false}
         searchable={false}
         onChange={setQuality}
@@ -135,11 +142,26 @@ const ExportVideoPanelSettings = ({
     </InputGrid>
     <InputGrid style={{marginTop: DEFAULT_ROW_GAP}} rows={2} rowHeight="18px">
       <StyledLabelCell>Duration</StyledLabelCell>
-      
+
       <StyledValueCell>
-        <SliderWrapper style={{width: "100%", marginLeft: "0px"}} className="modal-duration__slider">
+        <SliderWrapper
+          style={{width: '100%', marginLeft: '0px'}}
+          className="modal-duration__slider"
+        >
           {/* TODO onSlider1Change */}
-          <Slider showValues={false} enableBarDrag={true} isRanged={false} value1={durationMs} step={100} minValue={100} maxValue={10000} style={{width: '70px'}} onSlider1Change={(val) => {setDuration(val)}}></Slider>
+          <Slider
+            showValues={false}
+            enableBarDrag={true}
+            isRanged={false}
+            value1={durationMs}
+            step={100}
+            minValue={100}
+            maxValue={10000}
+            style={{width: '70px'}}
+            onSlider1Change={val => {
+              setDuration(val);
+            }}
+          />
           {msConversion(durationMs)}
         </SliderWrapper>
       </StyledValueCell>

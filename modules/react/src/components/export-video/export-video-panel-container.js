@@ -216,8 +216,9 @@ export class ExportVideoPanelContainer extends Component {
     adapter.render(Encoder, encoderSettings, onStop, this.getCameraKeyframes);
   }
 
-  setDuration(val) { // function passed down to Slider class in ExportVideoPanelSettings
-    this.setState({durationMs: val})
+  setDuration(val) {
+    // function passed down to Slider class in ExportVideoPanelSettings
+    this.setState({durationMs: val});
   }
 
   render() {
@@ -229,7 +230,15 @@ export class ExportVideoPanelContainer extends Component {
       resolution: this.state.quality
     };
 
-    const {adapter, durationMs, encoderSettings, mediaType, canvasWidth, canvasHeight, viewState} = this.state;
+    const {
+      adapter,
+      durationMs,
+      encoderSettings,
+      mediaType,
+      canvasWidth,
+      canvasHeight,
+      viewState
+    } = this.state;
 
     return (
       <ExportVideoPanel
