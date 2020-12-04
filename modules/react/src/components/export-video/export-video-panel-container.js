@@ -33,6 +33,7 @@ import {
 
 import ExportVideoPanel from './export-video-panel';
 import {parseSetCameraType} from './utils';
+import {getQualitySettings, HIGH_16_9} from './constants';
 
 // import {DEFAULT_TIME_FORMAT} from 'kepler.gl';
 // import moment from 'moment';
@@ -59,14 +60,17 @@ export class ExportVideoPanelContainer extends Component {
     this.getDeckScene = this.getDeckScene.bind(this);
     this.onPreviewVideo = this.onPreviewVideo.bind(this);
     this.onRenderVideo = this.onRenderVideo.bind(this);
+    this.setDuration = this.setDuration.bind(this);
 
     this.state = {
       mediaType: 'GIF',
       cameraPreset: 'None',
       fileName: 'Video Name',
-      quality: 'High (720p)',
+      qualitySettings: HIGH_16_9,
       viewState: this.props.mapData.mapState,
       durationMs: 1000,
+      canvasWidth: 1280, // canvas size changes resolution for everything but GIF (? unsure)
+      canvasHeight: 720,
       encoderSettings: {
         framerate: 30,
         webm: {
@@ -106,17 +110,23 @@ export class ExportVideoPanelContainer extends Component {
   }
 
   getDeckScene(animationLoop) {
+    // PSEUDO BRAINSTORM
+    // only runs once and permanently sets things like canvas resolution + duration
+    const {canvasWidth, canvasHeight} = this.state;
+
     const keyframes = {
       camera: this.getCameraKeyframes()
     };
     const currentCamera = animationLoop.timeline.attachAnimation(keyframes.camera);
 
+    // TODO this scales canvas resolution but is only set once. Figure out how to update
+    // TODO this needs to update durationMs
     return new DeckScene({
       animationLoop,
       keyframes,
-      lengthMs: this.state.durationMs, // TODO change to 5000 later. 1000 for dev testing
-      width: 480,
-      height: 460,
+      lengthMs: this.state.durationMs,
+      width: canvasWidth,
+      height: canvasHeight,
       currentCamera
     });
   }
@@ -135,28 +145,22 @@ export class ExportVideoPanelContainer extends Component {
     this.setState({
       fileName: name.target.value
     });
-    // setFileNameDeckAdapter(name.target.value);
   }
-  setQuality(resolution) {
-    // NOTE: resolution is string user selects ex: 'Good (540p)'\
-    const {encoderSettings} = this.state;
+  setQuality(qualityLabel) {
+    // NOTE: resolution parameter is string user selects ex: 'Good (540p)'\
+    const {adapter, encoderSettings} = this.state;
 
-    let newWidth = encoderSettings.gif.width;
-    let newHeight = encoderSettings.gif.height;
+    const qualitySettings = getQualitySettings(qualityLabel);
+    const newWidth = qualitySettings.width;
+    const newHeight = qualitySettings.height;
 
-    if (resolution === 'Good (540p)') {
-      newWidth = 960;
-      newHeight = 540;
-    } else if (resolution === 'High (720p)') {
-      newWidth = 1280;
-      newHeight = 720;
-    } else if (resolution === 'Highest (1080p)') {
-      newWidth = 1920;
-      newHeight = 1080;
-    }
+    adapter.scene.width = newWidth;
+    adapter.scene.height = newHeight;
 
     this.setState({
-      quality: resolution,
+      qualitySettings,
+      canvasWidth: newWidth,
+      canvasHeight: newHeight,
       encoderSettings: {
         ...encoderSettings,
         gif: {
@@ -166,12 +170,12 @@ export class ExportVideoPanelContainer extends Component {
         }
         // TODO Add other encoders as needed. Not yet implemented
       }
+      // adapter: new DeckAdapter(this.getDeckScene)
     });
   }
 
   onPreviewVideo() {
     const {adapter, encoderSettings} = this.state;
-
     const onStop = () => {};
     adapter.render(PreviewEncoder, encoderSettings, onStop, this.getCameraKeyframes);
   }
@@ -194,16 +198,29 @@ export class ExportVideoPanelContainer extends Component {
     adapter.render(Encoder, encoderSettings, onStop, this.getCameraKeyframes);
   }
 
+  setDuration(val) {
+    // function passed down to Slider class in ExportVideoPanelSettings
+    this.setState({durationMs: val});
+  }
+
   render() {
     const {exportVideoWidth, handleClose, mapData} = this.props;
     const settingsData = {
       mediaType: this.state.mediaType,
       cameraPreset: this.state.cameraPreset,
       fileName: this.state.fileName,
-      resolution: this.state.quality
+      resolution: this.state.qualitySettings.label
     };
 
-    const {adapter, durationMs, encoderSettings, mediaType} = this.state;
+    const {
+      adapter,
+      durationMs,
+      encoderSettings,
+      mediaType,
+      canvasWidth,
+      canvasHeight,
+      viewState
+    } = this.state;
 
     return (
       <ExportVideoPanel
@@ -212,8 +229,9 @@ export class ExportVideoPanelContainer extends Component {
         handleClose={handleClose}
         // Map Props
         mapData={mapData}
-        setViewState={viewState => {
-          this.setState({viewState});
+        viewState={viewState}
+        setViewState={vs => {
+          this.setState({viewState: vs.viewState});
         }}
         // Settings Props
         settingsData={settingsData}
@@ -226,8 +244,9 @@ export class ExportVideoPanelContainer extends Component {
         handlePreviewVideo={this.onPreviewVideo}
         handleRenderVideo={this.onRenderVideo}
         durationMs={durationMs}
+        setDuration={this.setDuration}
         frameRate={encoderSettings.framerate}
-        resolution={[encoderSettings.gif.width, encoderSettings.gif.height]}
+        resolution={[canvasWidth, canvasHeight]}
         mediaType={mediaType}
       />
     );

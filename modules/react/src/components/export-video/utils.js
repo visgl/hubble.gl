@@ -23,9 +23,9 @@ import transformTranslate from '@turf/transform-translate';
 
 /**
  * Parses camera type and creates keyframe for Hubble to use
- * @param {strCameraType} str of user-selected camera option ex: "Orbit (90º)"
- * @param {viewState} Hubble keyframe JSON that contains long, lat, zoom, bearing, pitch
- * @returns {JSON} below:
+ * @param {string} strCameraType of user-selected camera option ex: "Orbit (90º)"
+ * @param {Object} viewState keyframe JSON that contains long, lat, zoom, bearing, pitch
+ * @returns {Object} below:
  *      {
  *        longitude: modifiedViewState.longitude,
  *        latitude: modifiedViewState.latitude,
@@ -39,7 +39,6 @@ export function parseSetCameraType(strCameraType, viewState) {
   const modifiedViewState = {...viewState}; // Creating a shallow copy otherwise keyframes bugs out
   // Returns arr of important keywords. Should work for 2+ words in future ex: ["Orbit", "90"] | ["North", "South"] | ["Zoom", "In"]
   const match = strCameraType.match(/\b(?!to)\b\S+\w/g);
-
   // Converts mapState object to turf friendly Point obj (GEOJSON)
   const turfPoint = point([modifiedViewState.longitude, modifiedViewState.latitude]);
   if (match[0] === 'Orbit') {

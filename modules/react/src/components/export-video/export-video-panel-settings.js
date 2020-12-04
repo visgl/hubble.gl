@@ -19,10 +19,19 @@
 // THE SOFTWARE.
 
 import React from 'react';
-import {Input, ItemSelector} from 'kepler.gl/components';
+import {Input, ItemSelector, Slider} from 'kepler.gl/components';
 import styled, {withTheme} from 'styled-components';
 
-import {DEFAULT_PADDING, DEFAULT_ROW_GAP} from './constants';
+import {
+  DEFAULT_PADDING,
+  DEFAULT_ROW_GAP,
+  GOOD_16_9,
+  GOOD_4_3,
+  HIGHEST_16_9,
+  HIGHEST_4_3,
+  HIGH_16_9,
+  HIGH_4_3
+} from './constants';
 
 import {msConversion, estimateFileSize} from './utils';
 
@@ -33,6 +42,14 @@ const StyledSection = styled.div`
   font-size: 13px;
   margin-top: ${DEFAULT_PADDING};
   margin-bottom: ${DEFAULT_ROW_GAP};
+`;
+
+const SliderWrapper = styled.div`
+  display: flex;
+  position: relative;
+  flex-grow: 1;
+  margin-right: 24px;
+  margin-left: 24px;
 `;
 
 const StyledLabelCell = styled.div`
@@ -69,7 +86,8 @@ const ExportVideoPanelSettings = ({
   durationMs,
   frameRate,
   resolution,
-  mediaType
+  mediaType,
+  setDuration
 }) => (
   <div>
     <StyledSection>Video Effects</StyledSection>
@@ -81,8 +99,9 @@ const ExportVideoPanelSettings = ({
         multiSelect={false}
         searchable={false}
         onChange={() => {}}
+        disabled={true}
       />
-      <StyledLabelCell>Camera</StyledLabelCell> {/* TODO add functionality */}
+      <StyledLabelCell>Camera</StyledLabelCell>
       <ItemSelector
         selectedItems={settingsData.cameraPreset}
         options={[
@@ -102,11 +121,11 @@ const ExportVideoPanelSettings = ({
         onChange={setCameraPreset}
       />
     </InputGrid>
-    <StyledSection>Export Settings</StyledSection> {/* TODO add functionality  */}
+    <StyledSection>Export Settings</StyledSection>
     <InputGrid rows={3}>
       <StyledLabelCell>File Name</StyledLabelCell>
       <Input placeholder={settingsData.fileName} onChange={setFileName} />
-      <StyledLabelCell>Media Type</StyledLabelCell> {/* TODO add functionality  */}
+      <StyledLabelCell>Media Type</StyledLabelCell>
       <ItemSelector
         selectedItems={settingsData.mediaType}
         options={['GIF', 'WebM Video', 'PNG Sequence', 'JPEG Sequence']}
@@ -114,19 +133,48 @@ const ExportVideoPanelSettings = ({
         searchable={false}
         onChange={setMediaType}
       />
-      <StyledLabelCell>Quality</StyledLabelCell> {/* TODO add functionality  */}
+      <StyledLabelCell>Quality</StyledLabelCell>
       <ItemSelector
         selectedItems={settingsData.resolution}
-        options={['Good (540p)', 'High (720p)', 'Highest (1080p)']}
+        options={[
+          GOOD_16_9.label,
+          HIGH_16_9.label,
+          HIGHEST_16_9.label,
+          GOOD_4_3.label,
+          HIGH_4_3.label,
+          HIGHEST_4_3.label
+        ]}
         multiSelect={false}
         searchable={false}
         onChange={setQuality}
       />
     </InputGrid>
     <InputGrid style={{marginTop: DEFAULT_ROW_GAP}} rows={2} rowHeight="18px">
-      <StyledLabelCell>Duration</StyledLabelCell> {/* TODO add functionality  */}
-      <StyledValueCell>{msConversion(durationMs)}</StyledValueCell>
-      <StyledLabelCell>File Size</StyledLabelCell> {/* TODO add functionality  */}
+      <StyledLabelCell>Duration</StyledLabelCell>
+
+      <StyledValueCell>
+        <SliderWrapper
+          style={{width: '100%', marginLeft: '0px'}}
+          className="modal-duration__slider"
+        >
+          {/* TODO onSlider1Change */}
+          <Slider
+            showValues={false}
+            enableBarDrag={true}
+            isRanged={false}
+            value1={durationMs}
+            step={100}
+            minValue={100}
+            maxValue={10000}
+            style={{width: '70px'}}
+            onSlider1Change={val => {
+              setDuration(val);
+            }}
+          />
+          {msConversion(durationMs)}
+        </SliderWrapper>
+      </StyledValueCell>
+      <StyledLabelCell>File Size</StyledLabelCell>
       <StyledValueCell>
         {estimateFileSize(frameRate, resolution, durationMs, mediaType)}
       </StyledValueCell>

@@ -1177,6 +1177,11 @@
     "@math.gl/polygon" "^3.3.0"
     earcut "^2.0.6"
 
+"@deck.gl/mapbox@^8.3.8":
+  version "8.3.8"
+  resolved "https://registry.yarnpkg.com/@deck.gl/mapbox/-/mapbox-8.3.8.tgz#a7aeda1495ef3f9f50d39cc914be8f85222cba52"
+  integrity sha512-w3ht1XksRRokMQomi7hKj7AD88wdmBzP4gs/H/F5a0g5m7bhdHAXDKfCp5FrTMCe+aarVBvzQxNZtY/rmZxPcQ==
+
 "@deck.gl/mesh-layers@^8.2.0":
   version "8.3.6"
   resolved "https://registry.yarnpkg.com/@deck.gl/mesh-layers/-/mesh-layers-8.3.6.tgz#49e79b1f0544ef23f3d426223c4057eb8c4cebdd"
@@ -10148,7 +10153,7 @@ react-map-gl-draw@0.14.8:
     uuid "^3.3.2"
     viewport-mercator-project ">=5.0.0"
 
-react-map-gl@^5.0.3:
+react-map-gl@^5.0.3, react-map-gl@^5.2.10:
   version "5.2.10"
   resolved "https://registry.yarnpkg.com/react-map-gl/-/react-map-gl-5.2.10.tgz#2e7cf92bb99d528068069cb4b29226c8035c58af"
   integrity sha512-Mjb0+obehBCjCdfWDmAy51PfsWFW4pIDkgm2RvQLuQoRD0zF4W+vCAAZkV2pgCtA9akGmOcFKQki4H1+Noyzag==
