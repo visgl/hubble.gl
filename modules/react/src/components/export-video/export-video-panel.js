@@ -80,7 +80,8 @@ const PanelBody = ({
   frameRate,
   resolution,
   mediaType,
-  viewState
+  viewState,
+  setDuration
 }) => (
   <PanelBodyInner className="export-video-panel__body">
     <ExportVideoPanelPreview
@@ -100,6 +101,7 @@ const PanelBody = ({
       frameRate={frameRate}
       resolution={resolution}
       mediaType={mediaType}
+      setDuration={setDuration}
     />
   </PanelBodyInner>
 );
@@ -129,7 +131,8 @@ const ExportVideoPanel = ({
   frameRate,
   resolution,
   mediaType,
-  viewState
+  viewState,
+  setDuration
 }) => {
   return (
     <IntlProvider locale="en" messages={messages.en}>
@@ -150,6 +153,7 @@ const ExportVideoPanel = ({
           resolution={resolution}
           mediaType={mediaType}
           viewState={viewState}
+          setDuration={setDuration}
         />
         <ExportVideoPanelFooter
           handleClose={handleClose}

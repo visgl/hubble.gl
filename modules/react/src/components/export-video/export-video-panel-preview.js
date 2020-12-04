@@ -91,7 +91,14 @@ export class ExportVideoPanelPreview extends Component {
     const map = this.mapRef.current.getMap();
     const deck = this.deckRef.current.deck;
     map.addLayer(new MapboxLayer({id: 'my-deck', deck}));
-    map.on('render', () => this.props.adapter.onAfterRender(() => this.forceUpdate()));
+    // TODO trying to make map scale to 100% of modal
+    // map.on('load', function () {
+    //   map.resize();
+    // });
+    map.on('render', () => this.props.adapter.onAfterRender(() => {this.forceUpdate()}));
+    map.resize();
+    // map.setCenter([this.props.mapData.mapState.longitude, this.props.mapData.mapState.latitude]);
+    // console.log("this.props.mapData.mapState", this.props.mapData.mapState)
   }
 
   render() {
@@ -130,9 +137,6 @@ export class ExportVideoPanelPreview extends Component {
     };
 
     return (
-      // TODO add ternary logic for width/height that'll set aspect ratio of preview in deck-canvas. Or can it be dynamically scaled?
-      // maybe object-fit? https://www.w3schools.com/css/css3_object-fit.asp
-      // Can't get access to canvas elements within DeckGL component. Wrapper within
       <div
         id="deck-canvas"
         style={{width: '480px', height: '460px', position: 'relative', overflow: 'auto'}}
@@ -142,7 +146,7 @@ export class ExportVideoPanelPreview extends Component {
           viewState={this.props.viewState}
           id="default-deckgl-overlay2"
           layers={deckGlLayers}
-          style={style}
+          // style={style}
           controller={true}
           glOptions={{stencil: true}}
           onWebGLInitialized={gl => this.setState({glContext: gl})}

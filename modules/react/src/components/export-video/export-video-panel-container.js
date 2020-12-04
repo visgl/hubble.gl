@@ -59,12 +59,13 @@ export class ExportVideoPanelContainer extends Component {
     this.getDeckScene = this.getDeckScene.bind(this);
     this.onPreviewVideo = this.onPreviewVideo.bind(this);
     this.onRenderVideo = this.onRenderVideo.bind(this);
+    this.setDuration = this.setDuration.bind(this);
 
     this.state = {
       mediaType: 'GIF',
       cameraPreset: 'None',
       fileName: 'Video Name',
-      quality: 'High (720p)',
+      quality: 'High 16:9 (720p)',
       viewState: this.props.mapData.mapState,
       durationMs: 1000,
       canvasWidth: 1280, // canvas size changes resolution for everything but GIF (? unsure)
@@ -108,6 +109,8 @@ export class ExportVideoPanelContainer extends Component {
   }
 
   getDeckScene(animationLoop) {
+    // PSEUDO BRAINSTORM
+    // only runs once and permanently sets things like canvas resolution + duration
     const {canvasWidth, canvasHeight} = this.state;
 
     const keyframes = {
@@ -116,6 +119,7 @@ export class ExportVideoPanelContainer extends Component {
     const currentCamera = animationLoop.timeline.attachAnimation(keyframes.camera);
 
     // TODO this scales canvas resolution but is only set once. Figure out how to update
+    // TODO this needs to update durationMs
     return new DeckScene({
       animationLoop,
       keyframes,
@@ -148,15 +152,24 @@ export class ExportVideoPanelContainer extends Component {
     let newWidth = encoderSettings.gif.width;
     let newHeight = encoderSettings.gif.height;
 
-    if (resolution === 'Good (540p)') {
+    if (resolution === 'Good 16:9 (540p)') {
       newWidth = 960;
       newHeight = 540;
-    } else if (resolution === 'High (720p)') {
+    } else if (resolution === 'High 16:9 (720p)') {
       newWidth = 1280;
       newHeight = 720;
-    } else if (resolution === 'Highest (1080p)') {
+    } else if (resolution === 'Highest 16:9 (1080p)') {
       newWidth = 1920;
       newHeight = 1080;
+    } else if (resolution === 'Good 4:3 (480p)') {
+      newWidth = 640;
+      newHeight = 480;
+    } else if (resolution === 'High 4:3 (960p)') {
+      newWidth = 1280;
+      newHeight = 960;
+    } else if (resolution === 'Highest 4:3 (1440p)') {
+      newWidth = 1920;
+      newHeight = 1440;
     }
 
     adapter.scene.width = newWidth;
@@ -203,6 +216,10 @@ export class ExportVideoPanelContainer extends Component {
     adapter.render(Encoder, encoderSettings, onStop, this.getCameraKeyframes);
   }
 
+  setDuration(val) { // function passed down to Slider class in ExportVideoPanelSettings
+    this.setState({durationMs: val})
+  }
+
   render() {
     const {exportVideoWidth, handleClose, mapData} = this.props;
     const settingsData = {
@@ -236,6 +253,7 @@ export class ExportVideoPanelContainer extends Component {
         handlePreviewVideo={this.onPreviewVideo}
         handleRenderVideo={this.onRenderVideo}
         durationMs={durationMs}
+        setDuration={this.setDuration}
         frameRate={encoderSettings.framerate}
         resolution={[canvasWidth, canvasHeight]}
         mediaType={mediaType}

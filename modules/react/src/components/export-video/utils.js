@@ -39,7 +39,6 @@ export function parseSetCameraType(strCameraType, viewState) {
   const modifiedViewState = {...viewState}; // Creating a shallow copy otherwise keyframes bugs out
   // Returns arr of important keywords. Should work for 2+ words in future ex: ["Orbit", "90"] | ["North", "South"] | ["Zoom", "In"]
   const match = strCameraType.match(/\b(?!to)\b\S+\w/g);
-
   // Converts mapState object to turf friendly Point obj (GEOJSON)
   const turfPoint = point([modifiedViewState.longitude, modifiedViewState.latitude]);
   if (match[0] === 'Orbit') {
