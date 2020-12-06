@@ -19,12 +19,19 @@
 // THE SOFTWARE.
 
 import React from 'react';
-import {Input, ItemSelector, Slider} from 'kepler.gl/components';
 import styled, {withTheme} from 'styled-components';
 
-import {DEFAULT_PADDING, DEFAULT_ROW_GAP, FORMATS, RESOLUTIONS} from './constants';
+import {
+  DEFAULT_PADDING,
+  DEFAULT_ROW_GAP,
+  DEFAULT_FILENAME,
+  FORMATS,
+  RESOLUTIONS
+} from './constants';
 
 import {msConversion, estimateFileSize} from './utils';
+
+import {WithKeplerUI} from '../inject-kepler';
 
 const StyledSection = styled.div`
   align-self: center;
@@ -70,10 +77,7 @@ const InputGrid = styled.div`
 
 const getOptionValue = r => r.value;
 const displayOption = r => r.label;
-const getSelectedItems = (options, value) => {
-  const item = options.find(o => o.value === value);
-  return item ? [item] : [];
-};
+const getSelectedItems = (options, value) => options.find(o => o.value === value);
 
 const ExportVideoPanelSettings = ({
   setMediaType,
@@ -87,94 +91,102 @@ const ExportVideoPanelSettings = ({
   mediaType,
   setDuration
 }) => (
-  <div>
-    <StyledSection>Video Effects</StyledSection>
-    <InputGrid rows={2}>
-      <StyledLabelCell>Timestamp</StyledLabelCell> {/* TODO add functionality  */}
-      <ItemSelector
-        selectedItems={['None']}
-        options={['None', 'White', 'Black']}
-        multiSelect={false}
-        searchable={false}
-        onChange={() => {}}
-        disabled={true}
-      />
-      <StyledLabelCell>Camera</StyledLabelCell>
-      <ItemSelector
-        selectedItems={settingsData.cameraPreset}
-        options={[
-          'None',
-          'Orbit (90º)',
-          'Orbit (180º)',
-          'Orbit (360º)',
-          'North to South',
-          'South to North',
-          'East to West',
-          'West to East',
-          'Zoom Out',
-          'Zoom In'
-        ]}
-        multiSelect={false}
-        searchable={false}
-        onChange={setCameraPreset}
-      />
-    </InputGrid>
-    <StyledSection>Export Settings</StyledSection>
-    <InputGrid rows={3}>
-      <StyledLabelCell>File Name</StyledLabelCell>
-      <Input placeholder={settingsData.fileName} onChange={setFileName} />
-      <StyledLabelCell>Media Type</StyledLabelCell>
-      <ItemSelector
-        selectedItems={getSelectedItems(FORMATS, settingsData.mediaType)}
-        options={FORMATS}
-        getOptionValue={getOptionValue}
-        displayOption={displayOption}
-        multiSelect={false}
-        searchable={false}
-        onChange={setMediaType}
-      />
-      <StyledLabelCell>Resolution</StyledLabelCell>
-      <ItemSelector
-        selectedItems={getSelectedItems(RESOLUTIONS, settingsData.resolution)}
-        options={RESOLUTIONS}
-        getOptionValue={getOptionValue}
-        displayOption={displayOption}
-        multiSelect={false}
-        searchable={false}
-        onChange={setResolution}
-      />
-    </InputGrid>
-    <InputGrid style={{marginTop: DEFAULT_ROW_GAP}} rows={2} rowHeight="18px">
-      <StyledLabelCell>Duration</StyledLabelCell>
-
-      <StyledValueCell>
-        <SliderWrapper
-          style={{width: '100%', marginLeft: '0px'}}
-          className="modal-duration__slider"
-        >
-          {/* TODO onSlider1Change */}
-          <Slider
-            showValues={false}
-            enableBarDrag={true}
-            isRanged={false}
-            value1={durationMs}
-            step={100}
-            minValue={100}
-            maxValue={10000}
-            style={{width: '70px'}}
-            onSlider1Change={val => {
-              setDuration(val);
-            }}
+  <WithKeplerUI>
+    {({Input, ItemSelector, Slider}) => (
+      <div>
+        <StyledSection>Video Effects</StyledSection>
+        <InputGrid rows={2}>
+          <StyledLabelCell>Timestamp</StyledLabelCell> {/* TODO add functionality  */}
+          <ItemSelector
+            selectedItems={['None']}
+            options={['None', 'White', 'Black']}
+            multiSelect={false}
+            searchable={false}
+            onChange={() => {}}
+            disabled={true}
           />
-          {msConversion(durationMs)}
-        </SliderWrapper>
-      </StyledValueCell>
-      <StyledLabelCell>File Size</StyledLabelCell>
-      <StyledValueCell>
-        {estimateFileSize(frameRate, resolution, durationMs, mediaType)}
-      </StyledValueCell>
-    </InputGrid>
-  </div>
+          <StyledLabelCell>Camera</StyledLabelCell>
+          <ItemSelector
+            selectedItems={settingsData.cameraPreset}
+            options={[
+              'None',
+              'Orbit (90º)',
+              'Orbit (180º)',
+              'Orbit (360º)',
+              'North to South',
+              'South to North',
+              'East to West',
+              'West to East',
+              'Zoom Out',
+              'Zoom In'
+            ]}
+            multiSelect={false}
+            searchable={false}
+            onChange={setCameraPreset}
+          />
+        </InputGrid>
+        <StyledSection>Export Settings</StyledSection>
+        <InputGrid rows={3}>
+          <StyledLabelCell>File Name</StyledLabelCell>
+          <Input
+            value={settingsData.fileName}
+            placeholder={DEFAULT_FILENAME}
+            onChange={e => setFileName(e.target.value)}
+          />
+          <StyledLabelCell>Media Type</StyledLabelCell>
+          <ItemSelector
+            selectedItems={getSelectedItems(FORMATS, settingsData.mediaType)}
+            options={FORMATS}
+            getOptionValue={getOptionValue}
+            displayOption={displayOption}
+            multiSelect={false}
+            searchable={false}
+            onChange={setMediaType}
+          />
+          <StyledLabelCell>Resolution</StyledLabelCell>
+          <ItemSelector
+            selectedItems={getSelectedItems(RESOLUTIONS, settingsData.resolution)}
+            options={RESOLUTIONS}
+            getOptionValue={getOptionValue}
+            displayOption={displayOption}
+            multiSelect={false}
+            searchable={false}
+            onChange={setResolution}
+          />
+        </InputGrid>
+        <InputGrid style={{marginTop: DEFAULT_ROW_GAP}} rows={2} rowHeight="18px">
+          <StyledLabelCell>Duration</StyledLabelCell>
+
+          <StyledValueCell>
+            <SliderWrapper
+              style={{width: '100%', marginLeft: '0px'}}
+              className="modal-duration__slider"
+            >
+              {/* TODO onSlider1Change */}
+              <Slider
+                showValues={false}
+                enableBarDrag={true}
+                isRanged={false}
+                value1={durationMs}
+                step={100}
+                minValue={100}
+                maxValue={10000}
+                style={{width: '70px'}}
+                onSlider1Change={val => {
+                  setDuration(val);
+                }}
+              />
+              {msConversion(durationMs)}
+            </SliderWrapper>
+          </StyledValueCell>
+          <StyledLabelCell>File Size</StyledLabelCell>
+          <StyledValueCell>
+            {estimateFileSize(frameRate, resolution, durationMs, mediaType)}
+          </StyledValueCell>
+        </InputGrid>
+      </div>
+    )}
+  </WithKeplerUI>
 );
 
 export default withTheme(ExportVideoPanelSettings);

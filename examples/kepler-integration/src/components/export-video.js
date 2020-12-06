@@ -20,9 +20,28 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {withTheme} from 'styled-components';
+import styled, {withTheme} from 'styled-components';
 
-import {ExportVideoModal, ExportVideoPanelContainer} from '@hubble.gl/react';
+import {InjectKeplerUI, ExportVideoModal, ExportVideoPanelContainer} from '@hubble.gl/react';
+
+// Hook up mutual kepler imports
+import {Button, Icons, Input, ItemSelector, Slider} from 'kepler.gl/components';
+
+const IconButton = styled(Button)`
+  padding: 0;
+  svg {
+    margin: 0;
+  }
+`;
+
+const KEPLER_UI = {
+  IconButton,
+  Button,
+  Icons,
+  Input,
+  ItemSelector,
+  Slider
+};
 
 // Redux stores/actions
 // import {connect as keplerGlConnect} from 'kepler.gl';
@@ -78,18 +97,23 @@ class ExportVideo extends Component {
 
   render() {
     return (
-      <div>
-        <ExportVideoModal isOpen={this.state.isOpen} theme={this.props.theme}>
-          <ExportVideoPanelContainer handleClose={this.handleClose} mapData={this.props.mapData} />
-        </ExportVideoModal>
-        <h1>
-          Use this button to export an animation using Hubble
-          <button style={{marginLeft: '10px'}} onClick={this.handleOpen}>
-            Export
-          </button>
-        </h1>
-        {/* anonymous function to bind state onclick  */}
-      </div>
+      <InjectKeplerUI keplerUI={KEPLER_UI}>
+        <div>
+          <ExportVideoModal isOpen={this.state.isOpen} theme={this.props.theme}>
+            <ExportVideoPanelContainer
+              handleClose={this.handleClose}
+              mapData={this.props.mapData}
+            />
+          </ExportVideoModal>
+          <h1>
+            Use this button to export an animation using Hubble
+            <button style={{marginLeft: '10px'}} onClick={this.handleOpen}>
+              Export
+            </button>
+          </h1>
+          {/* anonymous function to bind state onclick  */}
+        </div>
+      </InjectKeplerUI>
     );
   }
 }
