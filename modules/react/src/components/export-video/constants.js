@@ -24,50 +24,64 @@ export const DEFAULT_BUTTON_WIDTH = '64px';
 export const DEFAULT_PADDING = '32px';
 export const DEFAULT_ROW_GAP = '16px';
 
-export const GOOD_16_9 = {
-  label: 'Good 16:9 (540p)',
-  width: 960,
-  height: 540
-};
-export const HIGH_16_9 = {
-  label: 'High 16:9 (720p)',
-  width: 1280,
-  height: 720
-};
-export const HIGHEST_16_9 = {
-  label: 'Highest 16:9 (1080p)',
-  width: 1920,
-  height: 1080
-};
-export const GOOD_4_3 = {
-  label: 'Good 4:3 (480p)',
-  width: 640,
-  height: 480
-};
-export const HIGH_4_3 = {
-  label: 'High 4:3 (960p)',
-  width: 1280,
-  height: 960
-};
-export const HIGHEST_4_3 = {
-  label: 'Highest 4:3 (1440p)',
-  width: 1920,
-  height: 1440
-};
-
-export function getQualitySettings(label) {
-  if (label === 'Good 16:9 (540p)') {
-    return GOOD_16_9;
-  } else if (label === 'High 16:9 (720p)') {
-    return HIGH_16_9;
-  } else if (label === 'Highest 16:9 (1080p)') {
-    return HIGHEST_16_9;
-  } else if (label === 'Good 4:3 (480p)') {
-    return GOOD_4_3;
-  } else if (label === 'High 4:3 (960p)') {
-    return HIGH_4_3;
-  } else if (label === 'Highest 4:3 (1440p)') {
-    return HIGHEST_4_3;
+export const FORMATS = [
+  {
+    value: 'gif',
+    label: 'GIF'
+  },
+  {
+    value: 'webm',
+    label: 'WebM Video'
+  },
+  {
+    value: 'png',
+    label: 'PNG Sequence'
+  },
+  {
+    value: 'jpeg',
+    label: 'JPEG Sequence'
   }
-  throw new Error(`Unsupported Quality Settings label: ${label}`);
+];
+
+export const RESOLUTIONS = [
+  {
+    value: 0,
+    label: 'Good 16:9 (540p)',
+    width: 960,
+    height: 540
+  },
+  {
+    value: 1,
+    label: 'High 16:9 (720p)',
+    width: 1280,
+    height: 720
+  },
+  {
+    value: 2,
+    label: 'Highest 16:9 (1080p)',
+    width: 1920,
+    height: 1080
+  },
+  {
+    value: 3,
+    label: 'Good 4:3 (480p)',
+    width: 640,
+    height: 480
+  },
+  {
+    value: 4,
+    label: 'High 4:3 (960p)',
+    width: 1280,
+    height: 960
+  },
+  {
+    value: 5,
+    label: 'Highest 4:3 (1440p)',
+    width: 1920,
+    height: 1440
+  }
+];
+
+export function getResolutionSetting(index) {
+  return RESOLUTIONS[index] || RESOLUTIONS[0];
 }

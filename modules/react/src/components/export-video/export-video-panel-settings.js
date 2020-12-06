@@ -22,16 +22,7 @@ import React from 'react';
 import {Input, ItemSelector, Slider} from 'kepler.gl/components';
 import styled, {withTheme} from 'styled-components';
 
-import {
-  DEFAULT_PADDING,
-  DEFAULT_ROW_GAP,
-  GOOD_16_9,
-  GOOD_4_3,
-  HIGHEST_16_9,
-  HIGHEST_4_3,
-  HIGH_16_9,
-  HIGH_4_3
-} from './constants';
+import {DEFAULT_PADDING, DEFAULT_ROW_GAP, FORMATS, RESOLUTIONS} from './constants';
 
 import {msConversion, estimateFileSize} from './utils';
 
@@ -77,11 +68,18 @@ const InputGrid = styled.div`
   grid-row-gap: ${DEFAULT_ROW_GAP};
 `;
 
+const getOptionValue = r => r.value;
+const displayOption = r => r.label;
+const getSelectedItems = (options, value) => {
+  const item = options.find(o => o.value === value);
+  return item ? [item] : [];
+};
+
 const ExportVideoPanelSettings = ({
   setMediaType,
   setCameraPreset,
   setFileName,
-  setQuality,
+  setResolution,
   settingsData,
   durationMs,
   frameRate,
@@ -127,26 +125,23 @@ const ExportVideoPanelSettings = ({
       <Input placeholder={settingsData.fileName} onChange={setFileName} />
       <StyledLabelCell>Media Type</StyledLabelCell>
       <ItemSelector
-        selectedItems={settingsData.mediaType}
-        options={['GIF', 'WebM Video', 'PNG Sequence', 'JPEG Sequence']}
+        selectedItems={getSelectedItems(FORMATS, settingsData.mediaType)}
+        options={FORMATS}
+        getOptionValue={getOptionValue}
+        displayOption={displayOption}
         multiSelect={false}
         searchable={false}
         onChange={setMediaType}
       />
-      <StyledLabelCell>Quality</StyledLabelCell>
+      <StyledLabelCell>Resolution</StyledLabelCell>
       <ItemSelector
-        selectedItems={settingsData.resolution}
-        options={[
-          GOOD_16_9.label,
-          HIGH_16_9.label,
-          HIGHEST_16_9.label,
-          GOOD_4_3.label,
-          HIGH_4_3.label,
-          HIGHEST_4_3.label
-        ]}
+        selectedItems={getSelectedItems(RESOLUTIONS, settingsData.resolution)}
+        options={RESOLUTIONS}
+        getOptionValue={getOptionValue}
+        displayOption={displayOption}
         multiSelect={false}
         searchable={false}
-        onChange={setQuality}
+        onChange={setResolution}
       />
     </InputGrid>
     <InputGrid style={{marginTop: DEFAULT_ROW_GAP}} rows={2} rowHeight="18px">

@@ -33,7 +33,7 @@ import {
 
 import ExportVideoPanel from './export-video-panel';
 import {parseSetCameraType} from './utils';
-import {getQualitySettings, HIGH_16_9} from './constants';
+import {getResolutionSetting} from './constants';
 
 // import {DEFAULT_TIME_FORMAT} from 'kepler.gl';
 // import moment from 'moment';
@@ -44,18 +44,21 @@ import {getQualitySettings, HIGH_16_9} from './constants';
 //     .toString()}`;
 // }
 
-export class ExportVideoPanelContainer extends Component {
-  static defaultProps = {
-    exportVideoWidth: 980
-  };
+const ENCODERS = {
+  gif: GifEncoder,
+  webm: WebMEncoder,
+  jpeg: JPEGSequenceEncoder,
+  png: PNGSequenceEncoder
+};
 
+export class ExportVideoPanelContainer extends Component {
   constructor(props) {
     super(props);
 
-    this.setMediaTypeState = this.setMediaTypeState.bind(this);
+    this.setMediaType = this.setMediaType.bind(this);
     this.setCameraPreset = this.setCameraPreset.bind(this);
     this.setFileName = this.setFileName.bind(this);
-    this.setQuality = this.setQuality.bind(this);
+    this.setResolution = this.setResolution.bind(this);
     this.getCameraKeyframes = this.getCameraKeyframes.bind(this);
     this.getDeckScene = this.getDeckScene.bind(this);
     this.onPreviewVideo = this.onPreviewVideo.bind(this);
@@ -63,45 +66,60 @@ export class ExportVideoPanelContainer extends Component {
     this.setDuration = this.setDuration.bind(this);
 
     this.state = {
-      mediaType: 'GIF',
+      mediaType: 'gif',
       cameraPreset: 'None',
       fileName: 'Video Name',
-      qualitySettings: HIGH_16_9,
+      resolution: 1,
+      durationMs: 1000, // TODO change to 5000 later. 1000 for dev testing
       viewState: this.props.mapData.mapState,
-      durationMs: 1000,
-      canvasWidth: 1280, // canvas size changes resolution for everything but GIF (? unsure)
-      canvasHeight: 720,
-      encoderSettings: {
-        framerate: 30,
-        webm: {
-          quality: 0.8
-        },
-        jpeg: {
-          quality: 0.8
-        },
-        gif: {
-          sampleInterval: 1000,
-          width: 1280,
-          height: 720
-        },
-        filename: 'kepler.gl'
-      },
+      filename: 'kepler.gl',
       adapter: new DeckAdapter(this.getDeckScene)
     };
   }
 
+  getCanvasSize() {
+    const {resolution} = this.state;
+    return getResolutionSetting(resolution);
+  }
+
+  getEncoderSettings() {
+    const {fileName} = this.state;
+    const {width, height} = this.getCanvasSize();
+    return {
+      framerate: 30,
+      webm: {
+        quality: 0.8
+      },
+      jpeg: {
+        quality: 0.8
+      },
+      gif: {
+        sampleInterval: 1000,
+        width,
+        height
+      },
+      filename: fileName
+    };
+  }
+
+  getEncoder() {
+    const {mediaType} = this.state;
+    return ENCODERS[mediaType];
+  }
+
   getCameraKeyframes(prevCamera = undefined) {
     const {viewState, cameraPreset, durationMs} = this.state;
+    const {longitude, latitude, zoom, pitch, bearing} = viewState;
 
     return new CameraKeyframes({
       timings: [0, durationMs],
       keyframes: [
         {
-          longitude: viewState.longitude,
-          latitude: viewState.latitude,
-          zoom: viewState.zoom,
-          pitch: viewState.pitch,
-          bearing: viewState.bearing
+          longitude,
+          latitude,
+          zoom,
+          pitch,
+          bearing
         },
         parseSetCameraType(cameraPreset, viewState)
       ],
@@ -112,7 +130,8 @@ export class ExportVideoPanelContainer extends Component {
   getDeckScene(animationLoop) {
     // PSEUDO BRAINSTORM
     // only runs once and permanently sets things like canvas resolution + duration
-    const {canvasWidth, canvasHeight} = this.state;
+    const {durationMs} = this.state;
+    const {width, height} = this.getCanvasSize();
 
     const keyframes = {
       camera: this.getCameraKeyframes()
@@ -124,14 +143,14 @@ export class ExportVideoPanelContainer extends Component {
     return new DeckScene({
       animationLoop,
       keyframes,
-      lengthMs: this.state.durationMs,
-      width: canvasWidth,
-      height: canvasHeight,
+      lengthMs: durationMs,
+      width,
+      height,
       currentCamera
     });
   }
 
-  setMediaTypeState(media) {
+  setMediaType(media) {
     this.setState({
       mediaType: media
     });
@@ -146,54 +165,30 @@ export class ExportVideoPanelContainer extends Component {
       fileName: name.target.value
     });
   }
-  setQuality(qualityLabel) {
-    // NOTE: resolution parameter is string user selects ex: 'Good (540p)'\
-    const {adapter, encoderSettings} = this.state;
 
-    const qualitySettings = getQualitySettings(qualityLabel);
-    const newWidth = qualitySettings.width;
-    const newHeight = qualitySettings.height;
-
-    adapter.scene.width = newWidth;
-    adapter.scene.height = newHeight;
-
+  setResolution(resolution) {
     this.setState({
-      qualitySettings,
-      canvasWidth: newWidth,
-      canvasHeight: newHeight,
-      encoderSettings: {
-        ...encoderSettings,
-        gif: {
-          ...encoderSettings.gif,
-          width: newWidth,
-          height: newHeight
-        }
-        // TODO Add other encoders as needed. Not yet implemented
-      }
-      // adapter: new DeckAdapter(this.getDeckScene)
+      resolution
     });
   }
 
+  setViewState(vs) {
+    this.setState({viewState: vs.viewState});
+  }
+
   onPreviewVideo() {
-    const {adapter, encoderSettings} = this.state;
+    const {adapter} = this.state;
+    const encoderSettings = this.getEncoderSettings();
+
     const onStop = () => {};
     adapter.render(PreviewEncoder, encoderSettings, onStop, this.getCameraKeyframes);
   }
 
   onRenderVideo() {
-    const {adapter, encoderSettings, mediaType} = this.state;
-    let Encoder = PreviewEncoder;
+    const {adapter} = this.state;
+    const Encoder = this.getEncoder();
+    const encoderSettings = this.getEncoderSettings();
     const onStop = () => {};
-
-    if (mediaType === 'WebM Video') {
-      Encoder = WebMEncoder;
-    } else if (mediaType === 'PNG Sequence') {
-      Encoder = PNGSequenceEncoder;
-    } else if (mediaType === 'JPEG Sequence') {
-      Encoder = JPEGSequenceEncoder;
-    } else if (mediaType === 'GIF') {
-      Encoder = GifEncoder;
-    }
 
     adapter.render(Encoder, encoderSettings, onStop, this.getCameraKeyframes);
   }
@@ -205,22 +200,20 @@ export class ExportVideoPanelContainer extends Component {
 
   render() {
     const {exportVideoWidth, handleClose, mapData} = this.props;
-    const settingsData = {
-      mediaType: this.state.mediaType,
-      cameraPreset: this.state.cameraPreset,
-      fileName: this.state.fileName,
-      resolution: this.state.qualitySettings.label
-    };
-
     const {
       adapter,
       durationMs,
-      encoderSettings,
       mediaType,
-      canvasWidth,
-      canvasHeight,
+      cameraPreset,
+      fileName,
+      resolution,
       viewState
     } = this.state;
+
+    const settingsData = {mediaType, cameraPreset, fileName, resolution};
+
+    const encoderSettings = this.getEncoderSettings();
+    const {width, height} = this.getCanvasSize();
 
     return (
       <ExportVideoPanel
@@ -230,15 +223,13 @@ export class ExportVideoPanelContainer extends Component {
         // Map Props
         mapData={mapData}
         viewState={viewState}
-        setViewState={vs => {
-          this.setState({viewState: vs.viewState});
-        }}
+        setViewState={this.setViewState}
         // Settings Props
         settingsData={settingsData}
-        setMediaTypeState={this.setMediaTypeState}
+        setMediaType={this.setMediaType}
         setCameraPreset={this.setCameraPreset}
         setFileName={this.setFileName}
-        setQuality={this.setQuality}
+        setResolution={this.setResolution}
         // Hubble Props
         adapter={adapter}
         handlePreviewVideo={this.onPreviewVideo}
@@ -246,9 +237,13 @@ export class ExportVideoPanelContainer extends Component {
         durationMs={durationMs}
         setDuration={this.setDuration}
         frameRate={encoderSettings.framerate}
-        resolution={[canvasWidth, canvasHeight]}
+        resolution={[width, height]}
         mediaType={mediaType}
       />
     );
   }
 }
+
+ExportVideoPanelContainer.defaultProps = {
+  exportVideoWidth: 980
+};
