@@ -33,7 +33,7 @@ import {
 
 import ExportVideoPanel from './export-video-panel';
 import {parseSetCameraType} from './utils';
-import {getResolutionSetting} from './constants';
+import {DEFAULT_FILENAME, getResolutionSetting} from './constants';
 
 // import {DEFAULT_TIME_FORMAT} from 'kepler.gl';
 // import moment from 'moment';
@@ -59,22 +59,34 @@ export class ExportVideoPanelContainer extends Component {
     this.setCameraPreset = this.setCameraPreset.bind(this);
     this.setFileName = this.setFileName.bind(this);
     this.setResolution = this.setResolution.bind(this);
+    this.setViewState = this.setViewState.bind(this);
     this.getCameraKeyframes = this.getCameraKeyframes.bind(this);
     this.getDeckScene = this.getDeckScene.bind(this);
     this.onPreviewVideo = this.onPreviewVideo.bind(this);
     this.onRenderVideo = this.onRenderVideo.bind(this);
     this.setDuration = this.setDuration.bind(this);
 
+    const {
+      initialState,
+      mapData: {mapState}
+    } = props;
+
     this.state = {
       mediaType: 'gif',
       cameraPreset: 'None',
-      fileName: 'Video Name',
-      resolution: 1,
+      fileName: '',
+      resolution: '1280x720',
       durationMs: 1000, // TODO change to 5000 later. 1000 for dev testing
-      viewState: this.props.mapData.mapState,
-      filename: 'kepler.gl',
-      adapter: new DeckAdapter(this.getDeckScene)
+      viewState: mapState,
+      adapter: new DeckAdapter(this.getDeckScene),
+      ...(initialState || {})
     };
+  }
+
+  getFileName() {
+    const {fileName} = this.state;
+    if (fileName === '') return DEFAULT_FILENAME;
+    return fileName;
   }
 
   getCanvasSize() {
@@ -83,8 +95,9 @@ export class ExportVideoPanelContainer extends Component {
   }
 
   getEncoderSettings() {
-    const {fileName} = this.state;
+    const fileName = this.getFileName();
     const {width, height} = this.getCanvasSize();
+
     return {
       framerate: 30,
       webm: {
@@ -150,26 +163,40 @@ export class ExportVideoPanelContainer extends Component {
     });
   }
 
-  setMediaType(media) {
-    this.setState({
-      mediaType: media
-    });
+  setStateAndNotify(update) {
+    const {
+      props: {onSettingsChange},
+      state
+    } = this;
+    this.setState({...state, ...update});
+
+    if (onSettingsChange) {
+      const {mediaType, cameraPreset, fileName, resolution, durationMs} = state;
+      onSettingsChange({
+        mediaType,
+        cameraPreset,
+        fileName,
+        resolution,
+        durationMs,
+        ...update
+      });
+    }
   }
-  setCameraPreset(option) {
-    this.setState({
-      cameraPreset: option
-    });
+
+  setMediaType(mediaType) {
+    this.setStateAndNotify({mediaType});
   }
-  setFileName(name) {
-    this.setState({
-      fileName: name.target.value
-    });
+
+  setCameraPreset(cameraPreset) {
+    this.setStateAndNotify({cameraPreset});
+  }
+
+  setFileName(fileName) {
+    this.setStateAndNotify({fileName});
   }
 
   setResolution(resolution) {
-    this.setState({
-      resolution
-    });
+    this.setStateAndNotify({resolution});
   }
 
   setViewState(vs) {
@@ -193,13 +220,13 @@ export class ExportVideoPanelContainer extends Component {
     adapter.render(Encoder, encoderSettings, onStop, this.getCameraKeyframes);
   }
 
-  setDuration(val) {
+  setDuration(durationMs) {
     // function passed down to Slider class in ExportVideoPanelSettings
-    this.setState({durationMs: val});
+    this.setStateAndNotify({durationMs});
   }
 
   render() {
-    const {exportVideoWidth, handleClose, mapData} = this.props;
+    const {exportVideoWidth, handleClose, mapData, header} = this.props;
     const {
       adapter,
       durationMs,
@@ -220,6 +247,7 @@ export class ExportVideoPanelContainer extends Component {
         // UI Props
         exportVideoWidth={exportVideoWidth}
         handleClose={handleClose}
+        header={header}
         // Map Props
         mapData={mapData}
         viewState={viewState}
@@ -245,5 +273,6 @@ export class ExportVideoPanelContainer extends Component {
 }
 
 ExportVideoPanelContainer.defaultProps = {
-  exportVideoWidth: 980
+  exportVideoWidth: 980,
+  header: true
 };

@@ -18,15 +18,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-export {
-  EncoderDropdown,
-  BasicControls,
-  ResolutionGuide,
-  ExportVideoModal,
-  ExportVideoPanelContainer,
-  injectKeplerUI,
-  InjectKeplerUI,
-  WithKeplerUI,
-  KeplerUIContext
-} from './components';
-export {useNextFrame} from './hooks';
+import React, {createContext} from 'react';
+
+/*
+// Hook up mutual kepler imports
+import {Button, Icons, Input, ItemSelector, Slider} from 'kepler.gl/components';
+
+const IconButton = styled(Button)`
+  padding: 0;
+  svg {
+    margin: 0;
+  }
+`;
+
+const KEPLER_UI = {
+  IconButton,
+  Button,
+  Icons,
+  Input,
+  ItemSelector,
+  Slider,
+};
+*/
+
+export const KeplerUIContext = createContext(null);
+
+export const WithKeplerUI = KeplerUIContext.Consumer;
+
+export const InjectKeplerUI = ({children, keplerUI}) => (
+  <KeplerUIContext.Provider value={keplerUI}>{children}</KeplerUIContext.Provider>
+);
+
+export const injectKeplerUI = (Component, keplerUI) => props => (
+  <KeplerUIContext.Provider value={keplerUI}>
+    <Component {...props} />
+  </KeplerUIContext.Provider>
+);

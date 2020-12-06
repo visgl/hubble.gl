@@ -23,19 +23,13 @@ import styled, {withTheme} from 'styled-components';
 import {IntlProvider} from 'react-intl';
 
 import {messages} from 'kepler.gl/localization';
-import {Button, Icons} from 'kepler.gl/components';
 
 import {DEFAULT_PADDING, DEFAULT_ICON_BUTTON_HEIGHT} from './constants';
 import ExportVideoPanelSettings from './export-video-panel-settings';
 import {ExportVideoPanelPreview} from './export-video-panel-preview'; // Not yet part of standard library. TODO when updated
 import ExportVideoPanelFooter from './export-video-panel-footer';
 
-const IconButton = styled(Button)`
-  padding: 0;
-  svg {
-    margin: 0;
-  }
-`;
+import {WithKeplerUI} from '../inject-kepler';
 
 const PanelCloseInner = styled.div`
   display: flex;
@@ -44,11 +38,15 @@ const PanelCloseInner = styled.div`
 `;
 
 const PanelClose = ({handleClose}) => (
-  <PanelCloseInner className="export-video-panel__close">
-    <IconButton className="export-video-panel__button" link onClick={handleClose}>
-      <Icons.Delete height={DEFAULT_ICON_BUTTON_HEIGHT} />
-    </IconButton>
-  </PanelCloseInner>
+  <WithKeplerUI>
+    {({IconButton, Icons}) => (
+      <PanelCloseInner className="export-video-panel__close">
+        <IconButton className="export-video-panel__button" link onClick={handleClose}>
+          <Icons.Delete height={DEFAULT_ICON_BUTTON_HEIGHT} />
+        </IconButton>
+      </PanelCloseInner>
+    )}
+  </WithKeplerUI>
 );
 
 const StyledTitle = styled.div`
@@ -114,6 +112,7 @@ const ExportVideoPanel = ({
   // UI Props
   exportVideoWidth,
   handleClose,
+  header,
   // Map Props
   mapData,
   setViewState,
@@ -137,8 +136,12 @@ const ExportVideoPanel = ({
   return (
     <IntlProvider locale="en" messages={messages.en}>
       <Panel exportVideoWidth={exportVideoWidth} className="export-video-panel">
-        <PanelClose handleClose={handleClose} />
-        <StyledTitle className="export-video-panel__title">Export Video</StyledTitle>
+        {header !== false ? (
+          <>
+            <PanelClose handleClose={handleClose} />
+            <StyledTitle className="export-video-panel__title">Export Video</StyledTitle>
+          </>
+        ) : null}
         <PanelBody
           mapData={mapData}
           adapter={adapter}

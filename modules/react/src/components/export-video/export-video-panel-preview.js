@@ -54,14 +54,19 @@ export class ExportVideoPanelPreview extends Component {
   }
 
   _renderLayer(overlays, idx) {
-    const datasets = this.props.mapData.visState.datasets;
-    const layers = this.props.mapData.visState.layers;
-    const layerData = this.props.mapData.visState.layerData;
-    const hoverInfo = this.props.mapData.visState.hoverInfo;
-    const clicked = this.props.mapData.visState.clicked;
-    const mapState = this.props.mapData.mapState;
-    const interactionConfig = this.props.mapData.visState.interactionConfig;
-    const animationConfig = this.props.mapData.visState.animationConfig;
+    const {
+      mapData: {visState, mapState}
+    } = this.props;
+
+    const {
+      datasets,
+      layers,
+      layerData,
+      hoverInfo,
+      clicked,
+      interactionConfig,
+      animationConfig
+    } = visState;
 
     const layer = layers[idx];
     const data = layerData[idx];

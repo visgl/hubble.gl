@@ -24,6 +24,8 @@ export const DEFAULT_BUTTON_WIDTH = '64px';
 export const DEFAULT_PADDING = '32px';
 export const DEFAULT_ROW_GAP = '16px';
 
+export const DEFAULT_FILENAME = 'kepler.gl';
+
 export const FORMATS = [
   {
     value: 'gif',
@@ -45,43 +47,45 @@ export const FORMATS = [
 
 export const RESOLUTIONS = [
   {
-    value: 0,
+    value: '960x540',
     label: 'Good 16:9 (540p)',
     width: 960,
     height: 540
   },
   {
-    value: 1,
+    value: '1280x720',
     label: 'High 16:9 (720p)',
     width: 1280,
     height: 720
   },
   {
-    value: 2,
+    value: '1920x1080',
     label: 'Highest 16:9 (1080p)',
     width: 1920,
     height: 1080
   },
   {
-    value: 3,
+    value: '640x480',
     label: 'Good 4:3 (480p)',
     width: 640,
     height: 480
   },
   {
-    value: 4,
+    value: '1280x960',
     label: 'High 4:3 (960p)',
     width: 1280,
     height: 960
   },
   {
-    value: 5,
+    value: '1920x1440',
     label: 'Highest 4:3 (1440p)',
     width: 1920,
     height: 1440
   }
 ];
 
-export function getResolutionSetting(index) {
-  return RESOLUTIONS[index] || RESOLUTIONS[0];
+export const isResolution = value => option => option.value === value;
+
+export function getResolutionSetting(value) {
+  return RESOLUTIONS.find(isResolution(value)) || RESOLUTIONS[0];
 }
