@@ -38,8 +38,8 @@ const StyledSection = styled.div`
   color: ${props => props.theme.labelColor};
   font-weight: 500;
   font-size: 13px;
-  margin-top: ${DEFAULT_PADDING};
-  margin-bottom: ${DEFAULT_ROW_GAP};
+  margin-top: ${props => (props.top ? '0px' : `${DEFAULT_PADDING}px`)};
+  margin-bottom: ${DEFAULT_ROW_GAP}px;
 `;
 
 const SliderWrapper = styled.div`
@@ -72,7 +72,7 @@ const InputGrid = styled.div`
     ${props => props.rows},
     ${props => (props.rowHeight ? props.rowHeight : '34px')}
   );
-  grid-row-gap: ${DEFAULT_ROW_GAP};
+  grid-row-gap: ${DEFAULT_ROW_GAP}px;
 `;
 
 const getOptionValue = r => r.value;
@@ -94,39 +94,8 @@ const ExportVideoPanelSettings = ({
   <WithKeplerUI>
     {({Input, ItemSelector, Slider}) => (
       <div>
-        <StyledSection>Video Effects</StyledSection>
-        <InputGrid rows={2}>
-          <StyledLabelCell>Timestamp</StyledLabelCell> {/* TODO add functionality  */}
-          <ItemSelector
-            selectedItems={['None']}
-            options={['None', 'White', 'Black']}
-            multiSelect={false}
-            searchable={false}
-            onChange={() => {}}
-            disabled={true}
-          />
-          <StyledLabelCell>Camera</StyledLabelCell>
-          <ItemSelector
-            selectedItems={settingsData.cameraPreset}
-            options={[
-              'None',
-              'Orbit (90º)',
-              'Orbit (180º)',
-              'Orbit (360º)',
-              'North to South',
-              'South to North',
-              'East to West',
-              'West to East',
-              'Zoom Out',
-              'Zoom In'
-            ]}
-            multiSelect={false}
-            searchable={false}
-            onChange={setCameraPreset}
-          />
-        </InputGrid>
-        <StyledSection>Export Settings</StyledSection>
-        <InputGrid rows={3}>
+        <StyledSection top={true}>Export Settings</StyledSection>
+        <InputGrid rows={5}>
           <StyledLabelCell>File Name</StyledLabelCell>
           <Input
             value={settingsData.fileName}
@@ -153,10 +122,7 @@ const ExportVideoPanelSettings = ({
             searchable={false}
             onChange={setResolution}
           />
-        </InputGrid>
-        <InputGrid style={{marginTop: DEFAULT_ROW_GAP}} rows={2} rowHeight="18px">
           <StyledLabelCell>Duration</StyledLabelCell>
-
           <StyledValueCell>
             <SliderWrapper
               style={{width: '100%', marginLeft: '0px'}}
@@ -176,13 +142,37 @@ const ExportVideoPanelSettings = ({
                   setDuration(val);
                 }}
               />
-              {msConversion(durationMs)}
+              <div style={{alignSelf: 'center', paddingLeft: '8px', width: '56px'}}>
+                {msConversion(durationMs)}
+              </div>
             </SliderWrapper>
           </StyledValueCell>
           <StyledLabelCell>File Size</StyledLabelCell>
           <StyledValueCell>
             {estimateFileSize(frameRate, resolution, durationMs, mediaType)}
           </StyledValueCell>
+        </InputGrid>
+        <StyledSection>Video Effects</StyledSection>
+        <InputGrid rows={1}>
+          <StyledLabelCell>Camera</StyledLabelCell>
+          <ItemSelector
+            selectedItems={settingsData.cameraPreset}
+            options={[
+              'None',
+              'Orbit (90º)',
+              'Orbit (180º)',
+              'Orbit (360º)',
+              'North to South',
+              'South to North',
+              'East to West',
+              'West to East',
+              'Zoom Out',
+              'Zoom In'
+            ]}
+            multiSelect={false}
+            searchable={false}
+            onChange={setCameraPreset}
+          />
         </InputGrid>
       </div>
     )}
