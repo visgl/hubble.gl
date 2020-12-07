@@ -23,7 +23,7 @@ import React, {Component, createRef} from 'react';
 import Modal from 'react-modal';
 import styled, {ThemeProvider} from 'styled-components';
 import {createSelector} from 'reselect';
-import {DIMENSIONS} from 'kepler.gl/constants';
+import {SIDEPANEL_WIDTH} from './constants';
 
 const ModalContainer = styled.div`
   position: relative;
@@ -70,7 +70,7 @@ class ExportVideoModal extends Component {
       content: {
         top: 'auto',
         left: 'auto',
-        right: `calc(50% - ${DIMENSIONS.sidePanel.width / 2}px)`,
+        right: `calc(50% - ${SIDEPANEL_WIDTH / 2}px)`,
         bottom: '50%',
         transform: 'translate(50%, 50%)',
         padding: '0px 0px 0px 0px',

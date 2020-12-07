@@ -20,9 +20,6 @@
 
 import React from 'react';
 import styled, {withTheme} from 'styled-components';
-import {IntlProvider} from 'react-intl';
-
-import {messages} from 'kepler.gl/localization';
 
 import {
   DEFAULT_PADDING,
@@ -143,38 +140,36 @@ const ExportVideoPanel = ({
   setDuration
 }) => {
   return (
-    <IntlProvider locale="en" messages={messages.en}>
-      <Panel exportVideoWidth={exportVideoWidth} className="export-video-panel">
-        {header !== false ? (
-          <>
-            <PanelClose handleClose={handleClose} />
-            <StyledTitle className="export-video-panel__title">Export Video</StyledTitle>
-          </>
-        ) : null}
-        <PanelBody
-          exportVideoWidth={exportVideoWidth}
-          mapData={mapData}
-          adapter={adapter}
-          setMediaType={setMediaType}
-          setCameraPreset={setCameraPreset}
-          setFileName={setFileName}
-          setResolution={setResolution}
-          settingsData={settingsData}
-          setViewState={setViewState}
-          durationMs={durationMs}
-          frameRate={frameRate}
-          resolution={resolution}
-          mediaType={mediaType}
-          viewState={viewState}
-          setDuration={setDuration}
-        />
-        <ExportVideoPanelFooter
-          handleClose={handleClose}
-          handlePreviewVideo={handlePreviewVideo}
-          handleRenderVideo={handleRenderVideo}
-        />
-      </Panel>
-    </IntlProvider>
+    <Panel exportVideoWidth={exportVideoWidth} className="export-video-panel">
+      {header !== false ? (
+        <>
+          <PanelClose handleClose={handleClose} />
+          <StyledTitle className="export-video-panel__title">Export Video</StyledTitle>
+        </>
+      ) : null}
+      <PanelBody
+        exportVideoWidth={exportVideoWidth}
+        mapData={mapData}
+        adapter={adapter}
+        setMediaType={setMediaType}
+        setCameraPreset={setCameraPreset}
+        setFileName={setFileName}
+        setResolution={setResolution}
+        settingsData={settingsData}
+        setViewState={setViewState}
+        durationMs={durationMs}
+        frameRate={frameRate}
+        resolution={resolution}
+        mediaType={mediaType}
+        viewState={viewState}
+        setDuration={setDuration}
+      />
+      <ExportVideoPanelFooter
+        handleClose={handleClose}
+        handlePreviewVideo={handlePreviewVideo}
+        handleRenderVideo={handleRenderVideo}
+      />
+    </Panel>
   );
 };
 

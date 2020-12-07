@@ -5,8 +5,10 @@
     "clean": "rm -rf yarn.lock ./node_modules",
     "bootstrap": "yarn clean && yarn"
   },
+  "peerDependencies": {
+    "@luma.gl/debug": "^8.2.0"
+  },
   "dependencies": {
-    "@luma.gl/debug": "^8.3.1",
     "d3-color": "^1.4.1"
   },
   "devDependencies": {
