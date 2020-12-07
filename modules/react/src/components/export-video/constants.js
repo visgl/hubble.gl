@@ -27,6 +27,8 @@ export const DEFAULT_SETTINGS_WIDTH = 280;
 
 export const DEFAULT_FILENAME = 'kepler.gl';
 
+export const SIDEPANEL_WIDTH = 300;
+
 export const FORMATS = [
   {
     value: 'gif',

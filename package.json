@@ -48,7 +48,9 @@
     "@deck.gl/mapbox": "^8.2.0",
     "@loaders.gl/json": "^2.3.3",
     "@loaders.gl/video": "^2.3.3",
+    "@luma.gl/debug": "^8.2.0",
     "@luma.gl/engine": "^8.2.0",
+    "@luma.gl/shadertools": "^8.2.0",
     "@probe.gl/bench": "^3.2.1",
     "@probe.gl/test-utils": "^3.2.1",
     "babel-eslint": "^9.0.0",
@@ -76,7 +78,9 @@
     "styled-components": "^4.4.1"
   },
   "resolutions": {
+    "@deck.gl/aggregation-layers": "8.2.0",
     "@deck.gl/core": "8.2.0",
+    "@deck.gl/extensions": "8.2.0",
     "@deck.gl/geo-layers": "8.2.0",
     "@deck.gl/mesh-layers": "8.2.0",
     "@deck.gl/layers": "8.2.0",
@@ -84,6 +88,7 @@
     "@deck.gl/mapbox": "8.2.0",
     "@luma.gl/constants": "8.2.0",
     "@luma.gl/core": "8.2.0",
+    "@luma.gl/debug": "8.2.0",
     "@luma.gl/engine": "8.2.0",
     "@luma.gl/gltools": "8.2.0",
     "@luma.gl/experimental": "8.2.0",

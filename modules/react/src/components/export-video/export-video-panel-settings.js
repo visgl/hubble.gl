@@ -128,7 +128,6 @@ const ExportVideoPanelSettings = ({
               style={{width: '100%', marginLeft: '0px'}}
               className="modal-duration__slider"
             >
-              {/* TODO onSlider1Change */}
               <Slider
                 showValues={false}
                 enableBarDrag={true}
