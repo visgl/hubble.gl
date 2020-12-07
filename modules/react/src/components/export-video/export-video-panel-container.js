@@ -65,6 +65,7 @@ export class ExportVideoPanelContainer extends Component {
     this.onPreviewVideo = this.onPreviewVideo.bind(this);
     this.onRenderVideo = this.onRenderVideo.bind(this);
     this.setDuration = this.setDuration.bind(this);
+    this.setViewState = this.setViewState.bind(this);
 
     const {
       initialState,
@@ -73,7 +74,7 @@ export class ExportVideoPanelContainer extends Component {
 
     this.state = {
       mediaType: 'gif',
-      cameraPreset: 'None',
+      cameraPreset: 'Orbit (90º)',
       fileName: '',
       resolution: '1280x720',
       durationMs: 1000, // TODO change to 5000 later. 1000 for dev testing
@@ -206,8 +207,9 @@ export class ExportVideoPanelContainer extends Component {
   onPreviewVideo() {
     const {adapter} = this.state;
     const encoderSettings = this.getEncoderSettings();
-
-    const onStop = () => {};
+    const onStop = () => {
+      this.forceUpdate();
+    };
     adapter.render(PreviewEncoder, encoderSettings, onStop, this.getCameraKeyframes);
   }
 
@@ -221,6 +223,8 @@ export class ExportVideoPanelContainer extends Component {
   }
 
   setDuration(durationMs) {
+    const {adapter} = this.state;
+    adapter.scene.lengthMs = durationMs;
     // function passed down to Slider class in ExportVideoPanelSettings
     this.setStateAndNotify({durationMs});
   }
@@ -273,6 +277,6 @@ export class ExportVideoPanelContainer extends Component {
 }
 
 ExportVideoPanelContainer.defaultProps = {
-  exportVideoWidth: 980,
+  exportVideoWidth: 540,
   header: true
 };

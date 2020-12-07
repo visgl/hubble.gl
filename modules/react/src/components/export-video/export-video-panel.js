@@ -24,7 +24,12 @@ import {IntlProvider} from 'react-intl';
 
 import {messages} from 'kepler.gl/localization';
 
-import {DEFAULT_PADDING, DEFAULT_ICON_BUTTON_HEIGHT} from './constants';
+import {
+  DEFAULT_PADDING,
+  DEFAULT_ICON_BUTTON_HEIGHT,
+  DEFAULT_ROW_GAP,
+  DEFAULT_SETTINGS_WIDTH
+} from './constants';
 import ExportVideoPanelSettings from './export-video-panel-settings';
 import {ExportVideoPanelPreview} from './export-video-panel-preview'; // Not yet part of standard library. TODO when updated
 import ExportVideoPanelFooter from './export-video-panel-footer';
@@ -34,7 +39,7 @@ import {WithKeplerUI} from '../inject-kepler';
 const PanelCloseInner = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding: ${DEFAULT_PADDING} ${DEFAULT_PADDING} 0 ${DEFAULT_PADDING};
+  padding: ${DEFAULT_PADDING}px ${DEFAULT_PADDING}px 0 ${DEFAULT_PADDING}px;
 `;
 
 const PanelClose = ({handleClose}) => (
@@ -54,18 +59,19 @@ const StyledTitle = styled.div`
   font-size: 20px;
   font-weight: 400;
   line-height: ${props => props.theme.lineHeight};
-  padding: 0 ${DEFAULT_PADDING} 16px ${DEFAULT_PADDING};
+  padding: 0 ${DEFAULT_PADDING}px 16px ${DEFAULT_PADDING}px;
 `;
 
 const PanelBodyInner = styled.div`
-  padding: 0 ${DEFAULT_PADDING};
+  padding: 0 ${DEFAULT_PADDING}px;
   display: grid;
-  grid-template-columns: 480px auto;
-  grid-template-rows: 460px;
-  grid-column-gap: 20px;
+  grid-template-columns: ${props => props.exportVideoWidth}px ${DEFAULT_SETTINGS_WIDTH}px;
+  grid-template-rows: auto;
+  grid-column-gap: ${DEFAULT_ROW_GAP}px;
 `;
 
 const PanelBody = ({
+  exportVideoWidth,
   mapData,
   adapter,
   setViewState,
@@ -81,11 +87,12 @@ const PanelBody = ({
   viewState,
   setDuration
 }) => (
-  <PanelBodyInner className="export-video-panel__body">
+  <PanelBodyInner className="export-video-panel__body" exportVideoWidth={exportVideoWidth}>
     <ExportVideoPanelPreview
       mapData={mapData}
       adapter={adapter}
       setViewState={setViewState}
+      exportVideoWidth={exportVideoWidth}
       resolution={resolution}
       viewState={viewState}
     />
@@ -101,11 +108,13 @@ const PanelBody = ({
       mediaType={mediaType}
       setDuration={setDuration}
     />
+    {/* TODO: inject additional keyframing tools here */}
   </PanelBodyInner>
 );
 
 const Panel = styled.div`
-  width: ${props => props.exportVideoWidth}px;
+  width: ${props =>
+    props.exportVideoWidth + 2 * DEFAULT_PADDING + DEFAULT_ROW_GAP + DEFAULT_SETTINGS_WIDTH}px;
 `;
 
 const ExportVideoPanel = ({
@@ -143,6 +152,7 @@ const ExportVideoPanel = ({
           </>
         ) : null}
         <PanelBody
+          exportVideoWidth={exportVideoWidth}
           mapData={mapData}
           adapter={adapter}
           setMediaType={setMediaType}

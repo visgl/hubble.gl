@@ -32,8 +32,8 @@ import {WithKeplerUI} from '../inject-kepler';
 const PanelFooterInner = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: ${DEFAULT_ROW_GAP};
-  padding: ${DEFAULT_PADDING};
+  margin-top: ${DEFAULT_ROW_GAP}px;
+  padding: ${DEFAULT_PADDING}px;
 `;
 
 const ButtonGroup = styled.div`

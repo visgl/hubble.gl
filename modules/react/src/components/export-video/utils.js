@@ -107,7 +107,7 @@ export function estimateFileSize(frameRate, resolution, durationMs, mediaType) {
   // Additional resource https://stackoverflow.com/questions/27559103/video-size-calculation
   // NOTE: Bit depth is a guess because I couldn't find it. Same w/ compression ratio
   // TODO Read resource from Imgur dev https://stackoverflow.com/questions/23920098/how-to-estimate-gif-file-size
-  if (mediaType === 'GIF') {
+  if (mediaType === 'gif') {
     // ParseInt to turn it from float to int
     const seconds = parseInt(durationMs / 1000, 10);
     return `${parseInt(
@@ -115,5 +115,5 @@ export function estimateFileSize(frameRate, resolution, durationMs, mediaType) {
       10
     )} MB`;
   }
-  return 'Size estimation not currently available';
+  return 'Size estimation unavailable';
 }
