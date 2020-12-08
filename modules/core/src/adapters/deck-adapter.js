@@ -32,12 +32,16 @@ export default class DeckAdapter {
   shouldAnimate;
   /** @type {boolean} */
   enabled;
+  /** @type {WebGL2RenderingContext} */
+  glContext;
 
   /**
    * @param {(animationLoop: any) => DeckScene | Promise<DeckScene>} sceneBuilder
+   * @param {WebGL2RenderingContext} glContext
    */
-  constructor(sceneBuilder) {
+  constructor(sceneBuilder, glContext = undefined) {
     this.sceneBuilder = sceneBuilder;
+    this.glContext = glContext;
     this.videoCapture = new VideoCapture();
     this.shouldAnimate = true;
     this.enabled = false;
@@ -84,6 +88,10 @@ export default class DeckAdapter {
     if (this.scene) {
       props.width = this.scene.width;
       props.height = this.scene.height;
+    }
+
+    if (this.glContext) {
+      props.gl = this.glContext;
     }
     return props;
   }
