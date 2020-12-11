@@ -69,7 +69,8 @@ export class ExportVideoPanelContainer extends Component {
 
     const {
       initialState,
-      mapData: {mapState}
+      mapData: {mapState},
+      glContext
     } = props;
 
     this.state = {
@@ -79,7 +80,7 @@ export class ExportVideoPanelContainer extends Component {
       resolution: '1280x720',
       durationMs: 1000, // TODO change to 5000 later. 1000 for dev testing
       viewState: mapState,
-      adapter: new DeckAdapter(this.getDeckScene),
+      adapter: new DeckAdapter(this.getDeckScene, glContext),
       ...(initialState || {})
     };
   }
@@ -278,5 +279,6 @@ export class ExportVideoPanelContainer extends Component {
 
 ExportVideoPanelContainer.defaultProps = {
   exportVideoWidth: 540,
-  header: true
+  header: true,
+  glContext: undefined
 };
