@@ -8781,6 +8781,11 @@ move-concurrently@^1.0.1:
     rimraf "^2.5.4"
     run-queue "^1.0.3"
 
+mp4-h264@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/mp4-h264/-/mp4-h264-1.0.7.tgz#1aa53ce6c07fe801c5443edc0a573ebca4eff2fd"
+  integrity sha512-75w9WK/Z90OUvA8O3HR315xZnHh6fLdq3OoD3f1gibPn2HOODrbRoHhXNOxhHxJFAu5DSwyyK7lYx1k4UtjpsA==
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
