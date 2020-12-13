@@ -154,7 +154,7 @@ export class ExportVideoPanelPreview extends Component {
     //   map.resize();
     // });
     map.on('render', () =>
-      this.props.adapter.onAfterRender(() => {
+      this.props.adapter.onAfterRender(deck, () => {
         this.forceUpdate();
       })
     );
@@ -203,6 +203,8 @@ export class ExportVideoPanelPreview extends Component {
       overflow: 'auto'
     };
 
+    const deck = this.deckRef.current.deck;
+
     return (
       <div id="deck-canvas" style={containerStyle}>
         <DeckGL
@@ -216,7 +218,7 @@ export class ExportVideoPanelPreview extends Component {
           onWebGLInitialized={gl => this.setState({glContext: gl})}
           onViewStateChange={this.props.setViewState}
           // onClick={visStateActions.onLayerClick}
-          {...this.props.adapter.getProps(this.deckRef, () => {})}
+          {...this.props.adapter.getProps(deck, () => {})}
         >
           {this.state.glContext && (
             <StaticMap

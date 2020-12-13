@@ -55,14 +55,14 @@ export default class DeckAdapter {
   }
 
   /**
-   * @param {{ current: { deck: any; }; }} deckRef
+   * @param {{deck: {canvas: HTMLCanvasElement, animationLoop: any}}} deckgl
    * @param {(ready: boolean) => void} setReady
    * @param {(nextTimeMs: number) => void} onNextFrame
    */
-  getProps(deckRef, setReady, onNextFrame = undefined) {
+  getProps(deckgl, setReady, onNextFrame = undefined) {
     const props = {
       onLoad: () =>
-        this._deckOnLoad(deckRef.current.deck).then(() => {
+        this._deckOnLoad(deckgl).then(() => {
           setReady(true);
         }),
       _animate: this.shouldAnimate
@@ -70,7 +70,7 @@ export default class DeckAdapter {
 
     if (onNextFrame) {
       // Remove the underscore to make it public? Please verify
-      props.onAfterRender = () => this.onAfterRender(onNextFrame);
+      props.onAfterRender = () => this.onAfterRender(deckgl, onNextFrame);
     }
 
     // Animating the camera is optional, but if a keyframe is defined then viewState is controlled by camera keyframe.
@@ -138,16 +138,20 @@ export default class DeckAdapter {
     this.videoCapture.stop(callback);
   }
 
-  async _deckOnLoad(deck) {
-    this.deck = deck;
+  /**
+   * @param {{deck: {canvas: HTMLCanvasElement, animationLoop: any}}} deckgl
+   */
+  async _deckOnLoad(deckgl) {
+    console.log(deckgl)
+    if (deckgl && deckgl.deck) {
+      const animationLoop = deckgl.deck.animationLoop;
+      animationLoop.timeline.pause();
+      animationLoop.timeline.setTime(0);
 
-    const animationLoop = deck.animationLoop;
-    animationLoop.timeline.pause();
-    animationLoop.timeline.setTime(0);
-
-    await Promise.resolve(this.sceneBuilder(animationLoop)).then(scene => {
-      this._applyScene(scene);
-    });
+      await Promise.resolve(this.sceneBuilder(animationLoop)).then(scene => {
+        this._applyScene(scene);
+      });
+    } 
   }
 
   // TODO: allow user to change scenes at runtime.
@@ -171,12 +175,15 @@ export default class DeckAdapter {
   }
 
   /**
+   * @param {{deck: {canvas: HTMLCanvasElement}}} deckgl
    * @param {(nextTimeMs: number) => void} proceedToNextFrame
    */
-  onAfterRender(proceedToNextFrame) {
-    this.videoCapture.capture(this.deck.canvas, nextTimeMs => {
-      this.scene.animationLoop.timeline.setTime(nextTimeMs);
-      proceedToNextFrame(nextTimeMs);
-    });
+  onAfterRender(deckgl, proceedToNextFrame) {
+    if (deckgl && deckgl.deck) {
+      this.videoCapture.capture(deckgl.deck.canvas, nextTimeMs => {
+        this.scene.animationLoop.timeline.setTime(nextTimeMs);
+        proceedToNextFrame(nextTimeMs);
+      });
+    }
   }
 }

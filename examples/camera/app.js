@@ -68,6 +68,8 @@ export default function App() {
     return prevCamera;
   };
 
+  console.log(deckgl.current)
+
   return (
     <div style={{position: 'relative'}}>
       <div style={{position: 'absolute'}}>
@@ -89,7 +91,7 @@ export default function App() {
         controller={true}
         effects={[vignetteEffect, aaEffect]}
         layers={layers}
-        {...adapter.getProps(deckgl, setReady, nextFrame)}
+        {...adapter.getProps(deckgl.current, setReady, nextFrame)}
       />
       <div style={{position: 'absolute'}}>
         {ready && (
