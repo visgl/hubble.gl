@@ -33,21 +33,26 @@ export default function BasicControls({
   busy,
   setBusy,
   encoderSettings,
-  updateCamera = undefined
+  getCameraKeyframes
 }) {
   const [encoder, setEncoder] = useState('gif');
 
   const onRender = () => {
     if (encoder === 'preview') {
-      adapter.render(PreviewEncoder, encoderSettings, () => setBusy(false), updateCamera);
+      adapter.render(PreviewEncoder, encoderSettings, () => setBusy(false), getCameraKeyframes);
     } else if (encoder === 'webm') {
-      adapter.render(WebMEncoder, encoderSettings, () => setBusy(false), updateCamera);
+      adapter.render(WebMEncoder, encoderSettings, () => setBusy(false), getCameraKeyframes);
     } else if (encoder === 'jpeg') {
-      adapter.render(JPEGSequenceEncoder, encoderSettings, () => setBusy(false), updateCamera);
+      adapter.render(
+        JPEGSequenceEncoder,
+        encoderSettings,
+        () => setBusy(false),
+        getCameraKeyframes
+      );
     } else if (encoder === 'png') {
-      adapter.render(PNGSequenceEncoder, encoderSettings, () => setBusy(false), updateCamera);
+      adapter.render(PNGSequenceEncoder, encoderSettings, () => setBusy(false), getCameraKeyframes);
     } else if (encoder === 'gif') {
-      adapter.render(GifEncoder, encoderSettings, () => setBusy(false), updateCamera);
+      adapter.render(GifEncoder, encoderSettings, () => setBusy(false), getCameraKeyframes);
     }
 
     setBusy(true);
