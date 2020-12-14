@@ -39,11 +39,15 @@ Parameters:
 
 * `onNextFrame` (`(nextTimeMs: number) => void`) - Callback indicating the next frame in a rendering should be displayed.
 
-##### `render(Encoder, encoderSettings, onStop, updateCamera)`
+##### `render(getCameraKeyframes, Encoder, encoderSettings, onStop)`
 
 Start rendering.
 
 Parameters:
+
+* **`getCameraKeyframes` (`() => CameraKeyframes`, Optional).**
+
+This function is used to access the camera's keyframes, and is called just prior to rendering.
 
 * **`Encoder` (`typeof FrameEncoder`, Optional) - Default: `PreviewEncoder`.**
 
@@ -56,10 +60,6 @@ See [FrameEncoder](/modules/core/docs/encoder/frame-encoder#constructor-1) for i
 * **`onStop` (`() => void`, Optional) - Default: `undefined`.**
 
 This function is called after the last frame is rendered. It does not get called when a render is interrupted with `stop()`.
-
-* **`updateCamera` (`(prevCamera: CameraKeyframes) => void`, Optional) - Default: `undefined`.**
-
-This function is called just prior to rendering. This is useful for redefining the camera's keyframes during an apps lifecycle in response to users interacting with the map.
 
 ##### `stop(callback)`
 
