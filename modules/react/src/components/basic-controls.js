@@ -39,20 +39,17 @@ export default function BasicControls({
 
   const onRender = () => {
     if (encoder === 'preview') {
-      adapter.render(PreviewEncoder, encoderSettings, () => setBusy(false), getCameraKeyframes);
+      adapter.render(getCameraKeyframes, PreviewEncoder, encoderSettings, () => setBusy(false));
     } else if (encoder === 'webm') {
-      adapter.render(WebMEncoder, encoderSettings, () => setBusy(false), getCameraKeyframes);
+      adapter.render(getCameraKeyframes, WebMEncoder, encoderSettings, () => setBusy(false));
     } else if (encoder === 'jpeg') {
-      adapter.render(
-        JPEGSequenceEncoder,
-        encoderSettings,
-        () => setBusy(false),
-        getCameraKeyframes
+      adapter.render(getCameraKeyframes, JPEGSequenceEncoder, encoderSettings, () =>
+        setBusy(false)
       );
     } else if (encoder === 'png') {
-      adapter.render(PNGSequenceEncoder, encoderSettings, () => setBusy(false), getCameraKeyframes);
+      adapter.render(getCameraKeyframes, PNGSequenceEncoder, encoderSettings, () => setBusy(false));
     } else if (encoder === 'gif') {
-      adapter.render(GifEncoder, encoderSettings, () => setBusy(false), getCameraKeyframes);
+      adapter.render(getCameraKeyframes, GifEncoder, encoderSettings, () => setBusy(false));
     }
 
     setBusy(true);

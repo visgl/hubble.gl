@@ -204,7 +204,7 @@ export class ExportVideoPanelContainer extends Component {
     const onStop = () => {
       this.forceUpdate();
     };
-    adapter.render(PreviewEncoder, encoderSettings, onStop, this.getCameraKeyframes);
+    adapter.render(this.getCameraKeyframes, PreviewEncoder, encoderSettings, onStop);
   }
 
   onRenderVideo() {
@@ -213,7 +213,7 @@ export class ExportVideoPanelContainer extends Component {
     const encoderSettings = this.getEncoderSettings();
     const onStop = () => {};
 
-    adapter.render(Encoder, encoderSettings, onStop, this.getCameraKeyframes);
+    adapter.render(this.getCameraKeyframes, Encoder, encoderSettings, onStop);
   }
 
   setDuration(durationMs) {

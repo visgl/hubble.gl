@@ -97,11 +97,12 @@ export default class DeckAdapter {
   }
 
   /**
+   * @param {() => import('../keyframes').CameraKeyframes} getCameraKeyframes
    * @param {typeof import('../encoders').FrameEncoder} Encoder
    * @param {import('types').FrameEncoderSettings} encoderSettings
    * @param {() => void} onStop
    */
-  render(Encoder = PreviewEncoder, encoderSettings = {}, onStop = undefined, getCameraKeyframes) {
+  render(getCameraKeyframes, Encoder = PreviewEncoder, encoderSettings = {}, onStop = undefined) {
     this.scene.setCameraKeyframes(getCameraKeyframes());
 
     const innerOnStop = () => {
