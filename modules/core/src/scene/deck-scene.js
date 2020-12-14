@@ -21,23 +21,25 @@ export default class DeckScene {
   /** @param {import('types').DeckSceneParams} params */
   constructor({
     animationLoop,
-    keyframes,
+    keyframes = {},
     data,
     renderLayers = undefined,
     lengthMs,
     width,
-    height,
-    currentCamera = undefined
+    height
   }) {
     this.animationLoop = animationLoop;
     this.keyframes = keyframes;
     this.data = data;
     this._renderLayers = renderLayers;
-    this.renderLayers = this.renderLayers.bind(this);
     this.lengthMs = lengthMs;
     this.width = width;
     this.height = height;
-    this.currentCamera = currentCamera;
+
+    this.animations = {};
+
+    this.renderLayers = this.renderLayers.bind(this);
+    this.setCameraKeyframes = this.setCameraKeyframes.bind(this);
   }
 
   hasLayers() {
@@ -47,4 +49,14 @@ export default class DeckScene {
   renderLayers() {
     return this._renderLayers(this);
   }
+
+  setCameraKeyframes(cameraKeyframes) {
+    if (this.animations.camera) {
+      this.animationLoop.timeline.detachAnimation(this.animations.camera);
+    }
+    this.keyframes.camera = cameraKeyframes;
+    this.animations.camera = this.animationLoop.timeline.attachAnimation(this.keyframes.camera);
+  }
+
+  setKeyframes() {}
 }

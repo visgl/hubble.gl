@@ -100,22 +100,9 @@ export default class DeckAdapter {
    * @param {typeof import('../encoders').FrameEncoder} Encoder
    * @param {import('types').FrameEncoderSettings} encoderSettings
    * @param {() => void} onStop
-   * @param {(prevCamera: import('../keyframes').CameraKeyframes) => void} updateCamera
    */
-  render(
-    Encoder = PreviewEncoder,
-    encoderSettings = {},
-    onStop = undefined,
-    updateCamera = undefined
-  ) {
-    if (updateCamera) {
-      // Optional camera and keyframes defined by the user at runtime
-      this.scene.animationLoop.timeline.detachAnimation(this.scene.currentCamera);
-      this.scene.keyframes.camera = updateCamera(this.scene.keyframes.camera);
-      this.scene.currentCamera = this.scene.animationLoop.timeline.attachAnimation(
-        this.scene.keyframes.camera
-      );
-    }
+  render(Encoder = PreviewEncoder, encoderSettings = {}, onStop = undefined, getCameraKeyframes) {
+    this.scene.setCameraKeyframes(getCameraKeyframes());
 
     const innerOnStop = () => {
       this.enabled = false;
