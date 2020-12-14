@@ -47,11 +47,11 @@ the [documentation of TripsLayer](../../../docs/layers/trips-layer.md).
 
 
 ```
-        viewState={viewState}
-        onViewStateChange={({viewState}) => {
-          setViewState(viewState);
-        }}
-        controller={true}
+  viewState={viewState}
+  onViewStateChange={({viewState}) => {
+    setViewState(viewState);
+  }}
+  controller={true}
 ```
 
 1.1 Add the `viewState` state to App.js
@@ -60,64 +60,41 @@ the [documentation of TripsLayer](../../../docs/layers/trips-layer.md).
     	  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
 ```
 
-2. Add the prop method `updateCamera` to `BasicControls `component (optional)
+2. Add the prop method `getCameraKeyframes` to `BasicControls `component
 
 ```
-updateCamera={updateCamera}
+getCameraKeyframes={getCameraKeyframes}
 ```
 
-3. Add the optional method to start the camera from the current `viewState `(optional)
+3. Add the method to start the camera from the current `viewState `
 
 ```
-const updateCamera = (prevCamera) => {
-    // Set by User
-  prevCamera = new CameraKeyframes({
-        timings: [0, 5000],
-        keyframes: [
-          {
-            longitude: viewState.longitude,
-            latitude: viewState.latitude,
-            zoom: viewState.zoom,
-            pitch: viewState.pitch,
-            bearing: viewState.bearing
-          },
-          {
-            longitude: viewState.longitude,
-            latitude: viewState.latitude,
-            zoom: viewState.zoom,
-            bearing: viewState.bearing + 92,
-            pitch: viewState.pitch // up to 45/50
-          }
-        ],
-        easings: [easing.easeInOut]
-      });
-   
-    return prevCamera;
-  }
+const getCameraKeyframes = () => {
+  return new CameraKeyframes({
+    timings: [0, 5000],
+    keyframes: [
+      {
+        longitude: viewState.longitude,
+        latitude: viewState.latitude,
+        zoom: viewState.zoom,
+        pitch: viewState.pitch,
+        bearing: viewState.bearing
+      },
+      {
+        longitude: viewState.longitude,
+        latitude: viewState.latitude,
+        zoom: viewState.zoom,
+        bearing: viewState.bearing + 92,
+        pitch: viewState.pitch // up to 50
+      }
+    ],
+    easings: [easing.easeInOut]
+  });
+}
 ```
 3.1. Imports
 
 ```
-     import {CameraKeyframes} from '@hubble.gl/core';
-     import {easing} from 'popmotion';
+  import {CameraKeyframes} from '@hubble.gl/core';
+  import {easing} from 'popmotion';
 ```
-
-4. Fix this line when attaching the camera to the timeline
-
-```
-const currentCamera = animationLoop.timeline.attachAnimation(keyframes.camera);
-```
-
-4.1. Add as prop to `DeckScene`
-
-```
-return new DeckScene({
-     animationLoop,
-     keyframes,
-     lengthMs: 5000,
-     width: 1280,
-     height: 720,
-     currentCamera  // Here
-});
-```
-

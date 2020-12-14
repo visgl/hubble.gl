@@ -1,8 +1,7 @@
 import React, {useState, useRef} from 'react';
 import DeckGL from '@deck.gl/react';
-import {DeckAdapter, CameraKeyframes} from '@hubble.gl/core';
+import {DeckAdapter, DeckScene, CameraKeyframes} from '@hubble.gl/core';
 import {useNextFrame, BasicControls, ResolutionGuide} from '@hubble.gl/react';
-import {sceneBuilder} from './scene';
 import {layers} from './layers';
 import {vignette, fxaa} from '@luma.gl/shadertools';
 import {PostProcessEffect} from '@deck.gl/core';
@@ -15,8 +14,6 @@ const INITIAL_VIEW_STATE = {
   pitch: 30,
   bearing: 0
 };
-
-const adapter = new DeckAdapter(sceneBuilder);
 
 /** @type {import('@hubble.gl/core/src/types').FrameEncoderSettings} */
 const encoderSettings = {
@@ -41,11 +38,11 @@ export default function App() {
   const [busy, setBusy] = useState(false);
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE); // Added to maintain user's interactions with viewState
   const nextFrame = useNextFrame();
+  const [duration] = useState(5000);
 
-  const updateCamera = prevCamera => {
-    // Set by User
-    prevCamera = new CameraKeyframes({
-      timings: [0, 5000],
+  const getCameraKeyframes = () => {
+    return new CameraKeyframes({
+      timings: [0, duration],
       keyframes: [
         {
           longitude: viewState.longitude,
@@ -64,9 +61,18 @@ export default function App() {
       ],
       easings: [easing.easeInOut]
     });
-
-    return prevCamera;
   };
+
+  const getDeckScene = animationLoop => {
+    return new DeckScene({
+      animationLoop,
+      lengthMs: duration,
+      width: 640,
+      height: 480
+    });
+  };
+
+  const [adapter] = useState(new DeckAdapter(getDeckScene));
 
   return (
     <div style={{position: 'relative'}}>
@@ -98,7 +104,7 @@ export default function App() {
             busy={busy}
             setBusy={setBusy}
             encoderSettings={encoderSettings}
-            updateCamera={updateCamera}
+            getCameraKeyframes={getCameraKeyframes}
           />
         )}
       </div>

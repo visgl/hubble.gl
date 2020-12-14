@@ -122,7 +122,7 @@ export class ExportVideoPanelContainer extends Component {
     return ENCODERS[mediaType];
   }
 
-  getCameraKeyframes(prevCamera = undefined) {
+  getCameraKeyframes() {
     const {viewState, cameraPreset, durationMs} = this.state;
     const {longitude, latitude, zoom, pitch, bearing} = viewState;
 
@@ -148,20 +148,13 @@ export class ExportVideoPanelContainer extends Component {
     const {durationMs} = this.state;
     const {width, height} = this.getCanvasSize();
 
-    const keyframes = {
-      camera: this.getCameraKeyframes()
-    };
-    const currentCamera = animationLoop.timeline.attachAnimation(keyframes.camera);
-
     // TODO this scales canvas resolution but is only set once. Figure out how to update
     // TODO this needs to update durationMs
     return new DeckScene({
       animationLoop,
-      keyframes,
       lengthMs: durationMs,
       width,
-      height,
-      currentCamera
+      height
     });
   }
 
@@ -211,7 +204,7 @@ export class ExportVideoPanelContainer extends Component {
     const onStop = () => {
       this.forceUpdate();
     };
-    adapter.render(PreviewEncoder, encoderSettings, onStop, this.getCameraKeyframes);
+    adapter.render(this.getCameraKeyframes, PreviewEncoder, encoderSettings, onStop);
   }
 
   onRenderVideo() {
@@ -220,7 +213,7 @@ export class ExportVideoPanelContainer extends Component {
     const encoderSettings = this.getEncoderSettings();
     const onStop = () => {};
 
-    adapter.render(Encoder, encoderSettings, onStop, this.getCameraKeyframes);
+    adapter.render(this.getCameraKeyframes, Encoder, encoderSettings, onStop);
   }
 
   setDuration(durationMs) {
