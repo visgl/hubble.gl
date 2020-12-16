@@ -58,8 +58,9 @@ export default class DeckAdapter {
    * @param {{ current: { deck: any; }; }} deckRef
    * @param {(ready: boolean) => void} setReady
    * @param {(nextTimeMs: number) => void} onNextFrame
+   * @param {(scene: DeckScene) => any[]} getLayers
    */
-  getProps(deckRef, setReady, onNextFrame = undefined) {
+  getProps(deckRef, setReady, onNextFrame = undefined, getLayers = undefined) {
     const props = {
       onLoad: () =>
         this._deckOnLoad(deckRef.current.deck).then(() => {
@@ -79,10 +80,10 @@ export default class DeckAdapter {
       props.viewState = this._getViewState();
     }
 
-    // Only replace layers when use defines scene layers
+    // Construct layers using callback.
     // TODO: Could potentially concat instead of replace, but layers are supposed to be static.
-    if (this.scene && this.scene.hasLayers()) {
-      props.layers = this._getLayers();
+    if (getLayers) {
+      props.layers = this._getLayers(getLayers);
     }
 
     if (this.scene) {
@@ -101,9 +102,19 @@ export default class DeckAdapter {
    * @param {typeof import('../encoders').FrameEncoder} Encoder
    * @param {import('types').FrameEncoderSettings} encoderSettings
    * @param {() => void} onStop
+   * @param {() => Object<string, import('../keyframes').Keyframes>} getKeyframes
    */
-  render(getCameraKeyframes, Encoder = PreviewEncoder, encoderSettings = {}, onStop = undefined) {
+  render(
+    getCameraKeyframes,
+    Encoder = PreviewEncoder,
+    encoderSettings = {},
+    onStop = undefined,
+    getKeyframes = undefined
+  ) {
     this.scene.setCameraKeyframes(getCameraKeyframes());
+    if (getKeyframes) {
+      this.scene.setKeyframes(getKeyframes());
+    }
 
     const innerOnStop = () => {
       this.enabled = false;
@@ -151,11 +162,11 @@ export default class DeckAdapter {
     return frame;
   }
 
-  _getLayers() {
+  _getLayers(getLayers) {
     if (!this.scene) {
       return [];
     }
-    return this.scene.renderLayers();
+    return this.scene.getLayers(getLayers);
   }
 
   /**

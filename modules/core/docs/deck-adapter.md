@@ -16,18 +16,16 @@ Function to build scene, async or sync. See [DeckScene](/modules/core/docs/scene
 async function sceneBuilder(animationLoop) {
   // See DeckScene API Reference for more info
   const data = await fetch(...)
-  const keyframes = {}
-  const renderLayers = ...
   const lengthMs = 5000 // ms
   const width = 1920 // px
   const height = 1080 // px
-  return new DeckScene({animationLoop, keyframes, data, renderLayers, lengthMs, width, height})
+  return new DeckScene({animationLoop, data, lengthMs, width, height})
 }
 ```
 
 ## Methods
 
-##### `getProps(deckRef, setReady, onNextFrame): props`
+##### `getProps(deckRef, setReady, onNextFrame, getLayers): props`
 
 Supplies deck.gl properties from hubble.gl.
 
@@ -35,9 +33,11 @@ Parameters:
 
 * `deckRef` (`React.RefObject`) - React ref eventually containing a `deck` object.
 
-* `setReady` (`(ready: boolean) => void`) - Callback indicating webgl, scene, and deck are loaded. Scene is ready for rendering.
+* `setReady` (`(ready: boolean) => void`, Optional) - Callback indicating webgl, scene, and deck are loaded. Scene is ready for rendering.
 
-* `onNextFrame` (`(nextTimeMs: number) => void`) - Callback indicating the next frame in a rendering should be displayed.
+* `onNextFrame` (`(nextTimeMs: number) => void`, Optional) - Callback indicating the next frame in a rendering should be displayed.
+
+* `getLayers` (`(scene: DeckScene) => any[]`, Optional) - Callback to construct deck.gl layers provided the scene. If set, `deck.layers` will be set to the layers returned by this function.
 
 ##### `render(getCameraKeyframes, Encoder, encoderSettings, onStop)`
 

@@ -19,44 +19,44 @@
 // THE SOFTWARE.
 export default class DeckScene {
   /** @param {import('types').DeckSceneParams} params */
-  constructor({
-    animationLoop,
-    keyframes = {},
-    data,
-    renderLayers = undefined,
-    lengthMs,
-    width,
-    height
-  }) {
+  constructor({animationLoop, data, lengthMs, width, height, initialKeyframes = undefined}) {
     this.animationLoop = animationLoop;
-    this.keyframes = keyframes;
     this.data = data;
-    this._renderLayers = renderLayers;
     this.lengthMs = lengthMs;
     this.width = width;
     this.height = height;
 
+    this.keyframes = {};
     this.animations = {};
+    if (initialKeyframes) {
+      this.setKeyframes(initialKeyframes);
+    }
 
-    this.renderLayers = this.renderLayers.bind(this);
     this.setCameraKeyframes = this.setCameraKeyframes.bind(this);
   }
 
-  hasLayers() {
-    return Boolean(this._renderLayers);
+  getLayers(accessor) {
+    return accessor(this);
   }
 
-  renderLayers() {
-    return this._renderLayers(this);
+  setDuration(duration) {
+    this.lengthMs = duration;
   }
 
   setCameraKeyframes(cameraKeyframes) {
-    if (this.animations.camera) {
-      this.animationLoop.timeline.detachAnimation(this.animations.camera);
-    }
-    this.keyframes.camera = cameraKeyframes;
-    this.animations.camera = this.animationLoop.timeline.attachAnimation(this.keyframes.camera);
+    this.setKeyframes({camera: cameraKeyframes});
   }
 
-  setKeyframes() {}
+  setKeyframes(keyframes) {
+    this.keyframes = {...this.keyframes, ...keyframes};
+    for (const keyframe in keyframes) {
+      const animation = this.animations[keyframe];
+      if (animation) {
+        this.animationLoop.timeline.detachAnimation(animation);
+      }
+      this.animations[keyframe] = this.animationLoop.timeline.attachAnimation(
+        this.keyframes[keyframe]
+      );
+    }
+  }
 }
