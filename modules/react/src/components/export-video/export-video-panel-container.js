@@ -218,7 +218,7 @@ export class ExportVideoPanelContainer extends Component {
 
   setDuration(durationMs) {
     const {adapter} = this.state;
-    adapter.scene.lengthMs = durationMs;
+    adapter.scene.setDuration(durationMs);
     // function passed down to Slider class in ExportVideoPanelSettings
     this.setStateAndNotify({durationMs});
   }
