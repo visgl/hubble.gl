@@ -1,10 +1,9 @@
 import React, {useState, useRef} from 'react';
 import DeckGL from '@deck.gl/react';
+import {TerrainLayer} from '@deck.gl/geo-layers';
 import {useNextFrame, BasicControls, ResolutionGuide} from '@hubble.gl/react';
-import {DeckAdapter, DeckScene, CameraKeyframes, hold} from '@hubble.gl/core';
+import {DeckAdapter, DeckScene, CameraKeyframes, hold, LayerKeyframes} from '@hubble.gl/core';
 import {easing} from 'popmotion';
-
-import {renderLayers} from './scene';
 
 const INITIAL_VIEW_STATE = {
   latitude: 46.24,
@@ -12,6 +11,21 @@ const INITIAL_VIEW_STATE = {
   zoom: 11.5,
   bearing: 140,
   pitch: 60
+};
+
+// Set your mapbox token here
+const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
+
+const TERRAIN_IMAGE = `https://api.mapbox.com/v4/mapbox.terrain-rgb/{z}/{x}/{y}.png?access_token=${MAPBOX_TOKEN}`;
+const SURFACE_IMAGE = `https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.png?access_token=${MAPBOX_TOKEN}`;
+
+// https://docs.mapbox.com/help/troubleshooting/access-elevation-data/#mapbox-terrain-rgb
+// Note - the elevation rendered by this example is greatly exagerated!
+const ELEVATION_DECODER = {
+  rScaler: 6553.6,
+  gScaler: 25.6,
+  bScaler: 0.1,
+  offset: -10000
 };
 
 const getCameraKeyframes = () => {
@@ -58,6 +72,35 @@ const getCameraKeyframes = () => {
   });
 };
 
+const getKeyframes = () => {
+  return {
+    terrain: new LayerKeyframes({
+      layerId: 'terrain',
+      features: ['r', 'g', 'b'],
+      keyframes: [
+        {r: 255, g: 255, b: 255},
+        {r: 255, g: 0, b: 0},
+        {r: 255, g: 255, b: 0},
+        {r: 0, g: 255, b: 0},
+        {r: 0, g: 255, b: 255},
+        {r: 0, g: 0, b: 255},
+        {r: 255, g: 0, b: 255},
+        {r: 255, g: 255, b: 255}
+      ],
+      timings: [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000],
+      easings: [
+        easing.linear,
+        easing.linear,
+        easing.linear,
+        easing.linear,
+        easing.linear,
+        easing.linear,
+        easing.linear
+      ]
+    })
+  };
+};
+
 /** @type {import('@hubble.gl/core/src/types').FrameEncoderSettings} */
 const encoderSettings = {
   framerate: 30,
@@ -80,18 +123,36 @@ export default function App() {
 
   const nextFrame = useNextFrame();
   const [duration] = useState(15000);
+  const [rainbow, setRainbow] = useState(false);
 
   const getDeckScene = animationLoop => {
     return new DeckScene({
       animationLoop,
       lengthMs: duration,
-      renderLayers,
       width: 640,
-      height: 480
+      height: 480,
+      initialKeyframes: getKeyframes()
     });
   };
 
   const [adapter] = useState(new DeckAdapter(getDeckScene));
+
+  const getLayers = scene => {
+    const terrain = scene.keyframes.terrain.getFrame();
+    return [
+      new TerrainLayer({
+        id: 'terrain',
+        minZoom: 0,
+        maxZoom: 23,
+        strategy: 'no-overlap',
+        elevationDecoder: ELEVATION_DECODER,
+        elevationData: TERRAIN_IMAGE,
+        texture: rainbow ? null : SURFACE_IMAGE,
+        wireframe: false,
+        color: [terrain.r, terrain.g, terrain.b]
+      })
+    ];
+  };
 
   return (
     <div style={{position: 'relative'}}>
@@ -106,7 +167,7 @@ export default function App() {
           setViewState(vs);
         }}
         controller={true}
-        {...adapter.getProps(deckgl, setReady, nextFrame)}
+        {...adapter.getProps(deckgl, setReady, nextFrame, getLayers)}
       />
       <div style={{position: 'absolute'}}>
         {ready && (
@@ -116,8 +177,15 @@ export default function App() {
             setBusy={setBusy}
             encoderSettings={encoderSettings}
             getCameraKeyframes={getCameraKeyframes}
+            getKeyframes={getKeyframes}
           />
         )}
+        <div style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}}>
+          <label style={{fontFamily: 'sans-serif'}}>
+            <input type="checkbox" checked={rainbow} onChange={() => setRainbow(!rainbow)} />
+            Rainbow Animation
+          </label>
+        </div>
       </div>
     </div>
   );

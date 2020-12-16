@@ -3,7 +3,9 @@
 ## Usage
 
 ```js
-const length = 5000 // ms
+const lengthMs = 5000;
+const width = 1280;
+const height = 720;
 
 const keyframes = {
   // Camera is optional unless animating the deck.gl viewState
@@ -18,7 +20,7 @@ const data = {
   arc: [{sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}]
 }
 // Optional unless animating deck.gl layer properties.
-const renderLayers = (scene) => {
+const getLayers = (scene) => {
   return [
     new LineLayer({ id: 'line-layer', data: scene.data.line }),
     new ArcLayer({ id: 'arc-layer', data: scene.data.arc })
@@ -27,17 +29,17 @@ const renderLayers = (scene) => {
 
 const scene = new DeckScene({
   animationLoop,  
-  length, 
-  keyframes, 
+  lengthMs, 
   data,          // optional
-  renderLayers   // optional
+  width,         // optional
+  height         // optional
 });
 ```
 
 ## Constructor
 
 ```js
-new DeckScene({animationLoop, length, keyframes, data, renderLayers});
+new DeckScene({animationLoop, length, keyframes, data});
 ```
 
 Parameters:
@@ -46,11 +48,27 @@ Parameters:
 
 A lumagl `animationLoop` object.
 
-##### `length` (Number)
+##### `lengthMs` (Number)
 
 Total length of scene in milliseconds.
 
-##### `keyframes` (Object)
+##### `data` (Object, Optional)
+
+An object of data used to render layers.
+
+If set, the object is accessible in `getLayers` function via `scene.data`.
+
+## Methods
+
+##### `getLayers` (`((scene: DeckScene) => any[]) => any[]`)
+
+A callback function to create deckgl layer objects provided the scene object.
+
+Returns:
+
+`Array` of deck.gl layers.
+
+##### `setKeyframes` (`Object`)
 
 Keyframe objects registered to the animationLoop timeline.
 
@@ -58,39 +76,10 @@ Keyframe objects registered to the animationLoop timeline.
 
 - Add additional keyframe objects to the object.
 
-Attach each individual keyframe object to the timeline with `animationLoop.timeline.attachAnimation(...)`
-
-##### `data` (Object, Optional)
-
-An object of data used to render layers.
-
-If set, the object is accessible in `renderLayers` function via `scene.data`.
-
-##### `renderLayers` (`(scene: DeckScene) => any[]`, Optional)
-
-* Default: `undefined`
-
-A function to create deckgl layer objects provided the scene object after it is constructed.
-
-If set, `deck.layers` will be set to the layers returned by this function.
-
-## Methods
-
-##### `renderLayers`
-
-Returns:
-
-If constructed with `renderLayers` parameter it returns `Array` of deck.gl layers, otherwise returns `undefined`
-
-##### `hasLayers`
-
-Returns:
-
-`Boolean` where `true` when constructed with `renderLayers` parameter, otherwise false.
+The object is accessible in `getLayers` function via `scene.keyframes`.
 
 ## Remarks
 
-- Individual keyframe objects must be attached to the timeline prior to recording with `animationLoop.timeline.attachAnimation(...)`.
 - `camera` is a reserved object key within `keyframes`.
 
 

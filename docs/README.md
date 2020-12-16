@@ -16,7 +16,7 @@ npm install hubble.gl
 
 ## Basic Scene
 
-To create an animation and render you will need to first create a [deck.gl](https://deck.gl/docs/get-started/getting-started) or [kepler.gl](https://docs.kepler.gl/#basic-usage) project. Then you will need to create a `sceneBuilder` function for each scene where you'll define all of the elements of your animation, including any async data fetching.
+To create an animation and render you will need to first create a [deck.gl](https://deck.gl/docs/get-started/getting-started) or [kepler.gl](https://docs.kepler.gl/#basic-usage) project. Then you will need to create a `getDeckScene` function for each scene where you'll define all of the elements of your animation, including any async data fetching.
 
 ```js
 // scene.js
@@ -24,14 +24,14 @@ import {DeckScene, CameraKeyframes} from 'hubble.gl';
 import {LineLayer} from '@deck.gl/layers';
 import {easing} from 'popmotion';
 
-function renderLayers(scene) {
+function getLayers(scene) {
   return [
     new LineLayer({id: 'line-layer', data: scene.data})
   ]
 }
 
-function getKeyframes(animationLoop, data) {
-  const camera = new CameraKeyframes({
+export function getCameraKeyframes() {
+  return new CameraKeyframes({
     timings: [0, 5000],
     keyframes: [
       {
@@ -51,18 +51,12 @@ function getKeyframes(animationLoop, data) {
     ],
     easings: [easing.easeInOut]
   });
-  animationLoop.timeline.attachAnimation(camera);
-
-  return {
-    camera
-  };
 }
 
-export function sceneBuilder(animationLoop) {
+export function getDeckScene(animationLoop) {
   const lengthMs = 5000;
   const data = [{sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}];
-  const keyframes = getKeyframes(animationLoop, data);
-  return new DeckScene({animationLoop, keyframes, data, renderLayers, lengthMs, width: 1920, height: 1080});
+  return new DeckScene({animationLoop, data, lengthMs, width: 1920, height: 1080});
 }
 ```
 
@@ -76,9 +70,7 @@ import React, {useState, useRef} from 'react';
 import DeckGL from '@deck.gl/react';
 import {DeckAdapter} from 'hubble.gl';
 import {useNextFrame, BasicControls} from '@hubble.gl/react';
-import {sceneBuilder} from './scene';
-
-const adapter = new DeckAdapter(sceneBuilder);
+import {getDeckScene, getCameraKeyframes} from './scene';
 
 /** @type {import('@hubble.gl/core/src/types').FrameEncoderSettings} */
 const encoderSettings = {
@@ -90,6 +82,7 @@ export default function App() {
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const nextFrame = useNextFrame();
+  const [adapter] = useState(new DeckAdapter(getDeckScene));
 
   return (
     <div style={{position: 'relative'}}>
@@ -97,7 +90,7 @@ export default function App() {
         ref={deckgl}
         {...adapter.getProps(deckgl, setReady, nextFrame)}
       />
-      <div style={{position: 'absolute'}}>{ready && <BasicControls adapter={adapter} busy={busy} setBusy={setBusy} encoderSettings={encoderSettings}/>}</div>
+      <div style={{position: 'absolute'}}>{ready && <BasicControls adapter={adapter} busy={busy} setBusy={setBusy} encoderSettings={encoderSettings} getCameraKeyframes={getCameraKeyframes}/>}</div>
     </div>
   );
 }
