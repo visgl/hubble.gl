@@ -6,11 +6,13 @@ import BasicControls from './basic-controls';
 import {useNextFrame} from '../hooks';
 
 export const QuickAnimation = ({
-  getCameraKeyframes,
+  getCameraKeyframes = undefined,
   getLayerKeyframes,
   getLayers,
   initialViewState,
   duration,
+  width = 640,
+  height = 480,
   encoderSettings = {},
   deckProps = {}
 }) => {
@@ -25,8 +27,8 @@ export const QuickAnimation = ({
     return new DeckScene({
       animationLoop,
       lengthMs: duration,
-      width: 640,
-      height: 480,
+      width,
+      height,
       initialKeyframes: getLayerKeyframes()
     });
   };
@@ -42,7 +44,7 @@ export const QuickAnimation = ({
       quality: 0.8
     },
     gif: {
-      sampleInterval: 1000
+      sampleInterval: 1
     },
     ...encoderSettings
   };
@@ -69,7 +71,9 @@ export const QuickAnimation = ({
             busy={busy}
             setBusy={setBusy}
             encoderSettings={mergedEncoderSettings}
-            getCameraKeyframes={() => getCameraKeyframes(viewState)}
+            getCameraKeyframes={
+              getCameraKeyframes ? () => getCameraKeyframes(viewState) : getCameraKeyframes
+            }
             getKeyframes={getLayerKeyframes}
           />
         )}

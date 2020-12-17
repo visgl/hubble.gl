@@ -105,13 +105,15 @@ export default class DeckAdapter {
    * @param {() => Object<string, import('../keyframes').Keyframes>} getKeyframes
    */
   render(
-    getCameraKeyframes,
+    getCameraKeyframes = undefined,
     Encoder = PreviewEncoder,
     encoderSettings = {},
     onStop = undefined,
     getKeyframes = undefined
   ) {
-    this.scene.setCameraKeyframes(getCameraKeyframes());
+    if (getCameraKeyframes) {
+      this.scene.setCameraKeyframes(getCameraKeyframes());
+    }
     if (getKeyframes) {
       this.scene.setKeyframes(getKeyframes());
     }
