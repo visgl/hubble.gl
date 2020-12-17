@@ -1,10 +1,6 @@
-import React, {useState, useRef} from 'react';
-import DeckGL from '@deck.gl/react';
-import {DeckAdapter, DeckScene, CameraKeyframes} from '@hubble.gl/core';
-import {useNextFrame, BasicControls, ResolutionGuide} from '@hubble.gl/react';
-import {layers} from './layers';
-import {vignette, fxaa} from '@luma.gl/shadertools';
-import {PostProcessEffect} from '@deck.gl/core';
+import React, {useState} from 'react';
+import {QuickAnimation} from '@hubble.gl/react';
+import {CameraKeyframes, Keyframes} from '@hubble.gl/core';
 import {easing} from 'popmotion';
 
 const INITIAL_VIEW_STATE = {
@@ -15,83 +11,111 @@ const INITIAL_VIEW_STATE = {
   bearing: 0
 };
 
+import {vignette, fxaa} from '@luma.gl/shadertools';
+import {PostProcessEffect} from '@deck.gl/core';
 const aaEffect = new PostProcessEffect(fxaa, {});
 const vignetteEffect = new PostProcessEffect(vignette, {});
 
-const QuickAnimation = ({
-  getCameraKeyframes,
-  getLayerKeyframes,
-  getLayers,
-  initialViewState,
-  duration,
-  encoderSettings = {},
-  deckProps = {},
-  mapProps = {}
-}) => {
-  const deckgl = useRef(null);
-  const [ready, setReady] = useState(false);
-  const [busy, setBusy] = useState(false);
-  const nextFrame = useNextFrame();
-
-  const [viewState, setViewState] = useState(initialViewState);
-
-  const getDeckScene = animationLoop => {
-    return new DeckScene({
-      animationLoop,
-      lengthMs: duration,
-      width: 640,
-      height: 480
-    });
+const getKeyframes = () => {
+  return {
+    station: new Keyframes({
+      features: ['radiusScale'],
+      keyframes: [{radiusScale: 0}, {radiusScale: 6}],
+      timings: [0, 2000],
+      easings: [easing.anticipate]
+    }),
+    text: new Keyframes({
+      features: ['opacity', 'pixelOffsetX'],
+      keyframes: [
+        {opacity: 0, pixelOffsetX: 200},
+        {opacity: 1, pixelOffsetX: 32}
+      ],
+      timings: [500, 2000],
+      easings: [easing.easeOut]
+    })
   };
-
-  const [adapter] = useState(new DeckAdapter(getDeckScene));
-
-  const mergedEncoderSettings = {
-    framerate: 30,
-    webm: {
-      quality: 0.8
-    },
-    jpeg: {
-      quality: 0.8
-    },
-    gif: {
-      sampleInterval: 1000
-    },
-    ...encoderSettings
-  };
-
-  const qlayers = getLayers(adapter);
-
-  return (
-    <div style={{position: 'relative'}}>
-      <div style={{position: 'absolute'}}>
-        <ResolutionGuide />
-      </div>
-      <DeckGL
-        ref={deckgl}
-        viewState={viewState}
-        onViewStateChange={({viewState: vs}) => {
-          setViewState(vs);
-        }}
-        controller={true}
-        layers={qlayers}
-        {...adapter.getProps(deckgl, setReady, nextFrame)}
-        {...deckProps}
-      />
-      <div style={{position: 'absolute'}}>
-        {ready && (
-          <BasicControls
-            adapter={adapter}
-            busy={busy}
-            setBusy={setBusy}
-            encoderSettings={mergedEncoderSettings}
-            getCameraKeyframes={getCameraKeyframes}
-          />
-        )}
-      </div>
-    </div>
-  );
 };
+
+import {PathLayer, ScatterplotLayer, TextLayer, PolygonLayer} from '@deck.gl/layers';
+
+const pathData =
+  'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/bart-lines.json';
+const stationData =
+  'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/bart-stations.json';
+const zipCodeData =
+  'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/sf-zipcodes.json';
+
+function getLayers(scene) {
+  const stationFrame = scene.keyframes.station.getFrame();
+  const textFrame = scene.keyframes.text.getFrame();
+  return [
+    new PolygonLayer({
+      id: 'polygon-layer',
+      data: zipCodeData,
+      stroked: true,
+      filled: true,
+      lineWidthMinPixels: 2,
+      getPolygon: d => d.contour,
+      getFillColor: d => [22, 133, 248],
+      getLineColor: [61, 20, 76, 255],
+      getLineWidth: 3,
+      opacity: 1,
+      material: {
+        ambient: 1,
+        diffuse: 0,
+        shininess: 175,
+        specularColor: [255, 255, 255]
+      }
+    }),
+    new ScatterplotLayer({
+      id: 'scatterplot-layer',
+      data: stationData,
+      opacity: 0.9,
+      stroked: false,
+      filled: true,
+      radiusScale: stationFrame.radiusScale,
+      radiusMinPixels: 1,
+      radiusMaxPixels: 100,
+      lineWidthMinPixels: 1,
+      getPosition: d => [...d.coordinates, 5],
+      getRadius: d => 260 - Math.sqrt(d.exits),
+      getFillColor: d => [233, 0, 255],
+      getLineColor: d => [245, 39, 137]
+    }),
+    new PathLayer({
+      id: 'path-layer',
+      data: pathData,
+      widthScale: 20,
+      widthMinPixels: 2,
+      getPath: d => d.path.map(p => [...p, 20]),
+      getColor: d => {
+        return [250, 235, 44, 255];
+      },
+      getWidth: d => 2
+    }),
+    new TextLayer({
+      id: 'text-layer',
+      data: stationData,
+      fontFamily: 'monospace',
+      fontSettings: {
+        fontSize: 100,
+        sdf: true
+      },
+      opacity: textFrame.opacity,
+      getPosition: d => [...d.coordinates, 200],
+      getText: d => d.name,
+      getSize: 22,
+      getAngle: 0,
+      getTextAnchor: 'start',
+      getAlignmentBaseline: 'center',
+      getPixelOffset: [textFrame.pixelOffsetX, 0],
+      getColor: [250, 235, 44, 255],
+      updateTriggers: {
+        getPixelOffset: textFrame.pixelOffsetX
+      }
+    })
+  ];
+}
 
 export default function App() {
   const [duration] = useState(5000);
@@ -109,17 +133,13 @@ export default function App() {
         {
           longitude: viewState.longitude,
           latitude: viewState.latitude,
-          zoom: viewState.zoom,
-          bearing: viewState.bearing + 92,
-          pitch: viewState.pitch
+          zoom: viewState.zoom + 2,
+          bearing: viewState.bearing,
+          pitch: viewState.pitch + 20
         }
       ],
       easings: [easing.easeInOut]
     });
-  };
-
-  const getLayers = adapter => {
-    return layers;
   };
 
   const deckProps = {
@@ -137,6 +157,7 @@ export default function App() {
     <QuickAnimation
       initialViewState={INITIAL_VIEW_STATE}
       getCameraKeyframes={getCameraKeyframes}
+      getLayerKeyframes={getKeyframes}
       getLayers={getLayers}
       deckProps={deckProps}
       duration={duration}

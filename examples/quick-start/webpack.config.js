@@ -17,7 +17,7 @@ const config = {
         loader: 'babel-loader',
         exclude: [/node_modules/],
         options: {
-          plugins: ['@babel/plugin-proposal-class-properties'],
+          plugins: ['@babel/plugin-proposal-class-properties', '@babel/plugin-transform-runtime'],
           presets: ['@babel/preset-env', '@babel/preset-react']
         }
       }
@@ -29,7 +29,7 @@ const config = {
   },
 
   plugins: [
-    new HtmlWebpackPlugin({title: 'hubble.gl deck camera example'}),
+    new HtmlWebpackPlugin({title: 'hubble.gl deck quick-start example'}),
     // Optional: Enables reading mapbox token from environment variable
     new webpack.EnvironmentPlugin(['MapboxAccessToken'])
   ]
