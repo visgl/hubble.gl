@@ -5,15 +5,13 @@
 
 import React, {useState, useRef, useEffect, useCallback} from 'react';
 import DeckGL from '@deck.gl/react';
-import {DeckAdapter} from '@hubble.gl/core';
+import {DeckScene, DeckAdapter, CameraKeyframes} from '@hubble.gl/core';
 import {useNextFrame, BasicControls} from '@hubble.gl/react';
-import {sceneBuilder} from './scene';
 import {AmbientLight, PointLight, LightingEffect} from '@deck.gl/core';
 import {StaticMap} from 'react-map-gl';
 import {PolygonLayer} from '@deck.gl/layers';
 import {TripsLayer} from '@deck.gl/geo-layers';
 
-import {CameraKeyframes} from '@hubble.gl/core';
 import {easing} from 'popmotion';
 
 import {MapboxLayer} from '@deck.gl/mapbox';
@@ -59,8 +57,7 @@ const INITIAL_VIEW_STATE = {
   latitude: 40.72,
   zoom: 13,
   pitch: 45,
-  bearing: 0,
-  id: 'initialViewState'
+  bearing: 0
 };
 
 const landCover = [
@@ -76,18 +73,15 @@ const landCover = [
 const encoderSettings = {
   framerate: 30,
   webm: {
-    quality: 1
+    quality: 0.8
   },
   jpeg: {
     quality: 0.8
   },
   gif: {
-    quality: 1,
     sampleInterval: 1000
   }
 };
-
-const adapter = new DeckAdapter(sceneBuilder);
 
 // Try to convert function to class
 // React.createRef
@@ -117,6 +111,19 @@ export default function App({
   const [time, setTime] = useState(0);
   const [animation] = useState({});
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
+
+  const [duration] = useState(5000);
+
+  const getDeckScene = animationLoop => {
+    return new DeckScene({
+      animationLoop,
+      lengthMs: duration,
+      width: 1280,
+      height: 720
+    });
+  };
+
+  const [adapter] = useState(new DeckAdapter(getDeckScene));
 
   const onMapLoad = useCallback(() => {
     // Component did mount
@@ -171,10 +178,9 @@ export default function App({
     })
   ];
 
-  const updateCamera = prevCamera => {
-    // Set by User
-    prevCamera = new CameraKeyframes({
-      timings: [0, 5000],
+  const getCameraKeyframes = useCallback(() => {
+    return new CameraKeyframes({
+      timings: [0, duration],
       keyframes: [
         {
           longitude: viewState.longitude,
@@ -193,9 +199,7 @@ export default function App({
       ],
       easings: [easing.easeInOut]
     });
-
-    return prevCamera;
-  };
+  }, [duration, viewState]);
 
   return (
     <div style={{position: 'relative'}}>
@@ -239,7 +243,7 @@ export default function App({
             busy={busy}
             setBusy={setBusy}
             encoderSettings={encoderSettings}
-            updateCamera={updateCamera}
+            getCameraKeyframes={getCameraKeyframes}
           />
         )}
       </div>

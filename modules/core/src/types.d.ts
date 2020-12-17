@@ -1,5 +1,7 @@
+import { Keyframes } from "./keyframes";
 import { FrameEncoder } from "./encoders";
 import { DeckScene } from "./scene";
+
 
 type CaptureStepSuccess = {
   kind: 'step'
@@ -47,10 +49,8 @@ interface DeckSceneParams {
   lengthMs: number
   width: number
   height: number
-  keyframes: any
   data: any
-  currentCamera: any
-  renderLayers: (scene: DeckScene) => any[]
+  initialKeyframes: Object<string, Keyframes>
 }
 
 interface KeplerSceneParams {

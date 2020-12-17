@@ -1,22 +1,21 @@
 import React, {useState, useRef} from 'react';
 import DeckGL from '@deck.gl/react';
-import {DeckAdapter, CameraKeyframes} from '@hubble.gl/core';
+import {DeckAdapter, DeckScene, CameraKeyframes} from '@hubble.gl/core';
 import {useNextFrame, BasicControls, ResolutionGuide} from '@hubble.gl/react';
-import {sceneBuilder} from './scene';
-import {layers} from './layers';
+import {getLayers, getKeyframes} from './layers';
 import {vignette, fxaa} from '@luma.gl/shadertools';
-import {PostProcessEffect} from '@deck.gl/core';
+import {PostProcessEffect, MapView} from '@deck.gl/core';
 import {easing} from 'popmotion';
 
 const INITIAL_VIEW_STATE = {
-  longitude: -122.4,
-  latitude: 37.74,
-  zoom: 11,
-  pitch: 30,
-  bearing: 0
+  longitude: -122.435,
+  latitude: 37.753,
+  zoom: 10,
+  pitch: -37,
+  bearing: 0,
+  minPitch: -90,
+  maxPitch: 90
 };
-
-const adapter = new DeckAdapter(sceneBuilder);
 
 /** @type {import('@hubble.gl/core/src/types').FrameEncoderSettings} */
 const encoderSettings = {
@@ -39,34 +38,36 @@ export default function App() {
   const deckgl = useRef(null);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE); // Added to maintain user's interactions with viewState
-  const nextFrame = useNextFrame();
+  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
+  const [viewStateA, setViewStateA] = useState(viewState);
+  const [viewStateB, setViewStateB] = useState({
+    ...viewState,
+    zoom: viewState.zoom + 1,
+    pitch: viewState.pitch + 37
+  });
 
-  const updateCamera = prevCamera => {
-    // Set by User
-    prevCamera = new CameraKeyframes({
-      timings: [0, 5000],
-      keyframes: [
-        {
-          longitude: viewState.longitude,
-          latitude: viewState.latitude,
-          zoom: viewState.zoom,
-          pitch: viewState.pitch,
-          bearing: viewState.bearing
-        },
-        {
-          longitude: viewState.longitude,
-          latitude: viewState.latitude,
-          zoom: viewState.zoom,
-          bearing: viewState.bearing + 92,
-          pitch: viewState.pitch
-        }
-      ],
+  const nextFrame = useNextFrame();
+  const [duration] = useState(5000);
+
+  const getCameraKeyframes = () => {
+    return new CameraKeyframes({
+      timings: [0, duration - 250],
+      keyframes: [viewStateA, viewStateB],
       easings: [easing.easeInOut]
     });
-
-    return prevCamera;
   };
+
+  const getDeckScene = animationLoop => {
+    return new DeckScene({
+      animationLoop,
+      lengthMs: duration,
+      width: 640,
+      height: 480,
+      initialKeyframes: getKeyframes()
+    });
+  };
+
+  const [adapter] = useState(new DeckAdapter(getDeckScene));
 
   return (
     <div style={{position: 'relative'}}>
@@ -75,6 +76,7 @@ export default function App() {
       </div>
       <DeckGL
         ref={deckgl}
+        views={new MapView({farZMultiplier: 3})}
         parameters={{
           depthTest: false,
           clearColor: [61 / 255, 20 / 255, 76 / 255, 1]
@@ -88,8 +90,7 @@ export default function App() {
         }}
         controller={true}
         effects={[vignetteEffect, aaEffect]}
-        layers={layers}
-        {...adapter.getProps(deckgl, setReady, nextFrame)}
+        {...adapter.getProps(deckgl, setReady, nextFrame, getLayers)}
       />
       <div style={{position: 'absolute'}}>
         {ready && (
@@ -98,9 +99,12 @@ export default function App() {
             busy={busy}
             setBusy={setBusy}
             encoderSettings={encoderSettings}
-            updateCamera={updateCamera}
+            getCameraKeyframes={getCameraKeyframes}
+            getKeyframes={getKeyframes}
           />
         )}
+        <button onClick={() => setViewStateA(viewState)}>Set Camera Start</button>
+        <button onClick={() => setViewStateB(viewState)}>Set Camera End</button>
       </div>
     </div>
   );
