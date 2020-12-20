@@ -23,6 +23,8 @@ import DeckGL from '@deck.gl/react';
 import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
 
+import {WithKeplerUI} from '../inject-kepler';
+
 export class ExportVideoPanelPreview extends Component {
   constructor(props) {
     super(props);
@@ -148,19 +150,24 @@ export class ExportVideoPanelPreview extends Component {
     // Adds mapbox layer to modal
     const map = this.mapRef.current.getMap();
     const deck = this.deckRef.current.deck;
+
+    const layerOrder = this.props.mapData.visState.layerOrder;
+    const keplerLayers = layerOrder.reduce(this._renderLayer, []);
+
     map.addLayer(new MapboxLayer({id: 'my-deck', deck}));
-    // TODO trying to make map scale to 100% of modal
-    // map.on('load', function () {
-    //   map.resize();
-    // });
+
+    for (let i = 0; i < keplerLayers.length; i++) {
+      // Adds DeckGL layers to Mapbox so it can be the bottom layer. Removing this clips DeckGL layers
+      // console.log('layer', keplerLayers[i]);
+      map.addLayer(new MapboxLayer({id: keplerLayers[i].id, deck}));
+      // deck.setProps(keplerLayers[i].props)
+    }
+
     map.on('render', () =>
       this.props.adapter.onAfterRender(() => {
         this.forceUpdate();
       })
     );
-    map.resize();
-    // map.setCenter([this.props.mapData.mapState.longitude, this.props.mapData.mapState.latitude]);
-    // console.log("this.props.mapData.mapState", this.props.mapData.mapState)
   }
 
   render() {
@@ -193,43 +200,64 @@ export class ExportVideoPanelPreview extends Component {
 
     const deckStyle = {
       width: '100%',
-      height: '100%'
+      height: '100%',
+      // display: none if rendering == true
+      display: this.props.rendering === true ? 'none' : 'initial'
     };
 
     const containerStyle = {
       width: `${this.props.exportVideoWidth}px`,
       height: `${this._getContainerHeight()}px`,
-      position: 'relative',
-      overflow: 'auto'
+      position: 'relative'
+    };
+
+    const loaderStyle = {
+      border: '16px solid #f3f3f3' /* Light grey */,
+      borderTop: '16px solid #3498db' /* Blue */,
+      borderRadius: '50%',
+      margin: 'auto',
+      width: '120px',
+      height: '120px',
+      animation: 'spin 2s linear infinite'
+      // display: (this.props.rendering === false) ? "none" : "initial"
+      // display: none if rendering == false
     };
 
     return (
-      <div id="deck-canvas" style={containerStyle}>
-        <DeckGL
-          ref={this.deckRef}
-          viewState={this.props.viewState}
-          id="hubblegl-overlay"
-          layers={deckGlLayers}
-          style={deckStyle}
-          controller={true}
-          glOptions={{stencil: true}}
-          onWebGLInitialized={gl => this.setState({glContext: gl})}
-          onViewStateChange={this.props.setViewState}
-          // onClick={visStateActions.onLayerClick}
-          {...this.props.adapter.getProps(this.deckRef, () => {})}
-        >
-          {this.state.glContext && (
-            <StaticMap
-              ref={this.mapRef}
-              // reuseMaps // Part of default example but causes modal to lose Mapbox tile layer?
-              mapStyle={this.state.mapStyle}
-              preventStyleDiffing={true}
-              gl={this.state.glContext}
-              onLoad={this._onMapLoad}
-            />
-          )}
-        </DeckGL>
-      </div>
+      <WithKeplerUI>
+        {({LoadingSpinner}) => (
+          <div>
+            {/* // <LoadingSpinner className="TEST123" style={{margin: 'auto'}}>  TODO margin auto works but doesn't inherit? */}
+            <div id="deck-canvas" style={containerStyle}>
+              <div className="loader" style={loaderStyle} />
+              <DeckGL
+                ref={this.deckRef}
+                viewState={this.props.viewState}
+                id="hubblegl-overlay"
+                layers={deckGlLayers}
+                style={deckStyle}
+                controller={true}
+                glOptions={{stencil: true}}
+                onWebGLInitialized={gl => this.setState({glContext: gl})}
+                onViewStateChange={this.props.setViewState}
+                // onClick={visStateActions.onLayerClick}
+                {...this.props.adapter.getProps(this.deckRef, () => {})}
+              >
+                {this.state.glContext && (
+                  <StaticMap
+                    ref={this.mapRef}
+                    // reuseMaps // Part of default example but causes modal to lose Mapbox tile layer?
+                    mapStyle={this.state.mapStyle}
+                    preventStyleDiffing={true}
+                    gl={this.state.glContext}
+                    onLoad={this._onMapLoad}
+                  />
+                )}
+              </DeckGL>
+            </div>
+          </div>
+        )}
+      </WithKeplerUI>
     );
   }
 }

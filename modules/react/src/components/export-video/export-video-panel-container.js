@@ -78,9 +78,10 @@ export class ExportVideoPanelContainer extends Component {
       cameraPreset: 'Orbit (90º)',
       fileName: '',
       resolution: '1280x720',
-      durationMs: 1000, // TODO change to 5000 later. 1000 for dev testing
+      durationMs: 1000,
       viewState: mapState,
       adapter: new DeckAdapter(this.getDeckScene, glContext),
+      rendering: false, // Will set a spinner overlay if true
       ...(initialState || {})
     };
   }
@@ -211,7 +212,11 @@ export class ExportVideoPanelContainer extends Component {
     const {adapter} = this.state;
     const Encoder = this.getEncoder();
     const encoderSettings = this.getEncoderSettings();
-    const onStop = () => {};
+
+    this.setState({rendering: true}); // Enables overlay to give user feedback on rendering
+    const onStop = () => {
+      this.setState({rendering: false});
+    }; // Disables overlay once export is done rendering
 
     adapter.render(this.getCameraKeyframes, Encoder, encoderSettings, onStop);
   }
@@ -232,7 +237,8 @@ export class ExportVideoPanelContainer extends Component {
       cameraPreset,
       fileName,
       resolution,
-      viewState
+      viewState,
+      rendering
     } = this.state;
 
     const settingsData = {mediaType, cameraPreset, fileName, resolution};
@@ -265,6 +271,7 @@ export class ExportVideoPanelContainer extends Component {
         frameRate={encoderSettings.framerate}
         resolution={[width, height]}
         mediaType={mediaType}
+        rendering={rendering}
       />
     );
   }
