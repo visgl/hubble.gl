@@ -123,7 +123,7 @@ const ExportVideoPanelSettings = ({
             onChange={setResolution}
           />
           <StyledLabelCell>Duration</StyledLabelCell>
-          <StyledValueCell>
+          <StyledValueCell style={{paddingLeft: '0px', paddingRight: '0px'}}>
             <SliderWrapper
               style={{width: '100%', marginLeft: '0px'}}
               className="modal-duration__slider"
