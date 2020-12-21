@@ -152,15 +152,16 @@ export class ExportVideoPanelPreview extends Component {
     const deck = this.deckRef.current.deck;
 
     const layerOrder = this.props.mapData.visState.layerOrder;
-    const keplerLayers = layerOrder.reduce(this._renderLayer, []);
+    const keplerLayers = layerOrder
+      .slice()
+      .reverse()
+      .reduce(this._renderLayer, []);
 
     map.addLayer(new MapboxLayer({id: 'my-deck', deck}));
 
     for (let i = 0; i < keplerLayers.length; i++) {
-      // Adds DeckGL layers to Mapbox so it can be the bottom layer. Removing this clips DeckGL layers
-      // console.log('layer', keplerLayers[i]);
+      // Adds DeckGL layers to Mapbox so Mapbox can be the bottom layer. Removing this clips DeckGL layers
       map.addLayer(new MapboxLayer({id: keplerLayers[i].id, deck}));
-      // deck.setProps(keplerLayers[i].props)
     }
 
     map.on('render', () =>
@@ -171,38 +172,20 @@ export class ExportVideoPanelPreview extends Component {
   }
 
   render() {
-    // const mapStyle = this.mapData.mapStyle;
-    // const mapState = this.props.mapData.mapState;
-    // const layers = this.mapData.visState.layers;
-    // const layerData = this.mapData.visState.layerData;
     const layerOrder = this.props.mapData.visState.layerOrder;
-    // const animationConfig = this.mapData.visState.animationConfig;
-
-    // Map data
-    // const mapboxApiAccessToken = this.props.mapData.mapStyle.mapboxApiAccessToken;
-    // const mapboxApiUrl = this.props.mapData.mapStyle.mapboxApiUrl;
-
-    // define trip and geojson layers
     let deckGlLayers = [];
 
-    // TODO refactor this. Layers are reverse, filtered, etc. only to be redefined later
-    // wait until data is ready before render data layers
     if (layerOrder && layerOrder.length) {
-      // last layer render first
       deckGlLayers = layerOrder
         .slice()
         .reverse()
-        // .filter(
-        //   idx => layers[idx].overlayType === OVERLAY_TYPE.deckgl && layers[idx].id
-        // )
         .reduce(this._renderLayer, []);
     }
 
     const deckStyle = {
       width: '100%',
       height: '100%',
-      // display: none if rendering == true
-      display: this.props.rendering === true ? 'none' : 'initial'
+      display: this.props.rendering === true ? 'none' : ''
     };
 
     const containerStyle = {
@@ -212,49 +195,49 @@ export class ExportVideoPanelPreview extends Component {
     };
 
     const loaderStyle = {
+      // Temporary spinner
       border: '16px solid #f3f3f3' /* Light grey */,
       borderTop: '16px solid #3498db' /* Blue */,
       borderRadius: '50%',
       margin: 'auto',
       width: '120px',
       height: '120px',
-      animation: 'spin 2s linear infinite'
-      // display: (this.props.rendering === false) ? "none" : "initial"
-      // display: none if rendering == false
+      animation: 'spin 2s linear infinite',
+      display: this.props.rendering === false ? 'none' : ''
     };
+
+    // NOTE Separate loading spinner used temporarily. Couldn't figure out how to modify Kepler's
+    // Also, spinner displays hidden as opposed to overlay due to limitation on Mapbox submodule https://deck.gl/docs/api-reference/mapbox/overview#limitations
 
     return (
       <WithKeplerUI>
         {({LoadingSpinner}) => (
-          <div>
-            {/* // <LoadingSpinner className="TEST123" style={{margin: 'auto'}}>  TODO margin auto works but doesn't inherit? */}
-            <div id="deck-canvas" style={containerStyle}>
-              <div className="loader" style={loaderStyle} />
-              <DeckGL
-                ref={this.deckRef}
-                viewState={this.props.viewState}
-                id="hubblegl-overlay"
-                layers={deckGlLayers}
-                style={deckStyle}
-                controller={true}
-                glOptions={{stencil: true}}
-                onWebGLInitialized={gl => this.setState({glContext: gl})}
-                onViewStateChange={this.props.setViewState}
-                // onClick={visStateActions.onLayerClick}
-                {...this.props.adapter.getProps(this.deckRef, () => {})}
-              >
-                {this.state.glContext && (
-                  <StaticMap
-                    ref={this.mapRef}
-                    // reuseMaps // Part of default example but causes modal to lose Mapbox tile layer?
-                    mapStyle={this.state.mapStyle}
-                    preventStyleDiffing={true}
-                    gl={this.state.glContext}
-                    onLoad={this._onMapLoad}
-                  />
-                )}
-              </DeckGL>
-            </div>
+          // <LoadingSpinner className="TEST123" style={{margin: 'auto'}}>  TODO margin auto works but doesn't inherit? */}
+          <div id="deck-canvas" style={containerStyle}>
+            <div className="loader" style={loaderStyle} />
+            <DeckGL
+              ref={this.deckRef}
+              viewState={this.props.viewState}
+              id="hubblegl-overlay"
+              layers={deckGlLayers}
+              style={deckStyle}
+              controller={true}
+              glOptions={{stencil: true}}
+              onWebGLInitialized={gl => this.setState({glContext: gl})}
+              onViewStateChange={this.props.setViewState}
+              // onClick={visStateActions.onLayerClick}
+              {...this.props.adapter.getProps(this.deckRef, () => {})}
+            >
+              {this.state.glContext && (
+                <StaticMap
+                  ref={this.mapRef}
+                  mapStyle={this.state.mapStyle}
+                  preventStyleDiffing={true}
+                  gl={this.state.glContext}
+                  onLoad={this._onMapLoad}
+                />
+              )}
+            </DeckGL>
           </div>
         )}
       </WithKeplerUI>

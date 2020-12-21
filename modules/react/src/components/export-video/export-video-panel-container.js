@@ -144,13 +144,9 @@ export class ExportVideoPanelContainer extends Component {
   }
 
   getDeckScene(animationLoop) {
-    // PSEUDO BRAINSTORM
-    // only runs once and permanently sets things like canvas resolution + duration
     const {durationMs} = this.state;
     const {width, height} = this.getCanvasSize();
 
-    // TODO this scales canvas resolution but is only set once. Figure out how to update
-    // TODO this needs to update durationMs
     return new DeckScene({
       animationLoop,
       lengthMs: durationMs,
@@ -224,7 +220,6 @@ export class ExportVideoPanelContainer extends Component {
   setDuration(durationMs) {
     const {adapter} = this.state;
     adapter.scene.setDuration(durationMs);
-    // function passed down to Slider class in ExportVideoPanelSettings
     this.setStateAndNotify({durationMs});
   }
 
