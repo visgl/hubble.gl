@@ -148,7 +148,7 @@ const ExportVideoPanelSettings = ({
           </StyledValueCell>
           <StyledLabelCell>File Size</StyledLabelCell>
           <StyledValueCell>
-            {estimateFileSize(frameRate, resolution, durationMs, mediaType)}
+            ~ {estimateFileSize(frameRate, resolution, durationMs, mediaType)}
           </StyledValueCell>
         </InputGrid>
         <StyledSection>Video Effects</StyledSection>
