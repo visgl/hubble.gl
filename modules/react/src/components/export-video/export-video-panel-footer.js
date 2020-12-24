@@ -40,7 +40,12 @@ const ButtonGroup = styled.div`
   display: flex;
 `;
 
-const ExportVideoPanelFooter = ({handleClose, handlePreviewVideo, handleRenderVideo}) => (
+const ExportVideoPanelFooter = ({
+  handleClose,
+  handlePreviewVideo,
+  handleRenderVideo,
+  rendering
+}) => (
   <WithKeplerUI>
     {({Button}) => (
       <PanelFooterInner className="export-video-panel__footer">
@@ -50,6 +55,7 @@ const ExportVideoPanelFooter = ({handleClose, handlePreviewVideo, handleRenderVi
           secondary
           className={'export-video-button'}
           onClick={handlePreviewVideo}
+          disabled={rendering}
         >
           Preview
         </Button>
@@ -68,6 +74,7 @@ const ExportVideoPanelFooter = ({handleClose, handlePreviewVideo, handleRenderVi
             height={DEFAULT_BUTTON_HEIGHT}
             className={'export-video-button'}
             onClick={handleRenderVideo}
+            disabled={rendering}
           >
             Render
           </Button>

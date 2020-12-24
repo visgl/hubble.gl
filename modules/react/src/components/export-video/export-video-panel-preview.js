@@ -184,8 +184,7 @@ export class ExportVideoPanelPreview extends Component {
 
     const deckStyle = {
       width: '100%',
-      height: '100%',
-      display: this.props.rendering === true ? 'none' : ''
+      height: '100%'
     };
 
     const containerStyle = {
@@ -195,50 +194,43 @@ export class ExportVideoPanelPreview extends Component {
     };
 
     const loaderStyle = {
-      // Temporary spinner
-      border: '16px solid #f3f3f3' /* Light grey */,
-      borderTop: '16px solid #3498db' /* Blue */,
-      borderRadius: '50%',
-      margin: 'auto',
-      width: '120px',
-      height: '120px',
-      animation: 'spin 2s linear infinite',
-      display: this.props.rendering === false ? 'none' : ''
+      display: this.props.rendering === false ? 'none' : 'block',
+      position: 'absolute'
     };
-
-    // NOTE Separate loading spinner used temporarily. Couldn't figure out how to modify Kepler's
-    // Also, spinner displays hidden as opposed to overlay due to limitation on Mapbox submodule https://deck.gl/docs/api-reference/mapbox/overview#limitations
 
     return (
       <WithKeplerUI>
         {({LoadingSpinner}) => (
-          // <LoadingSpinner className="TEST123" style={{margin: 'auto'}}>  TODO margin auto works but doesn't inherit? */}
-          <div id="deck-canvas" style={containerStyle}>
-            <div className="loader" style={loaderStyle} />
-            <DeckGL
-              ref={this.deckRef}
-              viewState={this.props.viewState}
-              id="hubblegl-overlay"
-              layers={deckGlLayers}
-              style={deckStyle}
-              controller={true}
-              glOptions={{stencil: true}}
-              onWebGLInitialized={gl => this.setState({glContext: gl})}
-              onViewStateChange={this.props.setViewState}
-              // onClick={visStateActions.onLayerClick}
-              {...this.props.adapter.getProps(this.deckRef, () => {})}
-            >
-              {this.state.glContext && (
-                <StaticMap
-                  ref={this.mapRef}
-                  mapStyle={this.state.mapStyle}
-                  preventStyleDiffing={true}
-                  gl={this.state.glContext}
-                  onLoad={this._onMapLoad}
-                />
-              )}
-            </DeckGL>
-          </div>
+          <>
+            <div id="deck-canvas" style={containerStyle}>
+              <DeckGL
+                ref={this.deckRef}
+                viewState={this.props.viewState}
+                id="hubblegl-overlay"
+                layers={deckGlLayers}
+                style={deckStyle}
+                controller={true}
+                glOptions={{stencil: true}}
+                onWebGLInitialized={gl => this.setState({glContext: gl})}
+                onViewStateChange={this.props.setViewState}
+                // onClick={visStateActions.onLayerClick}
+                {...this.props.adapter.getProps(this.deckRef, () => {})}
+              >
+                {this.state.glContext && (
+                  <StaticMap
+                    ref={this.mapRef}
+                    mapStyle={this.state.mapStyle}
+                    preventStyleDiffing={true}
+                    gl={this.state.glContext}
+                    onLoad={this._onMapLoad}
+                  />
+                )}
+              </DeckGL>
+            </div>
+            <div className="loader" style={loaderStyle}>
+              <LoadingSpinner />
+            </div>
+          </>
         )}
       </WithKeplerUI>
     );

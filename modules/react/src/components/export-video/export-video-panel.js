@@ -172,6 +172,7 @@ const ExportVideoPanel = ({
         handleClose={handleClose}
         handlePreviewVideo={handlePreviewVideo}
         handleRenderVideo={handleRenderVideo}
+        rendering={rendering}
       />
     </Panel>
   );
