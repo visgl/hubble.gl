@@ -161,19 +161,19 @@ export class VideoCapture {
       this.recording = false;
       this.capturing = false; // Added to fix an intermittent bug
       this.encoderSettings = null;
-      this.save();
-
-      if (callback) {
-        // eslint-disable-next-line callback-return
-        callback();
-      }
+      this.save().then(() => {
+        if (callback) {
+          // eslint-disable-next-line callback-return
+          callback();
+        }
+      });
     }
   }
 
   /**
    * @param {{ (blob: Blob): boolean }} [callback]
    */
-  save(callback) {
+  async save(callback) {
     console.timeEnd('render');
     if (!callback) {
       /**
@@ -188,7 +188,7 @@ export class VideoCapture {
       };
     }
     console.time('save');
-    this.encoder.save().then(callback);
+    await this.encoder.save().then(callback);
   }
 
   /**

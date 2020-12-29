@@ -194,8 +194,13 @@ export class ExportVideoPanelPreview extends Component {
     };
 
     const loaderStyle = {
-      display: this.props.rendering === false ? 'none' : 'block',
-      position: 'absolute'
+      display: this.props.rendering === false ? 'none' : 'flex',
+      position: 'absolute',
+      background: 'rgba(0, 0, 0, 0.5)',
+      width: `${this.props.exportVideoWidth}px`,
+      height: `${this._getContainerHeight()}px`,
+      alignItems: 'center',
+      justifyContent: 'center'
     };
 
     return (
