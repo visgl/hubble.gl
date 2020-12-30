@@ -94,6 +94,7 @@ const PanelBody = ({
       resolution={resolution}
       viewState={viewState}
       rendering={rendering}
+      durationMs={durationMs}
     />
     <ExportVideoPanelSettings
       setMediaType={setMediaType}
