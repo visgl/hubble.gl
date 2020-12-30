@@ -146,16 +146,21 @@ export class ExportVideoPanelPreview extends Component {
     return exportVideoWidth / aspectRatio;
   }
 
+  createLayers() {
+    // returns an arr of DeckGL layer objects
+    const layerOrder = this.props.mapData.visState.layerOrder;
+    return layerOrder
+      .slice()
+      .reverse()
+      .reduce(this._renderLayer, []); // Slicing & reversing to create same layer order as Kepler
+  }
+
   _onMapLoad() {
     // Adds mapbox layer to modal
     const map = this.mapRef.current.getMap();
     const deck = this.deckRef.current.deck;
 
-    const layerOrder = this.props.mapData.visState.layerOrder;
-    const keplerLayers = layerOrder
-      .slice()
-      .reverse()
-      .reduce(this._renderLayer, []);
+    const keplerLayers = this.createLayers();
 
     map.addLayer(new MapboxLayer({id: 'my-deck', deck}));
 
@@ -172,16 +177,6 @@ export class ExportVideoPanelPreview extends Component {
   }
 
   render() {
-    const layerOrder = this.props.mapData.visState.layerOrder;
-    let deckGlLayers = [];
-
-    if (layerOrder && layerOrder.length) {
-      deckGlLayers = layerOrder
-        .slice()
-        .reverse()
-        .reduce(this._renderLayer, []);
-    }
-
     const deckStyle = {
       width: '100%',
       height: '100%'
@@ -212,7 +207,7 @@ export class ExportVideoPanelPreview extends Component {
                 ref={this.deckRef}
                 viewState={this.props.viewState}
                 id="hubblegl-overlay"
-                layers={deckGlLayers}
+                layers={this.createLayers()}
                 style={deckStyle}
                 controller={true}
                 glOptions={{stencil: true}}
