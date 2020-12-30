@@ -209,10 +209,10 @@ export class ExportVideoPanelContainer extends Component {
     const Encoder = this.getEncoder();
     const encoderSettings = this.getEncoderSettings();
 
-    this.setState({rendering: true}); // Enables overlay to give user feedback on rendering
+    this.setState({rendering: true}); // Enables overlay after user clicks "Render"
     const onStop = () => {
       this.setState({rendering: false});
-    }; // Disables overlay once export is done rendering
+    }; // Disables overlay once export is done saving (generates file to download)
 
     adapter.render(this.getCameraKeyframes, Encoder, encoderSettings, onStop);
   }

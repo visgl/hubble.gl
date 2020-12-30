@@ -229,6 +229,13 @@ export class ExportVideoPanelPreview extends Component {
             </div>
             <div className="loader" style={loaderStyle}>
               <LoadingSpinner />
+              {/* TODO change text styling to match Kepler's */}
+              <div
+                className="rendering-percent"
+                style={{color: 'white', position: 'absolute', top: '175px'}}
+              >
+                {((this.props.adapter.videoCapture.timeMs / 1000) * 100).toFixed(0)} %
+              </div>
             </div>
           </>
         )}
