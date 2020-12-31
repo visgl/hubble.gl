@@ -234,9 +234,9 @@ export class ExportVideoPanelPreview extends Component {
                 className="rendering-percent"
                 style={{color: 'white', position: 'absolute', top: '175px'}}
               >
-                {((this.props.adapter.videoCapture.timeMs / this.props.durationMs) * 100).toFixed(
-                  0
-                )}{' '}
+                {Math.floor(
+                  (this.props.adapter.videoCapture.timeMs / this.props.durationMs) * 100
+                ).toFixed(0)}{' '}
                 %
               </div>
             </div>
