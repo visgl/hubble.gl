@@ -34,12 +34,6 @@ import {loadSampleConfigurations} from './actions';
 
 import ExportVideo from './components/export-video';
 
-const KeplerGl = require('kepler.gl/components').injectComponents([
-  replaceLoadDataModal(),
-  replaceMapControl(),
-  replacePanelHeader()
-]);
-
 // Sample data
 /* eslint-disable no-unused-vars */
 import sampleTripData, {testCsvData, sampleTripDataConfig} from './data/sample-trip-data';
@@ -47,6 +41,12 @@ import sampleAnimateTrip from './data/sample-animate-trip-data';
 import {addDataToMap} from 'kepler.gl/actions';
 import {processCsvData, processGeojson} from 'kepler.gl/processors';
 /* eslint-enable no-unused-vars */
+
+const KeplerGl = require('kepler.gl/components').injectComponents([
+  replaceLoadDataModal(),
+  replaceMapControl(),
+  replacePanelHeader()
+]);
 
 const keplerGlGetState = state => state.demo.keplerGl;
 

@@ -27,6 +27,10 @@ import {InjectKeplerUI, ExportVideoModal, ExportVideoPanelContainer} from '@hubb
 // Hook up mutual kepler imports
 import {Button, Icons, Input, ItemSelector, Slider} from 'kepler.gl/components';
 
+// Redux stores/actions
+// import {connect as keplerGlConnect} from 'kepler.gl';
+import toggleHubbleExportModal from 'kepler.gl'; // TODO make custom action
+
 const IconButton = styled(Button)`
   padding: 0;
   svg {
@@ -42,10 +46,6 @@ const KEPLER_UI = {
   ItemSelector,
   Slider
 };
-
-// Redux stores/actions
-// import {connect as keplerGlConnect} from 'kepler.gl';
-import toggleHubbleExportModal from 'kepler.gl'; // TODO make custom action
 
 const mapStateToProps = state => {
   return {mapData: state.demo.keplerGl.map};
