@@ -17,15 +17,46 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-import Keyframes from './keyframes';
+import Keyframes from '../keyframes';
+import {FlyToInterpolator} from '@deck.gl/core';
 
-export default class CameraKeyFrames extends Keyframes {
-  constructor({timings, keyframes, easings}) {
+export default class FlyToKeyframes extends Keyframes {
+  constructor({
+    start,
+    end,
+    width,
+    height,
+    curve = 1.414,
+    speed = 1.2,
+    screenSpeed = undefined,
+    maxDuration = undefined
+  }) {
+    const interpolator = new FlyToInterpolator({curve, speed, screenSpeed, maxDuration});
+
+    start = {...start, width, height};
+    end = {...end, transitionDuration: 'auto'};
+
+    const duration = interpolator.getDuration(start, end);
+
     super({
-      timings,
-      keyframes,
-      easings,
+      timings: [0, duration],
+      keyframes: [start, end],
+      easings: [t => t],
       features: ['latitude', 'longitude', 'zoom', 'pitch', 'bearing']
     });
+    this.interpolator = interpolator;
+  }
+
+  getFrame() {
+    const factor = this.factor;
+    const start = this.getStartData();
+    const end = this.getEndData();
+    return this.interpolator.interpolateProps(start, end, factor);
+  }
+
+  getDuration() {
+    const start = this.getStartData();
+    const end = this.getEndData();
+    return this.interpolator.getDuration(start, end);
   }
 }

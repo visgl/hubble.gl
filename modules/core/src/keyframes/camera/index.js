@@ -17,29 +17,5 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
-export {DeckAdapter} from './adapters';
-
-export {
-  PNGSequenceEncoder,
-  JPEGSequenceEncoder,
-  JPEGEncoder,
-  PNGEncoder,
-  WebMEncoder,
-  FrameEncoder,
-  PreviewEncoder,
-  GifEncoder
-} from './encoders';
-
-export {
-  Keyframes,
-  CameraKeyframes,
-  FlyToKeyframes,
-  FilterValueKeyframes,
-  hold,
-  LayerKeyframes,
-  GridLayerKeyframes,
-  ScatterPlotLayerKeyframes
-} from './keyframes';
-
-export {DeckScene, KeplerScene} from './scene';
+export {default as CameraKeyframes} from './camera-keyframes';
+export {default as FlyToKeyframes} from './flyto-keyframes';

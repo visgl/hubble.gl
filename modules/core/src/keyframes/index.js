@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 export {default as Keyframes} from './keyframes';
-export {default as CameraKeyframes} from './camera-keyframes';
+export {CameraKeyframes, FlyToKeyframes} from './camera';
 export {hold} from './easings';
 export {FilterValueKeyframes} from './kepler';
 export {LayerKeyframes, GridLayerKeyframes, ScatterPlotLayerKeyframes} from './layers';

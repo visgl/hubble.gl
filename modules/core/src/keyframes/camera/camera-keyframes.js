@@ -17,29 +17,15 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+import Keyframes from '../keyframes';
 
-export {DeckAdapter} from './adapters';
-
-export {
-  PNGSequenceEncoder,
-  JPEGSequenceEncoder,
-  JPEGEncoder,
-  PNGEncoder,
-  WebMEncoder,
-  FrameEncoder,
-  PreviewEncoder,
-  GifEncoder
-} from './encoders';
-
-export {
-  Keyframes,
-  CameraKeyframes,
-  FlyToKeyframes,
-  FilterValueKeyframes,
-  hold,
-  LayerKeyframes,
-  GridLayerKeyframes,
-  ScatterPlotLayerKeyframes
-} from './keyframes';
-
-export {DeckScene, KeplerScene} from './scene';
+export default class CameraKeyframes extends Keyframes {
+  constructor({timings, keyframes, easings}) {
+    super({
+      timings,
+      keyframes,
+      easings,
+      features: ['latitude', 'longitude', 'zoom', 'pitch', 'bearing']
+    });
+  }
+}

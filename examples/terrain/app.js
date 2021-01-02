@@ -2,7 +2,14 @@ import React, {useState, useRef} from 'react';
 import DeckGL from '@deck.gl/react';
 import {TerrainLayer} from '@deck.gl/geo-layers';
 import {useNextFrame, BasicControls, ResolutionGuide} from '@hubble.gl/react';
-import {DeckAdapter, DeckScene, CameraKeyframes, hold, LayerKeyframes} from '@hubble.gl/core';
+import {
+  DeckAdapter,
+  DeckScene,
+  CameraKeyframes,
+  hold,
+  LayerKeyframes,
+  FlyToKeyframes
+} from '@hubble.gl/core';
 import {easing} from 'popmotion';
 
 const INITIAL_VIEW_STATE = {
@@ -28,7 +35,7 @@ const ELEVATION_DECODER = {
   offset: -10000
 };
 
-const getCameraKeyframes = () => {
+const getPrerecordedCameraKeyframes = () => {
   return new CameraKeyframes({
     timings: [0, 6000, 7000, 8000, 14000],
     keyframes: [
@@ -120,10 +127,30 @@ export default function App() {
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
+  const [viewStateA, setViewStateA] = useState(viewState);
+  const [viewStateB, setViewStateB] = useState({
+    latitude: 36.1101,
+    longitude: -112.1906,
+    zoom: 12.5,
+    pitch: 20,
+    bearing: 15
+  });
 
   const nextFrame = useNextFrame();
   const [duration] = useState(15000);
   const [rainbow, setRainbow] = useState(false);
+
+  const [cameraMode, setCameraMode] = useState('prerecorded');
+
+  const getFlyToCameraKeyframes = () => {
+    return new FlyToKeyframes({
+      start: viewStateA,
+      end: viewStateB,
+      width: 640,
+      height: 480,
+      curve: 1
+    });
+  };
 
   const getDeckScene = animationLoop => {
     return new DeckScene({
@@ -153,6 +180,9 @@ export default function App() {
       })
     ];
   };
+
+  const getCameraKeyframes =
+    cameraMode === 'prerecorded' ? getPrerecordedCameraKeyframes : getFlyToCameraKeyframes;
 
   return (
     <div style={{position: 'relative'}}>
@@ -186,6 +216,16 @@ export default function App() {
             Rainbow Animation
           </label>
         </div>
+        <select value={cameraMode} onChange={e => setCameraMode(e.currentTarget.value)}>
+          <option value="prerecorded">Prerecorded Sequence</option>
+          <option value="fly-to">Interactive Fly-To</option>
+        </select>
+        <button disabled={cameraMode === 'prerecorded'} onClick={() => setViewStateA(viewState)}>
+          Set FlyTo Start
+        </button>
+        <button disabled={cameraMode === 'prerecorded'} onClick={() => setViewStateB(viewState)}>
+          Set FlyTo End
+        </button>
       </div>
     </div>
   );

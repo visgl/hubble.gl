@@ -30,7 +30,8 @@
     "build-bundle": "webpack --display=minimal --config ../../scripts/bundle.config.js"
   },
   "peerDependencies": {
-    "@luma.gl/engine": "^8.2.0"
+    "@luma.gl/engine": "^8.2.0",
+    "@deck.gl/core": "8.2.0"
   },
   "dependencies": {
     "@loaders.gl/core": "^2.1.6",
