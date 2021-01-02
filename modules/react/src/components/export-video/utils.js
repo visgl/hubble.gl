@@ -76,9 +76,9 @@ export function parseSetCameraType(strCameraType, viewState) {
 }
 
 /**
- * Used to convert durationMs (inherited from ExportVideoPanelContainer) to hh:mm:ss
+ * Used to convert durationMs (inherited from ExportVideoPanelContainer) to hh:mm:ss.ms
  * @param {number} durationMs duration of animation in milliseconds
- * @returns {string} time in format hh:mm:ss
+ * @returns {string} time in format hh:mm:ss.ms
  */
 export function msConversion(durationMs) {
   const milliseconds = parseInt(durationMs % 1000, 10);
@@ -90,7 +90,7 @@ export function msConversion(durationMs) {
   minutes = minutes < 10 ? `0${minutes}` : minutes;
   seconds = seconds < 10 ? `0${seconds}` : seconds;
 
-  return `${minutes}:${seconds}.${milliseconds}`;
+  return `${minutes}:${seconds}.${milliseconds.toString()[0]}`;
 }
 
 /**

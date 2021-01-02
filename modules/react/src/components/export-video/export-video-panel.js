@@ -82,7 +82,8 @@ const PanelBody = ({
   resolution,
   mediaType,
   viewState,
-  setDuration
+  setDuration,
+  rendering
 }) => (
   <PanelBodyInner className="export-video-panel__body" exportVideoWidth={exportVideoWidth}>
     <ExportVideoPanelPreview
@@ -92,6 +93,8 @@ const PanelBody = ({
       exportVideoWidth={exportVideoWidth}
       resolution={resolution}
       viewState={viewState}
+      rendering={rendering}
+      durationMs={durationMs}
     />
     <ExportVideoPanelSettings
       setMediaType={setMediaType}
@@ -137,7 +140,8 @@ const ExportVideoPanel = ({
   resolution,
   mediaType,
   viewState,
-  setDuration
+  setDuration,
+  rendering
 }) => {
   return (
     <Panel exportVideoWidth={exportVideoWidth} className="export-video-panel">
@@ -163,11 +167,13 @@ const ExportVideoPanel = ({
         mediaType={mediaType}
         viewState={viewState}
         setDuration={setDuration}
+        rendering={rendering}
       />
       <ExportVideoPanelFooter
         handleClose={handleClose}
         handlePreviewVideo={handlePreviewVideo}
         handleRenderVideo={handleRenderVideo}
+        rendering={rendering}
       />
     </Panel>
   );

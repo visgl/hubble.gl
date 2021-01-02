@@ -25,7 +25,7 @@ import styled, {withTheme} from 'styled-components';
 import {InjectKeplerUI, ExportVideoModal, ExportVideoPanelContainer} from '@hubble.gl/react';
 
 // Hook up mutual kepler imports
-import {Button, Icons, Input, ItemSelector, Slider} from 'kepler.gl/components';
+import {Button, Icons, Input, ItemSelector, Slider, LoadingSpinner} from 'kepler.gl/components';
 
 const IconButton = styled(Button)`
   padding: 0;
@@ -40,7 +40,8 @@ const KEPLER_UI = {
   Icons,
   Input,
   ItemSelector,
-  Slider
+  Slider,
+  LoadingSpinner
 };
 
 // Redux stores/actions

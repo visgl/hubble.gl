@@ -123,7 +123,7 @@ const ExportVideoPanelSettings = ({
             onChange={setResolution}
           />
           <StyledLabelCell>Duration</StyledLabelCell>
-          <StyledValueCell>
+          <StyledValueCell style={{paddingLeft: '0px', paddingRight: '0px'}}>
             <SliderWrapper
               style={{width: '100%', marginLeft: '0px'}}
               className="modal-duration__slider"
@@ -148,7 +148,7 @@ const ExportVideoPanelSettings = ({
           </StyledValueCell>
           <StyledLabelCell>File Size</StyledLabelCell>
           <StyledValueCell>
-            {estimateFileSize(frameRate, resolution, durationMs, mediaType)}
+            ~ {estimateFileSize(frameRate, resolution, durationMs, mediaType)}
           </StyledValueCell>
         </InputGrid>
         <StyledSection>Video Effects</StyledSection>
