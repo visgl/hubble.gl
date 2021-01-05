@@ -187,16 +187,6 @@ export class ExportVideoPanelPreview extends Component {
       position: 'relative'
     };
 
-    const loaderStyle = {
-      display: rendering === false ? 'none' : 'flex',
-      position: 'absolute',
-      background: 'rgba(0, 0, 0, 0.5)',
-      width: `${exportVideoWidth}px`,
-      height: `${this._getContainerHeight()}px`,
-      alignItems: 'center',
-      justifyContent: 'center'
-    };
-
     return (
       <>
         <div id="deck-canvas" style={containerStyle}>
@@ -224,7 +214,15 @@ export class ExportVideoPanelPreview extends Component {
             )}
           </DeckGL>
         </div>
-        <RenderingSpinner loaderStyle={loaderStyle} adapter={adapter} durationMs={durationMs} />
+        {rendering && (
+          <RenderingSpinner
+            rendering={rendering}
+            exportVideoWidth={exportVideoWidth}
+            _getContainerHeight={this._getContainerHeight()}
+            adapter={adapter}
+            durationMs={durationMs}
+          />
+        )}
       </>
     );
   }
