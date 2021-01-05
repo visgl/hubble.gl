@@ -9,6 +9,9 @@ export function RenderingSpinner({
   durationMs
 }) {
   const startTimer = Date.now();
+  const percentRendered = Math.floor((adapter.videoCapture.timeMs / durationMs) * 100).toFixed(0);
+  const showRenderingPercent = adapter.videoCapture._getNextTimeMs() < durationMs;
+  const showSaving = adapter.videoCapture._getNextTimeMs() > durationMs;
 
   const loaderStyle = {
     display: rendering === false ? 'none' : 'flex',
@@ -27,25 +30,11 @@ export function RenderingSpinner({
           <LoadingSpinner />
           {/* TODO change text styling to match Kepler's */}
           <div
-            className="rendering-percent"
+            className="rendering-feedback-container"
             style={{color: 'white', position: 'absolute', top: '175px'}}
           >
-            <div
-              className="rendering-percent"
-              style={{
-                display: adapter.videoCapture._getNextTimeMs() < durationMs ? 'flex' : 'none'
-              }}
-            >
-              {Math.floor((adapter.videoCapture.timeMs / durationMs) * 100).toFixed(0)} %
-            </div>
-            <div
-              className="saving-message"
-              style={{
-                display: adapter.videoCapture._getNextTimeMs() < durationMs ? 'none' : 'flex'
-              }}
-            >
-              Saving...
-            </div>
+            {showRenderingPercent && <div className="rendering-percent">{percentRendered} %</div>}
+            {showSaving && <div className="saving-message">Saving...</div>}
             {/* TODO look at usememo for value of startTimer. setTimeout? useEffect hook to run once. Ultimately want a boolean */}
             <div
               className="saving-message-delayed"
