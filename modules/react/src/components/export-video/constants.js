@@ -92,3 +92,8 @@ export const isResolution = value => option => option.value === value;
 export function getResolutionSetting(value) {
   return RESOLUTIONS.find(isResolution(value)) || RESOLUTIONS[0];
 }
+
+export const deckStyle = {
+  width: '100%',
+  height: '100%'
+};
