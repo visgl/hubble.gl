@@ -26,7 +26,8 @@
     "d3-color": "^1.4.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "styled-components": "^4.4.1"
+    "styled-components": "^4.4.1",
+    "redux-thunk": "^1.0.0"
   },
   "devDependencies": {
     "gatsby": "^2.20.0",
