@@ -87,7 +87,7 @@
     "@deck.gl/react": "8.2.0",
     "@deck.gl/mapbox": "8.2.0",
     "@luma.gl/constants": "8.2.0",
-    "@luma.gl/core": "8.2.0",
+    "@luma.gl/core": "^8.2.0",
     "@luma.gl/debug": "8.2.0",
     "@luma.gl/engine": "8.2.0",
     "@luma.gl/gltools": "8.2.0",
