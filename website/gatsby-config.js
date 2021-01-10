@@ -70,8 +70,8 @@ module.exports = {
           {
             title: 'Kepler.gl Animation',
             path: 'examples/kepler-integration/',
-            image: 'images/demo-thumb-animate-camera.jpg',
-            componentUrl: resolve('../examples/kepler-integration/src/main.js')
+            image: 'images/demo-thumb-kepler-example.jpg',
+            componentUrl: resolve('./src/pages/kepler-example.jsx')
           }
         ],
       }
