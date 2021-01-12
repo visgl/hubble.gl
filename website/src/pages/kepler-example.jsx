@@ -26,11 +26,9 @@ import store from '../../../examples/kepler-integration/src/store';
 import App from '../../../examples/kepler-integration/src/app';
 
 export default function KeplerShowcase() {
-    return ( // Tried all positions but didn't work
-    <div style={{}}>
+    return (
         <Provider store={store}>
             <App />
         </Provider>
-    </div>
     )
 } 

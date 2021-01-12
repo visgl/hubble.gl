@@ -55,6 +55,8 @@ const GlobalStyle = styled.div`
   font-weight: 400;
   font-size: 0.875em;
   line-height: 1.71429;
+  width: 100%;
+  height: 100%;
 
   *,
   *:before,
@@ -82,7 +84,6 @@ const GlobalStyle = styled.div`
 const WindowSize = styled.div`
   display: flex;
   flex-direction: column;
-  position: absolute;
   left: 0;
   top: 0;
   height: 100%;
