@@ -1,6 +1,15 @@
 import {WithKeplerUI} from '../inject-kepler';
 import React from 'react';
 
+// /**
+//  * TODO
+//  * @param {boolean} rendering
+//  * @param {string} exportVideoWidth
+//  * @param {string} _getContainerHeight
+//  * @param {string} adapter
+//  * @param {Object} durationMs
+//  * @returns {Object}
+//  */
 export function RenderingSpinner({
   rendering,
   exportVideoWidth,
@@ -35,7 +44,6 @@ export function RenderingSpinner({
           >
             {showRenderingPercent && <div className="rendering-percent">{percentRendered} %</div>}
             {showSaving && <div className="saving-message">Saving...</div>}
-            {/* TODO look at usememo for value of startTimer. setTimeout? useEffect hook to run once. Ultimately want a boolean */}
             <div
               className="saving-message-delayed"
               style={{
@@ -43,6 +51,8 @@ export function RenderingSpinner({
                   Date.now() - startTimer > 10000 + adapter.videoCapture.timeMs ? 'flex' : 'none'
               }}
             >
+              {' '}
+              {/* TODO Doesn't show up. Look at usememo for value of startTimer. setTimeout? useEffect hook to run once. Ultimately want a boolean */}
               {/* Appears after "Saving..." message has been showing for at least 10s */}
               Saving...Hang Tight.
             </div>
