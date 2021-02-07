@@ -1,31 +1,16 @@
 import React from 'react';
 
+import {msConversion} from './utils';
+
 function EditTab({
   InputGrid,
   StyledLabelCell,
-  Input,
-  settingsData,
-  DEFAULT_FILENAME,
-  setFileName,
   ItemSelector,
-  getSelectedItems,
-  FORMATS,
-  getOptionValue,
-  displayOption,
-  setMediaType,
-  RESOLUTIONS,
-  setResolution,
   StyledValueCell,
   SliderWrapper,
   Slider,
   durationMs,
-  setDuration,
-  msConversion,
-  estimateFileSize,
-  frameRate,
-  resolution,
-  mediaType,
-  setCameraPreset
+  setDuration
 }) {
   return (
     <div>

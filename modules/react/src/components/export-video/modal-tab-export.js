@@ -1,5 +1,7 @@
 import React from 'react';
 
+import {estimateFileSize} from './utils';
+
 function ExportTab({
   InputGrid,
   StyledLabelCell,
@@ -16,12 +18,7 @@ function ExportTab({
   RESOLUTIONS,
   setResolution,
   StyledValueCell,
-  SliderWrapper,
-  Slider,
   durationMs,
-  setDuration,
-  msConversion,
-  estimateFileSize,
   frameRate,
   resolution,
   mediaType,

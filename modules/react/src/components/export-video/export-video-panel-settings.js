@@ -23,8 +23,6 @@ import styled, {withTheme} from 'styled-components';
 
 import {DEFAULT_ROW_GAP, DEFAULT_FILENAME, FORMATS, RESOLUTIONS} from './constants';
 
-import {msConversion, estimateFileSize} from './utils';
-
 import {WithKeplerUI} from '../inject-kepler';
 
 import EditTab from './modal-tab-edit';
@@ -81,6 +79,10 @@ function ExportVideoPanelSettings({
   setDuration
 }) {
   const loadingMethods = [
+    // Each entry creates new tabs with ModalTabsFactory
+    // id: ¯\_(ツ)_/¯ doesn't seem to change the class name or give it an id
+    // label: What the text of the tab will be
+    // elementType: The component to render
     {
       id: 'export-modal-tab-edit',
       label: 'Edit', // TODO this gives localization error. Previously modal.loadData.upload which can be found in src/localization in kepler https://github.com/keplergl/kepler.gl/tree/9e5bfdca2951d21be21d180ee162646caac86d50/src/localization
@@ -108,7 +110,7 @@ function ExportVideoPanelSettings({
               toggleMethod={toggleMethod}
             />
             {currentMethod && (
-              <ElementType
+              <ElementType // TODO can this be shortened? Represents all the params needed across all tabs
                 InputGrid={InputGrid}
                 StyledLabelCell={StyledLabelCell}
                 Input={Input}
@@ -128,8 +130,6 @@ function ExportVideoPanelSettings({
                 Slider={Slider}
                 durationMs={durationMs}
                 setDuration={setDuration}
-                msConversion={msConversion}
-                estimateFileSize={estimateFileSize}
                 frameRate={frameRate}
                 resolution={resolution}
                 mediaType={mediaType}
