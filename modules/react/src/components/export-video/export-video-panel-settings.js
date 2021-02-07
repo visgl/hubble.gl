@@ -21,13 +21,7 @@
 import React, {useState} from 'react';
 import styled, {withTheme} from 'styled-components';
 
-import {
-  DEFAULT_PADDING,
-  DEFAULT_ROW_GAP,
-  DEFAULT_FILENAME,
-  FORMATS,
-  RESOLUTIONS
-} from './constants';
+import {DEFAULT_ROW_GAP, DEFAULT_FILENAME, FORMATS, RESOLUTIONS} from './constants';
 
 import {msConversion, estimateFileSize} from './utils';
 
@@ -36,15 +30,6 @@ import {WithKeplerUI} from '../inject-kepler';
 import EditTab from './modal-tab-edit';
 import ExportTab from './modal-tab-export';
 import get from 'lodash.get';
-
-const StyledSection = styled.div`
-  align-self: center;
-  color: ${props => props.theme.labelColor};
-  font-weight: 500;
-  font-size: 13px;
-  margin-top: ${props => (props.top ? '0px' : `${DEFAULT_PADDING}px`)};
-  margin-bottom: ${DEFAULT_ROW_GAP}px;
-`;
 
 const SliderWrapper = styled.div`
   display: flex;
@@ -122,86 +107,35 @@ function ExportVideoPanelSettings({
               loadingMethods={loadingMethods}
               toggleMethod={toggleMethod}
             />
-            {currentMethod && <ElementType />}
-            <StyledSection top={true}>Export Settings</StyledSection>
-            <InputGrid rows={5}>
-              <StyledLabelCell>File Name</StyledLabelCell>
-              <Input
-                value={settingsData.fileName}
-                placeholder={DEFAULT_FILENAME}
-                onChange={e => setFileName(e.target.value)}
-              />
-              <StyledLabelCell>Media Type</StyledLabelCell>
-              <ItemSelector
-                selectedItems={getSelectedItems(FORMATS, settingsData.mediaType)}
-                options={FORMATS}
+            {currentMethod && (
+              <ElementType
+                InputGrid={InputGrid}
+                StyledLabelCell={StyledLabelCell}
+                Input={Input}
+                settingsData={settingsData}
+                DEFAULT_FILENAME={DEFAULT_FILENAME}
+                setFileName={setFileName}
+                ItemSelector={ItemSelector}
+                getSelectedItems={getSelectedItems}
+                FORMATS={FORMATS}
                 getOptionValue={getOptionValue}
                 displayOption={displayOption}
-                multiSelect={false}
-                searchable={false}
-                onChange={setMediaType}
+                setMediaType={setMediaType}
+                RESOLUTIONS={RESOLUTIONS}
+                setResolution={setResolution}
+                StyledValueCell={StyledValueCell}
+                SliderWrapper={SliderWrapper}
+                Slider={Slider}
+                durationMs={durationMs}
+                setDuration={setDuration}
+                msConversion={msConversion}
+                estimateFileSize={estimateFileSize}
+                frameRate={frameRate}
+                resolution={resolution}
+                mediaType={mediaType}
+                setCameraPreset={setCameraPreset}
               />
-              <StyledLabelCell>Resolution</StyledLabelCell>
-              <ItemSelector
-                selectedItems={getSelectedItems(RESOLUTIONS, settingsData.resolution)}
-                options={RESOLUTIONS}
-                getOptionValue={getOptionValue}
-                displayOption={displayOption}
-                multiSelect={false}
-                searchable={false}
-                onChange={setResolution}
-              />
-              <StyledLabelCell>Duration</StyledLabelCell>
-              <StyledValueCell style={{paddingLeft: '0px', paddingRight: '0px'}}>
-                <SliderWrapper
-                  style={{width: '100%', marginLeft: '0px'}}
-                  className="modal-duration__slider"
-                >
-                  <Slider
-                    showValues={false}
-                    enableBarDrag={true}
-                    isRanged={false}
-                    value1={durationMs}
-                    step={100}
-                    minValue={100}
-                    maxValue={10000}
-                    style={{width: '70px'}}
-                    onSlider1Change={val => {
-                      setDuration(val);
-                    }}
-                  />
-                  <div style={{alignSelf: 'center', paddingLeft: '8px', width: '56px'}}>
-                    {msConversion(durationMs)}
-                  </div>
-                </SliderWrapper>
-              </StyledValueCell>
-              <StyledLabelCell>File Size</StyledLabelCell>
-              <StyledValueCell>
-                ~ {estimateFileSize(frameRate, resolution, durationMs, mediaType)}
-              </StyledValueCell>
-            </InputGrid>
-            <StyledSection>Video Effects</StyledSection>
-            <InputGrid rows={1}>
-              <StyledLabelCell>Camera</StyledLabelCell>
-              <ItemSelector
-                selectedItems={settingsData.cameraPreset}
-                options={[
-                  'None',
-                  'Orbit (90º)',
-                  'Orbit (180º)',
-                  'Orbit (360º)',
-                  'North to South',
-                  'South to North',
-                  'East to West',
-                  'West to East',
-                  'Zoom Out',
-                  'Zoom In'
-                ]}
-                multiSelect={false}
-                searchable={false}
-                onChange={setCameraPreset}
-              />
-            </InputGrid>
+            )}
           </div>
         );
       }}
