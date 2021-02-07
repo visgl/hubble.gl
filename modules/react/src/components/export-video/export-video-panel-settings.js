@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import React from 'react';
+import React, {useState} from 'react';
 import styled, {withTheme} from 'styled-components';
 
 import {
@@ -34,6 +34,8 @@ import {msConversion, estimateFileSize} from './utils';
 import {WithKeplerUI} from '../inject-kepler';
 
 import EditTab from './modal-tab-edit';
+import ExportTab from './modal-tab-export';
+import get from 'lodash.get';
 
 const StyledSection = styled.div`
   align-self: center;
@@ -81,7 +83,7 @@ const getOptionValue = r => r.value;
 const displayOption = r => r.label;
 const getSelectedItems = (options, value) => options.find(o => o.value === value);
 
-const ExportVideoPanelSettings = ({
+function ExportVideoPanelSettings({
   setMediaType,
   setCameraPreset,
   setFileName,
@@ -92,107 +94,119 @@ const ExportVideoPanelSettings = ({
   resolution,
   mediaType,
   setDuration
-}) => (
-  <WithKeplerUI>
-    {({Input, ItemSelector, Slider, ModalTabsFactory, ModalTabItem}) => {
-      const ModalTabs = ModalTabsFactory();
-      const loadingMethods = [
-        {
-          id: 'export-modal-tabs',
-          label: 'Edit', // TODO this gives localization error. Previously modal.loadData.upload which can be found in src/localization in kepler https://github.com/keplergl/kepler.gl/tree/9e5bfdca2951d21be21d180ee162646caac86d50/src/localization
-          elementType: EditTab
-        }
-      ];
-      return (
-        <div>
-          <ModalTabs
-            currentMethod={loadingMethods.id}
-            loadingMethods={loadingMethods}
-            toggleMethod={EditTab}
-          />
-          <StyledSection top={true}>Export Settings</StyledSection>
-          <InputGrid rows={5}>
-            <StyledLabelCell>File Name</StyledLabelCell>
-            <Input
-              value={settingsData.fileName}
-              placeholder={DEFAULT_FILENAME}
-              onChange={e => setFileName(e.target.value)}
+}) {
+  const loadingMethods = [
+    {
+      id: 'export-modal-tab-edit',
+      label: 'Edit', // TODO this gives localization error. Previously modal.loadData.upload which can be found in src/localization in kepler https://github.com/keplergl/kepler.gl/tree/9e5bfdca2951d21be21d180ee162646caac86d50/src/localization
+      elementType: EditTab
+    },
+    {
+      id: 'export-modal-tab-export',
+      label: 'Export', // TODO this gives localization error. Previously modal.loadData.upload which can be found in src/localization in kepler https://github.com/keplergl/kepler.gl/tree/9e5bfdca2951d21be21d180ee162646caac86d50/src/localization
+      elementType: ExportTab
+    }
+  ];
+  const getDefaultMethod = methods => (Array.isArray(methods) ? get(methods, [0]) : null);
+  const [currentMethod, toggleMethod] = useState(getDefaultMethod(loadingMethods));
+  const ElementType = currentMethod.elementType;
+  return (
+    <WithKeplerUI>
+      {({Input, ItemSelector, Slider, ModalTabsFactory}) => {
+        const ModalTabs = ModalTabsFactory();
+        return (
+          // TODO 2 returns. This return sholdn't be here
+          <div>
+            <ModalTabs
+              currentMethod={currentMethod.id}
+              loadingMethods={loadingMethods}
+              toggleMethod={toggleMethod}
             />
-            <StyledLabelCell>Media Type</StyledLabelCell>
-            <ItemSelector
-              selectedItems={getSelectedItems(FORMATS, settingsData.mediaType)}
-              options={FORMATS}
-              getOptionValue={getOptionValue}
-              displayOption={displayOption}
-              multiSelect={false}
-              searchable={false}
-              onChange={setMediaType}
-            />
-            <StyledLabelCell>Resolution</StyledLabelCell>
-            <ItemSelector
-              selectedItems={getSelectedItems(RESOLUTIONS, settingsData.resolution)}
-              options={RESOLUTIONS}
-              getOptionValue={getOptionValue}
-              displayOption={displayOption}
-              multiSelect={false}
-              searchable={false}
-              onChange={setResolution}
-            />
-            <StyledLabelCell>Duration</StyledLabelCell>
-            <StyledValueCell style={{paddingLeft: '0px', paddingRight: '0px'}}>
-              <SliderWrapper
-                style={{width: '100%', marginLeft: '0px'}}
-                className="modal-duration__slider"
-              >
-                <Slider
-                  showValues={false}
-                  enableBarDrag={true}
-                  isRanged={false}
-                  value1={durationMs}
-                  step={100}
-                  minValue={100}
-                  maxValue={10000}
-                  style={{width: '70px'}}
-                  onSlider1Change={val => {
-                    setDuration(val);
-                  }}
-                />
-                <div style={{alignSelf: 'center', paddingLeft: '8px', width: '56px'}}>
-                  {msConversion(durationMs)}
-                </div>
-              </SliderWrapper>
-            </StyledValueCell>
-            <StyledLabelCell>File Size</StyledLabelCell>
-            <StyledValueCell>
-              ~ {estimateFileSize(frameRate, resolution, durationMs, mediaType)}
-            </StyledValueCell>
-          </InputGrid>
-          <StyledSection>Video Effects</StyledSection>
-          <InputGrid rows={1}>
-            <StyledLabelCell>Camera</StyledLabelCell>
-            <ItemSelector
-              selectedItems={settingsData.cameraPreset}
-              options={[
-                'None',
-                'Orbit (90º)',
-                'Orbit (180º)',
-                'Orbit (360º)',
-                'North to South',
-                'South to North',
-                'East to West',
-                'West to East',
-                'Zoom Out',
-                'Zoom In'
-              ]}
-              multiSelect={false}
-              searchable={false}
-              onChange={setCameraPreset}
-            />
-          </InputGrid>
-        </div>
-      );
-    }}
-  </WithKeplerUI>
-);
+            {currentMethod && <ElementType />}
+            <StyledSection top={true}>Export Settings</StyledSection>
+            <InputGrid rows={5}>
+              <StyledLabelCell>File Name</StyledLabelCell>
+              <Input
+                value={settingsData.fileName}
+                placeholder={DEFAULT_FILENAME}
+                onChange={e => setFileName(e.target.value)}
+              />
+              <StyledLabelCell>Media Type</StyledLabelCell>
+              <ItemSelector
+                selectedItems={getSelectedItems(FORMATS, settingsData.mediaType)}
+                options={FORMATS}
+                getOptionValue={getOptionValue}
+                displayOption={displayOption}
+                multiSelect={false}
+                searchable={false}
+                onChange={setMediaType}
+              />
+              <StyledLabelCell>Resolution</StyledLabelCell>
+              <ItemSelector
+                selectedItems={getSelectedItems(RESOLUTIONS, settingsData.resolution)}
+                options={RESOLUTIONS}
+                getOptionValue={getOptionValue}
+                displayOption={displayOption}
+                multiSelect={false}
+                searchable={false}
+                onChange={setResolution}
+              />
+              <StyledLabelCell>Duration</StyledLabelCell>
+              <StyledValueCell style={{paddingLeft: '0px', paddingRight: '0px'}}>
+                <SliderWrapper
+                  style={{width: '100%', marginLeft: '0px'}}
+                  className="modal-duration__slider"
+                >
+                  <Slider
+                    showValues={false}
+                    enableBarDrag={true}
+                    isRanged={false}
+                    value1={durationMs}
+                    step={100}
+                    minValue={100}
+                    maxValue={10000}
+                    style={{width: '70px'}}
+                    onSlider1Change={val => {
+                      setDuration(val);
+                    }}
+                  />
+                  <div style={{alignSelf: 'center', paddingLeft: '8px', width: '56px'}}>
+                    {msConversion(durationMs)}
+                  </div>
+                </SliderWrapper>
+              </StyledValueCell>
+              <StyledLabelCell>File Size</StyledLabelCell>
+              <StyledValueCell>
+                ~ {estimateFileSize(frameRate, resolution, durationMs, mediaType)}
+              </StyledValueCell>
+            </InputGrid>
+            <StyledSection>Video Effects</StyledSection>
+            <InputGrid rows={1}>
+              <StyledLabelCell>Camera</StyledLabelCell>
+              <ItemSelector
+                selectedItems={settingsData.cameraPreset}
+                options={[
+                  'None',
+                  'Orbit (90º)',
+                  'Orbit (180º)',
+                  'Orbit (360º)',
+                  'North to South',
+                  'South to North',
+                  'East to West',
+                  'West to East',
+                  'Zoom Out',
+                  'Zoom In'
+                ]}
+                multiSelect={false}
+                searchable={false}
+                onChange={setCameraPreset}
+              />
+            </InputGrid>
+          </div>
+        );
+      }}
+    </WithKeplerUI>
+  );
+}
 
 export default withTheme(ExportVideoPanelSettings);
