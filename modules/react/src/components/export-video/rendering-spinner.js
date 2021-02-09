@@ -2,12 +2,17 @@ import {WithKeplerUI} from '../inject-kepler';
 import React from 'react';
 
 /**
- * @param {boolean} rendering whether a video is currently rendering or not
- * @param {number} exportVideoWidth width of video that user selected in modal
- * @param {function} _getContainerHeight inherited fn that dynamically fetches height of container
- * @param {Object} adapter Hubble Deck adapter
- * @param {number} durationMs duration of animation set by user
- * @returns {Object} TODO
+ * @typedef {Object} RenderingSpinnerProps
+ * @property {boolean} rendering whether a video is currently rendering or not
+ * @property {number} exportVideoWidth width of video that user selected in modal
+ * @property {function} _getContainerHeight inherited fn that dynamically fetches height of container
+ * @property {Object} adapter Hubble Deck adapter
+ * @property {number} durationMs duration of animation set by user
+ */
+
+/**
+ * @param {RenderingSpinnerProps} props
+ * @returns {Object} React Component that gives user feedback after they click the "Render" button
  */
 export function RenderingSpinner({
   rendering,
