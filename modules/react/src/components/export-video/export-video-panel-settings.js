@@ -19,48 +19,13 @@
 // THE SOFTWARE.
 
 import React, {useState} from 'react';
-import styled, {withTheme} from 'styled-components';
-
-import {DEFAULT_ROW_GAP, DEFAULT_FILENAME, FORMATS, RESOLUTIONS} from './constants';
+import {withTheme} from 'styled-components';
 
 import {WithKeplerUI} from '../inject-kepler';
 
 import EditTab from './modal-tab-edit';
 import ExportTab from './modal-tab-export';
 import get from 'lodash.get';
-
-const SliderWrapper = styled.div`
-  display: flex;
-  position: relative;
-  flex-grow: 1;
-  margin-right: 24px;
-  margin-left: 24px;
-`;
-
-const StyledLabelCell = styled.div`
-  align-self: center;
-  color: ${props => props.theme.labelColor};
-  font-weight: 400;
-  font-size: 11px;
-`;
-
-const StyledValueCell = styled.div`
-  align-self: center;
-  color: ${props => props.theme.textColor};
-  font-weight: 500;
-  font-size: 11px;
-  padding: 0 12px;
-`;
-
-const InputGrid = styled.div`
-  display: grid;
-  grid-template-columns: 88px auto;
-  grid-template-rows: repeat(
-    ${props => props.rows},
-    ${props => (props.rowHeight ? props.rowHeight : '34px')}
-  );
-  grid-row-gap: ${DEFAULT_ROW_GAP}px;
-`;
 
 const getOptionValue = r => r.value;
 const displayOption = r => r.label;
@@ -96,13 +61,13 @@ function ExportVideoPanelSettings({
   ];
   const getDefaultMethod = methods => (Array.isArray(methods) ? get(methods, [0]) : null);
   const [currentMethod, toggleMethod] = useState(getDefaultMethod(loadingMethods));
-  const ElementType = currentMethod.elementType;
+  const ModalTab = currentMethod.elementType;
+
   return (
     <WithKeplerUI>
-      {({Input, ItemSelector, Slider, ModalTabsFactory}) => {
+      {({ModalTabsFactory}) => {
         const ModalTabs = ModalTabsFactory();
         return (
-          // TODO 2 returns. This return sholdn't be here
           <div>
             <ModalTabs
               currentMethod={currentMethod.id}
@@ -110,24 +75,14 @@ function ExportVideoPanelSettings({
               toggleMethod={toggleMethod}
             />
             {currentMethod && (
-              <ElementType // TODO can this be shortened? Represents all the params needed across all tabs
-                InputGrid={InputGrid}
-                StyledLabelCell={StyledLabelCell}
-                Input={Input}
+              <ModalTab // Represents all the params needed across all tabs
                 settingsData={settingsData}
-                DEFAULT_FILENAME={DEFAULT_FILENAME}
                 setFileName={setFileName}
-                ItemSelector={ItemSelector}
                 getSelectedItems={getSelectedItems}
-                FORMATS={FORMATS}
                 getOptionValue={getOptionValue}
                 displayOption={displayOption}
                 setMediaType={setMediaType}
-                RESOLUTIONS={RESOLUTIONS}
                 setResolution={setResolution}
-                StyledValueCell={StyledValueCell}
-                SliderWrapper={SliderWrapper}
-                Slider={Slider}
                 durationMs={durationMs}
                 setDuration={setDuration}
                 frameRate={frameRate}
