@@ -63,9 +63,6 @@ function EditTab({durationMs, setDuration, setCameraPreset, settingsData}) {
               onChange={setCameraPreset}
             />
           </InputGrid>
-          {/* <InputGrid rows={1}> */}
-
-          {/* </InputGrid> */}
         </>
       )}
     </WithKeplerUI>
