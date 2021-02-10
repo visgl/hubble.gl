@@ -89,6 +89,10 @@ const WindowSize = styled.div`
   width: 100%;
 `;
 
+// Custom localizations needed for export video modal
+messages.en['exportVideoModal.edit'] = 'Edit';
+messages.en['exportVideoModal.export'] = 'Export';
+
 class App extends Component {
   state = {
     width: window.innerWidth,
@@ -204,4 +208,7 @@ class App extends Component {
 const mapStateToProps = state => state;
 const dispatchToProps = dispatch => ({dispatch});
 
-export default connect(mapStateToProps, dispatchToProps)(App);
+export default connect(
+  mapStateToProps,
+  dispatchToProps
+)(App);

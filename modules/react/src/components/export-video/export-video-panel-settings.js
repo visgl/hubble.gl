@@ -50,12 +50,12 @@ function ExportVideoPanelSettings({
     // elementType: The component to render
     {
       id: 'export-modal-tab-edit',
-      label: 'Edit', // TODO this gives localization error. Previously modal.loadData.upload which can be found in src/localization in kepler https://github.com/keplergl/kepler.gl/tree/9e5bfdca2951d21be21d180ee162646caac86d50/src/localization
+      label: 'exportVideoModal.edit',
       elementType: EditTab
     },
     {
       id: 'export-modal-tab-export',
-      label: 'Export', // TODO this gives localization error. Previously modal.loadData.upload which can be found in src/localization in kepler https://github.com/keplergl/kepler.gl/tree/9e5bfdca2951d21be21d180ee162646caac86d50/src/localization
+      label: 'exportVideoModal.export',
       elementType: ExportTab
     }
   ];
