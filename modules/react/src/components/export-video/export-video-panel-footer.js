@@ -19,33 +19,14 @@
 // THE SOFTWARE.
 
 import React from 'react';
-import styled, {withTheme} from 'styled-components';
+import {withTheme} from 'styled-components';
 
-import {
-  DEFAULT_PADDING,
-  DEFAULT_ROW_GAP,
-  DEFAULT_BUTTON_HEIGHT,
-  DEFAULT_BUTTON_WIDTH
-} from './constants';
+import {DEFAULT_BUTTON_HEIGHT, DEFAULT_BUTTON_WIDTH} from './constants';
 import {WithKeplerUI} from '../inject-kepler';
 
-const PanelFooterInner = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: ${DEFAULT_ROW_GAP}px;
-  padding: ${DEFAULT_PADDING}px;
-`;
+import {PanelFooterInner, ButtonGroup} from './styled-components';
 
-const ButtonGroup = styled.div`
-  display: flex;
-`;
-
-const ExportVideoPanelFooter = ({
-  handleClose,
-  handlePreviewVideo,
-  handleRenderVideo,
-  rendering
-}) => (
+const ExportVideoPanelFooter = ({handlePreviewVideo, handleRenderVideo, rendering}) => (
   <WithKeplerUI>
     {({Button}) => (
       <PanelFooterInner className="export-video-panel__footer">
@@ -60,15 +41,6 @@ const ExportVideoPanelFooter = ({
           Preview
         </Button>
         <ButtonGroup>
-          <Button
-            width={DEFAULT_BUTTON_WIDTH}
-            height={DEFAULT_BUTTON_HEIGHT}
-            link
-            className={'export-video-button'}
-            onClick={handleClose}
-          >
-            Cancel
-          </Button>
           <Button
             width={DEFAULT_BUTTON_WIDTH}
             height={DEFAULT_BUTTON_HEIGHT}

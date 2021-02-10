@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {DEFAULT_ROW_GAP} from './constants';
+import {DEFAULT_ROW_GAP, DEFAULT_PADDING} from './constants';
 
 export const SliderWrapper = styled.div`
   display: flex;
@@ -32,4 +32,33 @@ export const InputGrid = styled.div`
     ${props => (props.rowHeight ? props.rowHeight : '34px')}
   );
   grid-row-gap: ${DEFAULT_ROW_GAP}px;
+`;
+
+export const PanelFooterInner = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: ${DEFAULT_ROW_GAP}px;
+  padding: ${DEFAULT_PADDING}px;
+`;
+
+export const ButtonGroup = styled.div`
+  display: flex;
+`;
+
+export const ModalContainer = styled.div`
+  position: relative;
+`;
+
+export const PanelCloseInner = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding: ${DEFAULT_PADDING}px ${DEFAULT_PADDING}px 0 ${DEFAULT_PADDING}px;
+`;
+
+export const StyledTitle = styled.div`
+  color: ${props => props.theme.titleTextColor};
+  font-size: 20px;
+  font-weight: 400;
+  line-height: ${props => props.theme.lineHeight};
+  padding: 0 ${DEFAULT_PADDING}px 16px ${DEFAULT_PADDING}px;
 `;

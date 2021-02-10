@@ -16,8 +16,7 @@ function ExportTab({
   durationMs,
   frameRate,
   resolution,
-  mediaType,
-  setCameraPreset
+  mediaType
 }) {
   return (
     <WithKeplerUI>
@@ -54,27 +53,6 @@ function ExportTab({
             <StyledValueCell>
               ~{estimateFileSize(frameRate, resolution, durationMs, mediaType)}
             </StyledValueCell>
-          </InputGrid>
-          <InputGrid rows={1}>
-            <StyledLabelCell>Camera</StyledLabelCell>
-            <ItemSelector
-              selectedItems={settingsData.cameraPreset}
-              options={[
-                'None',
-                'Orbit (90º)',
-                'Orbit (180º)',
-                'Orbit (360º)',
-                'North to South',
-                'South to North',
-                'East to West',
-                'West to East',
-                'Zoom Out',
-                'Zoom In'
-              ]}
-              multiSelect={false}
-              searchable={false}
-              onChange={setCameraPreset}
-            />
           </InputGrid>
         </>
       )}

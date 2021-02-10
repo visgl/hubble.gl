@@ -21,13 +21,10 @@
 /* eslint-disable no-invalid-this */
 import React, {Component, createRef} from 'react';
 import Modal from 'react-modal';
-import styled, {ThemeProvider} from 'styled-components';
+import {ThemeProvider} from 'styled-components';
+import {ModalContainer} from './styled-components';
 import {createSelector} from 'reselect';
 import {SIDEPANEL_WIDTH} from './constants';
-
-const ModalContainer = styled.div`
-  position: relative;
-`;
 
 class ExportVideoModal extends Component {
   static defaultProps = {
