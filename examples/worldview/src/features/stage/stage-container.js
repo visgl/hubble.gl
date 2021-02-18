@@ -207,7 +207,7 @@ const mapStateToProps = state => {
     dimension: dimensionSelector(state),
     viewState: viewStateSelector(state),
     duration: durationSelector(state),
-    mapData: state.demo.keplerGl.map
+    mapData: state.keplerGl.map
   };
 };
 

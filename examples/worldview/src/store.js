@@ -25,11 +25,21 @@ import {rendererMiddleware} from './features/renderer';
 // eslint-disable-next-line no-unused-vars
 import window from 'global/window';
 
-import demoReducer, {hubbleGlReducer} from './reducers/index';
+import appReducer from './app/appSlice';
+import keplerGlReducer from './features/kepler/keplerSlice';
+
+import rendererReducer from './features/renderer/rendererSlice';
+import mapReducer from './features/stage/mapSlice';
+
+const hubbleGlReducer = combineReducers({
+  renderer: rendererReducer,
+  map: mapReducer
+});
 
 const reducers = combineReducers({
-  demo: demoReducer,
-  hubbleGl: hubbleGlReducer
+  app: appReducer,
+  hubbleGl: hubbleGlReducer,
+  keplerGl: keplerGlReducer
 });
 
 export const middlewares = enhanceReduxMiddleware([thunk, rendererMiddleware]);

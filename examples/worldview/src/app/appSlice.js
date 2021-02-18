@@ -18,17 +18,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import React from 'react';
-import document from 'global/document';
-import {Provider} from 'react-redux';
-import {render} from 'react-dom';
-import store from './store';
-import App from './app/App';
+import {handleActions} from 'redux-actions';
 
-const Root = () => (
-  <Provider store={store}>
-    <App />
-  </Provider>
+export const SET_SAMPLE_LOADING_STATUS = 'SET_SAMPLE_LOADING_STATUS';
+
+export function setLoadingMapStatus(isMapLoading) {
+  return {
+    type: SET_SAMPLE_LOADING_STATUS,
+    isMapLoading
+  };
+}
+
+// INITIAL_APP_STATE
+const initialAppState = {
+  appName: 'example',
+  loaded: false,
+  isMapLoading: false, // determine whether we are loading a sample map,
+  error: null // contains error when loading/retrieving data/configuration
+  // {
+  //   status: null,
+  //   message: null
+  // }
+  // eventually we may have an async process to fetch these from a remote location
+};
+
+// App reducer
+const appReducer = handleActions(
+  {
+    [SET_SAMPLE_LOADING_STATUS]: (state, action) => ({
+      ...state,
+      isMapLoading: action.isMapLoading
+    })
+  },
+  initialAppState
 );
 
-render(<Root />, document.body.appendChild(document.createElement('div')));
+export default appReducer;

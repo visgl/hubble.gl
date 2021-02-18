@@ -18,17 +18,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import React from 'react';
-import document from 'global/document';
-import {Provider} from 'react-redux';
-import {render} from 'react-dom';
-import store from './store';
-import App from './app/App';
+import keplerGlReducer, {uiStateUpdaters} from 'kepler.gl/reducers';
+import {AUTH_TOKENS} from '../../constants';
+import {EXPORT_MAP_FORMATS} from 'kepler.gl/constants';
 
-const Root = () => (
-  <Provider store={store}>
-    <App />
-  </Provider>
-);
+const {DEFAULT_EXPORT_MAP} = uiStateUpdaters;
 
-render(<Root />, document.body.appendChild(document.createElement('div')));
+export default keplerGlReducer.initialState({
+  // In order to provide single file export functionality
+  // we are going to set the mapbox access token to be used
+  // in the exported file
+  uiState: {
+    exportMap: {
+      ...DEFAULT_EXPORT_MAP,
+      [EXPORT_MAP_FORMATS.HTML]: {
+        ...DEFAULT_EXPORT_MAP[[EXPORT_MAP_FORMATS.HTML]],
+        exportMapboxAccessToken: AUTH_TOKENS.EXPORT_MAPBOX_TOKEN
+      }
+    }
+  },
+  visState: {
+    loaders: [], // Add additional loaders.gl loaders here
+    loadOptions: {} // Add additional loaders.gl loader options here
+  }
+});

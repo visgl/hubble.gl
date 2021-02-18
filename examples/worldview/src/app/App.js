@@ -26,10 +26,9 @@ import {IntlProvider} from 'react-intl';
 import {messages} from 'kepler.gl/localization';
 import {theme} from 'kepler.gl/styles';
 import {registerEntry} from 'kepler.gl/actions';
-import {AUTH_TOKENS} from './constants/default-settings';
-import {loadSampleConfigurations} from './actions';
+import {AUTH_TOKENS} from '../constants';
 
-import StageContainer from './features/stage/stage-container';
+import StageContainer from '../features/stage/stage-container';
 
 import {InjectKeplerUI} from '@hubble.gl/react';
 import {LoadingSpinner} from 'kepler.gl/components';
@@ -39,8 +38,8 @@ const KEPLER_UI = {
 
 // Sample data
 /* eslint-disable no-unused-vars */
-import sampleTripData, {sampleTripDataConfig} from './data/sample-trip-data';
-import sampleAnimateTrip from './data/sample-animate-trip-data';
+import sampleTripData, {sampleTripDataConfig} from '../data/sample-trip-data';
+import sampleAnimateTrip from '../data/sample-animate-trip-data';
 import {addDataToMap} from 'kepler.gl/actions';
 import {processGeojson} from 'kepler.gl/processors';
 /* eslint-enable no-unused-vars */
@@ -93,15 +92,6 @@ class App extends Component {
   };
 
   componentDidMount() {
-    // if we pass an id as part of the url
-    // we ry to fetch along map configurations
-    const {params: {id} = {}, location: {} = {}} = this.props;
-
-    // Load sample using its id
-    if (id) {
-      this.props.dispatch(loadSampleConfigurations(id));
-    }
-
     // add a new entry to reducer
     this.props.dispatch(
       registerEntry({
