@@ -6,6 +6,7 @@ import {
   durationSelector,
   previewVideo,
   stopVideo,
+  renderVideo,
   dimensionSelector
 } from '../renderer';
 import {viewStateSelector} from './mapSlice';
@@ -128,7 +129,15 @@ export const Stage = ({}) => {
 
   const handlePreview = useCallback(() => {
     if (rendererBusy === false) {
-      dispatch(previewVideo(getCameraKeyframes));
+      dispatch(previewVideo({getCameraKeyframes}));
+    } else {
+      dispatch(stopVideo());
+    }
+  }, [rendererBusy, getCameraKeyframes]);
+
+  const handleRender = useCallback(() => {
+    if (rendererBusy === false) {
+      dispatch(renderVideo({getCameraKeyframes}));
     } else {
       dispatch(stopVideo());
     }
@@ -149,22 +158,21 @@ export const Stage = ({}) => {
       <div style={{flex: 1, position: 'relative'}}>
         <AutoSizeStage>
           {({mapHeight, mapWidth, availableHeight, availableWidth}) => (
-            <>
-              <StageMapBox width={availableWidth} height={availableHeight}>
-                {/* <div style={{width: mapWidth, height: mapHeight, backgroundColor: 'green'}} /> */}
-                <StageContainer width={mapWidth} height={mapHeight} />
-              </StageMapBox>
+            <StageMapBox width={availableWidth} height={availableHeight}>
+              {/* <div style={{width: mapWidth, height: mapHeight, backgroundColor: 'green'}} /> */}
+              <StageContainer width={mapWidth} height={mapHeight} />
               <StageMapOverlay
                 rendererBusy={rendererBusy}
                 duration={duration}
-                width={availableHeight}
-                height={availableWidth}
+                width={availableWidth}
+                height={availableHeight}
               />
-            </>
+            </StageMapBox>
           )}
         </AutoSizeStage>
       </div>
       <StageBottomToolbar playing={Boolean(rendererBusy)} onPreview={handlePreview} />
+      <button onClick={handleRender}>Render</button>
     </div>
   );
 };

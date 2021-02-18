@@ -19,17 +19,13 @@
 // THE SOFTWARE.
 
 import React, {Component} from 'react';
-import {easing} from 'popmotion';
-import {DeckAdapter, DeckScene, CameraKeyframes} from '@hubble.gl/core';
+import {DeckAdapter, DeckScene} from '@hubble.gl/core';
 
 import {StageMap} from './stage-map';
 import {connect} from 'react-redux';
 
 import {
   setupRenderer,
-  previewVideo,
-  renderVideo,
-  stopVideo,
   timecodeChange,
   resolutionChange,
   formatChange,
@@ -48,10 +44,7 @@ export class StageContainer extends Component {
     // this.setCameraPreset = this.setCameraPreset.bind(this);
     // this.setFileName = this.setFileName.bind(this);
     // this.setResolution = this.setResolution.bind(this);
-    this.getCameraKeyframes = this.getCameraKeyframes.bind(this);
     this.getDeckScene = this.getDeckScene.bind(this);
-    this.onPreviewVideo = this.onPreviewVideo.bind(this);
-    this.onRenderVideo = this.onRenderVideo.bind(this);
 
     const {
       mapData: {
@@ -81,36 +74,6 @@ export class StageContainer extends Component {
     this.state = {
       adapter
     };
-  }
-
-  getCameraKeyframes() {
-    const {viewState, duration} = this.props;
-    const {longitude, latitude, zoom, pitch, bearing} = viewState;
-
-    const camera = new CameraKeyframes({
-      timings: [0, duration],
-      keyframes: [
-        {
-          longitude,
-          latitude,
-          zoom,
-          pitch,
-          bearing
-        },
-        {
-          longitude,
-          latitude,
-          zoom,
-          pitch,
-          bearing: 90
-        }
-      ],
-      easings: [easing.easeInOut]
-    });
-
-    // console.log(camera);
-
-    return camera;
   }
 
   getDeckScene(animationLoop) {
@@ -146,16 +109,6 @@ export class StageContainer extends Component {
     }
   }
 
-  onPreviewVideo() {
-    const {dispatch} = this.props;
-    dispatch(previewVideo({getCameraKeyframes: this.getCameraKeyframes}));
-  }
-
-  onRenderVideo() {
-    const {dispatch} = this.props;
-    dispatch(renderVideo({getCameraKeyframes: this.getCameraKeyframes}));
-  }
-
   render() {
     const {
       width,
@@ -164,37 +117,25 @@ export class StageContainer extends Component {
       // state
       viewState,
       dimension,
-      busy,
-      duration,
       // actions
       dispatch
     } = this.props;
 
     const {adapter} = this.state;
 
-    // const aspectRatio = dimension.width / dimension.height;
-    // const height = exportVideoWidth / aspectRatio;
-
     return (
-      <div>
-        <StageMap
-          // UI Props
-          width={width}
-          height={height}
-          // Map Props
-          mapData={mapData}
-          viewState={viewState}
-          setViewState={vs => dispatch(updateViewState(vs))}
-          // Hubble Props
-          adapter={adapter}
-          durationMs={duration}
-          dimension={dimension}
-          rendering={busy}
-        />
-        <button onClick={this.onRenderVideo}>Render</button>
-        <button onClick={this.onPreviewVideo}>Preview</button>
-        <button onClick={() => dispatch(stopVideo)}>Stop</button>
-      </div>
+      <StageMap
+        // UI Props
+        width={width}
+        height={height}
+        // Map Props
+        mapData={mapData}
+        viewState={viewState}
+        setViewState={vs => dispatch(updateViewState(vs))}
+        // Hubble Props
+        adapter={adapter}
+        dimension={dimension}
+      />
     );
   }
 }
