@@ -28,7 +28,8 @@ import {theme} from 'kepler.gl/styles';
 import {registerEntry} from 'kepler.gl/actions';
 import {AUTH_TOKENS} from '../constants';
 
-import StageContainer from '../features/stage/stage-container';
+// import StageContainer from '../features/stage/stage-container';
+import {Stage} from '../features/stage/Stage';
 
 import {InjectKeplerUI} from '@hubble.gl/react';
 import {LoadingSpinner} from 'kepler.gl/components';
@@ -176,7 +177,14 @@ class App extends Component {
           >
             <WindowSize>
               <InjectKeplerUI keplerUI={KEPLER_UI}>
-                {this.props.hubbleGl.map.ready && <StageContainer />}
+                {this.props.hubbleGl.map.ready && (
+                  <>
+                    {/* <StageContainer /> */}
+                    <div style={{height: 400}}>
+                      <Stage />
+                    </div>
+                  </>
+                )}
               </InjectKeplerUI>
             </WindowSize>
           </GlobalStyle>

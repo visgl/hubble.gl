@@ -158,7 +158,8 @@ export class StageContainer extends Component {
 
   render() {
     const {
-      exportVideoWidth,
+      width,
+      height,
       mapData,
       // state
       viewState,
@@ -171,13 +172,15 @@ export class StageContainer extends Component {
 
     const {adapter} = this.state;
 
-    const {width, height} = dimension;
+    // const aspectRatio = dimension.width / dimension.height;
+    // const height = exportVideoWidth / aspectRatio;
 
     return (
       <div>
         <StageMap
           // UI Props
-          exportVideoWidth={exportVideoWidth}
+          width={width}
+          height={height}
           // Map Props
           mapData={mapData}
           viewState={viewState}
@@ -185,7 +188,7 @@ export class StageContainer extends Component {
           // Hubble Props
           adapter={adapter}
           durationMs={duration}
-          resolution={[width, height]}
+          dimension={dimension}
           rendering={busy}
         />
         <button onClick={this.onRenderVideo}>Render</button>
@@ -197,7 +200,7 @@ export class StageContainer extends Component {
 }
 
 StageContainer.defaultProps = {
-  exportVideoWidth: 540,
+  width: 540,
   glContext: undefined
 };
 

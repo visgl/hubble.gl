@@ -23,8 +23,6 @@ import DeckGL from '@deck.gl/react';
 import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
 
-import {WithKeplerUI} from '@hubble.gl/react';
-
 export class StageMap extends Component {
   constructor(props) {
     super(props);
@@ -46,13 +44,12 @@ export class StageMap extends Component {
     this._renderLayer = this._renderLayer.bind(this);
     this._onMapLoad = this._onMapLoad.bind(this);
     this._resizeVideo = this._resizeVideo.bind(this);
-    this._getContainerHeight = this._getContainerHeight.bind(this);
 
     this._resizeVideo();
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.resolution !== this.props.resolution) {
+    if (prevProps.dimension !== this.props.dimension) {
       this._resizeVideo();
     }
   }
@@ -63,8 +60,8 @@ export class StageMap extends Component {
   }
 
   _resizeVideo() {
-    const {exportVideoWidth, resolution} = this.props;
-    this._setDevicePixelRatio(resolution[0] / exportVideoWidth);
+    const {width, dimension} = this.props;
+    this._setDevicePixelRatio(dimension.width / width);
     if (this.mapRef.current) {
       const map = this.mapRef.current.getMap();
       map.resize();
@@ -138,12 +135,6 @@ export class StageMap extends Component {
     return overlays.concat(layerOverlay || []);
   }
 
-  _getContainerHeight() {
-    const {exportVideoWidth, resolution} = this.props;
-    const aspectRatio = resolution[0] / resolution[1];
-    return exportVideoWidth / aspectRatio;
-  }
-
   createLayers() {
     // returns an arr of DeckGL layer objects
     const layerOrder = this.props.mapData.visState.layerOrder;
@@ -175,7 +166,7 @@ export class StageMap extends Component {
   }
 
   render() {
-    const {adapter, durationMs, viewState, rendering, exportVideoWidth, setViewState} = this.props;
+    const {adapter, viewState, width, height, setViewState} = this.props;
 
     const deckStyle = {
       width: '100%',
@@ -183,63 +174,37 @@ export class StageMap extends Component {
     };
 
     const containerStyle = {
-      width: `${exportVideoWidth}px`,
-      height: `${this._getContainerHeight()}px`,
+      width: `${width}px`,
+      height: `${height}px`,
       position: 'relative'
     };
 
-    const loaderStyle = {
-      display: rendering === false ? 'none' : 'flex',
-      position: 'absolute',
-      background: 'rgba(0, 0, 0, 0.5)',
-      width: `${exportVideoWidth}px`,
-      height: `${this._getContainerHeight()}px`,
-      alignItems: 'center',
-      justifyContent: 'center'
-    };
-
     return (
-      <WithKeplerUI>
-        {({LoadingSpinner}) => (
-          <>
-            <div id="deck-canvas" style={containerStyle}>
-              <DeckGL
-                ref={this.deckRef}
-                viewState={viewState}
-                id="hubblegl-overlay"
-                layers={this.createLayers()}
-                style={deckStyle}
-                controller={true}
-                glOptions={{stencil: true}}
-                onWebGLInitialized={gl => this.setState({glContext: gl})}
-                onViewStateChange={({viewState: vs}) => setViewState(vs)}
-                // onClick={visStateActions.onLayerClick}
-                {...adapter.getProps(this.deckRef, () => {})}
-              >
-                {this.state.glContext && (
-                  <StaticMap
-                    ref={this.mapRef}
-                    mapStyle={this.state.mapStyle}
-                    preventStyleDiffing={true}
-                    gl={this.state.glContext}
-                    onLoad={this._onMapLoad}
-                  />
-                )}
-              </DeckGL>
-            </div>
-            <div className="loader" style={loaderStyle}>
-              <LoadingSpinner />
-              {/* TODO change text styling to match Kepler's */}
-              <div
-                className="rendering-percent"
-                style={{color: 'white', position: 'absolute', top: '175px'}}
-              >
-                {Math.floor((adapter.videoCapture.timeMs / durationMs) * 100).toFixed(0)} %
-              </div>
-            </div>
-          </>
-        )}
-      </WithKeplerUI>
+      <div id="deck-canvas" style={containerStyle}>
+        <DeckGL
+          ref={this.deckRef}
+          viewState={viewState}
+          id="hubblegl-overlay"
+          layers={this.createLayers()}
+          style={deckStyle}
+          controller={true}
+          glOptions={{stencil: true}}
+          onWebGLInitialized={gl => this.setState({glContext: gl})}
+          onViewStateChange={({viewState: vs}) => setViewState(vs)}
+          // onClick={visStateActions.onLayerClick}
+          {...adapter.getProps(this.deckRef, () => {})}
+        >
+          {this.state.glContext && (
+            <StaticMap
+              ref={this.mapRef}
+              mapStyle={this.state.mapStyle}
+              preventStyleDiffing={true}
+              gl={this.state.glContext}
+              onLoad={this._onMapLoad}
+            />
+          )}
+        </DeckGL>
+      </div>
     );
   }
 }
