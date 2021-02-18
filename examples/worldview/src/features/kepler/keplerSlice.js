@@ -18,27 +18,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import keplerGlReducer, {uiStateUpdaters} from 'kepler.gl/reducers';
+import keplerGlReducer, {combinedUpdaters, uiStateUpdaters} from 'kepler.gl/reducers';
 import {AUTH_TOKENS} from '../../constants';
 import {EXPORT_MAP_FORMATS} from 'kepler.gl/constants';
+import {loadRemoteKeplerMap} from './loadKeplerMap';
 
 const {DEFAULT_EXPORT_MAP} = uiStateUpdaters;
 
-export default keplerGlReducer.initialState({
-  // In order to provide single file export functionality
-  // we are going to set the mapbox access token to be used
-  // in the exported file
-  uiState: {
-    exportMap: {
-      ...DEFAULT_EXPORT_MAP,
-      [EXPORT_MAP_FORMATS.HTML]: {
-        ...DEFAULT_EXPORT_MAP[[EXPORT_MAP_FORMATS.HTML]],
-        exportMapboxAccessToken: AUTH_TOKENS.EXPORT_MAPBOX_TOKEN
+export default keplerGlReducer
+  .initialState({
+    // In order to provide single file export functionality
+    // we are going to set the mapbox access token to be used
+    // in the exported file
+    uiState: {
+      exportMap: {
+        ...DEFAULT_EXPORT_MAP,
+        [EXPORT_MAP_FORMATS.HTML]: {
+          ...DEFAULT_EXPORT_MAP[[EXPORT_MAP_FORMATS.HTML]],
+          exportMapboxAccessToken: AUTH_TOKENS.EXPORT_MAPBOX_TOKEN
+        }
       }
+    },
+    visState: {
+      loaders: [], // Add additional loaders.gl loaders here
+      loadOptions: {} // Add additional loaders.gl loader options here
     }
-  },
-  visState: {
-    loaders: [], // Add additional loaders.gl loaders here
-    loadOptions: {} // Add additional loaders.gl loader options here
-  }
-});
+  })
+  .plugin({
+    [loadRemoteKeplerMap.fulfilled]: (state, action) => {
+      return combinedUpdaters.addDataToMapUpdater(state, {
+        payload: {
+          datasets: action.payload.datasets,
+          config: action.payload.config
+        }
+      });
+    }
+  });
