@@ -1,4 +1,4 @@
-export {rendererMiddleware} from './middleware';
+export {rendererMiddleware} from './rendererMiddleware';
 
 export {
   setupRenderer,

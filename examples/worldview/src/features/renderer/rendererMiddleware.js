@@ -33,8 +33,6 @@ export const rendererMiddleware = store => {
   let adapter;
 
   return next => action => {
-    // console.log(action)
-    // setupRenderer
     switch (action.type) {
       case setupRenderer.type: {
         if (busySelector(store.getState())) {
