@@ -28,6 +28,14 @@ import {
 } from '@hubble.gl/core';
 import EncoderDropdown from './encoder-dropdown';
 
+const ENCODERS = {
+  preview: PreviewEncoder,
+  gif: GifEncoder,
+  webm: WebMEncoder,
+  jpeg: JPEGSequenceEncoder,
+  png: PNGSequenceEncoder
+};
+
 export default function BasicControls({
   adapter,
   busy,
@@ -39,47 +47,13 @@ export default function BasicControls({
   const [encoder, setEncoder] = useState('gif');
 
   const onRender = () => {
-    if (encoder === 'preview') {
-      adapter.render(
-        getCameraKeyframes,
-        PreviewEncoder,
-        encoderSettings,
-        () => setBusy(false),
-        getKeyframes
-      );
-    } else if (encoder === 'webm') {
-      adapter.render(
-        getCameraKeyframes,
-        WebMEncoder,
-        encoderSettings,
-        () => setBusy(false),
-        getKeyframes
-      );
-    } else if (encoder === 'jpeg') {
-      adapter.render(
-        getCameraKeyframes,
-        JPEGSequenceEncoder,
-        encoderSettings,
-        () => setBusy(false),
-        getKeyframes
-      );
-    } else if (encoder === 'png') {
-      adapter.render(
-        getCameraKeyframes,
-        PNGSequenceEncoder,
-        encoderSettings,
-        () => setBusy(false),
-        getKeyframes
-      );
-    } else if (encoder === 'gif') {
-      adapter.render(
-        getCameraKeyframes,
-        GifEncoder,
-        encoderSettings,
-        () => setBusy(false),
-        getKeyframes
-      );
-    }
+    adapter.render(
+      getCameraKeyframes,
+      ENCODERS[encoder],
+      encoderSettings,
+      () => setBusy(false),
+      getKeyframes
+    );
 
     setBusy(true);
   };
