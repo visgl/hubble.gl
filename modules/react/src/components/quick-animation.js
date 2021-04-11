@@ -44,7 +44,9 @@ export const QuickAnimation = ({
       quality: 0.8
     },
     gif: {
-      sampleInterval: 1
+      sampleInterval: 1,
+      width,
+      height
     },
     ...encoderSettings
   };
