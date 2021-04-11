@@ -77,6 +77,19 @@ const GlobalStyle = styled.div`
     text-decoration: none;
     color: ${props => props.theme.labelColor};
   }
+
+  .load-data-modal__tab__item {
+    padding: 0;
+  }
+
+  .load-data-modal__tab__item.active {
+    color: #fff
+    border-bottom: 3px solid #fff;
+  }
+
+  .load-data-modal__tab {
+    border-bottom: 1px solid #3A414C;
+  }
 `;
 
 const WindowSize = styled.div`

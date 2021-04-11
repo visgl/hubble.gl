@@ -45,7 +45,7 @@ function ExportVideoPanelSettings({
 }) {
   const loadingMethods = [
     // Each entry creates new tabs with ModalTabsFactory
-    // id: ¯\_(ツ)_/¯ doesn't seem to change the class name or give it an id
+    // id: The tab id in state
     // label: What the text of the tab will be
     // elementType: The component to render
     {
