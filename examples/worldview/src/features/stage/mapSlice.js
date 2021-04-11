@@ -1,0 +1,30 @@
+/* eslint-disable no-void */
+import {createSlice} from '@reduxjs/toolkit';
+// import
+
+const initialState = {
+  ready: false,
+  viewState: {}
+};
+
+const mapSlice = createSlice({
+  name: 'map',
+  initialState,
+  reducers: {
+    updateViewState: (state, action) =>
+      void (state.viewState = {...state.viewState, ...action.payload})
+  },
+  extraReducers: builder => {
+    builder.addCase('@@kepler.gl/REGISTER_ENTRY', state => void (state.ready = true));
+  }
+});
+
+export const {updateViewState} = mapSlice.actions;
+
+export default mapSlice.reducer;
+
+/**
+ * Selectors
+ */
+
+export const viewStateSelector = state => state.hubbleGl.map.viewState;

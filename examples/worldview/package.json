@@ -1,0 +1,36 @@
+{
+  "scripts": {
+    "start": "webpack-dev-server --progress --hot --open",
+    "start-local": "webpack-dev-server --env.local --progress --hot --open",
+    "clean": "rm -rf yarn.lock ./node_modules",
+    "bootstrap": "yarn clean && yarn"
+  },
+  "peerDependencies": {
+    "@luma.gl/debug": "^8.2.0"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.5.0",
+    "d3-request": "^1.0.6",
+    "global": "^4.3.0",
+    "hubble.gl": "^1.1.0",
+    "react-helmet": "^6.1.0",
+    "react-map-gl": "^5.2.10",
+    "react-markdown": "^4.2.2",
+    "react-palm": "^3.3.6",
+    "redux-actions": "^2.2.1",
+    "redux-thunk": "^1.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.1",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-transform-runtime": "^7.12.10",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-react": "^7.12.1",
+    "babel-loader": "^8.0.0",
+    "webpack": "^4.29.0",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-middleware": "^3.5.1",
+    "webpack-dev-server": "^3.1.14",
+    "webpack-hot-middleware": "^2.24.3"
+  }
+}

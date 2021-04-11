@@ -23,10 +23,7 @@ import DeckGL from '@deck.gl/react';
 import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
 
-import {deckStyle} from './constants';
-import {RenderingSpinner} from './rendering-spinner';
-
-export class ExportVideoPanelPreview extends Component {
+export class StageMap extends Component {
   constructor(props) {
     super(props);
     const mapStyle = this.props.mapData.mapStyle;
@@ -35,11 +32,9 @@ export class ExportVideoPanelPreview extends Component {
     this.mapRef = React.createRef();
     this.deckRef = React.createRef();
 
+    // console.log(mapStyleUrl);
+
     this.state = {
-      timestamp: {
-        latitude: 47.65,
-        longitude: 7
-      },
       mapStyle: mapStyleUrl, // Unsure if mapStyle would ever change but allowing it just in case
       glContext: undefined,
       memoDevicePixelRatio: window.devicePixelRatio // memoize
@@ -49,13 +44,12 @@ export class ExportVideoPanelPreview extends Component {
     this._renderLayer = this._renderLayer.bind(this);
     this._onMapLoad = this._onMapLoad.bind(this);
     this._resizeVideo = this._resizeVideo.bind(this);
-    this._getContainerHeight = this._getContainerHeight.bind(this);
 
     this._resizeVideo();
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.resolution !== this.props.resolution) {
+    if (prevProps.dimension !== this.props.dimension) {
       this._resizeVideo();
     }
   }
@@ -66,8 +60,8 @@ export class ExportVideoPanelPreview extends Component {
   }
 
   _resizeVideo() {
-    const {exportVideoWidth, resolution} = this.props;
-    this._setDevicePixelRatio(resolution[0] / exportVideoWidth);
+    const {width, dimension} = this.props;
+    this._setDevicePixelRatio(dimension.width / width);
     if (this.mapRef.current) {
       const map = this.mapRef.current.getMap();
       map.resize();
@@ -141,12 +135,6 @@ export class ExportVideoPanelPreview extends Component {
     return overlays.concat(layerOverlay || []);
   }
 
-  _getContainerHeight() {
-    const {exportVideoWidth, resolution} = this.props;
-    const aspectRatio = resolution[0] / resolution[1];
-    return exportVideoWidth / aspectRatio;
-  }
-
   createLayers() {
     // returns an arr of DeckGL layer objects
     const layerOrder = this.props.mapData.visState.layerOrder;
@@ -178,52 +166,45 @@ export class ExportVideoPanelPreview extends Component {
   }
 
   render() {
-    const {exportVideoWidth, rendering, viewState, setViewState, adapter, durationMs} = this.props;
-    const {glContext, mapStyle} = this.state;
+    const {adapter, viewState, width, height, setViewState} = this.props;
+
+    const deckStyle = {
+      width: '100%',
+      height: '100%'
+    };
 
     const containerStyle = {
-      width: `${exportVideoWidth}px`,
-      height: `${this._getContainerHeight()}px`,
+      width: `${width}px`,
+      height: `${height}px`,
       position: 'relative'
     };
 
     return (
-      <>
-        <div id="deck-canvas" style={containerStyle}>
-          <DeckGL
-            ref={this.deckRef}
-            viewState={viewState}
-            id="hubblegl-overlay"
-            layers={this.createLayers()}
-            style={deckStyle}
-            controller={true}
-            glOptions={{stencil: true}}
-            onWebGLInitialized={gl => this.setState({glContext: gl})}
-            onViewStateChange={setViewState}
-            // onClick={visStateActions.onLayerClick}
-            {...adapter.getProps(this.deckRef, () => {})}
-          >
-            {glContext && (
-              <StaticMap
-                ref={this.mapRef}
-                mapStyle={mapStyle}
-                preventStyleDiffing={true}
-                gl={glContext}
-                onLoad={this._onMapLoad}
-              />
-            )}
-          </DeckGL>
-        </div>
-        {rendering && (
-          <RenderingSpinner
-            rendering={rendering}
-            exportVideoWidth={exportVideoWidth}
-            _getContainerHeight={this._getContainerHeight()}
-            adapter={adapter}
-            durationMs={durationMs}
-          />
-        )}
-      </>
+      <div id="deck-canvas" style={containerStyle}>
+        <DeckGL
+          ref={this.deckRef}
+          viewState={viewState}
+          id="hubblegl-overlay"
+          layers={this.createLayers()}
+          style={deckStyle}
+          controller={true}
+          glOptions={{stencil: true}}
+          onWebGLInitialized={gl => this.setState({glContext: gl})}
+          onViewStateChange={({viewState: vs}) => setViewState(vs)}
+          // onClick={visStateActions.onLayerClick}
+          {...adapter.getProps(this.deckRef, () => {})}
+        >
+          {this.state.glContext && (
+            <StaticMap
+              ref={this.mapRef}
+              mapStyle={this.state.mapStyle}
+              preventStyleDiffing={true}
+              gl={this.state.glContext}
+              onLoad={this._onMapLoad}
+            />
+          )}
+        </DeckGL>
+      </div>
     );
   }
 }

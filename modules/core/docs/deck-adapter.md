@@ -59,7 +59,7 @@ See [FrameEncoder](/modules/core/docs/encoder/frame-encoder#constructor-1) for i
 
 * **`onStop` (`() => void`, Optional) - Default: `undefined`.**
 
-This function is called after the last frame is rendered. It does not get called when a render is interrupted with `stop()`.
+This function is called after the last frame is rendered and a file is created for download. It does not get called when a render is interrupted with `stop()`.
 
 ##### `stop(callback)`
 
