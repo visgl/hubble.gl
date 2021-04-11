@@ -23,7 +23,8 @@ import DeckGL from '@deck.gl/react';
 import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
 
-import {WithKeplerUI} from '../inject-kepler';
+import {deckStyle} from './constants';
+import {RenderingSpinner} from './rendering-spinner';
 
 export class ExportVideoPanelPreview extends Component {
   constructor(props) {
@@ -177,72 +178,52 @@ export class ExportVideoPanelPreview extends Component {
   }
 
   render() {
-    const deckStyle = {
-      width: '100%',
-      height: '100%'
-    };
+    const {exportVideoWidth, rendering, viewState, setViewState, adapter, durationMs} = this.props;
+    const {glContext, mapStyle} = this.state;
 
     const containerStyle = {
-      width: `${this.props.exportVideoWidth}px`,
+      width: `${exportVideoWidth}px`,
       height: `${this._getContainerHeight()}px`,
       position: 'relative'
     };
 
-    const loaderStyle = {
-      display: this.props.rendering === false ? 'none' : 'flex',
-      position: 'absolute',
-      background: 'rgba(0, 0, 0, 0.5)',
-      width: `${this.props.exportVideoWidth}px`,
-      height: `${this._getContainerHeight()}px`,
-      alignItems: 'center',
-      justifyContent: 'center'
-    };
-
     return (
-      <WithKeplerUI>
-        {({LoadingSpinner}) => (
-          <>
-            <div id="deck-canvas" style={containerStyle}>
-              <DeckGL
-                ref={this.deckRef}
-                viewState={this.props.viewState}
-                id="hubblegl-overlay"
-                layers={this.createLayers()}
-                style={deckStyle}
-                controller={true}
-                glOptions={{stencil: true}}
-                onWebGLInitialized={gl => this.setState({glContext: gl})}
-                onViewStateChange={this.props.setViewState}
-                // onClick={visStateActions.onLayerClick}
-                {...this.props.adapter.getProps(this.deckRef, () => {})}
-              >
-                {this.state.glContext && (
-                  <StaticMap
-                    ref={this.mapRef}
-                    mapStyle={this.state.mapStyle}
-                    preventStyleDiffing={true}
-                    gl={this.state.glContext}
-                    onLoad={this._onMapLoad}
-                  />
-                )}
-              </DeckGL>
-            </div>
-            <div className="loader" style={loaderStyle}>
-              <LoadingSpinner />
-              {/* TODO change text styling to match Kepler's */}
-              <div
-                className="rendering-percent"
-                style={{color: 'white', position: 'absolute', top: '175px'}}
-              >
-                {Math.floor(
-                  (this.props.adapter.videoCapture.timeMs / this.props.durationMs) * 100
-                ).toFixed(0)}{' '}
-                %
-              </div>
-            </div>
-          </>
+      <>
+        <div id="deck-canvas" style={containerStyle}>
+          <DeckGL
+            ref={this.deckRef}
+            viewState={viewState}
+            id="hubblegl-overlay"
+            layers={this.createLayers()}
+            style={deckStyle}
+            controller={true}
+            glOptions={{stencil: true}}
+            onWebGLInitialized={gl => this.setState({glContext: gl})}
+            onViewStateChange={setViewState}
+            // onClick={visStateActions.onLayerClick}
+            {...adapter.getProps(this.deckRef, () => {})}
+          >
+            {glContext && (
+              <StaticMap
+                ref={this.mapRef}
+                mapStyle={mapStyle}
+                preventStyleDiffing={true}
+                gl={glContext}
+                onLoad={this._onMapLoad}
+              />
+            )}
+          </DeckGL>
+        </div>
+        {rendering && (
+          <RenderingSpinner
+            rendering={rendering}
+            width={exportVideoWidth}
+            height={this._getContainerHeight()}
+            adapter={adapter}
+            durationMs={durationMs}
+          />
         )}
-      </WithKeplerUI>
+      </>
     );
   }
 }
