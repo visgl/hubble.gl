@@ -12,7 +12,7 @@ import {
 import {viewStateSelector} from './mapSlice';
 import {AutoSizer} from 'react-virtualized';
 import {WithKeplerUI} from '@hubble.gl/react';
-import StageContainer from './stage-container';
+import StageContainer from './StageContainer';
 import {CameraKeyframes} from '@hubble.gl/core';
 import {easing} from 'popmotion';
 

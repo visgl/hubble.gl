@@ -24,9 +24,13 @@ import {Provider} from 'react-redux';
 import {render} from 'react-dom';
 import store from './store';
 import App from './app/App';
+import {Helmet} from 'react-helmet';
 
 const Root = () => (
   <Provider store={store}>
+    <Helmet>
+      <link href="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css" rel="stylesheet" />
+    </Helmet>
     <App />
   </Provider>
 );

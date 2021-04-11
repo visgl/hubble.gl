@@ -13,6 +13,7 @@
     "d3-request": "^1.0.6",
     "global": "^4.3.0",
     "hubble.gl": "^1.1.0",
+    "react-helmet": "^6.1.0",
     "react-map-gl": "^5.2.10",
     "react-markdown": "^4.2.2",
     "react-palm": "^3.3.6",

@@ -21,7 +21,7 @@
 import React, {Component} from 'react';
 import {DeckAdapter, DeckScene} from '@hubble.gl/core';
 
-import {StageMap} from './stage-map';
+import {StageMap} from './StageMap';
 import {connect} from 'react-redux';
 
 import {
