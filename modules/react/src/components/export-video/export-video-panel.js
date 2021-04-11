@@ -20,6 +20,7 @@
 
 import React from 'react';
 import styled, {withTheme} from 'styled-components';
+import {PanelCloseInner, StyledTitle} from './styled-components';
 
 import {
   DEFAULT_PADDING,
@@ -33,12 +34,6 @@ import ExportVideoPanelFooter from './export-video-panel-footer';
 
 import {WithKeplerUI} from '../inject-kepler';
 
-const PanelCloseInner = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  padding: ${DEFAULT_PADDING}px ${DEFAULT_PADDING}px 0 ${DEFAULT_PADDING}px;
-`;
-
 const PanelClose = ({handleClose}) => (
   <WithKeplerUI>
     {({IconButton, Icons}) => (
@@ -50,14 +45,6 @@ const PanelClose = ({handleClose}) => (
     )}
   </WithKeplerUI>
 );
-
-const StyledTitle = styled.div`
-  color: ${props => props.theme.titleTextColor};
-  font-size: 20px;
-  font-weight: 400;
-  line-height: ${props => props.theme.lineHeight};
-  padding: 0 ${DEFAULT_PADDING}px 16px ${DEFAULT_PADDING}px;
-`;
 
 const PanelBodyInner = styled.div`
   padding: 0 ${DEFAULT_PADDING}px;

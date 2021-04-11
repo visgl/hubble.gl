@@ -77,6 +77,19 @@ const GlobalStyle = styled.div`
     text-decoration: none;
     color: ${props => props.theme.labelColor};
   }
+
+  .load-data-modal__tab__item {
+    padding: 0;
+  }
+
+  .load-data-modal__tab__item.active {
+    color: #fff
+    border-bottom: 3px solid #fff;
+  }
+
+  .load-data-modal__tab {
+    border-bottom: 1px solid #3A414C;
+  }
 `;
 
 const WindowSize = styled.div`
@@ -88,6 +101,10 @@ const WindowSize = styled.div`
   height: 100%;
   width: 100%;
 `;
+
+// Custom localizations needed for export video modal
+messages.en['exportVideoModal.edit'] = 'Edit';
+messages.en['exportVideoModal.export'] = 'Export';
 
 class App extends Component {
   state = {
