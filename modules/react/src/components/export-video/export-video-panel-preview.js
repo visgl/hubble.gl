@@ -217,8 +217,8 @@ export class ExportVideoPanelPreview extends Component {
         {rendering && (
           <RenderingSpinner
             rendering={rendering}
-            exportVideoWidth={exportVideoWidth}
-            _getContainerHeight={this._getContainerHeight()}
+            width={exportVideoWidth}
+            height={this._getContainerHeight()}
             adapter={adapter}
             durationMs={durationMs}
           />

@@ -94,6 +94,11 @@ export function msConversion(durationMs) {
   return `${minutes}:${seconds}.${milliseconds.toString()[0]}`;
 }
 
+const MB = 8 * 1024 * 1024;
+// NOTE: Bit depth is a guess because I couldn't find it. Same w/ compression ratio
+const COMPRESSION_RATIO = 0.8;
+const BIT_DEPTH = 6;
+
 /**
  * Estimates file size of resulting animation
  * @param {number} frameRate frame rate of animation (set by developer)
@@ -106,13 +111,11 @@ export function estimateFileSize(frameRate, resolution, durationMs, mediaType) {
   // Based off of https://www.youtube.com/watch?v=DDcYvesZsnw for uncompressed video
   // Formula: ((horizontal * vertical * bit depth) / (8 * 1024 * 1024 [convert to megabyte MB])) * (frame rate * time in seconds) * compression ratio
   // Additional resource https://stackoverflow.com/questions/27559103/video-size-calculation
-  // NOTE: Bit depth is a guess because I couldn't find it. Same w/ compression ratio
   // TODO Read resource from Imgur dev https://stackoverflow.com/questions/23920098/how-to-estimate-gif-file-size
   if (mediaType === 'gif') {
-    // ParseInt to turn it from float to int
     const seconds = Math.floor(durationMs / 1000);
     return `${Math.floor(
-      ((resolution[0] * resolution[1] * 6) / (8 * 1024 * 1024)) * (frameRate * seconds) * 0.8
+      ((resolution[0] * resolution[1] * BIT_DEPTH) / MB) * (frameRate * seconds) * COMPRESSION_RATIO
     )} MB`;
   }
   return 'Size estimation unavailable';
