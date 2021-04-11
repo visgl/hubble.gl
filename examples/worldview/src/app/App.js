@@ -36,13 +36,7 @@ const KEPLER_UI = {
   LoadingSpinner
 };
 
-// Sample data
-/* eslint-disable no-unused-vars */
-import sampleTripData, {sampleTripDataConfig} from '../data/sample-trip-data';
-import sampleAnimateTrip from '../data/sample-animate-trip-data';
-import {addDataToMap} from 'kepler.gl/actions';
-import {processGeojson} from 'kepler.gl/processors';
-/* eslint-enable no-unused-vars */
+import {loadSampleData} from '../data/sample';
 
 // const keplerGlGetState = state => state.demo.keplerGl;
 
@@ -106,60 +100,9 @@ class App extends Component {
     );
 
     // load sample data
-    this._loadSampleData();
+    const actions = loadSampleData();
+    actions.forEach(a => this.props.dispatch(a));
   }
-
-  _loadSampleData() {
-    this._loadPointData();
-    this._loadTripGeoJson();
-  }
-
-  _loadPointData() {
-    this.props.dispatch(
-      addDataToMap({
-        datasets: {
-          info: {
-            label: 'Sample Taxi Trips in New York City',
-            id: 'test_trip_data'
-          },
-          data: sampleTripData
-        },
-        options: {
-          centerMap: true,
-          readOnly: false
-        },
-        config: sampleTripDataConfig
-      })
-    );
-  }
-
-  _loadTripGeoJson() {
-    this.props.dispatch(
-      addDataToMap({
-        datasets: [
-          {
-            info: {label: 'Trip animation'},
-            data: processGeojson(sampleAnimateTrip)
-          }
-        ]
-      })
-    );
-  }
-
-  _getMapboxRef = (mapbox, index) => {
-    if (!mapbox) {
-      // The ref has been unset.
-      // https://reactjs.org/docs/refs-and-the-dom.html#callback-refs
-      // console.log(`Map ${index} has closed`);
-    } else {
-      // We expect an InteractiveMap created by KeplerGl's MapContainer.
-      // https://uber.github.io/react-map-gl/#/Documentation/api-reference/interactive-map
-      const map = mapbox.getMap();
-      map.on('zoomend', e => {
-        // console.log(`Map ${index} zoom level: ${e.target.style.z}`);
-      });
-    }
-  };
 
   render() {
     return (
