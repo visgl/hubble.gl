@@ -25,7 +25,7 @@ export const DEFAULT_PADDING = 32;
 export const DEFAULT_ROW_GAP = 16;
 export const DEFAULT_SETTINGS_WIDTH = 280;
 
-export const DEFAULT_FILENAME = 'kepler.gl';
+export const DEFAULT_FILENAME = 'worldview';
 
 export const SIDEPANEL_WIDTH = 300;
 
@@ -92,8 +92,3 @@ export const isResolution = value => option => option.value === value;
 export function getResolutionSetting(value) {
   return RESOLUTIONS.find(isResolution(value)) || RESOLUTIONS[0];
 }
-
-export const deckStyle = {
-  width: '100%',
-  height: '100%'
-};

@@ -18,57 +18,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import React, {useState} from 'react';
-import {
-  WebMEncoder,
-  JPEGSequenceEncoder,
-  PNGSequenceEncoder,
-  PreviewEncoder,
-  GifEncoder
-} from '@hubble.gl/core';
-import EncoderDropdown from './encoder-dropdown';
+import React from 'react';
+import document from 'global/document';
+import {Provider} from 'react-redux';
+import {render} from 'react-dom';
+import store from './store';
+import App from './app/App';
+import {Helmet} from 'react-helmet';
 
-const ENCODERS = {
-  preview: PreviewEncoder,
-  gif: GifEncoder,
-  webm: WebMEncoder,
-  jpeg: JPEGSequenceEncoder,
-  png: PNGSequenceEncoder
-};
+const Root = () => (
+  <Provider store={store}>
+    <Helmet>
+      <link href="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css" rel="stylesheet" />
+    </Helmet>
+    <App />
+  </Provider>
+);
 
-export default function BasicControls({
-  adapter,
-  busy,
-  setBusy,
-  encoderSettings,
-  getCameraKeyframes,
-  getKeyframes = undefined
-}) {
-  const [encoder, setEncoder] = useState('gif');
-
-  const onRender = () => {
-    adapter.render(
-      getCameraKeyframes,
-      ENCODERS[encoder],
-      encoderSettings,
-      () => setBusy(false),
-      getKeyframes
-    );
-
-    setBusy(true);
-  };
-
-  const onStop = () => {
-    adapter.stop(() => setBusy(false));
-  };
-
-  return (
-    <div>
-      <EncoderDropdown disabled={busy} encoder={encoder} setEncoder={setEncoder} />
-      <button disabled={busy} onClick={onRender}>
-        Render
-      </button>
-      <button onClick={onStop}>Stop</button>
-    </div>
-  );
-}
+render(<Root />, document.body.appendChild(document.createElement('div')));

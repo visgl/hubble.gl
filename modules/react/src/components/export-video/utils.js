@@ -78,13 +78,14 @@ export function parseSetCameraType(strCameraType, viewState) {
 /**
  * Used to convert durationMs (inherited from ExportVideoPanelContainer) to hh:mm:ss.ms
  * @param {number} durationMs duration of animation in milliseconds
+ * @property {number} minutes test
  * @returns {string} time in format hh:mm:ss.ms
  */
 export function msConversion(durationMs) {
-  const milliseconds = parseInt(durationMs % 1000, 10);
-  let seconds = parseInt((durationMs / 1000) % 60, 10);
-  let minutes = parseInt((durationMs / (1000 * 60)) % 60, 10);
-  // let hours = parseInt((durationMs / (1000 * 60 * 60)) % 24, 10); // Hours can be used if needed in future
+  const milliseconds = Math.floor(durationMs % 1000);
+  let seconds = Math.floor(durationMs / 1000) % 60;
+  let minutes = Math.floor(durationMs / (1000 * 60)) % 60;
+  // let hours = Math.floor(durationMs / (1000 * 60 * 60)) % 24, 10); // Hours can be used if needed in future
 
   // hours = hours < 10 ? `0${hours}` : hours;
   minutes = minutes < 10 ? `0${minutes}` : minutes;
@@ -92,6 +93,11 @@ export function msConversion(durationMs) {
 
   return `${minutes}:${seconds}.${milliseconds.toString()[0]}`;
 }
+
+const MB = 8 * 1024 * 1024;
+// NOTE: Bit depth is a guess because I couldn't find it. Same w/ compression ratio
+const COMPRESSION_RATIO = 0.8;
+const BIT_DEPTH = 6;
 
 /**
  * Estimates file size of resulting animation
@@ -105,14 +111,11 @@ export function estimateFileSize(frameRate, resolution, durationMs, mediaType) {
   // Based off of https://www.youtube.com/watch?v=DDcYvesZsnw for uncompressed video
   // Formula: ((horizontal * vertical * bit depth) / (8 * 1024 * 1024 [convert to megabyte MB])) * (frame rate * time in seconds) * compression ratio
   // Additional resource https://stackoverflow.com/questions/27559103/video-size-calculation
-  // NOTE: Bit depth is a guess because I couldn't find it. Same w/ compression ratio
   // TODO Read resource from Imgur dev https://stackoverflow.com/questions/23920098/how-to-estimate-gif-file-size
   if (mediaType === 'gif') {
-    // ParseInt to turn it from float to int
-    const seconds = parseInt(durationMs / 1000, 10);
-    return `${parseInt(
-      ((resolution[0] * resolution[1] * 6) / (8 * 1024 * 1024)) * (frameRate * seconds) * 0.8,
-      10
+    const seconds = Math.floor(durationMs / 1000);
+    return `${Math.floor(
+      ((resolution[0] * resolution[1] * BIT_DEPTH) / MB) * (frameRate * seconds) * COMPRESSION_RATIO
     )} MB`;
   }
   return 'Size estimation unavailable';

@@ -18,57 +18,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import React, {useState} from 'react';
-import {
-  WebMEncoder,
-  JPEGSequenceEncoder,
-  PNGSequenceEncoder,
-  PreviewEncoder,
-  GifEncoder
-} from '@hubble.gl/core';
-import EncoderDropdown from './encoder-dropdown';
+import {handleActions} from 'redux-actions';
 
-const ENCODERS = {
-  preview: PreviewEncoder,
-  gif: GifEncoder,
-  webm: WebMEncoder,
-  jpeg: JPEGSequenceEncoder,
-  png: PNGSequenceEncoder
+export const SET_SAMPLE_LOADING_STATUS = 'SET_SAMPLE_LOADING_STATUS';
+
+export function setLoadingMapStatus(isMapLoading) {
+  return {
+    type: SET_SAMPLE_LOADING_STATUS,
+    isMapLoading
+  };
+}
+
+// INITIAL_APP_STATE
+const initialAppState = {
+  appName: 'example',
+  loaded: false,
+  isMapLoading: false, // determine whether we are loading a sample map,
+  error: null // contains error when loading/retrieving data/configuration
+  // {
+  //   status: null,
+  //   message: null
+  // }
+  // eventually we may have an async process to fetch these from a remote location
 };
 
-export default function BasicControls({
-  adapter,
-  busy,
-  setBusy,
-  encoderSettings,
-  getCameraKeyframes,
-  getKeyframes = undefined
-}) {
-  const [encoder, setEncoder] = useState('gif');
+// App reducer
+const appReducer = handleActions(
+  {
+    [SET_SAMPLE_LOADING_STATUS]: (state, action) => ({
+      ...state,
+      isMapLoading: action.isMapLoading
+    })
+  },
+  initialAppState
+);
 
-  const onRender = () => {
-    adapter.render(
-      getCameraKeyframes,
-      ENCODERS[encoder],
-      encoderSettings,
-      () => setBusy(false),
-      getKeyframes
-    );
-
-    setBusy(true);
-  };
-
-  const onStop = () => {
-    adapter.stop(() => setBusy(false));
-  };
-
-  return (
-    <div>
-      <EncoderDropdown disabled={busy} encoder={encoder} setEncoder={setEncoder} />
-      <button disabled={busy} onClick={onRender}>
-        Render
-      </button>
-      <button onClick={onStop}>Stop</button>
-    </div>
-  );
-}
+export default appReducer;
