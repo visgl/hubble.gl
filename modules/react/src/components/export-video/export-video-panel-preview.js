@@ -28,8 +28,8 @@ import {WithKeplerUI} from '../inject-kepler';
 export class ExportVideoPanelPreview extends Component {
   constructor(props) {
     super(props);
-    const user = this.props.mapData.mapStyle.bottomMapStyle.owner;
-    const mapId = this.props.mapData.mapStyle.bottomMapStyle.id;
+    const mapStyle = this.props.mapData.mapStyle;
+    const mapStyleUrl = mapStyle.mapStyles[mapStyle.styleType].url;
 
     this.mapRef = React.createRef();
     this.deckRef = React.createRef();
@@ -39,7 +39,7 @@ export class ExportVideoPanelPreview extends Component {
         latitude: 47.65,
         longitude: 7
       },
-      mapStyle: `mapbox://styles/${user}/${mapId}`, // Unsure if mapStyle would ever change but allowing it just in case
+      mapStyle: mapStyleUrl, // Unsure if mapStyle would ever change but allowing it just in case
       glContext: undefined,
       memoDevicePixelRatio: window.devicePixelRatio // memoize
     };
