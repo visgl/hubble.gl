@@ -35,7 +35,6 @@ const KEPLER_UI = {
   LoadingSpinner
 };
 
-import {loadSampleData} from '../data/sample';
 // import {loadJson} from '../data/json';
 
 // const keplerGlGetState = state => state.demo.keplerGl;
