@@ -78,17 +78,17 @@ const encoderSettings = {
 }
 
 export default function App() {
-  const deckgl = useRef(null);
+  const deckRef = useRef(null);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
-  const nextFrame = useNextFrame();
+  const onNextFrame = useNextFrame();
   const [adapter] = useState(new DeckAdapter(getDeckScene));
 
   return (
     <div style={{position: 'relative'}}>
       <DeckGL
-        ref={deckgl}
-        {...adapter.getProps(deckgl, setReady, nextFrame)}
+        ref={deckRef}
+        {...adapter.getProps({deckRef, setReady, onNextFrame})}
       />
       <div style={{position: 'absolute'}}>{ready && <BasicControls adapter={adapter} busy={busy} setBusy={setBusy} encoderSettings={encoderSettings} getCameraKeyframes={getCameraKeyframes}/>}</div>
     </div>

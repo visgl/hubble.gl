@@ -25,7 +25,7 @@ async function sceneBuilder(animationLoop) {
 
 ## Methods
 
-##### `getProps(deckRef, setReady, onNextFrame, getLayers): props`
+##### `getProps({deckRef, setReady, onNextFrame, getLayers}): props`
 
 Supplies deck.gl properties from hubble.gl.
 
@@ -39,7 +39,7 @@ Parameters:
 
 * `getLayers` (`(scene: DeckScene) => any[]`, Optional) - Callback to construct deck.gl layers provided the scene. If set, `deck.layers` will be set to the layers returned by this function.
 
-##### `render(getCameraKeyframes, Encoder, encoderSettings, onStop)`
+##### `render({getCameraKeyframes, Encoder, encoderSettings, onStop})`
 
 Start rendering.
 

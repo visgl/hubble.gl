@@ -35,7 +35,7 @@ const aaEffect = new PostProcessEffect(fxaa, {});
 const vignetteEffect = new PostProcessEffect(vignette, {});
 
 export default function App() {
-  const deckgl = useRef(null);
+  const deckRef = useRef(null);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
@@ -46,7 +46,7 @@ export default function App() {
     pitch: viewState.pitch + 37
   });
 
-  const nextFrame = useNextFrame();
+  const onNextFrame = useNextFrame();
   const [duration] = useState(5000);
 
   const getCameraKeyframes = () => {
@@ -75,7 +75,7 @@ export default function App() {
         <ResolutionGuide />
       </div>
       <DeckGL
-        ref={deckgl}
+        ref={deckRef}
         views={new MapView({farZMultiplier: 3})}
         parameters={{
           depthTest: false,
@@ -90,7 +90,7 @@ export default function App() {
         }}
         controller={true}
         effects={[vignetteEffect, aaEffect]}
-        {...adapter.getProps(deckgl, setReady, nextFrame, getLayers)}
+        {...adapter.getProps({deckRef, setReady, onNextFrame, getLayers})}
       />
       <div style={{position: 'absolute'}}>
         {ready && (
