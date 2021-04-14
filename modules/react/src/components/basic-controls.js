@@ -47,13 +47,13 @@ export default function BasicControls({
   const [encoder, setEncoder] = useState('gif');
 
   const onRender = () => {
-    adapter.render(
+    adapter.render({
       getCameraKeyframes,
-      ENCODERS[encoder],
+      Encoder: ENCODERS[encoder],
       encoderSettings,
-      () => setBusy(false),
+      onStop: () => setBusy(false),
       getKeyframes
-    );
+    });
 
     setBusy(true);
   };
