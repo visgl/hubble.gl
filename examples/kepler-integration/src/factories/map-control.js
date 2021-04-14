@@ -18,11 +18,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+import React from 'react';
+import styled from 'styled-components';
 import {MapControlFactory, withState} from 'kepler.gl/components';
-import CustomMapControl from '../components/map-control/map-control';
+import {SampleMapPanel} from '../components/map-control/map-control';
 
-export const CustomMapControlFactory = () =>
-  withState([], state => ({...state.demo.app}))(CustomMapControl);
+CustomMapControlFactory.deps = MapControlFactory.deps;
+function CustomMapControlFactory(...deps) {
+  const MapControl = MapControlFactory(...deps);
+
+  const StyledMapControlOverlay = styled.div`
+    position: absolute;
+    top: ${props => props.top}px;
+    right: 0px;
+    z-index: 1;
+  `;
+
+  const CustomMapControl = props => {
+    return (
+      <StyledMapControlOverlay top={props.top}>
+        {!props.isExport && props.currentSample ? <SampleMapPanel {...props} /> : null}
+        <MapControl {...props} top={0} />
+      </StyledMapControlOverlay>
+    );
+  };
+
+  return withState([], state => ({...state.demo.app}))(CustomMapControl);
+}
 
 export function replaceMapControl() {
   return [MapControlFactory, CustomMapControlFactory];
