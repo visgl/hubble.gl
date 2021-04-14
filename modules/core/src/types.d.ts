@@ -41,6 +41,7 @@ interface EncoderSettings {
     sampleInterval: number,
     width: number,
     height: number
+    jpegQuality: number
   },
 }
 
