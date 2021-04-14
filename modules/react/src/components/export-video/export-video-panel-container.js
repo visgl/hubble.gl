@@ -201,7 +201,12 @@ export class ExportVideoPanelContainer extends Component {
     const onStop = () => {
       this.forceUpdate();
     };
-    adapter.render(this.getCameraKeyframes, PreviewEncoder, encoderSettings, onStop);
+    adapter.render({
+      getCameraKeyframes: this.getCameraKeyframes,
+      Encoder: PreviewEncoder,
+      encoderSettings,
+      onStop
+    });
   }
 
   onRenderVideo() {
@@ -214,7 +219,12 @@ export class ExportVideoPanelContainer extends Component {
       this.setState({rendering: false});
     }; // Disables overlay once export is done saving (generates file to download)
 
-    adapter.render(this.getCameraKeyframes, Encoder, encoderSettings, onStop);
+    adapter.render({
+      getCameraKeyframes: this.getCameraKeyframes,
+      Encoder,
+      encoderSettings,
+      onStop
+    });
   }
 
   setDuration(durationMs) {

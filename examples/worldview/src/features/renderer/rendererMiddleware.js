@@ -46,7 +46,7 @@ export const rendererMiddleware = store => {
         break;
       }
       case previewVideo.type: {
-        const {getCameraKeyframes, onStop} = action.payload;
+        const {getCameraKeyframes, getKeyframes, onStop} = action.payload;
         const state = store.getState();
         const encoderSettings = encoderSettingsSelector(state);
         const duration = durationSelector(state);
@@ -57,11 +57,17 @@ export const rendererMiddleware = store => {
         };
 
         adapter.scene.setDuration(duration);
-        adapter.render(getCameraKeyframes, PreviewEncoder, encoderSettings, innerOnStop);
+        adapter.render({
+          getCameraKeyframes,
+          Encoder: PreviewEncoder,
+          encoderSettings,
+          onStop: innerOnStop,
+          getKeyframes
+        });
         break;
       }
       case renderVideo.type: {
-        const {getCameraKeyframes, onStop} = action.payload;
+        const {getCameraKeyframes, getKeyframes, onStop} = action.payload;
         const state = store.getState();
         const encoderSettings = encoderSettingsSelector(state);
         const duration = durationSelector(state);
@@ -75,7 +81,13 @@ export const rendererMiddleware = store => {
         };
 
         adapter.scene.setDuration(duration);
-        adapter.render(getCameraKeyframes, Encoder, encoderSettings, innerOnStop);
+        adapter.render({
+          getCameraKeyframes,
+          Encoder,
+          encoderSettings,
+          onStop: innerOnStop,
+          getKeyframes
+        });
 
         break;
       }

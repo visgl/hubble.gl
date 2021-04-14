@@ -35,7 +35,7 @@ export default class DeckScene {
     this.setCameraKeyframes = this.setCameraKeyframes.bind(this);
   }
 
-  getLayers(accessor) {
+  getScene(accessor) {
     return accessor(this);
   }
 

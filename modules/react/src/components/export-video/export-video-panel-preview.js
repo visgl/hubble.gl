@@ -201,7 +201,7 @@ export class ExportVideoPanelPreview extends Component {
             onWebGLInitialized={gl => this.setState({glContext: gl})}
             onViewStateChange={setViewState}
             // onClick={visStateActions.onLayerClick}
-            {...adapter.getProps(this.deckRef, () => {})}
+            {...adapter.getProps({deckRef: this.deckRef, setReady: () => {}})}
           >
             {glContext && (
               <StaticMap

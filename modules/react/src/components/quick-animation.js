@@ -16,10 +16,10 @@ export const QuickAnimation = ({
   encoderSettings = {},
   deckProps = {}
 }) => {
-  const deckgl = useRef(null);
+  const deckRef = useRef(null);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
-  const nextFrame = useNextFrame();
+  const onNextFrame = useNextFrame();
 
   const [viewState, setViewState] = useState(initialViewState);
 
@@ -57,13 +57,13 @@ export const QuickAnimation = ({
         <ResolutionGuide />
       </div>
       <DeckGL
-        ref={deckgl}
+        ref={deckRef}
         viewState={viewState}
         onViewStateChange={({viewState: vs}) => {
           setViewState(vs);
         }}
         controller={true}
-        {...adapter.getProps(deckgl, setReady, nextFrame, getLayers)}
+        {...adapter.getProps({deckRef, setReady, onNextFrame, getLayers})}
         {...deckProps}
       />
       <div style={{position: 'absolute'}}>

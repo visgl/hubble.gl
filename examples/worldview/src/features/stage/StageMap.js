@@ -192,7 +192,7 @@ export class StageMap extends Component {
           onWebGLInitialized={gl => this.setState({glContext: gl})}
           onViewStateChange={({viewState: vs}) => setViewState(vs)}
           // onClick={visStateActions.onLayerClick}
-          {...adapter.getProps(this.deckRef, () => {})}
+          {...adapter.getProps({deckRef: this.deckRef, setReady: () => {}})}
         >
           {this.state.glContext && (
             <StaticMap
