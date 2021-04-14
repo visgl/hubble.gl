@@ -18,6 +18,7 @@ export default class GifEncoder extends FrameEncoder {
     this.options.height = this.options.height || 480;
     this.options.numWorkers = this.options.numWorkers || 4;
     this.options.sampleInterval = this.options.sampleInterval || 10;
+    this.options.jpegQuality = this.options.jpegQuality || 1.0;
 
     // this.source = settings.source
     this.source = 'images';
@@ -38,7 +39,7 @@ export default class GifEncoder extends FrameEncoder {
   /** @param {HTMLCanvasElement} canvas */
   async add(canvas) {
     if (this.source === 'images') {
-      const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+      const dataUrl = canvas.toDataURL('image/jpeg', this.options.jpegQuality);
       await this.gifBuilder.add(dataUrl);
     }
   }
