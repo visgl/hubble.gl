@@ -60,7 +60,7 @@ export default class DeckAdapter {
    * @param {(nextTimeMs: number) => void} onNextFrame
    * @param {(scene: DeckScene) => any[]} getLayers
    */
-  getProps(deckRef, setReady, onNextFrame = undefined, getLayers = undefined) {
+  getProps({deckRef, setReady, onNextFrame = undefined, getLayers = undefined}) {
     const props = {
       onLoad: () =>
         this._deckOnLoad(deckRef.current.deck).then(() => {
@@ -104,13 +104,13 @@ export default class DeckAdapter {
    * @param {() => void} onStop
    * @param {() => Object<string, import('../keyframes').Keyframes>} getKeyframes
    */
-  render(
+  render({
     getCameraKeyframes = undefined,
     Encoder = PreviewEncoder,
     encoderSettings = {},
     onStop = undefined,
     getKeyframes = undefined
-  ) {
+  }) {
     if (getCameraKeyframes) {
       this.scene.setCameraKeyframes(getCameraKeyframes());
     }
@@ -168,7 +168,7 @@ export default class DeckAdapter {
     if (!this.scene) {
       return [];
     }
-    return this.scene.getLayers(getLayers);
+    return this.scene.getScene(getLayers);
   }
 
   /**
