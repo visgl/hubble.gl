@@ -9,6 +9,8 @@
     "@luma.gl/debug": "^8.2.0"
   },
   "dependencies": {
+    "@loaders.gl/core": "^2.3.13",
+    "@loaders.gl/json": "^2.3.13",
     "@reduxjs/toolkit": "^1.5.0",
     "d3-request": "^1.0.6",
     "global": "^4.3.0",

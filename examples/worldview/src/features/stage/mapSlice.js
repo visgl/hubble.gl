@@ -1,6 +1,5 @@
 /* eslint-disable no-void */
 import {createSlice} from '@reduxjs/toolkit';
-// import
 
 const initialState = {
   ready: false,

@@ -32,10 +32,8 @@ export class StageMap extends Component {
     this.mapRef = React.createRef();
     this.deckRef = React.createRef();
 
-    // console.log(mapStyleUrl);
-
     this.state = {
-      mapStyle: mapStyleUrl, // Unsure if mapStyle would ever change but allowing it just in case
+      mapStyle: mapStyleUrl,
       glContext: undefined,
       memoDevicePixelRatio: window.devicePixelRatio // memoize
     };
@@ -46,6 +44,12 @@ export class StageMap extends Component {
     this._resizeVideo = this._resizeVideo.bind(this);
 
     this._resizeVideo();
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const mapStyle = props.mapData.mapStyle;
+    const mapStyleUrl = mapStyle.mapStyles[mapStyle.styleType].url;
+    return {...state, mapStyle: mapStyleUrl};
   }
 
   componentDidUpdate(prevProps) {
@@ -151,7 +155,7 @@ export class StageMap extends Component {
 
     const keplerLayers = this.createLayers();
 
-    map.addLayer(new MapboxLayer({id: 'my-deck', deck}));
+    // map.addLayer(new MapboxLayer({id: 'hubblegl-overlay', deck}));
 
     for (let i = 0; i < keplerLayers.length; i++) {
       // Adds DeckGL layers to Mapbox so Mapbox can be the bottom layer. Removing this clips DeckGL layers
@@ -160,6 +164,7 @@ export class StageMap extends Component {
 
     map.on('render', () =>
       this.props.adapter.onAfterRender(() => {
+        this.props.adapter.scene.getScene(this.props.getFilters);
         this.forceUpdate();
       })
     );
