@@ -9,12 +9,12 @@ import {
   renderVideo,
   dimensionSelector
 } from '../renderer';
-import {viewStateSelector} from './mapSlice';
 import {AutoSizer} from 'react-virtualized';
 import {WithKeplerUI} from '@hubble.gl/react';
 import StageContainer from './StageContainer';
-import {CameraKeyframes} from '@hubble.gl/core';
-import {easing} from 'popmotion';
+import {CameraKeyframes, FilterValueKeyframes} from '@hubble.gl/core';
+import {cameraKeyframeSelector, filterKeyframeSelector} from '../timeline/timelineSlice';
+import {setFilter} from 'kepler.gl/actions';
 
 const StageBottomToolbar = ({playing, onPreview}) => {
   return (
@@ -48,7 +48,7 @@ const StageMapOverlay = ({rendererBusy, currentTime, duration, width, height}) =
 
   const percent = useMemo(() => {
     return Math.floor((currentTime / duration) * 100).toFixed(0);
-  }, [duration, duration]);
+  }, [currentTime, duration]);
 
   return (
     <WithKeplerUI>
@@ -99,49 +99,52 @@ export const Stage = ({}) => {
   const rendererBusy = useSelector(busySelector);
   const duration = useSelector(durationSelector);
   const dispatch = useDispatch();
-  const viewState = useSelector(viewStateSelector);
 
+  const cameraKeyframe = useSelector(cameraKeyframeSelector);
   const getCameraKeyframes = useCallback(() => {
-    const {longitude, latitude, zoom, pitch, bearing} = viewState;
-
-    const camera = new CameraKeyframes({
-      timings: [0, duration],
-      keyframes: [
-        {
-          longitude,
-          latitude,
-          zoom,
-          pitch,
-          bearing
-        },
-        {
-          longitude,
-          latitude,
-          zoom,
-          pitch,
-          bearing: 90
-        }
-      ],
-      easings: [easing.easeInOut]
-    });
+    const camera = new CameraKeyframes(cameraKeyframe);
     return camera;
-  }, [viewState, duration]);
+  }, [cameraKeyframe]);
+
+  const filterKeyframe = useSelector(filterKeyframeSelector);
+
+  const getKeyframes = useCallback(() => {
+    const keyframes = {};
+    if (filterKeyframe) {
+      keyframes.timeFilter = new FilterValueKeyframes(filterKeyframe);
+    }
+    return keyframes;
+  }, [filterKeyframe]);
+
+  const getFilters = useCallback(
+    scene => {
+      // console.log(scene)
+      // console.log(scene.keyframes.timeFilter.getFrame())
+      if (scene.keyframes.timeFilter) {
+        const frame = scene.keyframes.timeFilter.getFrame();
+        dispatch(
+          setFilter(scene.keyframes.timeFilter.filterId, 'value', [frame.left, frame.right])
+        );
+      }
+    },
+    [getKeyframes]
+  );
 
   const handlePreview = useCallback(() => {
     if (rendererBusy === false) {
-      dispatch(previewVideo({getCameraKeyframes}));
+      dispatch(previewVideo({getCameraKeyframes, getKeyframes}));
     } else {
       dispatch(stopVideo());
     }
-  }, [rendererBusy, getCameraKeyframes]);
+  }, [rendererBusy, getCameraKeyframes, getKeyframes]);
 
   const handleRender = useCallback(() => {
     if (rendererBusy === false) {
-      dispatch(renderVideo({getCameraKeyframes}));
+      dispatch(renderVideo({getCameraKeyframes, getKeyframes}));
     } else {
       dispatch(stopVideo());
     }
-  }, [rendererBusy, getCameraKeyframes]);
+  }, [rendererBusy, getCameraKeyframes, getKeyframes]);
 
   return (
     <div
@@ -160,7 +163,7 @@ export const Stage = ({}) => {
           {({mapHeight, mapWidth, availableHeight, availableWidth}) => (
             <StageMapBox width={availableWidth} height={availableHeight}>
               {/* <div style={{width: mapWidth, height: mapHeight, backgroundColor: 'green'}} /> */}
-              <StageContainer width={mapWidth} height={mapHeight} />
+              <StageContainer width={mapWidth} height={mapHeight} getFilters={getFilters} />
               <StageMapOverlay
                 rendererBusy={rendererBusy}
                 duration={duration}

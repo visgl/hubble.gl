@@ -24,15 +24,7 @@ import {DeckAdapter, DeckScene} from '@hubble.gl/core';
 import {StageMap} from './StageMap';
 import {connect} from 'react-redux';
 
-import {
-  setupRenderer,
-  timecodeChange,
-  resolutionChange,
-  formatChange,
-  dimensionSelector,
-  busySelector,
-  durationSelector
-} from '../renderer';
+import {setupRenderer, dimensionSelector, busySelector, durationSelector} from '../renderer';
 
 import {updateViewState, viewStateSelector} from './mapSlice';
 
@@ -46,30 +38,10 @@ export class StageContainer extends Component {
     // this.setResolution = this.setResolution.bind(this);
     this.getDeckScene = this.getDeckScene.bind(this);
 
-    const {
-      mapData: {
-        mapState: {latitude, longitude, zoom, bearing, pitch, altitude}
-      },
-      glContext,
-      dispatch
-    } = props;
+    const {glContext, dispatch} = props;
 
     const adapter = new DeckAdapter(this.getDeckScene, glContext);
     dispatch(setupRenderer(adapter));
-    dispatch(timecodeChange(1000));
-    dispatch(resolutionChange('1280x720'));
-    dispatch(formatChange('gif'));
-
-    dispatch(
-      updateViewState({
-        latitude,
-        longitude,
-        zoom,
-        bearing,
-        pitch,
-        altitude
-      })
-    );
 
     this.state = {
       adapter
@@ -118,7 +90,8 @@ export class StageContainer extends Component {
       viewState,
       dimension,
       // actions
-      dispatch
+      dispatch,
+      getFilters
     } = this.props;
 
     const {adapter} = this.state;
@@ -135,6 +108,7 @@ export class StageContainer extends Component {
         // Hubble Props
         adapter={adapter}
         dimension={dimension}
+        getFilters={getFilters}
       />
     );
   }

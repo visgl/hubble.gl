@@ -18,26 +18,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import React, {useEffect} from 'react';
+import React from 'react';
 import styled, {ThemeProvider} from 'styled-components';
 import {IntlProvider} from 'react-intl';
 import {messages} from 'kepler.gl/localization';
 import {theme} from 'kepler.gl/styles';
-import {registerEntry} from 'kepler.gl/actions';
-import {AUTH_TOKENS} from '../constants';
-
 import {Stage} from '../features/stage/Stage';
-import {useDispatch, useSelector} from 'react-redux';
-
+import {useSelector} from 'react-redux';
 import {InjectKeplerUI} from '@hubble.gl/react';
 import {LoadingSpinner} from 'kepler.gl/components';
 const KEPLER_UI = {
   LoadingSpinner
 };
 
-// import {loadJson} from '../data/json';
+import {useKepler} from '../features/kepler/hooks';
 
-// const keplerGlGetState = state => state.demo.keplerGl;
+import {useNewYorkScene} from '../scenes/newYork';
 
 const GlobalStyle = styled.div`
   font-family: ff-clan-web-pro, 'Helvetica Neue', Helvetica, sans-serif;
@@ -80,33 +76,12 @@ const WindowSize = styled.div`
 `;
 
 const App = ({}) => {
-  const dispatch = useDispatch();
-  const hubbleGl = useSelector(state => state.hubbleGl);
-  useEffect(() => {
-    dispatch(
-      registerEntry({
-        id: 'map',
-        mint: true,
-        mapboxApiAccessToken: AUTH_TOKENS.MAPBOX_TOKEN
-        // mapboxApiUrl,
-        // mapStylesReplaceDefault,
-        // initialUiState
-      })
-    );
-  }, []);
+  const ready = useSelector(state => state.hubbleGl.map.ready);
+  // const state = useSelector(state => state);
+  // console.log(state);
 
-  useEffect(() => {
-    // load sample data
-    const actions = loadSampleData();
-    actions.forEach(a => dispatch(a));
-
-    // loadJson().then(data => {
-    //   // console.log(data);
-    //   dispatch(data);
-    //   // console.log(this.props);
-    //   // dispatch(mapStyleChange({styleType: "light"}))
-    // });
-  }, []);
+  useKepler();
+  useNewYorkScene();
 
   return (
     <IntlProvider locale="en" messages={messages.en}>
@@ -114,7 +89,7 @@ const App = ({}) => {
         <GlobalStyle>
           <WindowSize>
             <InjectKeplerUI keplerUI={KEPLER_UI}>
-              {hubbleGl.map.ready && (
+              {ready && (
                 <>
                   <div style={{height: 1080, margin: 16}}>
                     <Stage />
