@@ -30,16 +30,6 @@ const ExportVideoPanelFooter = ({handlePreviewVideo, handleRenderVideo, renderin
   <WithKeplerUI>
     {({Button}) => (
       <PanelFooterInner className="export-video-panel__footer">
-        <Button
-          width={DEFAULT_BUTTON_WIDTH}
-          height={DEFAULT_BUTTON_HEIGHT}
-          secondary
-          className={'export-video-button'}
-          onClick={handlePreviewVideo}
-          disabled={rendering}
-        >
-          Preview
-        </Button>
         <ButtonGroup>
           <Button
             width={DEFAULT_BUTTON_WIDTH}

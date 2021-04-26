@@ -95,5 +95,19 @@ export function getResolutionSetting(value) {
 
 export const deckStyle = {
   width: '100%',
-  height: '100%'
+  height: '100%',
+  position: 'relative'
+};
+
+export const timelineControlStyle = {
+  position: 'relative',
+  display: 'flex',
+  justifyContent: 'center'
+};
+
+export const timelinePlayButtonStyle = {
+  cursor: 'pointer',
+  height: '50px',
+  width: '50px',
+  fill: '#FFF'
 };

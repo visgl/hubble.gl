@@ -70,7 +70,8 @@ const PanelBody = ({
   mediaType,
   viewState,
   setDuration,
-  rendering
+  rendering,
+  handlePreviewVideo
 }) => (
   <PanelBodyInner className="export-video-panel__body" exportVideoWidth={exportVideoWidth}>
     <ExportVideoPanelPreview
@@ -82,6 +83,7 @@ const PanelBody = ({
       viewState={viewState}
       rendering={rendering}
       durationMs={durationMs}
+      handlePreviewVideo={handlePreviewVideo}
     />
     <ExportVideoPanelSettings
       setMediaType={setMediaType}
@@ -120,7 +122,6 @@ const ExportVideoPanel = ({
   setResolution,
   // Hubble Props
   adapter,
-  handlePreviewVideo,
   handleRenderVideo,
   durationMs,
   frameRate,
@@ -128,7 +129,8 @@ const ExportVideoPanel = ({
   mediaType,
   viewState,
   setDuration,
-  rendering
+  rendering,
+  handlePreviewVideo
 }) => {
   return (
     <Panel exportVideoWidth={exportVideoWidth} className="export-video-panel">
@@ -155,10 +157,10 @@ const ExportVideoPanel = ({
         viewState={viewState}
         setDuration={setDuration}
         rendering={rendering}
+        handlePreviewVideo={handlePreviewVideo}
       />
       <ExportVideoPanelFooter
         handleClose={handleClose}
-        handlePreviewVideo={handlePreviewVideo}
         handleRenderVideo={handleRenderVideo}
         rendering={rendering}
       />
