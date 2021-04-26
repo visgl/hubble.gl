@@ -2,7 +2,13 @@ import React from 'react';
 
 import {estimateFileSize} from './utils';
 import {StyledLabelCell, StyledValueCell, InputGrid} from './styled-components';
-import {DEFAULT_FILENAME, FORMATS, RESOLUTIONS} from './constants';
+import {
+  DEFAULT_FILENAME,
+  DEFAULT_BUTTON_HEIGHT,
+  DEFAULT_BUTTON_WIDTH,
+  FORMATS,
+  RESOLUTIONS
+} from './constants';
 import {WithKeplerUI} from '../inject-kepler';
 
 function ExportTab({
@@ -16,11 +22,13 @@ function ExportTab({
   durationMs,
   frameRate,
   resolution,
-  mediaType
+  mediaType,
+  handleRenderVideo,
+  rendering
 }) {
   return (
     <WithKeplerUI>
-      {({Input, ItemSelector}) => (
+      {({Input, ItemSelector, Button}) => (
         <>
           <InputGrid rows={5}>
             <StyledLabelCell>File Name</StyledLabelCell>
@@ -53,6 +61,15 @@ function ExportTab({
             <StyledValueCell>
               ~{estimateFileSize(frameRate, resolution, durationMs, mediaType)}
             </StyledValueCell>
+            <Button
+              width={DEFAULT_BUTTON_WIDTH}
+              height={DEFAULT_BUTTON_HEIGHT}
+              className={'export-video-button'}
+              onClick={handleRenderVideo}
+              disabled={rendering}
+            >
+              Render
+            </Button>
           </InputGrid>
         </>
       )}

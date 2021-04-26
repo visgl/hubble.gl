@@ -71,7 +71,8 @@ const PanelBody = ({
   viewState,
   setDuration,
   rendering,
-  handlePreviewVideo
+  handlePreviewVideo,
+  handleRenderVideo
 }) => (
   <PanelBodyInner className="export-video-panel__body" exportVideoWidth={exportVideoWidth}>
     <ExportVideoPanelPreview
@@ -96,6 +97,8 @@ const PanelBody = ({
       resolution={resolution}
       mediaType={mediaType}
       setDuration={setDuration}
+      handleRenderVideo={handleRenderVideo}
+      rendering={rendering}
     />
     {/* TODO: inject additional keyframing tools here */}
   </PanelBodyInner>
@@ -158,12 +161,9 @@ const ExportVideoPanel = ({
         setDuration={setDuration}
         rendering={rendering}
         handlePreviewVideo={handlePreviewVideo}
-      />
-      <ExportVideoPanelFooter
-        handleClose={handleClose}
         handleRenderVideo={handleRenderVideo}
-        rendering={rendering}
       />
+      <ExportVideoPanelFooter handleClose={handleClose} />
     </Panel>
   );
 };

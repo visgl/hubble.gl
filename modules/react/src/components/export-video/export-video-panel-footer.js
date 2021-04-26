@@ -21,26 +21,15 @@
 import React from 'react';
 import {withTheme} from 'styled-components';
 
-import {DEFAULT_BUTTON_HEIGHT, DEFAULT_BUTTON_WIDTH} from './constants';
 import {WithKeplerUI} from '../inject-kepler';
 
-import {PanelFooterInner, ButtonGroup} from './styled-components';
+import {PanelFooterInner} from './styled-components';
 
-const ExportVideoPanelFooter = ({handlePreviewVideo, handleRenderVideo, rendering}) => (
+const ExportVideoPanelFooter = () => (
   <WithKeplerUI>
-    {({Button}) => (
+    {({}) => (
       <PanelFooterInner className="export-video-panel__footer">
-        <ButtonGroup>
-          <Button
-            width={DEFAULT_BUTTON_WIDTH}
-            height={DEFAULT_BUTTON_HEIGHT}
-            className={'export-video-button'}
-            onClick={handleRenderVideo}
-            disabled={rendering}
-          >
-            Render
-          </Button>
-        </ButtonGroup>
+        {/* NOTE RW - Unused for now but didn't delete in case we needed in the future */}
       </PanelFooterInner>
     )}
   </WithKeplerUI>

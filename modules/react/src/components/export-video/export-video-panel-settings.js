@@ -41,7 +41,9 @@ function ExportVideoPanelSettings({
   frameRate,
   resolution,
   mediaType,
-  setDuration
+  setDuration,
+  handleRenderVideo,
+  rendering
 }) {
   const loadingMethods = [
     // Each entry creates new tabs with ModalTabsFactory
@@ -89,6 +91,8 @@ function ExportVideoPanelSettings({
                 resolution={resolution}
                 mediaType={mediaType}
                 setCameraPreset={setCameraPreset}
+                handleRenderVideo={handleRenderVideo}
+                rendering={rendering}
               />
             )}
           </div>
