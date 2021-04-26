@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {estimateFileSize} from './utils';
 import {StyledLabelCell, StyledValueCell, InputGrid} from './styled-components';
@@ -26,6 +26,8 @@ function ExportTab({
   handleRenderVideo,
   rendering
 }) {
+  const [aspRatio, setAspRatio] = useState('16:9');
+
   return (
     <WithKeplerUI>
       {({Input, ItemSelector, Button}) => (
@@ -47,10 +49,20 @@ function ExportTab({
               searchable={false}
               onChange={setMediaType}
             />
-            <StyledLabelCell>Resolution</StyledLabelCell>
+            <StyledLabelCell>Aspect Ratio</StyledLabelCell>
             <ItemSelector
-              selectedItems={getSelectedItems(RESOLUTIONS, settingsData.resolution)}
-              options={RESOLUTIONS}
+              selectedItems={aspRatio}
+              options={['4:3', '16:9']}
+              multiSelect={false}
+              searchable={false}
+              onChange={ratio => {
+                setAspRatio(ratio);
+              }}
+            />
+            <StyledLabelCell>Quality</StyledLabelCell>
+            <ItemSelector
+              selectedItems={getSelectedItems(RESOLUTIONS, settingsData.resolution)} // TODO selected item should change every aspect ratio swap
+              options={RESOLUTIONS.filter(o => o.aspectRatio === aspRatio)}
               getOptionValue={getOptionValue}
               displayOption={displayOption}
               multiSelect={false}
