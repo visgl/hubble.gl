@@ -36,9 +36,6 @@ import {
   Play
 } from 'kepler.gl/components';
 
-// import Play from 'kepler.gl/components';
-// import {Reset, Play, Pause, Rocket, AnchorWindow, FreeWindow} from 'components/common/icons';
-
 const IconButton = styled(Button)`
   padding: 0;
   svg {

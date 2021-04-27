@@ -197,8 +197,6 @@ export class ExportVideoPanelPreview extends Component {
     };
 
     return (
-      // TODO import Play class, assign it to handlePreviewVideo
-      // https://github.com/keplergl/kepler.gl/blob/14c35fc048a745faab0c6770cab7a4625ccedda3/src/components/common/icons/play.js
       <WithKeplerUI>
         {({Icons}) => (
           <>
