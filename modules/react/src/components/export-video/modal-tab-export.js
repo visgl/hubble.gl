@@ -57,11 +57,17 @@ function ExportTab({
               searchable={false}
               onChange={ratio => {
                 setAspRatio(ratio);
+                if (aspRatio === '4:3') {
+                  settingsData.resolution = '1280x720';
+                } else {
+                  settingsData.resolution = '1280x960';
+                }
+                setResolution(settingsData.resolution);
               }}
             />
             <StyledLabelCell>Quality</StyledLabelCell>
             <ItemSelector
-              selectedItems={getSelectedItems(RESOLUTIONS, settingsData.resolution)} // TODO selected item should change every aspect ratio swap
+              selectedItems={getSelectedItems(RESOLUTIONS, settingsData.resolution)}
               options={RESOLUTIONS.filter(o => o.aspectRatio === aspRatio)}
               getOptionValue={getOptionValue}
               displayOption={displayOption}
