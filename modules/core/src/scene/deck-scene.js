@@ -35,10 +35,6 @@ export default class DeckScene {
     this.setCameraKeyframes = this.setCameraKeyframes.bind(this);
   }
 
-  getScene(accessor) {
-    return accessor(this);
-  }
-
   setDuration(duration) {
     this.lengthMs = duration;
   }
