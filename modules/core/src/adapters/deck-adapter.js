@@ -168,7 +168,7 @@ export default class DeckAdapter {
     if (!this.scene) {
       return [];
     }
-    return this.scene.getScene(getLayers);
+    return getLayers(this.scene);
   }
 
   /**

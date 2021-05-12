@@ -116,7 +116,7 @@ export const Stage = ({}) => {
     return keyframes;
   }, [filterKeyframe]);
 
-  const getFilters = useCallback(
+  const prepareFrame = useCallback(
     scene => {
       // console.log(scene)
       // console.log(scene.keyframes.timeFilter.getFrame())
@@ -163,7 +163,7 @@ export const Stage = ({}) => {
           {({mapHeight, mapWidth, availableHeight, availableWidth}) => (
             <StageMapBox width={availableWidth} height={availableHeight}>
               {/* <div style={{width: mapWidth, height: mapHeight, backgroundColor: 'green'}} /> */}
-              <StageContainer width={mapWidth} height={mapHeight} getFilters={getFilters} />
+              <StageContainer width={mapWidth} height={mapHeight} prepareFrame={prepareFrame} />
               <StageMapOverlay
                 rendererBusy={rendererBusy}
                 duration={duration}

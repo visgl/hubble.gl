@@ -91,7 +91,7 @@ export class StageContainer extends Component {
       dimension,
       // actions
       dispatch,
-      getFilters
+      prepareFrame
     } = this.props;
 
     const {adapter} = this.state;
@@ -108,7 +108,7 @@ export class StageContainer extends Component {
         // Hubble Props
         adapter={adapter}
         dimension={dimension}
-        getFilters={getFilters}
+        prepareFrame={prepareFrame}
       />
     );
   }

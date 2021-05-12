@@ -149,6 +149,7 @@ export class StageMap extends Component {
   }
 
   _onMapLoad() {
+    const {adapter, prepareFrame} = this.props;
     // Adds mapbox layer to modal
     const map = this.mapRef.current.getMap();
     const deck = this.deckRef.current.deck;
@@ -163,8 +164,8 @@ export class StageMap extends Component {
     }
 
     map.on('render', () =>
-      this.props.adapter.onAfterRender(() => {
-        this.props.adapter.scene.getScene(this.props.getFilters);
+      adapter.onAfterRender(() => {
+        prepareFrame(adapter.scene);
         this.forceUpdate();
       })
     );
