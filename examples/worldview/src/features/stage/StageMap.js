@@ -22,6 +22,7 @@ import React, {Component} from 'react';
 import DeckGL from '@deck.gl/react';
 import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
+import {createSelector} from 'reselect';
 
 export class StageMap extends Component {
   constructor(props) {
@@ -140,12 +141,18 @@ export class StageMap extends Component {
   }
 
   createLayers() {
+    const layersToRender = this.layersToRenderSelector(this.props);
+
     // returns an arr of DeckGL layer objects
-    const layerOrder = this.props.mapData.visState.layerOrder;
-    return layerOrder
-      .slice()
-      .reverse()
-      .reduce(this._renderLayer, []); // Slicing & reversing to create same layer order as Kepler
+    const {layerOrder, layerData, layers} = this.props.mapData.visState;
+    if (layerData && layerData.length) {
+      return layerOrder
+        .slice()
+        .reverse()
+        .filter(idx => layers[idx].overlayType === 'deckgl' && layersToRender[layers[idx].id])
+        .reduce(this._renderLayer, []); // Slicing & reversing to create same layer order as Kepler
+    }
+    return [];
   }
 
   _onMapLoad() {
@@ -168,6 +175,32 @@ export class StageMap extends Component {
         this.forceUpdate();
       })
     );
+  }
+
+  layersSelector = props => props.mapData.visState.layers;
+  layerDataSelector = props => props.mapData.visState.layerData;
+  mapLayersSelector = props => props.mapData.visState.mapLayers;
+  layerOrderSelector = props => props.mapData.visState.layerOrder;
+  layersToRenderSelector = createSelector(
+    this.layersSelector, // eslint-disable-line
+    this.layerDataSelector, // eslint-disable-line
+    this.mapLayersSelector, // eslint-disable-line
+    // {[id]: true \ false}
+    (layers, layerData, mapLayers) =>
+      layers.reduce(
+        (accu, layer, idx) => ({
+          ...accu,
+          [layer.id]:
+            layer.shouldRenderLayer(layerData[idx]) && this._isVisibleMapLayer(layer, mapLayers) // eslint-disable-line
+        }),
+        {}
+      )
+  );
+
+  /* component private functions */
+  _isVisibleMapLayer(layer, mapLayers) {
+    // if layer.id is not in mapLayers, don't render it
+    return !mapLayers || (mapLayers && mapLayers[layer.id]);
   }
 
   render() {
