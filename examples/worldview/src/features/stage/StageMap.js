@@ -182,16 +182,16 @@ export class StageMap extends Component {
   mapLayersSelector = props => props.mapData.visState.mapLayers;
   layerOrderSelector = props => props.mapData.visState.layerOrder;
   layersToRenderSelector = createSelector(
-    this.layersSelector,
-    this.layerDataSelector,
-    this.mapLayersSelector,
+    this.layersSelector, // eslint-disable-line
+    this.layerDataSelector, // eslint-disable-line
+    this.mapLayersSelector, // eslint-disable-line
     // {[id]: true \ false}
     (layers, layerData, mapLayers) =>
       layers.reduce(
         (accu, layer, idx) => ({
           ...accu,
           [layer.id]:
-            layer.shouldRenderLayer(layerData[idx]) && this._isVisibleMapLayer(layer, mapLayers)
+            layer.shouldRenderLayer(layerData[idx]) && this._isVisibleMapLayer(layer, mapLayers) // eslint-disable-line
         }),
         {}
       )
