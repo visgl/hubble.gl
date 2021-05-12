@@ -18,10 +18,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import keplerGlReducer, {combinedUpdaters, uiStateUpdaters} from 'kepler.gl/reducers';
+import keplerGlReducer, {
+  combinedUpdaters,
+  uiStateUpdaters,
+  mapStateUpdaters
+} from 'kepler.gl/reducers';
 import {AUTH_TOKENS} from '../../constants';
 import {EXPORT_MAP_FORMATS} from 'kepler.gl/constants';
 import {loadRemoteKeplerMap} from './loadKeplerMap';
+import {updateViewState} from '../stage/mapSlice';
 
 const {DEFAULT_EXPORT_MAP} = uiStateUpdaters;
 
@@ -52,5 +57,11 @@ export default keplerGlReducer
           config: action.payload.config
         }
       });
+    },
+    [updateViewState]: (state, action) => {
+      return {
+        ...state,
+        mapState: mapStateUpdaters.updateMapUpdater(state.mapState, action)
+      };
     }
   });

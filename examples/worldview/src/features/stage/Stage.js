@@ -12,9 +12,14 @@ import {
 import {AutoSizer} from 'react-virtualized';
 import {WithKeplerUI} from '@hubble.gl/react';
 import StageContainer from './StageContainer';
-import {CameraKeyframes, FilterValueKeyframes} from '@hubble.gl/core';
-import {cameraKeyframeSelector, filterKeyframeSelector} from '../timeline/timelineSlice';
-import {setFilter} from 'kepler.gl/actions';
+import {CameraKeyframes, FilterValueKeyframes, Keyframes} from '@hubble.gl/core';
+import {
+  cameraKeyframeSelector,
+  filterKeyframeSelector,
+  layerKeyframeSelector
+} from '../timeline/timelineSlice';
+import {setFilter, layerVisConfigChange} from 'kepler.gl/actions';
+import {updateViewState} from './mapSlice';
 
 const StageBottomToolbar = ({playing, onPreview}) => {
   return (
@@ -107,25 +112,61 @@ export const Stage = ({}) => {
   }, [cameraKeyframe]);
 
   const filterKeyframe = useSelector(filterKeyframeSelector);
+  const layerKeyframe = useSelector(layerKeyframeSelector);
+
+  const keplerLayers = useSelector(
+    state => state.keplerGl.map && state.keplerGl.map.visState.layers
+  );
 
   const getKeyframes = useCallback(() => {
-    const keyframes = {};
+    let keyframes = {};
+
+    if (Object.keys(layerKeyframe).length > 0) {
+      keyframes = Object.entries(layerKeyframe).reduce((acc, [key, value]) => {
+        const matchedLayer = keplerLayers.find(layer => layer.config.label === value.label);
+        if (matchedLayer) {
+          // console.log("Matched!", matchedLayer)
+          const features = Object.keys(matchedLayer.config.visConfig);
+          acc[key] = new Keyframes({...value, features});
+        }
+        return acc;
+      }, keyframes);
+    }
+
+    // console.log(keyframes, keplerLayers);
+
     if (filterKeyframe) {
-      keyframes.timeFilter = new FilterValueKeyframes(filterKeyframe);
+      keyframes.hubble_timeFilter = new FilterValueKeyframes(filterKeyframe);
     }
     return keyframes;
-  }, [filterKeyframe]);
+  }, [filterKeyframe, layerKeyframe]);
 
   const getFilters = useCallback(
     scene => {
       // console.log(scene)
       // console.log(scene.keyframes.timeFilter.getFrame())
-      if (scene.keyframes.timeFilter) {
-        const frame = scene.keyframes.timeFilter.getFrame();
+
+      // Filter Frame
+      if (scene.keyframes.hubble_timeFilter) {
+        const frame = scene.keyframes.hubble_timeFilter.getFrame();
         dispatch(
-          setFilter(scene.keyframes.timeFilter.filterId, 'value', [frame.left, frame.right])
+          setFilter(scene.keyframes.hubble_timeFilter.filterId, 'value', [frame.left, frame.right])
         );
       }
+
+      // Vis Config Frame
+      keplerLayers.forEach(layer => {
+        const keyframe = scene.keyframes[layer.config.label];
+        if (keyframe) {
+          // console.log(layer)
+          const frame = keyframe.getFrame();
+          // console.log(frame)
+          dispatch(layerVisConfigChange(layer, frame));
+        }
+      });
+
+      // Map State
+      dispatch(updateViewState(scene.keyframes.camera.getFrame()));
     },
     [getKeyframes]
   );
