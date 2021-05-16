@@ -106,8 +106,13 @@ export const Stage = ({}) => {
   const dispatch = useDispatch();
 
   const cameraKeyframe = useSelector(cameraKeyframeSelector);
+  const dimension = useSelector(dimensionSelector);
   const getCameraKeyframes = useCallback(() => {
-    const camera = new CameraKeyframes(cameraKeyframe);
+    const camera = new CameraKeyframes({
+      ...cameraKeyframe,
+      width: dimension.width,
+      height: dimension.height
+    });
     return camera;
   }, [cameraKeyframe]);
 
