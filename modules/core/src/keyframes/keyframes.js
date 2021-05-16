@@ -18,11 +18,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 import {KeyFrames as LumaKeyFrames} from '@luma.gl/engine';
-import {sanitizeEasings, merge, sanitizeTimings, factorInterpolator} from './utils';
+import {
+  sanitizeEasings,
+  merge,
+  sanitizeTimings,
+  factorInterpolator,
+  sanitizeInterpolators
+} from './utils';
 
 class Keyframes extends LumaKeyFrames {
   activeFeatures = {};
-  constructor({features, timings, keyframes, easings}) {
+  constructor({features, timings, keyframes, easings, interpolators = 'linear'}) {
     super([]);
     this._setActiveFeatures = this._setActiveFeatures.bind(this);
     this.getFrame = this.getFrame.bind(this);
@@ -30,6 +36,8 @@ class Keyframes extends LumaKeyFrames {
     if (keyframes.length === 0) {
       throw new Error('There must be at least one keyframe');
     }
+
+    const _interpolators = sanitizeInterpolators(keyframes, interpolators);
 
     const _easings = sanitizeEasings(keyframes, easings);
 
@@ -41,7 +49,7 @@ class Keyframes extends LumaKeyFrames {
     }, {});
 
     this._setActiveFeatures(keyframes);
-    const _keyframes = merge(_timings, keyframes, _easings);
+    const _keyframes = merge(_timings, keyframes, _easings, _interpolators);
     this.setKeyFrames(_keyframes);
   }
 
