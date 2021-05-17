@@ -205,7 +205,7 @@ export class StageMap extends Component {
   }
 
   render() {
-    const {adapter, viewState, width, height, setViewState} = this.props;
+    const {adapter, viewState, width, height, setViewState, deckProps, staticMapProps} = this.props;
 
     const deckStyle = {
       width: '100%',
@@ -232,6 +232,7 @@ export class StageMap extends Component {
           onViewStateChange={({viewState: vs}) => setViewState(vs)}
           // onClick={visStateActions.onLayerClick}
           {...adapter.getProps({deckRef: this.deckRef, setReady: () => {}})}
+          {...deckProps}
         >
           {this.state.glContext && (
             <StaticMap
@@ -240,6 +241,7 @@ export class StageMap extends Component {
               preventStyleDiffing={true}
               gl={this.state.glContext}
               onLoad={this._onMapLoad}
+              {...staticMapProps}
             />
           )}
         </DeckGL>

@@ -24,18 +24,13 @@ import {DeckAdapter, DeckScene} from '@hubble.gl/core';
 import {StageMap} from './StageMap';
 import {connect} from 'react-redux';
 
-import {setupRenderer, dimensionSelector, busySelector, durationSelector} from '../renderer';
+import {setupRenderer, dimensionSelector, durationSelector} from '../renderer';
 
 import {updateViewState, viewStateSelector} from './mapSlice';
 
 export class StageContainer extends Component {
   constructor(props) {
     super(props);
-
-    // this.setMediaType = this.setMediaType.bind(this);
-    // this.setCameraPreset = this.setCameraPreset.bind(this);
-    // this.setFileName = this.setFileName.bind(this);
-    // this.setResolution = this.setResolution.bind(this);
     this.getDeckScene = this.getDeckScene.bind(this);
 
     const {glContext, dispatch} = props;
@@ -61,43 +56,28 @@ export class StageContainer extends Component {
     });
   }
 
-  setStateAndNotify(update) {
-    const {
-      props: {onSettingsChange},
-      state
-    } = this;
-    this.setState({...state, ...update});
-
-    if (onSettingsChange) {
-      const {mediaType, cameraPreset, fileName, resolution, durationMs} = state;
-      onSettingsChange({
-        mediaType,
-        cameraPreset,
-        fileName,
-        resolution,
-        durationMs,
-        ...update
-      });
-    }
-  }
-
   render() {
     const {
-      width,
-      height,
-      mapData,
       // state
+      mapData,
       viewState,
       dimension,
       // actions
       dispatch,
-      prepareFrame
+      // own props
+      width,
+      height,
+      prepareFrame,
+      deckProps,
+      staticMapProps
     } = this.props;
 
     const {adapter} = this.state;
 
     return (
       <StageMap
+        deckProps={deckProps}
+        staticMapProps={staticMapProps}
         // UI Props
         width={width}
         height={height}
@@ -121,7 +101,6 @@ StageContainer.defaultProps = {
 
 const mapStateToProps = state => {
   return {
-    busy: busySelector(state),
     dimension: dimensionSelector(state),
     viewState: viewStateSelector(state),
     duration: durationSelector(state),

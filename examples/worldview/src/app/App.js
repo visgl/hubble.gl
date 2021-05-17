@@ -23,13 +23,14 @@ import styled, {ThemeProvider} from 'styled-components';
 import {IntlProvider} from 'react-intl';
 import {messages} from 'kepler.gl/localization';
 import {theme} from 'kepler.gl/styles';
-import {Stage} from '../features/stage/Stage';
 import {useSelector} from 'react-redux';
 import {InjectKeplerUI} from '@hubble.gl/react';
 import {LoadingSpinner} from 'kepler.gl/components';
 const KEPLER_UI = {
   LoadingSpinner
 };
+import {Stage} from '../features/stage/Stage';
+import {useKepler, useKeplerKeyframes, usePrepareKeplerFrame} from '../features/kepler/hooks';
 
 import {useKepler} from '../features/kepler/hooks';
 
@@ -77,10 +78,16 @@ const WindowSize = styled.div`
 
 const App = ({}) => {
   const ready = useSelector(state => state.hubbleGl.map.ready);
+  useKepler();
+  // TODO: kepler can be mounted at any location in redux.
+  const keplerLayers = useSelector(
+    state => state.keplerGl.map && state.keplerGl.map.visState.layers
+  );
+  const getKeyframes = useKeplerKeyframes(keplerLayers);
+  const prepareFrame = usePrepareKeplerFrame(keplerLayers);
   // const state = useSelector(state => state);
   // console.log(state);
 
-  useKepler();
   useNewYorkScene();
 
   return (
@@ -92,7 +99,7 @@ const App = ({}) => {
               {ready && (
                 <>
                   <div style={{height: 1080, margin: 16}}>
-                    <Stage />
+                    <Stage getKeyframes={getKeyframes} prepareFrame={prepareFrame} />
                   </div>
                 </>
               )}
