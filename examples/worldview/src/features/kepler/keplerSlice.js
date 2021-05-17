@@ -65,3 +65,30 @@ export default keplerGlReducer
       };
     }
   });
+
+const isKeplerReady = (state, mapId) => {
+  if (state.keplerGl[mapId]) return true;
+  return false;
+};
+
+export const createSelectKeplerLayers = mapId => {
+  return state => {
+    if (!isKeplerReady(state, mapId)) return undefined;
+    return state.keplerGl[mapId].visState.layers;
+  };
+};
+
+export const createSelectKeplerMap = mapId => {
+  return state => {
+    if (!isKeplerReady(state, mapId)) return undefined;
+    return state.keplerGl[mapId];
+  };
+};
+
+export const createSelectMapStyle = mapId => {
+  return state => {
+    if (!isKeplerReady(state, mapId)) return undefined;
+    const mapStyle = state.keplerGl[mapId].mapStyle;
+    return mapStyle.mapStyles[mapStyle.styleType].url;
+  };
+};

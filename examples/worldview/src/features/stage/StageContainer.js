@@ -59,7 +59,6 @@ export class StageContainer extends Component {
   render() {
     const {
       // state
-      mapData,
       viewState,
       dimension,
       // actions
@@ -82,7 +81,6 @@ export class StageContainer extends Component {
         width={width}
         height={height}
         // Map Props
-        mapData={mapData}
         viewState={viewState}
         setViewState={vs => dispatch(updateViewState(vs))}
         // Hubble Props
@@ -103,8 +101,7 @@ const mapStateToProps = state => {
   return {
     dimension: dimensionSelector(state),
     viewState: viewStateSelector(state),
-    duration: durationSelector(state),
-    mapData: state.keplerGl.map
+    duration: durationSelector(state)
   };
 };
 
