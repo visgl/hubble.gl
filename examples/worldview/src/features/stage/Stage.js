@@ -12,14 +12,7 @@ import {
 import {AutoSizer} from 'react-virtualized';
 import {WithKeplerUI} from '@hubble.gl/react';
 import StageContainer from './StageContainer';
-import {CameraKeyframes, FilterValueKeyframes, Keyframes} from '@hubble.gl/core';
-import {
-  cameraKeyframeSelector,
-  filterKeyframeSelector,
-  layerKeyframeSelector
-} from '../timeline/timelineSlice';
-import {setFilter, layerVisConfigChange} from 'kepler.gl/actions';
-import {updateViewState} from './mapSlice';
+import {useCameraKeyframes, usePrepareCameraFrame} from '../timeline/hooks';
 
 const StageBottomToolbar = ({playing, onPreview}) => {
   return (
@@ -100,80 +93,28 @@ const StageMapBox = ({height, width, children}) => (
   </div>
 );
 
-export const Stage = ({}) => {
+export const Stage = ({
+  getCameraKeyframes = undefined,
+  getKeyframes,
+  prepareFrame,
+  deckProps = undefined,
+  staticMapProps = undefined
+}) => {
   const rendererBusy = useSelector(busySelector);
   const duration = useSelector(durationSelector);
   const dispatch = useDispatch();
 
-  const cameraKeyframe = useSelector(cameraKeyframeSelector);
-  const dimension = useSelector(dimensionSelector);
-  const getCameraKeyframes = useCallback(() => {
-    const camera = new CameraKeyframes({
-      ...cameraKeyframe,
-      width: dimension.width,
-      height: dimension.height
-    });
-    return camera;
-  }, [cameraKeyframe]);
+  if (!getCameraKeyframes) {
+    getCameraKeyframes = useCameraKeyframes();
+  }
 
-  const filterKeyframe = useSelector(filterKeyframeSelector);
-  const layerKeyframe = useSelector(layerKeyframeSelector);
-
-  const keplerLayers = useSelector(
-    state => state.keplerGl.map && state.keplerGl.map.visState.layers
-  );
-
-  const getKeyframes = useCallback(() => {
-    let keyframes = {};
-
-    if (Object.keys(layerKeyframe).length > 0) {
-      keyframes = Object.entries(layerKeyframe).reduce((acc, [key, value]) => {
-        const matchedLayer = keplerLayers.find(layer => layer.config.label === value.label);
-        if (matchedLayer) {
-          // console.log("Matched!", matchedLayer)
-          const features = Object.keys(matchedLayer.config.visConfig);
-          acc[key] = new Keyframes({...value, features});
-        }
-        return acc;
-      }, keyframes);
-    }
-
-    // console.log(keyframes, keplerLayers);
-
-    if (filterKeyframe) {
-      keyframes.hubble_timeFilter = new FilterValueKeyframes(filterKeyframe);
-    }
-    return keyframes;
-  }, [filterKeyframe, layerKeyframe]);
-
-  const prepareFrame = useCallback(
+  const prepareCameraFrame = usePrepareCameraFrame();
+  const combinedPrepareFrame = useCallback(
     scene => {
-      // console.log(scene)
-      // console.log(scene.keyframes.timeFilter.getFrame())
-
-      // Filter Frame
-      if (scene.keyframes.hubble_timeFilter) {
-        const frame = scene.keyframes.hubble_timeFilter.getFrame();
-        dispatch(
-          setFilter(scene.keyframes.hubble_timeFilter.filterId, 'value', [frame.left, frame.right])
-        );
-      }
-
-      // Vis Config Frame
-      keplerLayers.forEach(layer => {
-        const keyframe = scene.keyframes[layer.config.label];
-        if (keyframe) {
-          // console.log(layer)
-          const frame = keyframe.getFrame();
-          // console.log(frame)
-          dispatch(layerVisConfigChange(layer, frame));
-        }
-      });
-
-      // Map State
-      dispatch(updateViewState(scene.keyframes.camera.getFrame()));
+      prepareFrame(scene);
+      prepareCameraFrame(scene);
     },
-    [getKeyframes]
+    [prepareFrame]
   );
 
   const handlePreview = useCallback(() => {
@@ -209,7 +150,13 @@ export const Stage = ({}) => {
           {({mapHeight, mapWidth, availableHeight, availableWidth}) => (
             <StageMapBox width={availableWidth} height={availableHeight}>
               {/* <div style={{width: mapWidth, height: mapHeight, backgroundColor: 'green'}} /> */}
-              <StageContainer width={mapWidth} height={mapHeight} prepareFrame={prepareFrame} />
+              <StageContainer
+                width={mapWidth}
+                height={mapHeight}
+                prepareFrame={combinedPrepareFrame}
+                deckProps={deckProps}
+                staticMapProps={staticMapProps}
+              />
               <StageMapOverlay
                 rendererBusy={rendererBusy}
                 duration={duration}
