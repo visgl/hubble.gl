@@ -1,13 +1,12 @@
 import React, {useMemo, useCallback} from 'react';
 import {Play, Search, Maximize} from './Icons';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {
   busySelector,
   durationSelector,
-  previewVideo,
-  stopVideo,
-  renderVideo,
-  dimensionSelector
+  dimensionSelector,
+  usePreviewHandler,
+  useRenderHandler
 } from '../renderer';
 import {AutoSizer} from 'react-virtualized';
 import {WithKeplerUI} from '@hubble.gl/react';
@@ -102,7 +101,6 @@ export const Stage = ({
 }) => {
   const rendererBusy = useSelector(busySelector);
   const duration = useSelector(durationSelector);
-  const dispatch = useDispatch();
 
   if (!getCameraKeyframes) {
     getCameraKeyframes = useCameraKeyframes();
@@ -117,21 +115,8 @@ export const Stage = ({
     [prepareFrame]
   );
 
-  const handlePreview = useCallback(() => {
-    if (rendererBusy === false) {
-      dispatch(previewVideo({getCameraKeyframes, getKeyframes}));
-    } else {
-      dispatch(stopVideo());
-    }
-  }, [rendererBusy, getCameraKeyframes, getKeyframes]);
-
-  const handleRender = useCallback(() => {
-    if (rendererBusy === false) {
-      dispatch(renderVideo({getCameraKeyframes, getKeyframes}));
-    } else {
-      dispatch(stopVideo());
-    }
-  }, [rendererBusy, getCameraKeyframes, getKeyframes]);
+  const onPreview = usePreviewHandler({getCameraKeyframes, getKeyframes});
+  const onRender = useRenderHandler({getCameraKeyframes, getKeyframes});
 
   return (
     <div
@@ -167,8 +152,8 @@ export const Stage = ({
           )}
         </AutoSizeStage>
       </div>
-      <StageBottomToolbar playing={Boolean(rendererBusy)} onPreview={handlePreview} />
-      <button onClick={handleRender}>Render</button>
+      <StageBottomToolbar playing={Boolean(rendererBusy)} onPreview={onPreview} />
+      <button onClick={onRender}>Render</button>
     </div>
   );
 };
