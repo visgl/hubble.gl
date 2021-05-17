@@ -32,8 +32,6 @@ const KEPLER_UI = {
 import {Stage} from '../features/stage/Stage';
 import {useKepler, useKeplerKeyframes, usePrepareKeplerFrame} from '../features/kepler/hooks';
 
-import {useKepler} from '../features/kepler/hooks';
-
 import {useNewYorkScene} from '../scenes/newYork';
 
 const GlobalStyle = styled.div`

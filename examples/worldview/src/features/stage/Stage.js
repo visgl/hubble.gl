@@ -104,7 +104,6 @@ export const Stage = ({
   const duration = useSelector(durationSelector);
   const dispatch = useDispatch();
 
-
   if (!getCameraKeyframes) {
     getCameraKeyframes = useCameraKeyframes();
   }
