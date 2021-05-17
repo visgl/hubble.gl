@@ -30,7 +30,14 @@ const KEPLER_UI = {
   LoadingSpinner
 };
 import {Stage} from '../features/stage/Stage';
-import {useKepler, useKeplerKeyframes, usePrepareKeplerFrame} from '../features/kepler/hooks';
+import {
+  useKepler,
+  useKeplerDeckLayers,
+  useKeplerKeyframes,
+  usePrepareKeplerFrame,
+  createSelectMapStyle,
+  createSelectKeplerLayers
+} from '../features/kepler';
 
 import {useNewYorkScene} from '../scenes/newYork';
 
@@ -74,15 +81,26 @@ const WindowSize = styled.div`
   background-color: #0e0e10;
 `;
 
+const KEPLER_MAP_ID = 'map';
+const selectKeplerLayers = createSelectKeplerLayers(KEPLER_MAP_ID);
+const selectMapStyle = createSelectMapStyle(KEPLER_MAP_ID);
+
 const App = ({}) => {
   const ready = useSelector(state => state.hubbleGl.map.ready);
-  useKepler();
-  // TODO: kepler can be mounted at any location in redux.
-  const keplerLayers = useSelector(
-    state => state.keplerGl.map && state.keplerGl.map.visState.layers
-  );
+  useKepler(KEPLER_MAP_ID);
+  const keplerLayers = useSelector(selectKeplerLayers);
   const getKeyframes = useKeplerKeyframes(keplerLayers);
   const prepareFrame = usePrepareKeplerFrame(keplerLayers);
+
+  const deckLayers = useKeplerDeckLayers(KEPLER_MAP_ID);
+  const deckProps = {
+    layers: deckLayers
+  };
+  const mapStyle = useSelector(selectMapStyle);
+  const staticMapProps = {
+    mapStyle
+  };
+
   // const state = useSelector(state => state);
   // console.log(state);
 
@@ -97,7 +115,12 @@ const App = ({}) => {
               {ready && (
                 <>
                   <div style={{height: 1080, margin: 16}}>
-                    <Stage getKeyframes={getKeyframes} prepareFrame={prepareFrame} />
+                    <Stage
+                      getKeyframes={getKeyframes}
+                      prepareFrame={prepareFrame}
+                      deckProps={deckProps}
+                      staticMapProps={staticMapProps}
+                    />
                   </div>
                 </>
               )}

@@ -22,35 +22,23 @@ import React, {Component} from 'react';
 import DeckGL from '@deck.gl/react';
 import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
-import {createSelector} from 'reselect';
 
 export class StageMap extends Component {
   constructor(props) {
     super(props);
-    const mapStyle = this.props.mapData.mapStyle;
-    const mapStyleUrl = mapStyle.mapStyles[mapStyle.styleType].url;
 
     this.mapRef = React.createRef();
     this.deckRef = React.createRef();
 
     this.state = {
-      mapStyle: mapStyleUrl,
       glContext: undefined,
       memoDevicePixelRatio: window.devicePixelRatio // memoize
     };
 
-    this._onLayerSetDomain = this._onLayerSetDomain.bind(this);
-    this._renderLayer = this._renderLayer.bind(this);
     this._onMapLoad = this._onMapLoad.bind(this);
     this._resizeVideo = this._resizeVideo.bind(this);
 
     this._resizeVideo();
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    const mapStyle = props.mapData.mapStyle;
-    const mapStyleUrl = mapStyle.mapStyles[mapStyle.styleType].url;
-    return {...state, mapStyle: mapStyleUrl};
   }
 
   componentDidUpdate(prevProps) {
@@ -95,79 +83,21 @@ export class StageMap extends Component {
     window.devicePixelRatio = devicePixelRatio;
   }
 
-  _onLayerSetDomain(idx, colorDomain) {
-    // TODO: this isn't dispatched to the redux store yet.
-    // layerConfigChange(this.props.mapData.visState.layers[idx], {
-    //   colorDomain
-    // });
-  }
-
-  _renderLayer(overlays, idx) {
-    const {
-      mapData: {visState, mapState}
-    } = this.props;
-
-    const {
-      datasets,
-      layers,
-      layerData,
-      hoverInfo,
-      clicked,
-      interactionConfig,
-      animationConfig
-    } = visState;
-
-    const layer = layers[idx];
-    const data = layerData[idx];
-    const {gpuFilter} = datasets[layer.config.dataId] || {};
-
-    const objectHovered = clicked || hoverInfo;
-    const layerCallbacks = {
-      onSetLayerDomain: val => this._onLayerSetDomain(idx, val)
-    };
-
-    // Layer is Layer class
-    const layerOverlay = layer.renderLayer({
-      data,
-      gpuFilter,
-      idx,
-      interactionConfig,
-      layerCallbacks,
-      mapState,
-      animationConfig,
-      objectHovered
-    });
-    return overlays.concat(layerOverlay || []);
-  }
-
-  createLayers() {
-    const layersToRender = this.layersToRenderSelector(this.props);
-
-    // returns an arr of DeckGL layer objects
-    const {layerOrder, layerData, layers} = this.props.mapData.visState;
-    if (layerData && layerData.length) {
-      return layerOrder
-        .slice()
-        .reverse()
-        .filter(idx => layers[idx].overlayType === 'deckgl' && layersToRender[layers[idx].id])
-        .reduce(this._renderLayer, []); // Slicing & reversing to create same layer order as Kepler
-    }
-    return [];
-  }
-
   _onMapLoad() {
-    const {adapter, prepareFrame} = this.props;
+    const {
+      adapter,
+      prepareFrame,
+      deckProps: {layers}
+    } = this.props;
     // Adds mapbox layer to modal
     const map = this.mapRef.current.getMap();
     const deck = this.deckRef.current.deck;
 
-    const keplerLayers = this.createLayers();
-
     // map.addLayer(new MapboxLayer({id: 'hubblegl-overlay', deck}));
 
-    for (let i = 0; i < keplerLayers.length; i++) {
+    for (let i = 0; i < layers.length; i++) {
       // Adds DeckGL layers to Mapbox so Mapbox can be the bottom layer. Removing this clips DeckGL layers
-      map.addLayer(new MapboxLayer({id: keplerLayers[i].id, deck}));
+      map.addLayer(new MapboxLayer({id: layers[i].id, deck}));
     }
 
     map.on('render', () =>
@@ -176,32 +106,6 @@ export class StageMap extends Component {
         this.forceUpdate();
       })
     );
-  }
-
-  layersSelector = props => props.mapData.visState.layers;
-  layerDataSelector = props => props.mapData.visState.layerData;
-  mapLayersSelector = props => props.mapData.visState.mapLayers;
-  layerOrderSelector = props => props.mapData.visState.layerOrder;
-  layersToRenderSelector = createSelector(
-    this.layersSelector, // eslint-disable-line
-    this.layerDataSelector, // eslint-disable-line
-    this.mapLayersSelector, // eslint-disable-line
-    // {[id]: true \ false}
-    (layers, layerData, mapLayers) =>
-      layers.reduce(
-        (accu, layer, idx) => ({
-          ...accu,
-          [layer.id]:
-            layer.shouldRenderLayer(layerData[idx]) && this._isVisibleMapLayer(layer, mapLayers) // eslint-disable-line
-        }),
-        {}
-      )
-  );
-
-  /* component private functions */
-  _isVisibleMapLayer(layer, mapLayers) {
-    // if layer.id is not in mapLayers, don't render it
-    return !mapLayers || (mapLayers && mapLayers[layer.id]);
   }
 
   render() {
@@ -224,15 +128,14 @@ export class StageMap extends Component {
           ref={this.deckRef}
           viewState={viewState}
           id="hubblegl-overlay"
-          layers={this.createLayers()}
           style={deckStyle}
           controller={true}
           glOptions={{stencil: true}}
           onWebGLInitialized={gl => this.setState({glContext: gl})}
           onViewStateChange={({viewState: vs}) => setViewState(vs)}
           // onClick={visStateActions.onLayerClick}
-          {...adapter.getProps({deckRef: this.deckRef, setReady: () => {}})}
           {...deckProps}
+          {...adapter.getProps({deckRef: this.deckRef, setReady: () => {}})}
         >
           {this.state.glContext && (
             <StaticMap
