@@ -60,7 +60,13 @@ export default class DeckAdapter {
    * @param {(nextTimeMs: number) => void} onNextFrame
    * @param {(scene: DeckScene) => any[]} getLayers
    */
-  getProps({deckRef, setReady, onNextFrame = undefined, getLayers = undefined}) {
+  getProps({
+    deckRef,
+    setReady,
+    onNextFrame = undefined,
+    getLayers = undefined,
+    extraProps = undefined
+  }) {
     const props = {
       onLoad: () =>
         this._deckOnLoad(deckRef.current.deck).then(() => {
@@ -94,7 +100,7 @@ export default class DeckAdapter {
     if (this.glContext) {
       props.gl = this.glContext;
     }
-    return props;
+    return {...extraProps, ...props};
   }
 
   /**
