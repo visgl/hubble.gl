@@ -23,6 +23,24 @@ import DeckGL from '@deck.gl/react';
 import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
 
+function basicViewState(viewState = {}) {
+  const allowed = ['latitude', 'longitude', 'zoom', 'bearing', 'pitch'];
+  return Object.keys(viewState)
+    .filter(key => allowed.includes(key))
+    .reduce((obj, key) => {
+      obj[key] = viewState[key];
+      return obj;
+    }, {});
+}
+
+const PrintViewState = ({viewState}) => {
+  return (
+    <div style={{position: 'absolute', bottom: 0, left: 0, background: 'black'}}>
+      <div style={{color: 'pink'}}>{JSON.stringify(basicViewState(viewState))}</div>
+    </div>
+  );
+};
+
 export class StageMap extends Component {
   constructor(props) {
     super(props);
@@ -94,8 +112,13 @@ export class StageMap extends Component {
     const deck = this.deckRef.current.deck;
 
     // map.addLayer(new MapboxLayer({id: 'hubblegl-overlay', deck}));
+    // var mapboxLayers = map.getStyle().layers;
+    // console.log(mapboxLayers)
 
     for (let i = 0; i < layers.length; i++) {
+      // TODO: layer mapbox and deck layers in order according to kepler config.
+      // map.addLayer(new MapboxLayer({id: layers[i].id, deck}), "tunnel-simple");
+
       // Adds DeckGL layers to Mapbox so Mapbox can be the bottom layer. Removing this clips DeckGL layers
       map.addLayer(new MapboxLayer({id: layers[i].id, deck}));
     }
@@ -148,6 +171,7 @@ export class StageMap extends Component {
             />
           )}
         </DeckGL>
+        <PrintViewState viewState={viewState} />
       </div>
     );
   }

@@ -23,6 +23,7 @@ import {DeckAdapter, DeckScene} from '@hubble.gl/core';
 
 import {StageMap} from './StageMap';
 import {connect} from 'react-redux';
+// import {useDispatch, useSelector} from 'react-redux';
 
 import {setupRenderer, dimensionSelector, durationSelector} from '../renderer';
 
@@ -108,3 +109,41 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({dispatch});
 
 export default connect(mapStateToProps, mapDispatchToProps)(StageContainer);
+
+// export const DisplayContainer = ({width=540,height,deckProps,staticMapProps,glContext}) => {
+//   const dispatch = useDispatch();
+
+//   const dimension = useSelector(dimensionSelector);
+
+//   const getDeckScene = useCallback(animationLoop => {
+//     return new DeckScene({
+//       animationLoop,
+//       lengthMs: duration,
+//       width: dimension.width,
+//       height: dimension.height
+//     });
+//   }, [duration, dimension])
+
+//   const adapter = useMemo(() => new DeckAdapter(getDeckScene, glContext), [getDeckScene, glContext])
+
+//   useEffect(() => {
+//     dispatch(setupRenderer(adapter));
+//   }, [adapter])
+
+//   return (
+//     <Display
+//       deckProps={deckProps}
+//       staticMapProps={staticMapProps}
+//       // UI Props
+//       width={width}
+//       height={height}
+//       // Map Props
+//       viewState={viewState}
+//       setViewState={vs => dispatch(updateViewState(vs))}
+//       // Hubble Props
+//       adapter={adapter}
+//       dimension={dimension}
+//       prepareFrame={prepareFrame}
+//     />
+//   )
+// }
