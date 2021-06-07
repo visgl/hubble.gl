@@ -4,7 +4,11 @@ import {FilterValueKeyframes, Keyframes} from '@hubble.gl/core';
 import {useDispatch, useSelector} from 'react-redux';
 import {createSelector} from 'reselect';
 
-import {filterKeyframeSelector, layerKeyframeSelector} from '../timeline/timelineSlice';
+import {
+  filterKeyframeSelector,
+  layerKeyframeSelector,
+  frameSelector
+} from '../timeline/timelineSlice';
 import {AUTH_TOKENS} from '../../constants';
 import {updateViewState} from '../stage/mapSlice';
 import {createSelectKeplerMap} from './keplerSlice';
@@ -69,7 +73,7 @@ export const useKeplerKeyframes = keplerLayers => {
     // console.log(keyframes, keplerLayers);
     if (filterKeyframe) {
       // TODO: Support more than one filter.
-      keyframes.hubble_timeFilter = new FilterValueKeyframes(filterKeyframe);
+      keyframes.kepler_timeFilter = new FilterValueKeyframes(filterKeyframe);
     }
     return keyframes;
   }, [filterKeyframe, layerKeyframe, keplerLayers]);
@@ -77,39 +81,38 @@ export const useKeplerKeyframes = keplerLayers => {
   return getKeplerKeyframes;
 };
 
-export const usePrepareKeplerFrame = keplerLayers => {
+export const useKeplerFrame = (keplerLayers = []) => {
   const dispatch = useDispatch();
+  const frame = useSelector(frameSelector);
 
-  const prepareFrame = useCallback(
-    scene => {
-      // console.log(scene)
-      // console.log(scene.keyframes.timeFilter.getFrame())
-      // Filter Frame
-      if (scene.keyframes.hubble_timeFilter) {
-        const frame = scene.keyframes.hubble_timeFilter.getFrame();
-        dispatch(
-          setFilter(scene.keyframes.hubble_timeFilter.filterId, 'value', [frame.left, frame.right])
-        );
+  // const layerLabels = useMemo(() => keplerLayers.map(layer => layer.config.label), [keplerLayers])
+  // const memoedLayers = useMemo(() => keplerLayers, [layerLabels])
+  useEffect(() => {
+    // console.log(scene)
+    // console.log(frame.timeFilter.getFrame())
+    // Filter Frame
+    if (frame.kepler_timeFilter) {
+      // const frame = frame.kepler_timeFilter;
+      dispatch(
+        setFilter(0, 'value', [frame.kepler_timeFilter.left, frame.kepler_timeFilter.right])
+      );
+    }
+
+
+    // Vis Config Frame
+    keplerLayers.forEach(layer => {
+      // TODO: Use layer ID instead of label.
+      const keyframe = frame[`kepler_${layer.config.label}`];
+      if (keyframe) {
+        // console.log(layer)
+        // const frame = keyframe.getFrame();
+        // console.log(frame)
+        dispatch(layerVisConfigChange(layer, keyframe));
       }
+    });
 
-      // Vis Config Frame
-      keplerLayers.forEach(layer => {
-        // TODO: Use layer ID instead of label.
-        const keyframe = scene.keyframes[layer.config.label];
-        if (keyframe) {
-          // console.log(layer)
-          const frame = keyframe.getFrame();
-          // console.log(frame)
-          dispatch(layerVisConfigChange(layer, frame));
-        }
-      });
-
-      // Note: Map State is kept in sync using plugin.
-    },
-    [keplerLayers]
-  );
-
-  return prepareFrame;
+    // Note: Map State is kept in sync using plugin.
+  }, [frame]);
 };
 
 /**

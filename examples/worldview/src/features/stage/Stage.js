@@ -11,7 +11,7 @@ import {
 import {AutoSizer} from 'react-virtualized';
 import {WithKeplerUI} from '@hubble.gl/react';
 import StageContainer from './StageContainer';
-import {useCameraKeyframes, usePrepareCameraFrame} from '../timeline/hooks';
+import {useCameraKeyframes, useCameraFrame, usePrepareFrame} from '../timeline/hooks';
 
 const StageBottomToolbar = ({playing, onPreview}) => {
   return (
@@ -95,7 +95,6 @@ const StageMapBox = ({height, width, children}) => (
 export const Stage = ({
   getCameraKeyframes = undefined,
   getKeyframes,
-  prepareFrame,
   deckProps = undefined,
   staticMapProps = undefined
 }) => {
@@ -106,13 +105,9 @@ export const Stage = ({
     getCameraKeyframes = useCameraKeyframes();
   }
 
-  const prepareCameraFrame = usePrepareCameraFrame();
-  const combinedPrepareFrame = useCallback(
-    scene => {
-      prepareFrame(scene);
-      prepareCameraFrame(scene);
+  useCameraFrame();
+  const prepareFrame = usePrepareFrame();
     },
-    [prepareFrame]
   );
 
   const onPreview = usePreviewHandler({getCameraKeyframes, getKeyframes});
@@ -138,7 +133,7 @@ export const Stage = ({
               <StageContainer
                 width={mapWidth}
                 height={mapHeight}
-                prepareFrame={combinedPrepareFrame}
+                prepareFrame={prepareFrame}
                 deckProps={deckProps}
                 staticMapProps={staticMapProps}
               />

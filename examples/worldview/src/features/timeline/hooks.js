@@ -1,8 +1,8 @@
-import {useCallback} from 'react';
+import {useCallback, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {CameraKeyframes} from '@hubble.gl/core';
 
-import {cameraKeyframeSelector} from './timelineSlice';
+import {cameraKeyframeSelector, frameSelector, updateFrame} from './timelineSlice';
 import {dimensionSelector} from '../renderer';
 import {updateViewState} from '../stage/mapSlice';
 
@@ -21,10 +21,24 @@ export function useCameraKeyframes() {
   return getCameraKeyframes;
 }
 
-export function usePrepareCameraFrame() {
+export function useCameraFrame() {
+  const dispatch = useDispatch();
+  const frame = useSelector(frameSelector);
+  useEffect(() => {
+    if (frame.camera) {
+      dispatch(updateViewState(frame.camera));
+    }
+  }, [frame]);
+}
+
+export function usePrepareFrame() {
   const dispatch = useDispatch();
   const prepareFrame = useCallback(scene => {
-    dispatch(updateViewState(scene.keyframes.camera.getFrame()));
+    const sceneFrame = Object.entries(scene.keyframes).reduce((frame, [key, keyframe]) => {
+      frame[key] = keyframe.getFrame();
+      return frame;
+    }, {});
+    dispatch(updateFrame(sceneFrame));
   });
   return prepareFrame;
 }
