@@ -91,6 +91,7 @@ const App = ({}) => {
   const keplerLayers = useSelector(selectKeplerLayers);
   const getKeyframes = useKeplerKeyframes(keplerLayers);
   const prepareFrame = usePrepareKeplerFrame(keplerLayers);
+  const keplerDeckLayers = useKeplerDeckLayers(KEPLER_MAP_ID);
   const deckLayers = useMemo(() => {
     return [...sceneLayers, ...keplerDeckLayers];
   }, [keplerDeckLayers, sceneLayers]);
