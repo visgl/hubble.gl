@@ -92,14 +92,11 @@ const App = ({}) => {
   const getKeyframes = useKeplerKeyframes(keplerLayers);
   const prepareFrame = usePrepareKeplerFrame(keplerLayers);
   const keplerDeckLayers = useKeplerDeckLayers(KEPLER_MAP_ID);
-  const deckLayers = useMemo(() => {
-    return [...sceneLayers, ...keplerDeckLayers];
+  const deckProps = useMemo(() => {
+    return {
+      layers: [...sceneLayers, ...keplerDeckLayers]
+    };
   }, [keplerDeckLayers, sceneLayers]);
-
-  const deckProps = {
-    layers: deckLayers,
-    _animate: true
-  };
   const mapStyle = useSelector(selectMapStyle);
   const staticMapProps = {
     mapStyle
