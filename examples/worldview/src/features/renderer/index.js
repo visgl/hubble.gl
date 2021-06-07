@@ -7,6 +7,7 @@ export {
   signalRendering,
   signalPreviewing,
   stopVideo,
+  seekTime,
   filenameChange,
   formatChange,
   formatConfigsChange,

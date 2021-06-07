@@ -139,6 +139,18 @@ export default class DeckAdapter {
     this.videoCapture.stop(callback);
   }
 
+  seek({getCameraKeyframes = undefined, getKeyframes = undefined, timeMs}) {
+    if (this.scene) {
+      if (getCameraKeyframes) {
+        this.scene.setCameraKeyframes(getCameraKeyframes());
+      }
+      if (getKeyframes) {
+        this.scene.setKeyframes(getKeyframes());
+      }
+      this.scene.animationLoop.timeline.setTime(timeMs);
+    }
+  }
+
   async _deckOnLoad(deck) {
     this.deck = deck;
 
