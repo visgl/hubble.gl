@@ -48,6 +48,7 @@ export default class DeckAdapter {
     this.getProps = this.getProps.bind(this);
     this.render = this.render.bind(this);
     this.stop = this.stop.bind(this);
+    this.seek = this.seek.bind(this);
     this._deckOnLoad = this._deckOnLoad.bind(this);
     this._getViewState = this._getViewState.bind(this);
     this._getLayers = this._getLayers.bind(this);
