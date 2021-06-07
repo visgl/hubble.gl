@@ -4,7 +4,8 @@ import {createSlice} from '@reduxjs/toolkit';
 const initialState = {
   cameraKeyframes: undefined, // keyframe object
   filterKeyframes: undefined, // keyframe object
-  layerKeyframes: {} // name: keyframe object
+  layerKeyframes: {}, // name: keyframe object
+  frame: {}
 };
 
 const timelineSlice = createSlice({
@@ -14,14 +15,16 @@ const timelineSlice = createSlice({
     updateCameraKeyframes: (state, action) => void (state.cameraKeyframes = action.payload),
     updateFilterKeyframes: (state, action) => void (state.filterKeyframes = action.payload),
     updateLayerKeyframes: (state, action) =>
-      void (state.layerKeyframes = {...state.layerKeyframes, ...action.payload})
+      void (state.layerKeyframes = {...state.layerKeyframes, ...action.payload}),
+    updateFrame: (state, action) => void (state.frame = action.payload)
   }
 });
 
 export const {
   updateCameraKeyframes,
   updateFilterKeyframes,
-  updateLayerKeyframes
+  updateLayerKeyframes,
+  updateFrame
 } = timelineSlice.actions;
 
 export default timelineSlice.reducer;
@@ -33,3 +36,4 @@ export default timelineSlice.reducer;
 export const cameraKeyframeSelector = state => state.hubbleGl.timeline.cameraKeyframes;
 export const filterKeyframeSelector = state => state.hubbleGl.timeline.filterKeyframes;
 export const layerKeyframeSelector = state => state.hubbleGl.timeline.layerKeyframes;
+export const frameSelector = state => state.hubbleGl.timeline.frame;
