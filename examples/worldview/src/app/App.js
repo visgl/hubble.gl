@@ -29,7 +29,7 @@ import {LoadingSpinner} from 'kepler.gl/components';
 const KEPLER_UI = {
   LoadingSpinner
 };
-import {Stage} from '../features/stage/Stage';
+import {MonitorPanel} from '../features/monitor/MonitorPanel';
 import {
   useKepler,
   useKeplerDeckLayers,
@@ -116,7 +116,7 @@ const App = ({}) => {
               {ready && (
                 <>
                   <div style={{height: 1080, margin: 16}}>
-                    <Stage
+                    <MonitorPanel
                       getKeyframes={getKeyframes}
                       prepareFrame={prepareFrame}
                       deckProps={deckProps}
