@@ -4,7 +4,7 @@ import {CameraKeyframes} from '@hubble.gl/core';
 
 import {cameraKeyframeSelector} from './timelineSlice';
 import {dimensionSelector} from '../renderer';
-import {updateViewState} from '../stage/mapSlice';
+import {updateViewState} from '../display';
 
 export function useCameraKeyframes() {
   const cameraKeyframe = useSelector(cameraKeyframeSelector);

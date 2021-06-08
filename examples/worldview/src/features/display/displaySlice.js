@@ -6,8 +6,8 @@ const initialState = {
   viewState: {}
 };
 
-const mapSlice = createSlice({
-  name: 'map',
+const displaySlice = createSlice({
+  name: 'display',
   initialState,
   reducers: {
     updateViewState: (state, action) =>
@@ -18,12 +18,12 @@ const mapSlice = createSlice({
   }
 });
 
-export const {updateViewState} = mapSlice.actions;
+export const {updateViewState} = displaySlice.actions;
 
-export default mapSlice.reducer;
+export default displaySlice.reducer;
 
 /**
  * Selectors
  */
 
-export const viewStateSelector = state => state.hubbleGl.map.viewState;
+export const viewStateSelector = state => state.hubbleGl.display.viewState;

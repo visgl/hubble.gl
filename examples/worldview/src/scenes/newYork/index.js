@@ -10,9 +10,8 @@ import {
   formatConfigsChange,
   durationSelector
 } from '../../features/renderer';
-import {useWhenReady} from '../../features/stage/hooks';
+import {useWhenReady, viewStateSelector} from '../../features/display';
 import {easing} from 'popmotion';
-import {viewStateSelector} from '../../features/stage/mapSlice';
 
 export const useNewYorkScene = () => {
   const dispatch = useDispatch();

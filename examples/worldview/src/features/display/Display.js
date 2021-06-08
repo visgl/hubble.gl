@@ -22,9 +22,9 @@ import React, {Component} from 'react';
 import DeckGL from '@deck.gl/react';
 import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
-import {nearestEven} from './utils';
+import {nearestEven} from '../../utils';
 
-export class StageMap extends Component {
+export class Display extends Component {
   constructor(props) {
     super(props);
 
