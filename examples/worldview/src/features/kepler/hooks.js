@@ -100,7 +100,6 @@ export const useKeplerFrame = (keplerLayers = []) => {
       );
     }
 
-
     // Vis Config Frame
     keplerLayers.forEach(layer => {
       // TODO: Use layer ID instead of label.
