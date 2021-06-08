@@ -22,6 +22,7 @@ import React, {Component} from 'react';
 import DeckGL from '@deck.gl/react';
 import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
+import {nearestEven} from './utils';
 
 export class StageMap extends Component {
   constructor(props) {
@@ -54,7 +55,7 @@ export class StageMap extends Component {
 
   _resizeVideo() {
     const {width, dimension} = this.props;
-    this._setDevicePixelRatio(dimension.width / width);
+    this._setDevicePixelRatio(nearestEven(dimension.width / width));
     if (this.mapRef.current) {
       const map = this.mapRef.current.getMap();
       map.resize();
