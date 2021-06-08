@@ -10,8 +10,9 @@ import {
 } from '../renderer';
 import {AutoSizer} from 'react-virtualized';
 import {WithKeplerUI} from '@hubble.gl/react';
-import {Map} from '../map';
+import {Map, viewStateSelector} from '../map';
 import {useCameraKeyframes, usePrepareCameraFrame} from '../timeline/hooks';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {nearestEven} from '../../utils';
 
 const MonitorBottomToolbar = ({playing, onPreview}) => {
@@ -29,6 +30,27 @@ const MonitorBottomToolbar = ({playing, onPreview}) => {
         <Play />
       </div>
       <Maximize />
+    </div>
+  );
+};
+
+function basicViewState(viewState = {}) {
+  const allowed = ['latitude', 'longitude', 'zoom', 'bearing', 'pitch'];
+  return Object.keys(viewState)
+    .filter(key => allowed.includes(key))
+    .reduce((obj, key) => {
+      obj[key] = viewState[key];
+      return obj;
+    }, {});
+}
+
+const PrintViewState = ({viewState}) => {
+  const str = JSON.stringify(basicViewState(viewState));
+  return (
+    <div style={{position: 'absolute', bottom: 0, left: 0, background: 'black'}}>
+      <CopyToClipboard text={str}>
+        <div style={{color: 'pink'}}>{str}</div>
+      </CopyToClipboard>
     </div>
   );
 };
@@ -110,6 +132,7 @@ export const MonitorPanel = ({
 }) => {
   const rendererBusy = useSelector(busySelector);
   const duration = useSelector(durationSelector);
+  const viewState = useSelector(viewStateSelector);
 
   if (!getCameraKeyframes) {
     getCameraKeyframes = useCameraKeyframes();
@@ -151,6 +174,7 @@ export const MonitorPanel = ({
                 deckProps={deckProps}
                 staticMapProps={staticMapProps}
               />
+              <PrintViewState viewState={viewState} />
               <MapOverlay
                 rendererBusy={rendererBusy}
                 duration={duration}

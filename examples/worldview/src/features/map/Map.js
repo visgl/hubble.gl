@@ -95,8 +95,13 @@ export class Map extends Component {
     const deck = this.deckRef.current.deck;
 
     // map.addLayer(new MapboxLayer({id: 'hubblegl-overlay', deck}));
+    // var mapboxLayers = map.getStyle().layers;
+    // console.log(mapboxLayers)
 
     for (let i = 0; i < layers.length; i++) {
+      // TODO: layer mapbox and deck layers in order according to kepler config.
+      // map.addLayer(new MapboxLayer({id: layers[i].id, deck}), "tunnel-simple");
+
       // Adds DeckGL layers to Mapbox so Mapbox can be the bottom layer. Removing this clips DeckGL layers
       map.addLayer(new MapboxLayer({id: layers[i].id, deck}));
     }
