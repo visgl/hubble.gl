@@ -25,7 +25,7 @@ async function sceneBuilder(animationLoop) {
 
 ## Methods
 
-##### `getProps({deckRef, setReady, onNextFrame, getLayers}): props`
+##### `getProps({deckRef, setReady, onNextFrame, getLayers, extraProps}): props`
 
 Supplies deck.gl properties from hubble.gl.
 
@@ -39,7 +39,9 @@ Parameters:
 
 * `getLayers` (`(scene: DeckScene) => any[]`, Optional) - Callback to construct deck.gl layers provided the scene. If set, `deck.layers` will be set to the layers returned by this function.
 
-##### `render({getCameraKeyframes, Encoder, encoderSettings, onStop})`
+* `extraProps` (`DeckGlProps`, Optional) - Apply extra props to deckgl. Note: Hubble will override props as needed.
+
+##### `render({getCameraKeyframes, Encoder, encoderSettings, onStop, getKeyframes})`
 
 Start rendering.
 
@@ -58,6 +60,8 @@ Provide a FrameEncoder class for capturing deck canvas. See [Encoders Overview](
 See [FrameEncoder](/modules/core/docs/encoder/frame-encoder#constructor-1) for internal defaults.
 
 * **`onStop` (`() => void`, Optional) - Default: `undefined`.**
+
+* **`getKeyframes` (`() => Object<string, Keyframes>`, Optional) - Default: `undefined`.**
 
 This function is called after the last frame is rendered and a file is created for download. It does not get called when a render is interrupted with `stop()`.
 
