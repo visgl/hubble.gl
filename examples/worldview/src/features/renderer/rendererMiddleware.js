@@ -6,6 +6,7 @@ import {
   PreviewEncoder,
   GifEncoder
 } from '@hubble.gl/core';
+import {updateFrame} from '../timeline/timelineSlice';
 
 import {
   setupRenderer,
@@ -14,6 +15,7 @@ import {
   signalRendering,
   signalPreviewing,
   stopVideo,
+  seekTime,
   encoderSettingsSelector,
   busySelector,
   durationSelector
@@ -96,6 +98,20 @@ export const rendererMiddleware = store => {
           adapter.stop(() => {
             store.dispatch(signalRendering(false)); // equivalent to signalPreviewing(false)
           });
+        }
+        break;
+      }
+      case seekTime.type: {
+        if (!busySelector(store.getState()) && adapter && adapter.scene) {
+          adapter.seek(action.payload);
+          const sceneFrame = Object.entries(adapter.scene.keyframes).reduce(
+            (frame, [key, keyframe]) => {
+              frame[key] = keyframe.getFrame();
+              return frame;
+            },
+            {}
+          );
+          store.dispatch(updateFrame(sceneFrame));
         }
         break;
       }

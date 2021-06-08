@@ -48,6 +48,7 @@ export default class DeckAdapter {
     this.getProps = this.getProps.bind(this);
     this.render = this.render.bind(this);
     this.stop = this.stop.bind(this);
+    this.seek = this.seek.bind(this);
     this._deckOnLoad = this._deckOnLoad.bind(this);
     this._getViewState = this._getViewState.bind(this);
     this._getLayers = this._getLayers.bind(this);
@@ -108,17 +109,17 @@ export default class DeckAdapter {
   /**
    * @param {Object} params
    * @param {() => import('../keyframes').CameraKeyframes} params.getCameraKeyframes
+   * @param {() => Object<string, import('../keyframes').Keyframes>} params.getKeyframes
    * @param {typeof import('../encoders').FrameEncoder} params.Encoder
    * @param {import('types').FrameEncoderSettings} params.encoderSettings
    * @param {() => void} params.onStop
-   * @param {() => Object<string, import('../keyframes').Keyframes>} params.getKeyframes
    */
   render({
     getCameraKeyframes = undefined,
+    getKeyframes = undefined,
     Encoder = PreviewEncoder,
     encoderSettings = {},
-    onStop = undefined,
-    getKeyframes = undefined
+    onStop = undefined
   }) {
     if (getCameraKeyframes) {
       this.scene.setCameraKeyframes(getCameraKeyframes());
@@ -146,6 +147,24 @@ export default class DeckAdapter {
     this.enabled = false;
     this.shouldAnimate = false;
     this.videoCapture.stop(callback);
+  }
+
+  /**
+   * @param {Object} params
+   * @param {number} params.timeMs
+   * @param {() => import('../keyframes').CameraKeyframes} params.getCameraKeyframes
+   * @param {() => Object<string, import('../keyframes').Keyframes>} params.getKeyframes
+   */
+  seek({timeMs, getCameraKeyframes = undefined, getKeyframes = undefined}) {
+    if (this.scene) {
+      if (getCameraKeyframes) {
+        this.scene.setCameraKeyframes(getCameraKeyframes());
+      }
+      if (getKeyframes) {
+        this.scene.setKeyframes(getKeyframes());
+      }
+      this.scene.animationLoop.timeline.setTime(timeMs);
+    }
   }
 
   async _deckOnLoad(deck) {

@@ -47,9 +47,13 @@ Start rendering.
 
 Parameters:
 
-* **`getCameraKeyframes` (`() => CameraKeyframes`, Optional).**
+* **`getCameraKeyframes` (`() => CameraKeyframes`, Optional) - Default: `undefined`.**
 
 This function is used to access the camera's keyframes, and is called just prior to rendering.
+
+* **`getKeyframes` (`() => Object<string, Keyframes>`, Optional) - Default: `undefined`.**
+
+This function is called after the last frame is rendered and a file is created for download. It does not get called when a render is interrupted with `stop()`.
 
 * **`Encoder` (`typeof FrameEncoder`, Optional) - Default: `PreviewEncoder`.**
 
@@ -61,10 +65,6 @@ See [FrameEncoder](/modules/core/docs/encoder/frame-encoder#constructor-1) for i
 
 * **`onStop` (`() => void`, Optional) - Default: `undefined`.**
 
-* **`getKeyframes` (`() => Object<string, Keyframes>`, Optional) - Default: `undefined`.**
-
-This function is called after the last frame is rendered and a file is created for download. It does not get called when a render is interrupted with `stop()`.
-
 ##### `stop(callback)`
 
 Interrupt rendering and saves partial result. This is useful for handling user interruptions.
@@ -72,6 +72,22 @@ Interrupt rendering and saves partial result. This is useful for handling user i
 Parameters:
 
 * `callback` (`() => void`, Optional) - Callback indicating the rendering is finished.
+
+##### `seek({timeMs, getCameraKeyframes, getKeyframes})`
+
+Move time to set a new position. Useful for peeking at different times in an animation without rendering.
+
+Parameters:
+
+* **`timeMs` (`number`)**
+
+* **`getCameraKeyframes` (`() => CameraKeyframes`, Optional) - Default: `undefined`.**
+
+This function is used to access the camera's keyframes, and is called just prior to rendering.
+
+* **`getKeyframes` (`() => Object<string, Keyframes>`, Optional) - Default: `undefined`.**
+
+This function is called after the last frame is rendered and a file is created for download. It does not get called when a render is interrupted with `stop()`.
 
 ## Source
 
