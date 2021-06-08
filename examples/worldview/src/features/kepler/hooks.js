@@ -10,7 +10,7 @@ import {
   frameSelector
 } from '../timeline/timelineSlice';
 import {AUTH_TOKENS} from '../../constants';
-import {updateViewState} from '../stage/mapSlice';
+import {updateViewState} from '../map';
 import {createSelectKeplerMap} from './keplerSlice';
 
 export const useKepler = mapId => {
@@ -32,10 +32,12 @@ export const useKepler = mapId => {
 export const useKeplerMapState = mapId => {
   const dispatch = useDispatch();
   const selectKeplerMap = useMemo(() => createSelectKeplerMap(mapId), [mapId]);
-  const {mapState} = useSelector(selectKeplerMap);
+  const map = useSelector(selectKeplerMap);
   useEffect(() => {
-    if (mapState) {
-      const {latitude, longitude, zoom, bearing, pitch, altitude} = mapState;
+    if (map && map.mapState) {
+      const {
+        mapState: {latitude, longitude, zoom, bearing, pitch, altitude}
+      } = map;
       dispatch(
         updateViewState({
           latitude,
@@ -47,7 +49,7 @@ export const useKeplerMapState = mapId => {
         })
       );
     }
-  }, [mapState]);
+  }, [Boolean(map)]);
 };
 
 export const useKeplerKeyframes = keplerLayers => {

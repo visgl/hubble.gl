@@ -10,9 +10,8 @@ import {
   formatConfigsChange,
   durationSelector
 } from '../../features/renderer';
-import {useWhenReady} from '../../features/stage/hooks';
+import {useWhenReady, viewStateSelector} from '../../features/map';
 import {easing} from 'popmotion';
-import {viewStateSelector} from '../../features/stage/mapSlice';
 
 export const useNewYorkScene = () => {
   const dispatch = useDispatch();
@@ -53,5 +52,5 @@ export const useNewYorkScene = () => {
   }, [viewState, duration]);
 
   useWhenReady(newYorkScene);
-  useKeplerMapState();
+  useKeplerMapState('map');
 };

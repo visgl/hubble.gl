@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import React from 'react';
+import React, {useMemo} from 'react';
 import styled, {ThemeProvider} from 'styled-components';
 import {IntlProvider} from 'react-intl';
 import {messages} from 'kepler.gl/localization';
@@ -29,7 +29,7 @@ import {LoadingSpinner} from 'kepler.gl/components';
 const KEPLER_UI = {
   LoadingSpinner
 };
-import {Stage} from '../features/stage/Stage';
+import {MonitorPanel} from '../features/monitor/MonitorPanel';
 import {
   useKepler,
   useKeplerDeckLayers,
@@ -84,18 +84,19 @@ const WindowSize = styled.div`
 const KEPLER_MAP_ID = 'map';
 const selectKeplerLayers = createSelectKeplerLayers(KEPLER_MAP_ID);
 const selectMapStyle = createSelectMapStyle(KEPLER_MAP_ID);
-
+const sceneLayers = [];
 const App = ({}) => {
   const ready = useSelector(state => state.hubbleGl.map.ready);
   useKepler(KEPLER_MAP_ID);
   const keplerLayers = useSelector(selectKeplerLayers);
   const getKeyframes = useKeplerKeyframes(keplerLayers);
   useKeplerFrame(keplerLayers);
-
-  const deckLayers = useKeplerDeckLayers(KEPLER_MAP_ID);
-  const deckProps = {
-    layers: deckLayers
-  };
+  const keplerDeckLayers = useKeplerDeckLayers(KEPLER_MAP_ID);
+  const deckProps = useMemo(() => {
+    return {
+      layers: [...sceneLayers, ...keplerDeckLayers]
+    };
+  }, [keplerDeckLayers, sceneLayers]);
   const mapStyle = useSelector(selectMapStyle);
   const staticMapProps = {
     mapStyle
@@ -115,7 +116,7 @@ const App = ({}) => {
               {ready && (
                 <>
                   <div style={{height: 1080, margin: 16}}>
-                    <Stage
+                    <MonitorPanel
                       getKeyframes={getKeyframes}
                       deckProps={deckProps}
                       staticMapProps={staticMapProps}

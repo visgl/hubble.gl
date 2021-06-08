@@ -10,10 +10,12 @@ import {
 } from '../renderer';
 import {AutoSizer} from 'react-virtualized';
 import {WithKeplerUI} from '@hubble.gl/react';
-import StageContainer from './StageContainer';
 import {useCameraKeyframes, useCameraFrame, usePrepareFrame} from '../timeline/hooks';
+import {Map, viewStateSelector} from '../map';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+import {nearestEven} from '../../utils';
 
-const StageBottomToolbar = ({playing, onPreview}) => {
+const MonitorBottomToolbar = ({playing, onPreview}) => {
   return (
     <div
       style={{
@@ -32,7 +34,28 @@ const StageBottomToolbar = ({playing, onPreview}) => {
   );
 };
 
-const StageMapOverlay = ({rendererBusy, currentTime, duration, width, height}) => {
+function basicViewState(viewState = {}) {
+  const allowed = ['latitude', 'longitude', 'zoom', 'bearing', 'pitch'];
+  return Object.keys(viewState)
+    .filter(key => allowed.includes(key))
+    .reduce((obj, key) => {
+      obj[key] = viewState[key];
+      return obj;
+    }, {});
+}
+
+const PrintViewState = ({viewState}) => {
+  const str = JSON.stringify(basicViewState(viewState));
+  return (
+    <div style={{position: 'absolute', bottom: 0, left: 0, background: 'black'}}>
+      <CopyToClipboard text={str}>
+        <div style={{color: 'pink'}}>{str}</div>
+      </CopyToClipboard>
+    </div>
+  );
+};
+
+const MapOverlay = ({rendererBusy, currentTime, duration, width, height}) => {
   const loaderStyle = {
     display: rendererBusy === 'rendering' ? 'flex' : 'none',
     position: 'absolute',
@@ -71,7 +94,10 @@ const AutoSizeStage = ({children}) => {
     (availableWidth, availableHeight) => {
       const scale = Math.min(availableWidth / dimension.width, availableHeight / dimension.height);
 
-      return {mapWidth: dimension.width * scale, mapHeight: dimension.height * scale};
+      return {
+        mapWidth: nearestEven(dimension.width * scale, 0),
+        mapHeight: nearestEven(dimension.height * scale, 0)
+      };
     },
     [dimension]
   );
@@ -80,19 +106,24 @@ const AutoSizeStage = ({children}) => {
     <AutoSizer>
       {({width, height}) => {
         const {mapWidth, mapHeight} = getMapDimensions(width, height);
-        return children({mapHeight, mapWidth, availableHeight: height, availableWidth: width});
+        return children({
+          mapHeight,
+          mapWidth,
+          availableHeight: nearestEven(height, 0),
+          availableWidth: nearestEven(width, 0)
+        });
       }}
     </AutoSizer>
   );
 };
 
-const StageMapBox = ({height, width, children}) => (
+const MapBox = ({height, width, children}) => (
   <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width, height}}>
     {children}
   </div>
 );
 
-export const Stage = ({
+export const MonitorPanel = ({
   getCameraKeyframes = undefined,
   getKeyframes,
   deckProps = undefined,
@@ -100,6 +131,7 @@ export const Stage = ({
 }) => {
   const rendererBusy = useSelector(busySelector);
   const duration = useSelector(durationSelector);
+  const viewState = useSelector(viewStateSelector);
 
   if (!getCameraKeyframes) {
     getCameraKeyframes = useCameraKeyframes();
@@ -107,9 +139,6 @@ export const Stage = ({
 
   useCameraFrame();
   const prepareFrame = usePrepareFrame();
-    },
-  );
-
   const onPreview = usePreviewHandler({getCameraKeyframes, getKeyframes});
   const onRender = useRenderHandler({getCameraKeyframes, getKeyframes});
 
@@ -128,26 +157,27 @@ export const Stage = ({
       <div style={{flex: 1, position: 'relative'}}>
         <AutoSizeStage>
           {({mapHeight, mapWidth, availableHeight, availableWidth}) => (
-            <StageMapBox width={availableWidth} height={availableHeight}>
+            <MapBox width={availableWidth} height={availableHeight}>
               {/* <div style={{width: mapWidth, height: mapHeight, backgroundColor: 'green'}} /> */}
-              <StageContainer
+              <Map
                 width={mapWidth}
                 height={mapHeight}
                 prepareFrame={prepareFrame}
                 deckProps={deckProps}
                 staticMapProps={staticMapProps}
               />
-              <StageMapOverlay
+              <PrintViewState viewState={viewState} />
+              <MapOverlay
                 rendererBusy={rendererBusy}
                 duration={duration}
                 width={availableWidth}
                 height={availableHeight}
               />
-            </StageMapBox>
+            </MapBox>
           )}
         </AutoSizeStage>
       </div>
-      <StageBottomToolbar playing={Boolean(rendererBusy)} onPreview={onPreview} />
+      <MonitorBottomToolbar playing={Boolean(rendererBusy)} onPreview={onPreview} />
       <button onClick={onRender}>Render</button>
     </div>
   );
