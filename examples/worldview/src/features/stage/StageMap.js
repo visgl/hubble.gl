@@ -24,24 +24,6 @@ import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
 import {nearestEven} from './utils';
 
-function basicViewState(viewState = {}) {
-  const allowed = ['latitude', 'longitude', 'zoom', 'bearing', 'pitch'];
-  return Object.keys(viewState)
-    .filter(key => allowed.includes(key))
-    .reduce((obj, key) => {
-      obj[key] = viewState[key];
-      return obj;
-    }, {});
-}
-
-const PrintViewState = ({viewState}) => {
-  return (
-    <div style={{position: 'absolute', bottom: 0, left: 0, background: 'black'}}>
-      <div style={{color: 'pink'}}>{JSON.stringify(basicViewState(viewState))}</div>
-    </div>
-  );
-};
-
 export class StageMap extends Component {
   constructor(props) {
     super(props);
@@ -171,7 +153,6 @@ export class StageMap extends Component {
             />
           )}
         </DeckGL>
-        <PrintViewState viewState={viewState} />
       </div>
     );
   }

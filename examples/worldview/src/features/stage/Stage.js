@@ -13,6 +13,8 @@ import {WithKeplerUI} from '@hubble.gl/react';
 import StageContainer from './StageContainer';
 import {useCameraKeyframes, usePrepareCameraFrame} from '../timeline/hooks';
 import {nearestEven} from './utils';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+import {viewStateSelector} from './mapSlice';
 
 const StageBottomToolbar = ({playing, onPreview}) => {
   return (
@@ -29,6 +31,27 @@ const StageBottomToolbar = ({playing, onPreview}) => {
         <Play />
       </div>
       <Maximize />
+    </div>
+  );
+};
+
+function basicViewState(viewState = {}) {
+  const allowed = ['latitude', 'longitude', 'zoom', 'bearing', 'pitch'];
+  return Object.keys(viewState)
+    .filter(key => allowed.includes(key))
+    .reduce((obj, key) => {
+      obj[key] = viewState[key];
+      return obj;
+    }, {});
+}
+
+const PrintViewState = ({viewState}) => {
+  const str = JSON.stringify(basicViewState(viewState));
+  return (
+    <div style={{position: 'absolute', bottom: 0, left: 0, background: 'black'}}>
+      <CopyToClipboard text={str}>
+        <div style={{color: 'pink'}}>{str}</div>
+      </CopyToClipboard>
     </div>
   );
 };
@@ -110,6 +133,7 @@ export const Stage = ({
 }) => {
   const rendererBusy = useSelector(busySelector);
   const duration = useSelector(durationSelector);
+  const viewState = useSelector(viewStateSelector);
 
   if (!getCameraKeyframes) {
     getCameraKeyframes = useCameraKeyframes();
@@ -151,6 +175,7 @@ export const Stage = ({
                 deckProps={deckProps}
                 staticMapProps={staticMapProps}
               />
+              <PrintViewState viewState={viewState} />
               <StageMapOverlay
                 rendererBusy={rendererBusy}
                 duration={duration}
