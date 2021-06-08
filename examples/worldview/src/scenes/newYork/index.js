@@ -53,5 +53,5 @@ export const useNewYorkScene = () => {
   }, [viewState, duration]);
 
   useWhenReady(newYorkScene);
-  useKeplerMapState();
+  useKeplerMapState('map');
 };

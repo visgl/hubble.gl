@@ -55,12 +55,20 @@ export default class DeckAdapter {
   }
 
   /**
-   * @param {{ current: { deck: any; }; }} deckRef
-   * @param {(ready: boolean) => void} setReady
-   * @param {(nextTimeMs: number) => void} onNextFrame
-   * @param {(scene: DeckScene) => any[]} getLayers
+   * @param {Object} params
+   * @param {{ current: { deck: any; }; }} params.deckRef
+   * @param {(ready: boolean) => void} params.setReady
+   * @param {(nextTimeMs: number) => void} params.onNextFrame
+   * @param {(scene: DeckScene) => any[]} params.getLayers
+   * @param {Object} params.extraProps
    */
-  getProps({deckRef, setReady, onNextFrame = undefined, getLayers = undefined}) {
+  getProps({
+    deckRef,
+    setReady,
+    onNextFrame = undefined,
+    getLayers = undefined,
+    extraProps = undefined
+  }) {
     const props = {
       onLoad: () =>
         this._deckOnLoad(deckRef.current.deck).then(() => {
@@ -94,15 +102,16 @@ export default class DeckAdapter {
     if (this.glContext) {
       props.gl = this.glContext;
     }
-    return props;
+    return {...extraProps, ...props};
   }
 
   /**
-   * @param {() => import('../keyframes').CameraKeyframes} getCameraKeyframes
-   * @param {typeof import('../encoders').FrameEncoder} Encoder
-   * @param {import('types').FrameEncoderSettings} encoderSettings
-   * @param {() => void} onStop
-   * @param {() => Object<string, import('../keyframes').Keyframes>} getKeyframes
+   * @param {Object} params
+   * @param {() => import('../keyframes').CameraKeyframes} params.getCameraKeyframes
+   * @param {typeof import('../encoders').FrameEncoder} params.Encoder
+   * @param {import('types').FrameEncoderSettings} params.encoderSettings
+   * @param {() => void} params.onStop
+   * @param {() => Object<string, import('../keyframes').Keyframes>} params.getKeyframes
    */
   render({
     getCameraKeyframes = undefined,

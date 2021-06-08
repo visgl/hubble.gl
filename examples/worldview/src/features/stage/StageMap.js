@@ -22,6 +22,7 @@ import React, {Component} from 'react';
 import DeckGL from '@deck.gl/react';
 import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
+import {nearestEven} from './utils';
 
 function basicViewState(viewState = {}) {
   const allowed = ['latitude', 'longitude', 'zoom', 'bearing', 'pitch'];
@@ -72,7 +73,7 @@ export class StageMap extends Component {
 
   _resizeVideo() {
     const {width, dimension} = this.props;
-    this._setDevicePixelRatio(dimension.width / width);
+    this._setDevicePixelRatio(nearestEven(dimension.width / width));
     if (this.mapRef.current) {
       const map = this.mapRef.current.getMap();
       map.resize();
@@ -157,8 +158,7 @@ export class StageMap extends Component {
           onWebGLInitialized={gl => this.setState({glContext: gl})}
           onViewStateChange={({viewState: vs}) => setViewState(vs)}
           // onClick={visStateActions.onLayerClick}
-          {...deckProps}
-          {...adapter.getProps({deckRef: this.deckRef, setReady: () => {}})}
+          {...adapter.getProps({deckRef: this.deckRef, setReady: () => {}, extraProps: deckProps})}
         >
           {this.state.glContext && (
             <StaticMap
