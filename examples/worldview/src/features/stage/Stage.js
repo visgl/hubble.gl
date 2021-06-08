@@ -12,7 +12,7 @@ import {AutoSizer} from 'react-virtualized';
 import {WithKeplerUI} from '@hubble.gl/react';
 import StageContainer from './StageContainer';
 import {useCameraKeyframes, usePrepareCameraFrame} from '../timeline/hooks';
-import {nearestEvenInt} from './utils';
+import {nearestEven} from './utils';
 
 const StageBottomToolbar = ({playing, onPreview}) => {
   return (
@@ -73,8 +73,8 @@ const AutoSizeStage = ({children}) => {
       const scale = Math.min(availableWidth / dimension.width, availableHeight / dimension.height);
 
       return {
-        mapWidth: nearestEvenInt(dimension.width * scale),
-        mapHeight: nearestEvenInt(dimension.height * scale)
+        mapWidth: nearestEven(dimension.width * scale, 0),
+        mapHeight: nearestEven(dimension.height * scale, 0)
       };
     },
     [dimension]
@@ -87,8 +87,8 @@ const AutoSizeStage = ({children}) => {
         return children({
           mapHeight,
           mapWidth,
-          availableHeight: nearestEvenInt(height),
-          availableWidth: nearestEvenInt(width)
+          availableHeight: nearestEven(height, 0),
+          availableWidth: nearestEven(width, 0)
         });
       }}
     </AutoSizer>
