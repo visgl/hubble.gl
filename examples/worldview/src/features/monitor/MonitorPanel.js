@@ -10,11 +10,11 @@ import {
 } from '../renderer';
 import {AutoSizer} from 'react-virtualized';
 import {WithKeplerUI} from '@hubble.gl/react';
-import {Display} from '../display';
+import {Map} from '../map';
 import {useCameraKeyframes, usePrepareCameraFrame} from '../timeline/hooks';
 import {nearestEven} from '../../utils';
 
-const PreviewBottomToolbar = ({playing, onPreview}) => {
+const MonitorBottomToolbar = ({playing, onPreview}) => {
   return (
     <div
       style={{
@@ -33,7 +33,7 @@ const PreviewBottomToolbar = ({playing, onPreview}) => {
   );
 };
 
-const DisplayOverlay = ({rendererBusy, currentTime, duration, width, height}) => {
+const MapOverlay = ({rendererBusy, currentTime, duration, width, height}) => {
   const loaderStyle = {
     display: rendererBusy === 'rendering' ? 'flex' : 'none',
     position: 'absolute',
@@ -95,13 +95,13 @@ const AutoSizeStage = ({children}) => {
   );
 };
 
-const DisplayBox = ({height, width, children}) => (
+const MapBox = ({height, width, children}) => (
   <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width, height}}>
     {children}
   </div>
 );
 
-export const PreviewPanel = ({
+export const MonitorPanel = ({
   getCameraKeyframes = undefined,
   getKeyframes,
   prepareFrame,
@@ -142,26 +142,26 @@ export const PreviewPanel = ({
       <div style={{flex: 1, position: 'relative'}}>
         <AutoSizeStage>
           {({mapHeight, mapWidth, availableHeight, availableWidth}) => (
-            <DisplayBox width={availableWidth} height={availableHeight}>
+            <MapBox width={availableWidth} height={availableHeight}>
               {/* <div style={{width: mapWidth, height: mapHeight, backgroundColor: 'green'}} /> */}
-              <Display
+              <Map
                 width={mapWidth}
                 height={mapHeight}
                 prepareFrame={combinedPrepareFrame}
                 deckProps={deckProps}
                 staticMapProps={staticMapProps}
               />
-              <DisplayOverlay
+              <MapOverlay
                 rendererBusy={rendererBusy}
                 duration={duration}
                 width={availableWidth}
                 height={availableHeight}
               />
-            </DisplayBox>
+            </MapBox>
           )}
         </AutoSizeStage>
       </div>
-      <PreviewBottomToolbar playing={Boolean(rendererBusy)} onPreview={onPreview} />
+      <MonitorBottomToolbar playing={Boolean(rendererBusy)} onPreview={onPreview} />
       <button onClick={onRender}>Render</button>
     </div>
   );

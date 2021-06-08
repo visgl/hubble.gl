@@ -21,14 +21,14 @@
 import React, {useMemo, useCallback, useEffect} from 'react';
 import {DeckAdapter, DeckScene} from '@hubble.gl/core';
 
-import {Display} from './Display';
+import {Map} from './Map';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {setupRenderer, dimensionSelector, durationSelector} from '../renderer';
 
-import {updateViewState, viewStateSelector} from './displaySlice';
+import {updateViewState, viewStateSelector} from './mapSlice';
 
-export const DisplayContainer = ({
+export const MapContainer = ({
   width = 540,
   height,
   deckProps,
@@ -63,7 +63,7 @@ export const DisplayContainer = ({
   }, [adapter]);
 
   return (
-    <Display
+    <Map
       deckProps={deckProps}
       staticMapProps={staticMapProps}
       // UI Props

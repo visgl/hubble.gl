@@ -6,7 +6,7 @@ import {createSelector} from 'reselect';
 
 import {filterKeyframeSelector, layerKeyframeSelector} from '../timeline/timelineSlice';
 import {AUTH_TOKENS} from '../../constants';
-import {updateViewState} from '../display';
+import {updateViewState} from '../map';
 import {createSelectKeplerMap} from './keplerSlice';
 
 export const useKepler = mapId => {

@@ -26,7 +26,7 @@ import keplerGlReducer, {
 import {AUTH_TOKENS} from '../../constants';
 import {EXPORT_MAP_FORMATS} from 'kepler.gl/constants';
 import {loadRemoteKeplerMap} from './loadKeplerMap';
-import {updateViewState} from '../display';
+import {updateViewState} from '../map';
 
 const {DEFAULT_EXPORT_MAP} = uiStateUpdaters;
 

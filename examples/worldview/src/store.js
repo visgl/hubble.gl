@@ -29,12 +29,12 @@ import appReducer from './app/appSlice';
 import keplerGlReducer from './features/kepler/keplerSlice';
 
 import rendererReducer from './features/renderer/rendererSlice';
-import {displayReducer} from './features/display';
+import {mapReducer} from './features/map';
 import timelineReducer from './features/timeline/timelineSlice';
 
 const hubbleGlReducer = combineReducers({
   renderer: rendererReducer,
-  display: displayReducer,
+  map: mapReducer,
   timeline: timelineReducer
 });
 

@@ -10,7 +10,7 @@ import {
   formatConfigsChange,
   durationSelector
 } from '../../features/renderer';
-import {useWhenReady, viewStateSelector} from '../../features/display';
+import {useWhenReady, viewStateSelector} from '../../features/map';
 import {easing} from 'popmotion';
 
 export const useNewYorkScene = () => {

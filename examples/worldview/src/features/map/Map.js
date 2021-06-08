@@ -24,7 +24,7 @@ import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
 import {nearestEven} from '../../utils';
 
-export class Display extends Component {
+export class Map extends Component {
   constructor(props) {
     super(props);
 

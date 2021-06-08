@@ -29,7 +29,7 @@ import {LoadingSpinner} from 'kepler.gl/components';
 const KEPLER_UI = {
   LoadingSpinner
 };
-import {PreviewPanel} from '../features/preview/PreviewPanel';
+import {MonitorPanel} from '../features/monitor/MonitorPanel';
 import {
   useKepler,
   useKeplerDeckLayers,
@@ -86,7 +86,7 @@ const selectKeplerLayers = createSelectKeplerLayers(KEPLER_MAP_ID);
 const selectMapStyle = createSelectMapStyle(KEPLER_MAP_ID);
 const sceneLayers = [];
 const App = ({}) => {
-  const ready = useSelector(state => state.hubbleGl.display.ready);
+  const ready = useSelector(state => state.hubbleGl.map.ready);
   useKepler(KEPLER_MAP_ID);
   const keplerLayers = useSelector(selectKeplerLayers);
   const getKeyframes = useKeplerKeyframes(keplerLayers);
@@ -116,7 +116,7 @@ const App = ({}) => {
               {ready && (
                 <>
                   <div style={{height: 1080, margin: 16}}>
-                    <PreviewPanel
+                    <MonitorPanel
                       getKeyframes={getKeyframes}
                       prepareFrame={prepareFrame}
                       deckProps={deckProps}
