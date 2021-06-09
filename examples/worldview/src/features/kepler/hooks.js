@@ -90,7 +90,6 @@ export const useKeplerFrame = (keplerLayers = []) => {
   useEffect(() => {
     // Filter Frame
     if (frame.kepler_timeFilter) {
-      // const frame = frame.kepler_timeFilter;
       dispatch(
         setFilter(0, 'value', [frame.kepler_timeFilter.left, frame.kepler_timeFilter.right])
       );
@@ -101,9 +100,6 @@ export const useKeplerFrame = (keplerLayers = []) => {
       // TODO: Use layer ID instead of label.
       const keyframe = frame[`kepler_${layer.config.label}`];
       if (keyframe) {
-        // console.log(layer)
-        // const frame = keyframe.getFrame();
-        // console.log(frame)
         dispatch(layerVisConfigChange(layer, keyframe));
       }
     });
