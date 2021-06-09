@@ -87,11 +87,7 @@ export const useKeplerFrame = (keplerLayers = []) => {
   const dispatch = useDispatch();
   const frame = useSelector(frameSelector);
 
-  // const layerLabels = useMemo(() => keplerLayers.map(layer => layer.config.label), [keplerLayers])
-  // const memoedLayers = useMemo(() => keplerLayers, [layerLabels])
   useEffect(() => {
-    // console.log(scene)
-    // console.log(frame.timeFilter.getFrame())
     // Filter Frame
     if (frame.kepler_timeFilter) {
       // const frame = frame.kepler_timeFilter;
