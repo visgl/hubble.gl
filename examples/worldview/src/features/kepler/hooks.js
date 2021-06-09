@@ -66,7 +66,6 @@ export const useKeplerKeyframes = keplerLayers => {
   const getKeplerKeyframes = useCallback(() => {
     let keyframes = {};
     if (tripLayerKeyframe) {
-      // console.log(tripLayerKeyframe)
       keyframes.kepler_tripLayer = new Keyframes(tripLayerKeyframe);
     }
 
@@ -78,9 +77,6 @@ export const useKeplerKeyframes = keplerLayers => {
           const features = Object.keys(matchedLayer.config.visConfig);
           acc[`kepler_${key}`] = new Keyframes({...value, features});
         }
-        // else {
-        //   throw new Error(`Error making kepler layer keyframe. Layer not found: '${value.label}'`);
-        // }
         return acc;
       }, keyframes);
     }
