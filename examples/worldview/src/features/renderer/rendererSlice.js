@@ -137,7 +137,10 @@ export default rendererSlice.reducer;
  */
 
 const framerateSelector = state => state.hubbleGl.renderer.timecodeState.framerate;
-const timecodeSelector = state => {
+export const framestepSelector = createSelector(framerateSelector, framerate => {
+  return Math.round(1000 / framerate);
+});
+export const timecodeSelector = state => {
   const {start, end} = state.hubbleGl.renderer.timecodeState;
   return {start, end};
 };
@@ -159,7 +162,7 @@ export const encoderSettingsSelector = createSelector(
       filename,
       ...formatConfigs
     };
-    return JSON.parse(JSON.stringify(encoderSetting));
+    return JSON.parse(JSON.stringify(encoderSetting)); // copy object
   }
 );
 

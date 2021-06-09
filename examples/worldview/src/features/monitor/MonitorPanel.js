@@ -1,12 +1,13 @@
 import React, {useMemo, useCallback} from 'react';
 import {Play, Search, Maximize} from './Icons';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   busySelector,
   durationSelector,
   dimensionSelector,
   usePreviewHandler,
-  useRenderHandler
+  useRenderHandler,
+  seekTime
 } from '../renderer';
 import {AutoSizer} from 'react-virtualized';
 import {WithKeplerUI} from '@hubble.gl/react';
@@ -14,6 +15,7 @@ import {useCameraKeyframes, useCameraFrame, usePrepareFrame} from '../timeline/h
 import {Map, viewStateSelector} from '../map';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {nearestEven} from '../../utils';
+import {framestepSelector, timecodeSelector} from '../renderer/rendererSlice';
 
 const MonitorBottomToolbar = ({playing, onPreview}) => {
   return (
@@ -123,6 +125,31 @@ const MapBox = ({height, width, children}) => (
   </div>
 );
 
+const SeekSlider = ({getCameraKeyframes, getKeyframes}) => {
+  const timecode = useSelector(timecodeSelector);
+  const framestep = useSelector(framestepSelector);
+  const dispatch = useDispatch();
+  const onSeek = useCallback(
+    timeMs => {
+      if (getCameraKeyframes && getKeyframes) {
+        dispatch(seekTime({timeMs, getCameraKeyframes, getKeyframes}));
+      }
+    },
+    [getCameraKeyframes, getKeyframes]
+  );
+  // useEffect(() => onSeek(timecode.start), [timecode.start, getCameraKeyframes, getKeyframes])
+
+  return (
+    <input
+      type="range"
+      min={timecode.start}
+      max={timecode.end}
+      step={framestep}
+      onChange={e => onSeek(parseInt(e.target.value, 10))}
+    />
+  );
+};
+
 export const MonitorPanel = ({
   getCameraKeyframes = undefined,
   getKeyframes,
@@ -179,6 +206,7 @@ export const MonitorPanel = ({
       </div>
       <MonitorBottomToolbar playing={Boolean(rendererBusy)} onPreview={onPreview} />
       <button onClick={onRender}>Render</button>
+      <SeekSlider getCameraKeyframes={getCameraKeyframes} getKeyframes={getKeyframes} />
     </div>
   );
 };
