@@ -66,7 +66,7 @@ export const useKeplerKeyframes = keplerLayers => {
   const getKeplerKeyframes = useCallback(() => {
     let keyframes = {};
     if (tripLayerKeyframe) {
-      keyframes.kepler_tripLayer = new Keyframes(tripLayerKeyframe);
+      keyframes.kepler_tripLayer = new Keyframes({features: ['time'], ...tripLayerKeyframe});
     }
 
     if (Object.keys(layerKeyframe).length > 0) {
