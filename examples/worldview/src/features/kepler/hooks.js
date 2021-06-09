@@ -1,5 +1,10 @@
 import {useEffect, useCallback, useMemo} from 'react';
-import {registerEntry, setFilter, layerVisConfigChange} from 'kepler.gl/actions';
+import {
+  registerEntry,
+  setFilter,
+  layerVisConfigChange,
+  setLayerAnimationTime
+} from 'kepler.gl/actions';
 import {FilterValueKeyframes, Keyframes} from '@hubble.gl/core';
 import {useDispatch, useSelector} from 'react-redux';
 import {createSelector} from 'reselect';
@@ -7,7 +12,8 @@ import {createSelector} from 'reselect';
 import {
   filterKeyframeSelector,
   layerKeyframeSelector,
-  frameSelector
+  frameSelector,
+  tripLayerKeyframeSelector
 } from '../timeline/timelineSlice';
 import {AUTH_TOKENS} from '../../constants';
 import {updateViewState} from '../map';
@@ -55,9 +61,13 @@ export const useKeplerMapState = mapId => {
 export const useKeplerKeyframes = keplerLayers => {
   const filterKeyframe = useSelector(filterKeyframeSelector);
   const layerKeyframe = useSelector(layerKeyframeSelector);
+  const tripLayerKeyframe = useSelector(tripLayerKeyframeSelector);
 
   const getKeplerKeyframes = useCallback(() => {
     let keyframes = {};
+    if (tripLayerKeyframe) {
+      keyframes.kepler_tripLayer = new Keyframes({features: ['time'], ...tripLayerKeyframe});
+    }
 
     if (Object.keys(layerKeyframe).length > 0) {
       keyframes = Object.entries(layerKeyframe).reduce((acc, [key, value]) => {
@@ -65,9 +75,7 @@ export const useKeplerKeyframes = keplerLayers => {
         const matchedLayer = keplerLayers.find(layer => layer.config.label === value.label);
         if (matchedLayer) {
           const features = Object.keys(matchedLayer.config.visConfig);
-          acc[key] = new Keyframes({...value, features});
-        } else {
-          throw new Error(`Error making kepler layer keyframe. Layer not found: '${value.label}'`);
+          acc[`kepler_${key}`] = new Keyframes({...value, features});
         }
         return acc;
       }, keyframes);
@@ -78,7 +86,7 @@ export const useKeplerKeyframes = keplerLayers => {
       keyframes.kepler_timeFilter = new FilterValueKeyframes(filterKeyframe);
     }
     return keyframes;
-  }, [filterKeyframe, layerKeyframe, keplerLayers]);
+  }, [filterKeyframe, layerKeyframe, tripLayerKeyframe, keplerLayers]);
 
   return getKeplerKeyframes;
 };
@@ -103,6 +111,10 @@ export const useKeplerFrame = (keplerLayers = []) => {
         dispatch(layerVisConfigChange(layer, keyframe));
       }
     });
+
+    if (frame.kepler_tripLayer) {
+      dispatch(setLayerAnimationTime(frame.kepler_tripLayer.time));
+    }
 
     // Note: Map State is kept in sync using plugin.
   }, [frame]);
