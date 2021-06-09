@@ -10,8 +10,8 @@ import {
 } from '../renderer';
 import {AutoSizer} from 'react-virtualized';
 import {WithKeplerUI} from '@hubble.gl/react';
+import {useCameraKeyframes, useCameraFrame, usePrepareFrame} from '../timeline/hooks';
 import {Map, viewStateSelector} from '../map';
-import {useCameraKeyframes, usePrepareCameraFrame} from '../timeline/hooks';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {nearestEven} from '../../utils';
 
@@ -126,7 +126,6 @@ const MapBox = ({height, width, children}) => (
 export const MonitorPanel = ({
   getCameraKeyframes = undefined,
   getKeyframes,
-  prepareFrame,
   deckProps = undefined,
   staticMapProps = undefined
 }) => {
@@ -138,15 +137,8 @@ export const MonitorPanel = ({
     getCameraKeyframes = useCameraKeyframes();
   }
 
-  const prepareCameraFrame = usePrepareCameraFrame();
-  const combinedPrepareFrame = useCallback(
-    scene => {
-      prepareFrame(scene);
-      prepareCameraFrame(scene);
-    },
-    [prepareFrame]
-  );
-
+  useCameraFrame();
+  const prepareFrame = usePrepareFrame();
   const onPreview = usePreviewHandler({getCameraKeyframes, getKeyframes});
   const onRender = useRenderHandler({getCameraKeyframes, getKeyframes});
 
@@ -170,7 +162,7 @@ export const MonitorPanel = ({
               <Map
                 width={mapWidth}
                 height={mapHeight}
-                prepareFrame={combinedPrepareFrame}
+                prepareFrame={prepareFrame}
                 deckProps={deckProps}
                 staticMapProps={staticMapProps}
               />

@@ -34,7 +34,7 @@ import {
   useKepler,
   useKeplerDeckLayers,
   useKeplerKeyframes,
-  usePrepareKeplerFrame,
+  useKeplerFrame,
   createSelectMapStyle,
   createSelectKeplerLayers
 } from '../features/kepler';
@@ -90,7 +90,7 @@ const App = ({}) => {
   useKepler(KEPLER_MAP_ID);
   const keplerLayers = useSelector(selectKeplerLayers);
   const getKeyframes = useKeplerKeyframes(keplerLayers);
-  const prepareFrame = usePrepareKeplerFrame(keplerLayers);
+  useKeplerFrame(keplerLayers);
   const keplerDeckLayers = useKeplerDeckLayers(KEPLER_MAP_ID);
   const deckProps = useMemo(() => {
     return {
@@ -118,7 +118,6 @@ const App = ({}) => {
                   <div style={{height: 1080, margin: 16}}>
                     <MonitorPanel
                       getKeyframes={getKeyframes}
-                      prepareFrame={prepareFrame}
                       deckProps={deckProps}
                       staticMapProps={staticMapProps}
                     />

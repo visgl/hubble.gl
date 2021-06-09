@@ -3,7 +3,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   ready: false,
-  viewState: {}
+  viewState: undefined
 };
 
 const mapSlice = createSlice({

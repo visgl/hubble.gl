@@ -38,17 +38,19 @@ export const useNewYorkScene = () => {
   };
 
   useEffect(() => {
-    const {longitude, latitude, zoom, pitch, bearing} = viewState;
-    dispatch(
-      updateCameraKeyframes({
-        timings: [0, duration],
-        keyframes: [
-          {longitude, latitude, zoom, pitch, bearing},
-          {longitude, latitude, zoom, pitch, bearing: bearing + 90}
-        ],
-        easings: [easing.easeInOut]
-      })
-    );
+    if (viewState) {
+      const {longitude, latitude, zoom, pitch, bearing} = viewState;
+      dispatch(
+        updateCameraKeyframes({
+          timings: [0, duration],
+          keyframes: [
+            {longitude, latitude, zoom, pitch, bearing},
+            {longitude, latitude, zoom, pitch, bearing: bearing + 90}
+          ],
+          easings: [easing.easeInOut]
+        })
+      );
+    }
   }, [viewState, duration]);
 
   useWhenReady(newYorkScene);

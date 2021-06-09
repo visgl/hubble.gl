@@ -1,3 +1,3 @@
-export {useKepler, useKeplerDeckLayers, useKeplerKeyframes, usePrepareKeplerFrame} from './hooks';
+export {useKepler, useKeplerDeckLayers, useKeplerKeyframes, useKeplerFrame} from './hooks';
 
 export {createSelectMapStyle, createSelectKeplerLayers} from './keplerSlice';
