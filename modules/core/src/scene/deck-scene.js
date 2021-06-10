@@ -17,14 +17,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+import {Timeline} from '@luma.gl/engine';
+
 export default class DeckScene {
   /** @param {import('types').DeckSceneParams} params */
-  constructor({animationLoop, data, width, height, initialKeyframes = undefined}) {
-    this.animationLoop = animationLoop;
+  constructor({timeline, data, width, height, initialKeyframes = undefined}) {
     this.data = data;
     this.width = width;
     this.height = height;
 
+    this.timeline = timeline || new Timeline();
     this.keyframes = {};
     this.animations = {};
     if (initialKeyframes) {
@@ -43,11 +45,11 @@ export default class DeckScene {
     for (const keyframe in keyframes) {
       const animation = this.animations[keyframe];
       if (animation) {
-        this.animationLoop.timeline.detachAnimation(animation);
+        this.timeline.detachAnimation(animation);
       }
-      this.animations[keyframe] = this.animationLoop.timeline.attachAnimation(
-        this.keyframes[keyframe]
-      );
+      this.animations[keyframe] = this.timeline.attachAnimation(this.keyframes[keyframe]);
+    }
+  }
     }
   }
 }

@@ -129,9 +129,9 @@ export default function App() {
   const onNextFrame = useNextFrame();
   const [rainbow, setRainbow] = useState(false);
 
-  const getDeckScene = animationLoop => {
+  const getDeckScene = timeline => {
     return new DeckScene({
-      animationLoop,
+      timeline,
       width: 640,
       height: 480,
       initialKeyframes: getKeyframes()

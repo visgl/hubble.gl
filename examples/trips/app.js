@@ -117,9 +117,9 @@ export default function App({
   const [animation] = useState({});
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
 
-  const getDeckScene = animationLoop => {
+  const getDeckScene = timeline => {
     return new DeckScene({
-      animationLoop,
+      timeline,
       width: 1280,
       height: 720
     });

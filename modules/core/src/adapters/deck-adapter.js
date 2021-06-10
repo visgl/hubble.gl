@@ -26,7 +26,7 @@ import {VideoCapture} from '../capture/video-capture';
 export default class DeckAdapter {
   /** @type {DeckScene} */
   scene;
-  /** @type {(animationLoop: any) => Promise<DeckScene> | DeckScene} */
+  /** @type {(timeline: any) => Promise<DeckScene> | DeckScene} */
   sceneBuilder;
   /** @type {boolean} */
   shouldAnimate;
@@ -36,7 +36,7 @@ export default class DeckAdapter {
   glContext;
 
   /**
-   * @param {(animationLoop: any) => DeckScene | Promise<DeckScene>} sceneBuilder
+   * @param {(timeline: any) => DeckScene | Promise<DeckScene>} sceneBuilder
    * @param {WebGL2RenderingContext} glContext
    */
   constructor(sceneBuilder, glContext = undefined) {
@@ -140,7 +140,7 @@ export default class DeckAdapter {
     };
     this.shouldAnimate = true;
     this.videoCapture.render(Encoder, formatConfigs, timecode, filename, innerOnStop);
-    this.scene.animationLoop.timeline.setTime(timecode.start);
+    this.scene.timeline.setTime(timecode.start);
     this.enabled = true;
   }
 
@@ -167,18 +167,18 @@ export default class DeckAdapter {
       if (getKeyframes) {
         this.scene.setKeyframes(getKeyframes());
       }
-      this.scene.animationLoop.timeline.setTime(timeMs);
+      this.scene.timeline.setTime(timeMs);
     }
   }
 
   async _deckOnLoad(deck) {
     this.deck = deck;
 
-    const animationLoop = deck.animationLoop;
-    animationLoop.timeline.pause();
-    animationLoop.timeline.setTime(0);
+    const timeline = deck.animationLoop.timeline;
+    timeline.pause();
+    timeline.setTime(0);
 
-    await Promise.resolve(this.sceneBuilder(animationLoop)).then(scene => {
+    await Promise.resolve(this.sceneBuilder(timeline)).then(scene => {
       this._applyScene(scene);
     });
   }
@@ -208,7 +208,7 @@ export default class DeckAdapter {
    */
   onAfterRender(proceedToNextFrame) {
     this.videoCapture.capture(this.deck.canvas, nextTimeMs => {
-      this.scene.animationLoop.timeline.setTime(nextTimeMs);
+      this.scene.timeline.setTime(nextTimeMs);
       proceedToNextFrame(nextTimeMs);
     });
   }

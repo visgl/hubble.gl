@@ -42,9 +42,9 @@ export const MapContainer = ({
   const duration = useSelector(durationSelector);
 
   const getDeckScene = useCallback(
-    animationLoop => {
+    timeline => {
       return new DeckScene({
-        animationLoop,
+        timeline,
         lengthMs: duration,
         width: dimension.width,
         height: dimension.height

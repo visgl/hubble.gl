@@ -140,11 +140,11 @@ export class ExportVideoPanelContainer extends Component {
     });
   }
 
-  getDeckScene(animationLoop) {
+  getDeckScene(timeline) {
     const {width, height} = this.getCanvasSize();
 
     return new DeckScene({
-      animationLoop,
+      timeline,
       width,
       height
     });
