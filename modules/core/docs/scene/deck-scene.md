@@ -3,7 +3,6 @@
 ## Usage
 
 ```js
-const lengthMs = 5000;
 const width = 1280;
 const height = 720;
 
@@ -29,7 +28,6 @@ const getLayers = (scene) => {
 
 const scene = new DeckScene({
   animationLoop,  
-  lengthMs, 
   data,          // optional
   width,         // optional
   height         // optional
@@ -39,7 +37,7 @@ const scene = new DeckScene({
 ## Constructor
 
 ```js
-new DeckScene({animationLoop, length, keyframes, data});
+new DeckScene({animationLoop, keyframes, data});
 ```
 
 Parameters:
@@ -47,10 +45,6 @@ Parameters:
 ##### `animationLoop` (Object)
 
 A lumagl `animationLoop` object.
-
-##### `lengthMs` (Number)
-
-Total length of scene in milliseconds.
 
 ##### `data` (Object, Optional)
 

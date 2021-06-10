@@ -19,10 +19,9 @@
 // THE SOFTWARE.
 export default class DeckScene {
   /** @param {import('types').DeckSceneParams} params */
-  constructor({animationLoop, data, lengthMs, width, height, initialKeyframes = undefined}) {
+  constructor({animationLoop, data, width, height, initialKeyframes = undefined}) {
     this.animationLoop = animationLoop;
     this.data = data;
-    this.lengthMs = lengthMs;
     this.width = width;
     this.height = height;
 
@@ -33,10 +32,6 @@ export default class DeckScene {
     }
 
     this.setCameraKeyframes = this.setCameraKeyframes.bind(this);
-  }
-
-  setDuration(duration) {
-    this.lengthMs = duration;
   }
 
   setCameraKeyframes(cameraKeyframes) {

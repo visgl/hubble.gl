@@ -54,9 +54,8 @@ export function getCameraKeyframes() {
 }
 
 export function getDeckScene(animationLoop) {
-  const lengthMs = 5000;
   const data = [{sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}];
-  return new DeckScene({animationLoop, data, lengthMs, width: 1920, height: 1080});
+  return new DeckScene({animationLoop, data, width: 1920, height: 1080});
 }
 ```
 
@@ -72,8 +71,9 @@ import {DeckAdapter} from 'hubble.gl';
 import {useNextFrame, BasicControls} from '@hubble.gl/react';
 import {getDeckScene, getCameraKeyframes} from './scene';
 
-/** @type {import('@hubble.gl/core/src/types').FrameEncoderSettings} */
-const encoderSettings = {
+const timecode = {
+  start: 0,
+  end: 5000,
   framerate: 30
 }
 
@@ -90,7 +90,7 @@ export default function App() {
         ref={deckRef}
         {...adapter.getProps({deckRef, setReady, onNextFrame})}
       />
-      <div style={{position: 'absolute'}}>{ready && <BasicControls adapter={adapter} busy={busy} setBusy={setBusy} encoderSettings={encoderSettings} getCameraKeyframes={getCameraKeyframes}/>}</div>
+      <div style={{position: 'absolute'}}>{ready && <BasicControls adapter={adapter} busy={busy} setBusy={setBusy} timecode={timecode} getCameraKeyframes={getCameraKeyframes}/>}</div>
     </div>
   );
 }

@@ -63,6 +63,12 @@ Provide a FrameEncoder class for capturing deck canvas. See [Encoders Overview](
 
 See [FrameEncoder](/modules/core/docs/encoder/frame-encoder#constructor-1) for internal defaults.
 
+* **`timecode` (`{start: number, end: number, framerate: number}`)**
+
+The start and end time in milliseconds to render, as well as a framerate.
+          
+* **`filename` (`string`, Optional) - Default: UUID.**
+
 * **`onStop` (`() => void`, Optional) - Default: `undefined`.**
 
 ##### `stop(callback)`
