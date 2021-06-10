@@ -111,7 +111,7 @@ export default class DeckAdapter {
    * @param {() => import('../keyframes').CameraKeyframes} params.getCameraKeyframes
    * @param {() => Object<string, import('../keyframes').Keyframes>} params.getKeyframes
    * @param {typeof import('../encoders').FrameEncoder} params.Encoder
-   * @param {import('types').FrameEncoderSettings} params.encoderSettings
+   * @param {Partial<import('types').FormatConfigs>} params.formatConfigs
    * @param {() => void} params.onStop
    * @param {string} params.filename
    * @param {{start: number, end: number, framerate: number}} params.timecode
@@ -120,7 +120,7 @@ export default class DeckAdapter {
     getCameraKeyframes = undefined,
     getKeyframes = undefined,
     Encoder = PreviewEncoder,
-    encoderSettings = {},
+    formatConfigs = {},
     onStop = undefined,
     filename = undefined,
     timecode = {start: 0, end: 0, framerate: 30}
@@ -139,7 +139,7 @@ export default class DeckAdapter {
       }
     };
     this.shouldAnimate = true;
-    this.videoCapture.render(Encoder, encoderSettings, timecode, filename, innerOnStop);
+    this.videoCapture.render(Encoder, formatConfigs, timecode, filename, innerOnStop);
     this.scene.animationLoop.timeline.setTime(timecode.start);
     this.enabled = true;
   }

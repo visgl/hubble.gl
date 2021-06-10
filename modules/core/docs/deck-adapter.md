@@ -41,7 +41,7 @@ Parameters:
 
 * `extraProps` (`DeckGlProps`, Optional) - Apply extra props to deckgl. Note: Hubble will override props as needed.
 
-##### `render({getCameraKeyframes, Encoder, encoderSettings, onStop, getKeyframes})`
+##### `render({getCameraKeyframes, Encoder, formatConfigs, onStop, getKeyframes})`
 
 Start rendering.
 
@@ -59,7 +59,7 @@ This function is called after the last frame is rendered and a file is created f
 
 Provide a FrameEncoder class for capturing deck canvas. See [Encoders Overview](/modules/core/docs/encoder) for options.
 
-* **`encoderSettings` (`Object`, Optional) - Default: `{}`.**
+* **`formatConfigs` (`Object`, Optional) - Default: `{}`.**
 
 See [FrameEncoder](/modules/core/docs/encoder/frame-encoder#constructor-1) for internal defaults.
 

@@ -60,7 +60,7 @@ export const rendererMiddleware = store => {
         adapter.render({
           getCameraKeyframes,
           Encoder: PreviewEncoder,
-          encoderSettings: formatConfigsSelector(state),
+          formatConfigs: formatConfigsSelector(state),
           timecode: timecodeSelector(state),
           filename: filenameSelector(state),
           onStop: innerOnStop,
@@ -83,7 +83,7 @@ export const rendererMiddleware = store => {
         adapter.render({
           getCameraKeyframes,
           Encoder,
-          encoderSettings: formatConfigsSelector(state),
+          formatConfigs: formatConfigsSelector(state),
           timecode: timecodeSelector(state),
           filename: filenameSelector(state),
           onStop: innerOnStop,

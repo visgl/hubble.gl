@@ -25,8 +25,11 @@ type DeckGl = {
 
 type FrameEncoderSettings = Partial<EncoderSettings>
 
-interface EncoderSettings {
+interface EncoderSettings extends FormatConfigs {
   framerate: number
+}
+
+interface FormatConfigs {
   jpeg: {
     quality: number
   },
@@ -39,7 +42,7 @@ interface EncoderSettings {
     width: number,
     height: number
     jpegQuality: number
-  },
+  }
 }
 
 interface DeckSceneParams {

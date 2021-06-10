@@ -17,8 +17,8 @@ const INITIAL_VIEW_STATE = {
   maxPitch: 90
 };
 
-/** @type {import('@hubble.gl/core/src/types').FrameEncoderSettings} */
-const encoderSettings = {
+/** @type {import('@hubble.gl/core/src/types').FormatConfigs} */
+const formatConfigs = {
   webm: {
     quality: 0.8
   },
@@ -111,7 +111,7 @@ export default function App() {
             adapter={adapter}
             busy={busy}
             setBusy={setBusy}
-            encoderSettings={encoderSettings}
+            formatConfigs={formatConfigs}
             timecode={timecode}
             getCameraKeyframes={getCameraKeyframes}
             getKeyframes={getKeyframes}

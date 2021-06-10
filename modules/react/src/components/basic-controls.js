@@ -40,7 +40,7 @@ export default function BasicControls({
   adapter,
   busy,
   setBusy,
-  encoderSettings,
+  formatConfigs,
   timecode,
   getCameraKeyframes,
   getKeyframes = undefined
@@ -52,7 +52,7 @@ export default function BasicControls({
       getCameraKeyframes,
       getKeyframes,
       Encoder: ENCODERS[encoder],
-      encoderSettings,
+      formatConfigs,
       timecode,
       onStop: () => setBusy(false)
     });
