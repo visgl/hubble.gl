@@ -50,6 +50,4 @@ export default class DeckScene {
       this.animations[keyframe] = this.timeline.attachAnimation(this.keyframes[keyframe]);
     }
   }
-    }
-  }
 }
