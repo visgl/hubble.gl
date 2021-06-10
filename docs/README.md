@@ -26,7 +26,7 @@ import {easing} from 'popmotion';
 
 function getLayers(scene) {
   return [
-    new LineLayer({id: 'line-layer', data: scene.data})
+    new LineLayer({id: 'line-layer', data: [{sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}]})
   ]
 }
 
@@ -54,8 +54,7 @@ export function getCameraKeyframes() {
 }
 
 export function getDeckScene(timeline) {
-  const data = [{sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}];
-  return new DeckScene({timeline, data, width: 1920, height: 1080});
+  return new DeckScene({timeline, width: 1920, height: 1080});
 }
 ```
 

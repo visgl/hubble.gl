@@ -21,8 +21,7 @@ import {Timeline} from '@luma.gl/engine';
 
 export default class DeckScene {
   /** @param {import('types').DeckSceneParams} params */
-  constructor({timeline, data, width, height, initialKeyframes = undefined}) {
-    this.data = data;
+  constructor({timeline, width, height, initialKeyframes = undefined}) {
     this.width = width;
     this.height = height;
 

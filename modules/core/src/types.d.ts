@@ -47,10 +47,8 @@ interface FormatConfigs {
 
 interface DeckSceneParams {
   timeline: any
-  lengthMs: number
   width: number
   height: number
-  data: any
   initialKeyframes: Object<string, Keyframes>
 }
 
@@ -60,7 +58,6 @@ interface KeplerSceneParams {
   width: number
   height: number
   keyframes: any[]
-  data: any
   filters: any[]
   getFrame: (keplerGl: any, keyframes: any[], filters: any[]) => any
 }
