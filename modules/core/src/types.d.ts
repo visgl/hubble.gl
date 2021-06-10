@@ -26,9 +26,6 @@ type DeckGl = {
 type FrameEncoderSettings = Partial<EncoderSettings>
 
 interface EncoderSettings {
-  startOffsetMs?: number
-  durationMs?: number
-  filename: string
   framerate: number
   jpeg: {
     quality: number
