@@ -8,18 +8,18 @@ new DeckAdapter(sceneBuilder);
 
 ## Parameters
 
-##### `sceneBuilder` (`(animationLoop) => Promise<DeckScene> | DeckScene`)
+##### `sceneBuilder` (`(timeline) => Promise<DeckScene> | DeckScene`)
 
 Function to build scene, async or sync. See [DeckScene](/modules/core/docs/scene/deck-scene) for more information.
 
 ```js
-async function sceneBuilder(animationLoop) {
+async function sceneBuilder(timeline) {
   // See DeckScene API Reference for more info
   const data = await fetch(...)
   const lengthMs = 5000 // ms
   const width = 1920 // px
   const height = 1080 // px
-  return new DeckScene({animationLoop, data, lengthMs, width, height})
+  return new DeckScene({timeline, data, lengthMs, width, height})
 }
 ```
 

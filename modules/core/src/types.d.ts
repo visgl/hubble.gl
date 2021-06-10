@@ -46,7 +46,7 @@ interface FormatConfigs {
 }
 
 interface DeckSceneParams {
-  animationLoop: any
+  timeline: any
   lengthMs: number
   width: number
   height: number
@@ -55,7 +55,7 @@ interface DeckSceneParams {
 }
 
 interface KeplerSceneParams {
-  animationLoop: any
+  timeline: any
   lengthMs: number
   width: number
   height: number

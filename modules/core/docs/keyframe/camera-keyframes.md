@@ -9,7 +9,7 @@ const keyframes = {
   camera: new CameraKeyframes({timings, keyframes, easings});
 }
 // Attach each keyframe object to timeline.
-animationLoop.timeline.attachAnimation(keyframes.camera);
+timeline.attachAnimation(keyframes.camera);
 ```
 
 ## Constructor

@@ -19,8 +19,8 @@
 // THE SOFTWARE.
 export default class KeplerScene {
   /** @param {import('types').KeplerSceneParams} params */
-  constructor({animationLoop, keyframes, data, filters, getFrame, lengthMs, width, height}) {
-    this.animationLoop = animationLoop;
+  constructor({timeline, keyframes, data, filters, getFrame, lengthMs, width, height}) {
+    this.timeline = timeline;
     this.keyframes = keyframes;
     this.data = data;
     this._getFrame = getFrame;

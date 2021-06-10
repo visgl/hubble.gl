@@ -71,9 +71,9 @@ export default function App() {
     });
   }, [viewStateA, viewStateB]);
 
-  const getDeckScene = animationLoop => {
+  const getDeckScene = timeline => {
     return new DeckScene({
-      animationLoop,
+      timeline,
       width: 640,
       height: 480,
       initialKeyframes: getKeyframes()

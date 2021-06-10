@@ -23,9 +23,9 @@ export const QuickAnimation = ({
 
   const [viewState, setViewState] = useState(initialViewState);
 
-  const getDeckScene = animationLoop => {
+  const getDeckScene = timeline => {
     return new DeckScene({
-      animationLoop,
+      timeline,
       width,
       height,
       initialKeyframes: getLayerKeyframes()

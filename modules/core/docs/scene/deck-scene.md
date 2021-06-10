@@ -11,7 +11,7 @@ const keyframes = {
   camera: new CameraKeyframes({...}) // camera is a reserved key
 }
 // Attach each keyframe object to timeline.
-animationLoop.timeline.attachAnimation(keyframes.camera);
+timeline.attachAnimation(keyframes.camera);
 
 // Optional unless animating deck.gl layer properties.
 const data = {
@@ -27,7 +27,7 @@ const getLayers = (scene) => {
 }
 
 const scene = new DeckScene({
-  animationLoop,  
+  timeline,  
   data,          // optional
   width,         // optional
   height         // optional
@@ -37,14 +37,14 @@ const scene = new DeckScene({
 ## Constructor
 
 ```js
-new DeckScene({animationLoop, keyframes, data});
+new DeckScene({timeline, keyframes, data});
 ```
 
 Parameters:
 
-##### `animationLoop` (Object)
+##### `timeline` (Object)
 
-A lumagl `animationLoop` object.
+A lumagl `timeline` object.
 
 ##### `data` (Object, Optional)
 
@@ -64,7 +64,7 @@ Returns:
 
 ##### `setKeyframes` (`Object`)
 
-Keyframe objects registered to the animationLoop timeline.
+Keyframe objects registered to the Timeline.
 
 - `camera` (`CameraKeyframes`, Optional) - supply a camera animation. If set, `deck.viewState` will be set with this keyframe object.
 
