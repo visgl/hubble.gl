@@ -10,7 +10,7 @@ export const QuickAnimation = ({
   getLayerKeyframes,
   getLayers,
   initialViewState,
-  duration,
+  timecode,
   width = 640,
   height = 480,
   encoderSettings = {},
@@ -26,7 +26,6 @@ export const QuickAnimation = ({
   const getDeckScene = animationLoop => {
     return new DeckScene({
       animationLoop,
-      lengthMs: duration,
       width,
       height,
       initialKeyframes: getLayerKeyframes()
@@ -36,7 +35,6 @@ export const QuickAnimation = ({
   const [adapter] = useState(new DeckAdapter(getDeckScene));
 
   const mergedEncoderSettings = {
-    framerate: 30,
     webm: {
       quality: 0.8
     },
@@ -49,6 +47,12 @@ export const QuickAnimation = ({
       height
     },
     ...encoderSettings
+  };
+
+  const mergedTimecode = {
+    framerate: 30,
+    start: 0,
+    ...timecode
   };
 
   return (
@@ -73,6 +77,7 @@ export const QuickAnimation = ({
             busy={busy}
             setBusy={setBusy}
             encoderSettings={mergedEncoderSettings}
+            timecode={mergedTimecode}
             getCameraKeyframes={
               getCameraKeyframes ? () => getCameraKeyframes(viewState) : getCameraKeyframes
             }

@@ -103,7 +103,6 @@ const getKeyframes = () => {
 
 /** @type {import('@hubble.gl/core/src/types').FrameEncoderSettings} */
 const encoderSettings = {
-  framerate: 30,
   webm: {
     quality: 0.8
   },
@@ -115,6 +114,12 @@ const encoderSettings = {
   }
 };
 
+const timecode = {
+  start: 0,
+  end: 15000,
+  framerate: 30
+};
+
 export default function App() {
   const deckRef = useRef(null);
   const [ready, setReady] = useState(false);
@@ -122,13 +127,11 @@ export default function App() {
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
 
   const onNextFrame = useNextFrame();
-  const [duration] = useState(15000);
   const [rainbow, setRainbow] = useState(false);
 
   const getDeckScene = animationLoop => {
     return new DeckScene({
       animationLoop,
-      lengthMs: duration,
       width: 640,
       height: 480,
       initialKeyframes: getKeyframes()
@@ -176,6 +179,7 @@ export default function App() {
             busy={busy}
             setBusy={setBusy}
             encoderSettings={encoderSettings}
+            timecode={timecode}
             getCameraKeyframes={getCameraKeyframes}
             getKeyframes={getKeyframes}
           />

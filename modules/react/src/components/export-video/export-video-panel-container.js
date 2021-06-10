@@ -98,11 +98,9 @@ export class ExportVideoPanelContainer extends Component {
   }
 
   getEncoderSettings() {
-    const fileName = this.getFileName();
     const {width, height} = this.getCanvasSize();
 
     return {
-      framerate: 30,
       webm: {
         quality: 0.8
       },
@@ -113,8 +111,16 @@ export class ExportVideoPanelContainer extends Component {
         sampleInterval: 1000,
         width,
         height
-      },
-      filename: fileName
+      }
+    };
+  }
+
+  getTimecode() {
+    const {durationMs} = this.state;
+    return {
+      start: 0,
+      end: durationMs,
+      framerate: 30
     };
   }
 
@@ -144,12 +150,10 @@ export class ExportVideoPanelContainer extends Component {
   }
 
   getDeckScene(animationLoop) {
-    const {durationMs} = this.state;
     const {width, height} = this.getCanvasSize();
 
     return new DeckScene({
       animationLoop,
-      lengthMs: durationMs,
       width,
       height
     });
@@ -197,7 +201,9 @@ export class ExportVideoPanelContainer extends Component {
 
   onPreviewVideo() {
     const {adapter} = this.state;
+    const filename = this.getFileName();
     const encoderSettings = this.getEncoderSettings();
+    const timecode = this.getTimecode();
     const onStop = () => {
       this.forceUpdate();
     };
@@ -205,14 +211,18 @@ export class ExportVideoPanelContainer extends Component {
       getCameraKeyframes: this.getCameraKeyframes,
       Encoder: PreviewEncoder,
       encoderSettings,
+      timecode,
+      filename,
       onStop
     });
   }
 
   onRenderVideo() {
     const {adapter} = this.state;
+    const filename = this.getFileName();
     const Encoder = this.getEncoder();
     const encoderSettings = this.getEncoderSettings();
+    const timecode = this.getTimecode();
 
     this.setState({rendering: true}); // Enables overlay after user clicks "Render"
     const onStop = () => {
@@ -223,13 +233,13 @@ export class ExportVideoPanelContainer extends Component {
       getCameraKeyframes: this.getCameraKeyframes,
       Encoder,
       encoderSettings,
+      timecode,
+      filename,
       onStop
     });
   }
 
   setDuration(durationMs) {
-    const {adapter} = this.state;
-    adapter.scene.setDuration(durationMs);
     this.setStateAndNotify({durationMs});
   }
 
@@ -248,7 +258,7 @@ export class ExportVideoPanelContainer extends Component {
 
     const settingsData = {mediaType, cameraPreset, fileName, resolution};
 
-    const encoderSettings = this.getEncoderSettings();
+    const timecode = this.getTimecode();
     const {width, height} = this.getCanvasSize();
 
     return (
@@ -273,7 +283,7 @@ export class ExportVideoPanelContainer extends Component {
         handleRenderVideo={this.onRenderVideo}
         durationMs={durationMs}
         setDuration={this.setDuration}
-        frameRate={encoderSettings.framerate}
+        frameRate={timecode.framerate}
         resolution={[width, height]}
         mediaType={mediaType}
         rendering={rendering}

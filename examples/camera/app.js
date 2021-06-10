@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useCallback} from 'react';
 import DeckGL from '@deck.gl/react';
 import {DeckAdapter, DeckScene, CameraKeyframes} from '@hubble.gl/core';
 import {useNextFrame, BasicControls, ResolutionGuide} from '@hubble.gl/react';
@@ -19,7 +19,6 @@ const INITIAL_VIEW_STATE = {
 
 /** @type {import('@hubble.gl/core/src/types').FrameEncoderSettings} */
 const encoderSettings = {
-  framerate: 30,
   webm: {
     quality: 0.8
   },
@@ -31,8 +30,24 @@ const encoderSettings = {
   }
 };
 
+const timecode = {
+  start: 0,
+  end: 5000,
+  framerate: 30
+};
+
 const aaEffect = new PostProcessEffect(fxaa, {});
 const vignetteEffect = new PostProcessEffect(vignette, {});
+
+function filterCamera(viewState) {
+  const features = ['latitude', 'longitude', 'zoom', 'bearing', 'pitch'];
+  return Object.keys(viewState)
+    .filter(key => features.includes(key))
+    .reduce((obj, key) => {
+      obj[key] = viewState[key];
+      return obj;
+    }, {});
+}
 
 export default function App() {
   const deckRef = useRef(null);
@@ -47,20 +62,18 @@ export default function App() {
   });
 
   const onNextFrame = useNextFrame();
-  const [duration] = useState(5000);
 
-  const getCameraKeyframes = () => {
+  const getCameraKeyframes = useCallback(() => {
     return new CameraKeyframes({
-      timings: [0, duration - 250],
+      timings: [0, timecode.end - 250],
       keyframes: [viewStateA, viewStateB],
-      easings: [easing.easeInOut]
+      easings: easing.easeInOut
     });
-  };
+  }, [viewStateA, viewStateB]);
 
   const getDeckScene = animationLoop => {
     return new DeckScene({
       animationLoop,
-      lengthMs: duration,
       width: 640,
       height: 480,
       initialKeyframes: getKeyframes()
@@ -99,12 +112,13 @@ export default function App() {
             busy={busy}
             setBusy={setBusy}
             encoderSettings={encoderSettings}
+            timecode={timecode}
             getCameraKeyframes={getCameraKeyframes}
             getKeyframes={getKeyframes}
           />
         )}
-        <button onClick={() => setViewStateA(viewState)}>Set Camera Start</button>
-        <button onClick={() => setViewStateB(viewState)}>Set Camera End</button>
+        <button onClick={() => setViewStateA(filterCamera(viewState))}>Set Camera Start</button>
+        <button onClick={() => setViewStateB(filterCamera(viewState))}>Set Camera End</button>
       </div>
     </div>
   );

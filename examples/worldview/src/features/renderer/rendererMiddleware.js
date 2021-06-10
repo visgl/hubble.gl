@@ -16,9 +16,10 @@ import {
   signalPreviewing,
   stopVideo,
   seekTime,
-  encoderSettingsSelector,
   busySelector,
-  durationSelector
+  timecodeSelector,
+  filenameSelector,
+  formatConfigsSelector
 } from './rendererSlice';
 
 const ENCODERS = {
@@ -50,19 +51,18 @@ export const rendererMiddleware = store => {
       case previewVideo.type: {
         const {getCameraKeyframes, getKeyframes, onStop} = action.payload;
         const state = store.getState();
-        const encoderSettings = encoderSettingsSelector(state);
-        const duration = durationSelector(state);
         store.dispatch(signalPreviewing(true));
         const innerOnStop = () => {
           store.dispatch(signalPreviewing(false));
           if (onStop) onStop();
         };
 
-        adapter.scene.setDuration(duration);
         adapter.render({
           getCameraKeyframes,
           Encoder: PreviewEncoder,
-          encoderSettings,
+          encoderSettings: formatConfigsSelector(state),
+          timecode: timecodeSelector(state),
+          filename: filenameSelector(state),
           onStop: innerOnStop,
           getKeyframes
         });
@@ -71,8 +71,6 @@ export const rendererMiddleware = store => {
       case renderVideo.type: {
         const {getCameraKeyframes, getKeyframes, onStop} = action.payload;
         const state = store.getState();
-        const encoderSettings = encoderSettingsSelector(state);
-        const duration = durationSelector(state);
         const Encoder = encoderSelector(state);
 
         store.dispatch(signalRendering(true));
@@ -82,11 +80,12 @@ export const rendererMiddleware = store => {
           if (onStop) onStop();
         };
 
-        adapter.scene.setDuration(duration);
         adapter.render({
           getCameraKeyframes,
           Encoder,
-          encoderSettings,
+          encoderSettings: formatConfigsSelector(state),
+          timecode: timecodeSelector(state),
+          filename: filenameSelector(state),
           onStop: innerOnStop,
           getKeyframes
         });
