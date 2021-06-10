@@ -8,7 +8,12 @@ const INITIAL_VIEW_STATE = {
   latitude: 37.79,
   zoom: 11
 };
-const DURATION = 3000;
+
+const TIMECODE = {
+  start: 0,
+  end: 5000,
+  framerate: 30
+};
 
 export default function App() {
   const getKeyframes = () => {
@@ -66,7 +71,7 @@ export default function App() {
           clearColor: [255, 255, 255, 1]
         }
       }}
-      duration={DURATION}
+      timecode={TIMECODE}
     />
   );
 }

@@ -41,6 +41,7 @@ export default function BasicControls({
   busy,
   setBusy,
   encoderSettings,
+  timecode,
   getCameraKeyframes,
   getKeyframes = undefined
 }) {
@@ -49,10 +50,11 @@ export default function BasicControls({
   const onRender = () => {
     adapter.render({
       getCameraKeyframes,
+      getKeyframes,
       Encoder: ENCODERS[encoder],
       encoderSettings,
-      onStop: () => setBusy(false),
-      getKeyframes
+      timecode,
+      onStop: () => setBusy(false)
     });
 
     setBusy(true);

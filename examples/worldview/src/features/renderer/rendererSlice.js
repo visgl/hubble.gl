@@ -136,35 +136,19 @@ export default rendererSlice.reducer;
  * Selectors
  */
 
-const framerateSelector = state => state.hubbleGl.renderer.timecodeState.framerate;
+export const framerateSelector = state => state.hubbleGl.renderer.timecodeState.framerate;
 export const framestepSelector = createSelector(framerateSelector, framerate => {
   return Math.round(1000 / framerate);
 });
-export const timecodeSelector = state => {
-  const {start, end} = state.hubbleGl.renderer.timecodeState;
-  return {start, end};
-};
+export const timecodeSelector = state => state.hubbleGl.renderer.timecodeState;
+
 // TODO: deprecate when DeckScene supports timecode object
 export const durationSelector = createSelector(timecodeSelector, timecode => {
   return timecode.end - timecode.start;
 });
 
-const formatConfigsSelector = state => state.hubbleGl.renderer.formatConfigs;
-const filenameSelector = state => state.hubbleGl.renderer.filename;
-
-export const encoderSettingsSelector = createSelector(
-  formatConfigsSelector,
-  framerateSelector,
-  filenameSelector,
-  (formatConfigs, framerate, filename) => {
-    const encoderSetting = {
-      framerate,
-      filename,
-      ...formatConfigs
-    };
-    return JSON.parse(JSON.stringify(encoderSetting)); // copy object
-  }
-);
+export const formatConfigsSelector = state => state.hubbleGl.renderer.formatConfigs;
+export const filenameSelector = state => state.hubbleGl.renderer.filename;
 
 export const dimensionSelector = state => state.hubbleGl.renderer.dimensionState;
 
