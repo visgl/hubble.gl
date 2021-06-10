@@ -13,7 +13,7 @@ export const QuickAnimation = ({
   timecode,
   width = 640,
   height = 480,
-  encoderSettings = {},
+  formatConfigs = {},
   deckProps = {}
 }) => {
   const deckRef = useRef(null);
@@ -34,7 +34,7 @@ export const QuickAnimation = ({
 
   const [adapter] = useState(new DeckAdapter(getDeckScene));
 
-  const mergedEncoderSettings = {
+  const mergedFormatConfigs = {
     webm: {
       quality: 0.8
     },
@@ -46,7 +46,7 @@ export const QuickAnimation = ({
       width,
       height
     },
-    ...encoderSettings
+    ...formatConfigs
   };
 
   const mergedTimecode = {
@@ -76,7 +76,7 @@ export const QuickAnimation = ({
             adapter={adapter}
             busy={busy}
             setBusy={setBusy}
-            encoderSettings={mergedEncoderSettings}
+            formatConfigs={mergedFormatConfigs}
             timecode={mergedTimecode}
             getCameraKeyframes={
               getCameraKeyframes ? () => getCameraKeyframes(viewState) : getCameraKeyframes

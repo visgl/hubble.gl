@@ -35,15 +35,6 @@ import ExportVideoPanel from './export-video-panel';
 import {parseSetCameraType} from './utils';
 import {DEFAULT_FILENAME, getResolutionSetting} from './constants';
 
-// import {DEFAULT_TIME_FORMAT} from 'kepler.gl';
-// import moment from 'moment';
-
-// function setFileNameDeckAdapter(name) {
-//   encoderSettings.filename = `${name} ${moment()
-//     .format(DEFAULT_TIME_FORMAT)
-//     .toString()}`;
-// }
-
 const ENCODERS = {
   gif: GifEncoder,
   webm: WebMEncoder,
@@ -97,7 +88,7 @@ export class ExportVideoPanelContainer extends Component {
     return getResolutionSetting(resolution);
   }
 
-  getEncoderSettings() {
+  getFormatConfigs() {
     const {width, height} = this.getCanvasSize();
 
     return {
@@ -202,7 +193,7 @@ export class ExportVideoPanelContainer extends Component {
   onPreviewVideo() {
     const {adapter} = this.state;
     const filename = this.getFileName();
-    const encoderSettings = this.getEncoderSettings();
+    const formatConfigs = this.getFormatConfigs();
     const timecode = this.getTimecode();
     const onStop = () => {
       this.forceUpdate();
@@ -210,7 +201,7 @@ export class ExportVideoPanelContainer extends Component {
     adapter.render({
       getCameraKeyframes: this.getCameraKeyframes,
       Encoder: PreviewEncoder,
-      encoderSettings,
+      formatConfigs,
       timecode,
       filename,
       onStop
@@ -221,7 +212,7 @@ export class ExportVideoPanelContainer extends Component {
     const {adapter} = this.state;
     const filename = this.getFileName();
     const Encoder = this.getEncoder();
-    const encoderSettings = this.getEncoderSettings();
+    const formatConfigs = this.getFormatConfigs();
     const timecode = this.getTimecode();
 
     this.setState({rendering: true}); // Enables overlay after user clicks "Render"
@@ -232,7 +223,7 @@ export class ExportVideoPanelContainer extends Component {
     adapter.render({
       getCameraKeyframes: this.getCameraKeyframes,
       Encoder,
-      encoderSettings,
+      formatConfigs,
       timecode,
       filename,
       onStop
