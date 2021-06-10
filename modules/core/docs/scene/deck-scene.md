@@ -14,21 +14,15 @@ const keyframes = {
 timeline.attachAnimation(keyframes.camera);
 
 // Optional unless animating deck.gl layer properties.
-const data = {
-  line: [{sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}],
-  arc: [{sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}]
-}
-// Optional unless animating deck.gl layer properties.
 const getLayers = (scene) => {
   return [
-    new LineLayer({ id: 'line-layer', data: scene.data.line }),
-    new ArcLayer({ id: 'arc-layer', data: scene.data.arc })
+    new LineLayer({ id: 'line-layer', data: [{sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}] }),
+    new ArcLayer({ id: 'arc-layer', data: [{sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}] })
   ]
 }
 
 const scene = new DeckScene({
   timeline,  
-  data,          // optional
   width,         // optional
   height         // optional
 });
@@ -37,7 +31,7 @@ const scene = new DeckScene({
 ## Constructor
 
 ```js
-new DeckScene({timeline, keyframes, data});
+new DeckScene({timeline, initialKeyframes});
 ```
 
 Parameters:
@@ -46,11 +40,9 @@ Parameters:
 
 A lumagl `timeline` object.
 
-##### `data` (Object, Optional)
+##### `initialKeyframes` (Object<string, Keyframes>)
 
-An object of data used to render layers.
-
-If set, the object is accessible in `getLayers` function via `scene.data`.
+An initial set of keyframes. If they are static, supply them here. If the ever need to update, call `scene.setKeyframes`.
 
 ## Methods
 

@@ -15,11 +15,9 @@ Function to build scene, async or sync. See [DeckScene](/modules/core/docs/scene
 ```js
 async function sceneBuilder(timeline) {
   // See DeckScene API Reference for more info
-  const data = await fetch(...)
-  const lengthMs = 5000 // ms
   const width = 1920 // px
   const height = 1080 // px
-  return new DeckScene({timeline, data, lengthMs, width, height})
+  return new DeckScene({timeline, width, height})
 }
 ```
 
