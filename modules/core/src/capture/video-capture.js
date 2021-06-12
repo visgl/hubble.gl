@@ -31,25 +31,18 @@ export class VideoCapture {
   capturing;
   /** @type {number} */
   timeMs;
-  /** @type {number} */
-  endTimeMs;
-  /** @type {number} */
-  durationMs;
-  /** @type {number} */
-  framerate;
+  /** @type {{start: number, end: number, duration: number, framerate: number}} */
+  timecode;
   /** @type {FrameEncoder} */
   encoder;
   /** @type {string} */
   filename;
-  /** @type {import('types').FrameEncoderSettings} */
-  encoderSettings;
 
   constructor() {
     this.recording = false;
     this.capturing = false;
     this.timeMs = 0;
     this.encoder = null;
-    this.encoderSettings = null;
 
     this._getNextTimeMs = this._getNextTimeMs.bind(this);
     this._step = this._step.bind(this);
@@ -60,44 +53,6 @@ export class VideoCapture {
     this.save = this.save.bind(this);
   }
 
-  /**
-   * @param {import('types').FrameEncoderSettings} encoderSettings
-   * @param {number} sceneLengthMs
-   */
-  parseEncoderSettings(encoderSettings, sceneLengthMs) {
-    const parsedSettings = {...encoderSettings};
-
-    if (!parsedSettings.startOffsetMs) {
-      parsedSettings.startOffsetMs = 0;
-    }
-    this.timeMs = parsedSettings.startOffsetMs;
-
-    if (parsedSettings.durationMs) {
-      this.endTimeMs = parsedSettings.startOffsetMs + parsedSettings.durationMs;
-    } else {
-      parsedSettings.durationMs = sceneLengthMs - parsedSettings.startOffsetMs;
-      this.endTimeMs = sceneLengthMs;
-    }
-    if (this.endTimeMs > sceneLengthMs) {
-      throw new Error(
-        `Recording end time (${this.endTimeMs}) cannot be greater then scene length (${sceneLengthMs})`
-      );
-    }
-    if (parsedSettings.durationMs <= 0) {
-      throw new Error(
-        `Invalid recording length in ms (${parsedSettings.durationMs}).  Must be greater than 0.`
-      );
-    }
-    this.durationMs = parsedSettings.durationMs;
-
-    if (!parsedSettings.filename) {
-      parsedSettings.filename = guid();
-    }
-    this.filename = parsedSettings.filename;
-
-    return parsedSettings;
-  }
-
   // True if recording, false otherwise.
   isRecording() {
     return this.recording;
@@ -106,17 +61,18 @@ export class VideoCapture {
   /**
    * Start recording.
    * @param {typeof FrameEncoder} Encoder
-   * @param {import('types').FrameEncoderSettings} encoderSettings
-   * @param {number} sceneLengthMs
+   * @param {import('types').FormatConfigs} formatConfigs
+   * @param {{start: number, end: number, framerate: number, duration?: number}} timecode
    * @param {() => void} onStop
    */
-  render(Encoder, encoderSettings, sceneLengthMs, onStop = undefined) {
+  render(Encoder, formatConfigs, timecode, filename = undefined, onStop = undefined) {
     if (!this.isRecording()) {
       console.time('render');
-      this.encoderSettings = this.parseEncoderSettings(encoderSettings, sceneLengthMs);
-      console.log(`Starting recording for ${this.durationMs}ms.`);
+      this.filename = this._sanitizeFilename(filename);
+      this.timecode = this._sanatizeTimecode(timecode);
+      console.log(`Starting recording for ${this.timecode.duration}ms.`);
       this.onStop = onStop;
-      this.encoder = new Encoder(this.encoderSettings);
+      this.encoder = new Encoder({...formatConfigs, framerate: this.timecode.framerate});
       this.recording = true;
       this.encoder.start();
     }
@@ -139,7 +95,7 @@ export class VideoCapture {
       this._capture(canvas).then(data => {
         this.capturing = false;
         if (data.kind === 'step') {
-          console.log(`data.nextTimeMs: ${data.nextTimeMs}`);
+          // console.log(`data.nextTimeMs: ${data.nextTimeMs}`);
           proceedToNextFrame(data.nextTimeMs);
         } else if (data.error === 'STOP') {
           console.log('data.error: STOP');
@@ -157,23 +113,23 @@ export class VideoCapture {
    */
   stop(callback = undefined) {
     if (this.isRecording()) {
-      console.log(`Stopping recording.  Recorded for ${this.durationMs}ms.`);
+      console.log(`Stopping recording.  Recorded for ${this.timecode.duration}ms.`);
       this.recording = false;
       this.capturing = false; // Added to fix an intermittent bug
-      this.encoderSettings = null;
-      this.save();
-
-      if (callback) {
-        // eslint-disable-next-line callback-return
-        callback();
-      }
+      this.save().then(() => {
+        if (callback) {
+          // eslint-disable-next-line callback-return
+          callback();
+          this.timecode = null;
+        }
+      });
     }
   }
 
   /**
    * @param {{ (blob: Blob): boolean }} [callback]
    */
-  save(callback) {
+  async save(callback) {
     console.timeEnd('render');
     if (!callback) {
       /**
@@ -188,7 +144,43 @@ export class VideoCapture {
       };
     }
     console.time('save');
-    this.encoder.save().then(callback);
+    await this.encoder.save().then(callback);
+  }
+
+  /**
+   * @param {string} filename
+   */
+  _sanitizeFilename(filename) {
+    if (!filename) {
+      filename = guid();
+    }
+    return filename;
+  }
+
+  /**
+   * @param {{start: number, end: number, framerate: number, duration?: number}} timecode
+   */
+  _sanatizeTimecode(timecode) {
+    const parsedTimecode = {
+      duration: undefined,
+      ...timecode
+    };
+
+    if (!parsedTimecode.start) {
+      parsedTimecode.start = 0;
+    }
+    this.timeMs = parsedTimecode.start;
+
+    if (!parsedTimecode.duration) {
+      parsedTimecode.duration = parsedTimecode.end - parsedTimecode.start;
+    }
+
+    if (parsedTimecode.duration <= 0) {
+      throw new Error(
+        `Invalid recording length (${parsedTimecode.duration}ms).  Must be greater than 0.`
+      );
+    }
+    return parsedTimecode;
   }
 
   /**
@@ -214,7 +206,7 @@ export class VideoCapture {
   _step() {
     // generating next frame timestamp
     this.timeMs = this._getNextTimeMs();
-    if (this.timeMs > this.endTimeMs) {
+    if (this.timeMs > this.timecode.end) {
       return {kind: 'error', error: 'STOP'};
     }
     return {kind: 'step', nextTimeMs: this.timeMs};
@@ -223,7 +215,7 @@ export class VideoCapture {
   // Get next time MS based on current time MS and framerate
   // @return time in milliseconds for next frame.
   _getNextTimeMs() {
-    const frameLengthMs = parseInt(1000.0 / this.encoder.framerate, 10);
+    const frameLengthMs = Math.floor(1000.0 / this.timecode.framerate);
     return this.timeMs + frameLengthMs;
   }
 }

@@ -4,7 +4,7 @@ const {resolve} = require('path');
 module.exports = {
   lint: {
     paths: ['docs', 'modules', 'examples', 'test'],
-    extensions: ['js', 'md']
+    extensions: ['js']
   },
 
   // aliases: {

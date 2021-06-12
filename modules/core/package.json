@@ -1,6 +1,6 @@
 {
   "name": "@hubble.gl/core",
-  "version": "1.2.0-alpha.7",
+  "version": "1.2.0-alpha.10",
   "description": "hubble.gl core library classes",
   "license": "MIT",
   "repository": {
@@ -35,6 +35,8 @@
   "dependencies": {
     "@loaders.gl/core": "^2.1.6",
     "@loaders.gl/video": "2.2.0-alpha.1",
+    "@math.gl/core": "^3.4.2",
+    "@math.gl/web-mercator": "^3.4.2",
     "downloadjs": "^1.4.7",
     "popmotion": "^8.6.10",
     "webm-writer": "^0.2.2"

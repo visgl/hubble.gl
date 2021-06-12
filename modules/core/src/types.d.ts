@@ -25,11 +25,11 @@ type DeckGl = {
 
 type FrameEncoderSettings = Partial<EncoderSettings>
 
-interface EncoderSettings {
-  startOffsetMs?: number
-  durationMs?: number
-  filename: string
+interface EncoderSettings extends FormatConfigs {
   framerate: number
+}
+
+interface FormatConfigs {
   jpeg: {
     quality: number
   },
@@ -41,25 +41,23 @@ interface EncoderSettings {
     sampleInterval: number,
     width: number,
     height: number
-  },
+    jpegQuality: number
+  }
 }
 
 interface DeckSceneParams {
-  animationLoop: any
-  lengthMs: number
+  timeline: any
   width: number
   height: number
-  data: any
   initialKeyframes: Object<string, Keyframes>
 }
 
 interface KeplerSceneParams {
-  animationLoop: any
+  timeline: any
   lengthMs: number
   width: number
   height: number
   keyframes: any[]
-  data: any
   filters: any[]
   getFrame: (keplerGl: any, keyframes: any[], filters: any[]) => any
 }

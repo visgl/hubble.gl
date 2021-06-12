@@ -25,7 +25,15 @@ import styled, {withTheme} from 'styled-components';
 import {InjectKeplerUI, ExportVideoModal, ExportVideoPanelContainer} from '@hubble.gl/react';
 
 // Hook up mutual kepler imports
-import {Button, Icons, Input, ItemSelector, Slider} from 'kepler.gl/components';
+import {
+  Button,
+  Icons,
+  Input,
+  ItemSelector,
+  Slider,
+  LoadingSpinner,
+  ModalTabsFactory
+} from 'kepler.gl/components';
 
 // Redux stores/actions
 // import {connect as keplerGlConnect} from 'kepler.gl';
@@ -44,7 +52,9 @@ const KEPLER_UI = {
   Icons,
   Input,
   ItemSelector,
-  Slider
+  Slider,
+  LoadingSpinner,
+  ModalTabsFactory
 };
 
 const mapStateToProps = state => {

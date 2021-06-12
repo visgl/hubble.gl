@@ -22,6 +22,7 @@ import test from 'tape-catch';
 import {
   sanitizeEasings,
   sanitizeTimings,
+  sanitizeInterpolators,
   merge,
   factorInterpolator
   // @ts-ignore
@@ -42,6 +43,26 @@ test('Keyframes#sanitizeEasings', t => {
   t.throws(
     () => sanitizeEasings(keyframes, easings3),
     'sanitizeEasings throws on incorrect number of easings'
+  );
+  t.end();
+});
+
+test('Keyframes#sanitizeInterpolators', t => {
+  const keyframes = [undefined, undefined, undefined];
+  const interpolators1 = ['flyTo', 'flyTo'];
+  const sanitizedInterpolators1 = sanitizeInterpolators(keyframes, interpolators1);
+  t.equals(sanitizedInterpolators1, interpolators1, 'valid easing array are unmodified');
+  const interpolators2 = 'flyTo';
+  const sanitizedInterpolators2 = sanitizeInterpolators(keyframes, interpolators2);
+  t.looseEqual(
+    sanitizedInterpolators2,
+    interpolators1,
+    'interpolators string is expanded to full interpolators array'
+  );
+  const interpolators3 = ['linear'];
+  t.throws(
+    () => sanitizeInterpolators(keyframes, interpolators3),
+    'sanitizeInterpolators throws on incorrect number of easings'
   );
   t.end();
 });
@@ -73,23 +94,24 @@ test('Keyframes#merge', t => {
   const noop = () => {};
   const timings1 = [0, 1, 2];
   const easings1 = [noop, noop];
+  const interpolators1 = ['flyTo', 'linear'];
   const keyframes1 = [
     {a: '', b: true},
     {a: 'a', b: false},
     {a: '2', b: true}
   ];
   const expectedMergedKeyframes1 = [
-    [0, {a: '', b: true, ease: undefined}],
-    [1, {a: 'a', b: false, ease: noop}],
-    [2, {a: '2', b: true, ease: noop}]
+    [0, {a: '', b: true, ease: undefined, interpolate: undefined}],
+    [1, {a: 'a', b: false, ease: noop, interpolate: 'flyTo'}],
+    [2, {a: '2', b: true, ease: noop, interpolate: 'linear'}]
   ];
 
-  const actualMergedKeyframes1 = merge(timings1, keyframes1, easings1);
+  const actualMergedKeyframes1 = merge(timings1, keyframes1, easings1, interpolators1);
 
   t.looseEquals(
     actualMergedKeyframes1,
     expectedMergedKeyframes1,
-    'timings, keyframes, and easings are merged'
+    'timings, keyframes, easings, and interpolators are merged'
   );
   t.end();
 });

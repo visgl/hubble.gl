@@ -26,7 +26,7 @@ import {easing} from 'popmotion';
 
 function getLayers(scene) {
   return [
-    new LineLayer({id: 'line-layer', data: scene.data})
+    new LineLayer({id: 'line-layer', data: [{sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}]})
   ]
 }
 
@@ -53,10 +53,8 @@ export function getCameraKeyframes() {
   });
 }
 
-export function getDeckScene(animationLoop) {
-  const lengthMs = 5000;
-  const data = [{sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}];
-  return new DeckScene({animationLoop, data, lengthMs, width: 1920, height: 1080});
+export function getDeckScene(timeline) {
+  return new DeckScene({timeline, width: 1920, height: 1080});
 }
 ```
 
@@ -72,25 +70,26 @@ import {DeckAdapter} from 'hubble.gl';
 import {useNextFrame, BasicControls} from '@hubble.gl/react';
 import {getDeckScene, getCameraKeyframes} from './scene';
 
-/** @type {import('@hubble.gl/core/src/types').FrameEncoderSettings} */
-const encoderSettings = {
+const timecode = {
+  start: 0,
+  end: 5000,
   framerate: 30
 }
 
 export default function App() {
-  const deckgl = useRef(null);
+  const deckRef = useRef(null);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
-  const nextFrame = useNextFrame();
+  const onNextFrame = useNextFrame();
   const [adapter] = useState(new DeckAdapter(getDeckScene));
 
   return (
     <div style={{position: 'relative'}}>
       <DeckGL
-        ref={deckgl}
-        {...adapter.getProps(deckgl, setReady, nextFrame)}
+        ref={deckRef}
+        {...adapter.getProps({deckRef, setReady, onNextFrame, getLayers})}
       />
-      <div style={{position: 'absolute'}}>{ready && <BasicControls adapter={adapter} busy={busy} setBusy={setBusy} encoderSettings={encoderSettings} getCameraKeyframes={getCameraKeyframes}/>}</div>
+      <div style={{position: 'absolute'}}>{ready && <BasicControls adapter={adapter} busy={busy} setBusy={setBusy} timecode={timecode} getCameraKeyframes={getCameraKeyframes}/>}</div>
     </div>
   );
 }

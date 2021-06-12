@@ -101,9 +101,8 @@ const getKeyframes = () => {
   };
 };
 
-/** @type {import('@hubble.gl/core/src/types').FrameEncoderSettings} */
-const encoderSettings = {
-  framerate: 30,
+/** @type {import('@hubble.gl/core/src/types').FormatConfigs} */
+const formatConfigs = {
   webm: {
     quality: 0.8
   },
@@ -115,20 +114,24 @@ const encoderSettings = {
   }
 };
 
+const timecode = {
+  start: 0,
+  end: 15000,
+  framerate: 30
+};
+
 export default function App() {
-  const deckgl = useRef(null);
+  const deckRef = useRef(null);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
 
-  const nextFrame = useNextFrame();
-  const [duration] = useState(15000);
+  const onNextFrame = useNextFrame();
   const [rainbow, setRainbow] = useState(false);
 
-  const getDeckScene = animationLoop => {
+  const getDeckScene = timeline => {
     return new DeckScene({
-      animationLoop,
-      lengthMs: duration,
+      timeline,
       width: 640,
       height: 480,
       initialKeyframes: getKeyframes()
@@ -160,14 +163,14 @@ export default function App() {
         <ResolutionGuide />
       </div>
       <DeckGL
-        ref={deckgl}
+        ref={deckRef}
         initialViewState={INITIAL_VIEW_STATE}
         viewState={viewState}
         onViewStateChange={({viewState: vs}) => {
           setViewState(vs);
         }}
         controller={true}
-        {...adapter.getProps(deckgl, setReady, nextFrame, getLayers)}
+        {...adapter.getProps({deckRef, setReady, onNextFrame, getLayers})}
       />
       <div style={{position: 'absolute'}}>
         {ready && (
@@ -175,7 +178,8 @@ export default function App() {
             adapter={adapter}
             busy={busy}
             setBusy={setBusy}
-            encoderSettings={encoderSettings}
+            formatConfigs={formatConfigs}
+            timecode={timecode}
             getCameraKeyframes={getCameraKeyframes}
             getKeyframes={getKeyframes}
           />

@@ -23,11 +23,14 @@ import DeckGL from '@deck.gl/react';
 import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
 
+import {deckStyle} from './constants';
+import {RenderingSpinner} from './rendering-spinner';
+
 export class ExportVideoPanelPreview extends Component {
   constructor(props) {
     super(props);
-    const user = this.props.mapData.mapStyle.bottomMapStyle.owner;
-    const mapId = this.props.mapData.mapStyle.bottomMapStyle.id;
+    const mapStyle = this.props.mapData.mapStyle;
+    const mapStyleUrl = mapStyle.mapStyles[mapStyle.styleType].url;
 
     this.mapRef = React.createRef();
     this.deckRef = React.createRef();
@@ -37,7 +40,7 @@ export class ExportVideoPanelPreview extends Component {
         latitude: 47.65,
         longitude: 7
       },
-      mapStyle: `mapbox://styles/${user}/${mapId}`, // Unsure if mapStyle would ever change but allowing it just in case
+      mapStyle: mapStyleUrl, // Unsure if mapStyle would ever change but allowing it just in case
       glContext: undefined,
       memoDevicePixelRatio: window.devicePixelRatio // memoize
     };
@@ -144,92 +147,83 @@ export class ExportVideoPanelPreview extends Component {
     return exportVideoWidth / aspectRatio;
   }
 
+  createLayers() {
+    // returns an arr of DeckGL layer objects
+    const layerOrder = this.props.mapData.visState.layerOrder;
+    return layerOrder
+      .slice()
+      .reverse()
+      .reduce(this._renderLayer, []); // Slicing & reversing to create same layer order as Kepler
+  }
+
   _onMapLoad() {
     // Adds mapbox layer to modal
     const map = this.mapRef.current.getMap();
     const deck = this.deckRef.current.deck;
+
+    const keplerLayers = this.createLayers();
+
     map.addLayer(new MapboxLayer({id: 'my-deck', deck}));
-    // TODO trying to make map scale to 100% of modal
-    // map.on('load', function () {
-    //   map.resize();
-    // });
+
+    for (let i = 0; i < keplerLayers.length; i++) {
+      // Adds DeckGL layers to Mapbox so Mapbox can be the bottom layer. Removing this clips DeckGL layers
+      map.addLayer(new MapboxLayer({id: keplerLayers[i].id, deck}));
+    }
+
     map.on('render', () =>
       this.props.adapter.onAfterRender(() => {
         this.forceUpdate();
       })
     );
-    map.resize();
-    // map.setCenter([this.props.mapData.mapState.longitude, this.props.mapData.mapState.latitude]);
-    // console.log("this.props.mapData.mapState", this.props.mapData.mapState)
   }
 
   render() {
-    // const mapStyle = this.mapData.mapStyle;
-    // const mapState = this.props.mapData.mapState;
-    // const layers = this.mapData.visState.layers;
-    // const layerData = this.mapData.visState.layerData;
-    const layerOrder = this.props.mapData.visState.layerOrder;
-    // const animationConfig = this.mapData.visState.animationConfig;
-
-    // Map data
-    // const mapboxApiAccessToken = this.props.mapData.mapStyle.mapboxApiAccessToken;
-    // const mapboxApiUrl = this.props.mapData.mapStyle.mapboxApiUrl;
-
-    // define trip and geojson layers
-    let deckGlLayers = [];
-
-    // TODO refactor this. Layers are reverse, filtered, etc. only to be redefined later
-    // wait until data is ready before render data layers
-    if (layerOrder && layerOrder.length) {
-      // last layer render first
-      deckGlLayers = layerOrder
-        .slice()
-        .reverse()
-        // .filter(
-        //   idx => layers[idx].overlayType === OVERLAY_TYPE.deckgl && layers[idx].id
-        // )
-        .reduce(this._renderLayer, []);
-    }
-
-    const deckStyle = {
-      width: '100%',
-      height: '100%'
-    };
+    const {exportVideoWidth, rendering, viewState, setViewState, adapter, durationMs} = this.props;
+    const {glContext, mapStyle} = this.state;
 
     const containerStyle = {
-      width: `${this.props.exportVideoWidth}px`,
+      width: `${exportVideoWidth}px`,
       height: `${this._getContainerHeight()}px`,
-      position: 'relative',
-      overflow: 'auto'
+      position: 'relative'
     };
 
     return (
-      <div id="deck-canvas" style={containerStyle}>
-        <DeckGL
-          ref={this.deckRef}
-          viewState={this.props.viewState}
-          id="hubblegl-overlay"
-          layers={deckGlLayers}
-          style={deckStyle}
-          controller={true}
-          glOptions={{stencil: true}}
-          onWebGLInitialized={gl => this.setState({glContext: gl})}
-          onViewStateChange={this.props.setViewState}
-          // onClick={visStateActions.onLayerClick}
-          {...this.props.adapter.getProps(this.deckRef, () => {})}
-        >
-          {this.state.glContext && (
-            <StaticMap
-              ref={this.mapRef}
-              // reuseMaps // Part of default example but causes modal to lose Mapbox tile layer?
-              mapStyle={this.state.mapStyle}
-              preventStyleDiffing={true}
-              gl={this.state.glContext}
-              onLoad={this._onMapLoad}
-            />
-          )}
-        </DeckGL>
-      </div>
+      <>
+        <div id="deck-canvas" style={containerStyle}>
+          <DeckGL
+            ref={this.deckRef}
+            viewState={viewState}
+            id="hubblegl-overlay"
+            layers={this.createLayers()}
+            style={deckStyle}
+            controller={true}
+            glOptions={{stencil: true}}
+            onWebGLInitialized={gl => this.setState({glContext: gl})}
+            onViewStateChange={setViewState}
+            // onClick={visStateActions.onLayerClick}
+            {...adapter.getProps({deckRef: this.deckRef, setReady: () => {}})}
+          >
+            {glContext && (
+              <StaticMap
+                ref={this.mapRef}
+                mapStyle={mapStyle}
+                preventStyleDiffing={true}
+                gl={glContext}
+                onLoad={this._onMapLoad}
+              />
+            )}
+          </DeckGL>
+        </div>
+        {rendering && (
+          <RenderingSpinner
+            rendering={rendering}
+            width={exportVideoWidth}
+            height={this._getContainerHeight()}
+            adapter={adapter}
+            durationMs={durationMs}
+          />
+        )}
+      </>
     );
   }
 }

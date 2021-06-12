@@ -69,9 +69,8 @@ const landCover = [
   ]
 ];
 
-/** @type {import('@hubble.gl/core/src/types').FrameEncoderSettings} */
-const encoderSettings = {
-  framerate: 30,
+/** @type {import('@hubble.gl/core/src/types').FormatConfigs} */
+const formatConfigs = {
   webm: {
     quality: 0.8
   },
@@ -81,6 +80,12 @@ const encoderSettings = {
   gif: {
     sampleInterval: 1000
   }
+};
+
+const timecode = {
+  start: 0,
+  end: 5000,
+  framerate: 30
 };
 
 // Try to convert function to class
@@ -112,12 +117,9 @@ export default function App({
   const [animation] = useState({});
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
 
-  const [duration] = useState(5000);
-
-  const getDeckScene = animationLoop => {
+  const getDeckScene = timeline => {
     return new DeckScene({
-      animationLoop,
-      lengthMs: duration,
+      timeline,
       width: 1280,
       height: 720
     });
@@ -129,7 +131,10 @@ export default function App({
     // Component did mount
     const map = mapRef.current.getMap();
     const deck = deckRef.current.deck;
-    map.addLayer(new MapboxLayer({id: 'my-deck', deck}));
+    map.addLayer(new MapboxLayer({id: 'trips', deck}));
+    map.addLayer(new MapboxLayer({id: 'buildings', deck}));
+    map.addLayer(new MapboxLayer({id: 'ground', deck}));
+
     map.on('render', () => adapter.onAfterRender(nextFrame));
   }, []);
 
@@ -180,7 +185,7 @@ export default function App({
 
   const getCameraKeyframes = useCallback(() => {
     return new CameraKeyframes({
-      timings: [0, duration],
+      timings: [0, timecode.end],
       keyframes: [
         {
           longitude: viewState.longitude,
@@ -199,7 +204,7 @@ export default function App({
       ],
       easings: [easing.easeInOut]
     });
-  }, [duration, viewState]);
+  }, [timecode.end, viewState]);
 
   return (
     <div style={{position: 'relative'}}>
@@ -214,7 +219,7 @@ export default function App({
         onViewStateChange={({viewState: vs}) => {
           setViewState(vs);
         }}
-        {...adapter.getProps(deckRef, setReady)}
+        {...adapter.getProps({deckRef, setReady})}
         onWebGLInitialized={setGLContext}
         parameters={{
           depthTest: true,
@@ -242,7 +247,8 @@ export default function App({
             adapter={adapter}
             busy={busy}
             setBusy={setBusy}
-            encoderSettings={encoderSettings}
+            formatConfigs={formatConfigs}
+            timecode={timecode}
             getCameraKeyframes={getCameraKeyframes}
           />
         )}

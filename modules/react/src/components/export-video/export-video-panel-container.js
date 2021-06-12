@@ -35,15 +35,6 @@ import ExportVideoPanel from './export-video-panel';
 import {parseSetCameraType} from './utils';
 import {DEFAULT_FILENAME, getResolutionSetting} from './constants';
 
-// import {DEFAULT_TIME_FORMAT} from 'kepler.gl';
-// import moment from 'moment';
-
-// function setFileNameDeckAdapter(name) {
-//   encoderSettings.filename = `${name} ${moment()
-//     .format(DEFAULT_TIME_FORMAT)
-//     .toString()}`;
-// }
-
 const ENCODERS = {
   gif: GifEncoder,
   webm: WebMEncoder,
@@ -78,9 +69,10 @@ export class ExportVideoPanelContainer extends Component {
       cameraPreset: 'Orbit (90º)',
       fileName: '',
       resolution: '1280x720',
-      durationMs: 1000, // TODO change to 5000 later. 1000 for dev testing
+      durationMs: 1000,
       viewState: mapState,
       adapter: new DeckAdapter(this.getDeckScene, glContext),
+      rendering: false, // Will set a spinner overlay if true
       ...(initialState || {})
     };
   }
@@ -96,12 +88,10 @@ export class ExportVideoPanelContainer extends Component {
     return getResolutionSetting(resolution);
   }
 
-  getEncoderSettings() {
-    const fileName = this.getFileName();
+  getFormatConfigs() {
     const {width, height} = this.getCanvasSize();
 
     return {
-      framerate: 30,
       webm: {
         quality: 0.8
       },
@@ -112,8 +102,16 @@ export class ExportVideoPanelContainer extends Component {
         sampleInterval: 1000,
         width,
         height
-      },
-      filename: fileName
+      }
+    };
+  }
+
+  getTimecode() {
+    const {durationMs} = this.state;
+    return {
+      start: 0,
+      end: durationMs,
+      framerate: 30
     };
   }
 
@@ -142,17 +140,11 @@ export class ExportVideoPanelContainer extends Component {
     });
   }
 
-  getDeckScene(animationLoop) {
-    // PSEUDO BRAINSTORM
-    // only runs once and permanently sets things like canvas resolution + duration
-    const {durationMs} = this.state;
+  getDeckScene(timeline) {
     const {width, height} = this.getCanvasSize();
 
-    // TODO this scales canvas resolution but is only set once. Figure out how to update
-    // TODO this needs to update durationMs
     return new DeckScene({
-      animationLoop,
-      lengthMs: durationMs,
+      timeline,
       width,
       height
     });
@@ -200,26 +192,45 @@ export class ExportVideoPanelContainer extends Component {
 
   onPreviewVideo() {
     const {adapter} = this.state;
-    const encoderSettings = this.getEncoderSettings();
+    const filename = this.getFileName();
+    const formatConfigs = this.getFormatConfigs();
+    const timecode = this.getTimecode();
     const onStop = () => {
       this.forceUpdate();
     };
-    adapter.render(this.getCameraKeyframes, PreviewEncoder, encoderSettings, onStop);
+    adapter.render({
+      getCameraKeyframes: this.getCameraKeyframes,
+      Encoder: PreviewEncoder,
+      formatConfigs,
+      timecode,
+      filename,
+      onStop
+    });
   }
 
   onRenderVideo() {
     const {adapter} = this.state;
+    const filename = this.getFileName();
     const Encoder = this.getEncoder();
-    const encoderSettings = this.getEncoderSettings();
-    const onStop = () => {};
+    const formatConfigs = this.getFormatConfigs();
+    const timecode = this.getTimecode();
 
-    adapter.render(this.getCameraKeyframes, Encoder, encoderSettings, onStop);
+    this.setState({rendering: true}); // Enables overlay after user clicks "Render"
+    const onStop = () => {
+      this.setState({rendering: false});
+    }; // Disables overlay once export is done saving (generates file to download)
+
+    adapter.render({
+      getCameraKeyframes: this.getCameraKeyframes,
+      Encoder,
+      formatConfigs,
+      timecode,
+      filename,
+      onStop
+    });
   }
 
   setDuration(durationMs) {
-    const {adapter} = this.state;
-    adapter.scene.setDuration(durationMs);
-    // function passed down to Slider class in ExportVideoPanelSettings
     this.setStateAndNotify({durationMs});
   }
 
@@ -232,12 +243,13 @@ export class ExportVideoPanelContainer extends Component {
       cameraPreset,
       fileName,
       resolution,
-      viewState
+      viewState,
+      rendering
     } = this.state;
 
     const settingsData = {mediaType, cameraPreset, fileName, resolution};
 
-    const encoderSettings = this.getEncoderSettings();
+    const timecode = this.getTimecode();
     const {width, height} = this.getCanvasSize();
 
     return (
@@ -262,9 +274,10 @@ export class ExportVideoPanelContainer extends Component {
         handleRenderVideo={this.onRenderVideo}
         durationMs={durationMs}
         setDuration={this.setDuration}
-        frameRate={encoderSettings.framerate}
+        frameRate={timecode.framerate}
         resolution={[width, height]}
         mediaType={mediaType}
+        rendering={rendering}
       />
     );
   }

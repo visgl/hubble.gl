@@ -19,6 +19,21 @@
 // THE SOFTWARE.
 import {transform} from 'popmotion';
 
+export function sanitizeInterpolators(keyframes, interpolators) {
+  let _interpolators = interpolators;
+  if (typeof interpolators === 'string') {
+    _interpolators = [];
+    for (let idx = 0; idx < keyframes.length - 1; idx++) {
+      _interpolators.push(interpolators);
+    }
+  }
+
+  if (keyframes.length - 1 !== _interpolators.length) {
+    throw new Error('There must be one fewer interpolator than keyframes');
+  }
+  return _interpolators;
+}
+
 export function sanitizeEasings(keyframes, easings) {
   let _easings = easings;
   if (typeof easings === 'function') {
@@ -51,12 +66,15 @@ export function sanitizeTimings(keyframes, timings) {
   return _timings;
 }
 
-export function merge(timings, keyframes, easings) {
+export function merge(timings, keyframes, easings, interpolators) {
   const _keyframes = keyframes.map((keyframe, idx) => {
     if (idx === 0) {
-      return [timings[idx], {...keyframe, ease: undefined}];
+      return [timings[idx], {...keyframe, ease: undefined, interpolate: undefined}];
     }
-    return [timings[idx], {...keyframe, ease: easings[idx - 1]}];
+    return [
+      timings[idx],
+      {...keyframe, ease: easings[idx - 1], interpolate: interpolators[idx - 1]}
+    ];
   });
   return _keyframes;
 }

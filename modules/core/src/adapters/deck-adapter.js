@@ -26,7 +26,7 @@ import {VideoCapture} from '../capture/video-capture';
 export default class DeckAdapter {
   /** @type {DeckScene} */
   scene;
-  /** @type {(animationLoop: any) => Promise<DeckScene> | DeckScene} */
+  /** @type {(timeline: any) => Promise<DeckScene> | DeckScene} */
   sceneBuilder;
   /** @type {boolean} */
   shouldAnimate;
@@ -36,7 +36,7 @@ export default class DeckAdapter {
   glContext;
 
   /**
-   * @param {(animationLoop: any) => DeckScene | Promise<DeckScene>} sceneBuilder
+   * @param {(timeline: any) => DeckScene | Promise<DeckScene>} sceneBuilder
    * @param {WebGL2RenderingContext} glContext
    */
   constructor(sceneBuilder, glContext = undefined) {
@@ -48,6 +48,7 @@ export default class DeckAdapter {
     this.getProps = this.getProps.bind(this);
     this.render = this.render.bind(this);
     this.stop = this.stop.bind(this);
+    this.seek = this.seek.bind(this);
     this._deckOnLoad = this._deckOnLoad.bind(this);
     this._getViewState = this._getViewState.bind(this);
     this._getLayers = this._getLayers.bind(this);
@@ -55,12 +56,20 @@ export default class DeckAdapter {
   }
 
   /**
-   * @param {{ current: { deck: any; }; }} deckRef
-   * @param {(ready: boolean) => void} setReady
-   * @param {(nextTimeMs: number) => void} onNextFrame
-   * @param {(scene: DeckScene) => any[]} getLayers
+   * @param {Object} params
+   * @param {{ current: { deck: any; }; }} params.deckRef
+   * @param {(ready: boolean) => void} params.setReady
+   * @param {(nextTimeMs: number) => void} params.onNextFrame
+   * @param {(scene: DeckScene) => any[]} params.getLayers
+   * @param {Object} params.extraProps
    */
-  getProps(deckRef, setReady, onNextFrame = undefined, getLayers = undefined) {
+  getProps({
+    deckRef,
+    setReady,
+    onNextFrame = undefined,
+    getLayers = undefined,
+    extraProps = undefined
+  }) {
     const props = {
       onLoad: () =>
         this._deckOnLoad(deckRef.current.deck).then(() => {
@@ -94,24 +103,31 @@ export default class DeckAdapter {
     if (this.glContext) {
       props.gl = this.glContext;
     }
-    return props;
+    return {...extraProps, ...props};
   }
 
   /**
-   * @param {() => import('../keyframes').CameraKeyframes} getCameraKeyframes
-   * @param {typeof import('../encoders').FrameEncoder} Encoder
-   * @param {import('types').FrameEncoderSettings} encoderSettings
-   * @param {() => void} onStop
-   * @param {() => Object<string, import('../keyframes').Keyframes>} getKeyframes
+   * @param {Object} params
+   * @param {() => import('../keyframes').CameraKeyframes} params.getCameraKeyframes
+   * @param {() => Object<string, import('../keyframes').Keyframes>} params.getKeyframes
+   * @param {typeof import('../encoders').FrameEncoder} params.Encoder
+   * @param {Partial<import('types').FormatConfigs>} params.formatConfigs
+   * @param {() => void} params.onStop
+   * @param {string} params.filename
+   * @param {{start: number, end: number, framerate: number}} params.timecode
    */
-  render(
-    getCameraKeyframes,
+  render({
+    getCameraKeyframes = undefined,
+    getKeyframes = undefined,
     Encoder = PreviewEncoder,
-    encoderSettings = {},
+    formatConfigs = {},
     onStop = undefined,
-    getKeyframes = undefined
-  ) {
-    this.scene.setCameraKeyframes(getCameraKeyframes());
+    filename = undefined,
+    timecode = {start: 0, end: 0, framerate: 30}
+  }) {
+    if (getCameraKeyframes) {
+      this.scene.setCameraKeyframes(getCameraKeyframes());
+    }
     if (getKeyframes) {
       this.scene.setKeyframes(getKeyframes());
     }
@@ -123,8 +139,8 @@ export default class DeckAdapter {
       }
     };
     this.shouldAnimate = true;
-    this.videoCapture.render(Encoder, encoderSettings, this.scene.lengthMs, innerOnStop);
-    this.scene.animationLoop.timeline.setTime(this.videoCapture.encoderSettings.startOffsetMs);
+    this.videoCapture.render(Encoder, formatConfigs, timecode, filename, innerOnStop);
+    this.scene.timeline.setTime(timecode.start);
     this.enabled = true;
   }
 
@@ -137,14 +153,32 @@ export default class DeckAdapter {
     this.videoCapture.stop(callback);
   }
 
+  /**
+   * @param {Object} params
+   * @param {number} params.timeMs
+   * @param {() => import('../keyframes').CameraKeyframes} params.getCameraKeyframes
+   * @param {() => Object<string, import('../keyframes').Keyframes>} params.getKeyframes
+   */
+  seek({timeMs, getCameraKeyframes = undefined, getKeyframes = undefined}) {
+    if (this.scene) {
+      if (getCameraKeyframes) {
+        this.scene.setCameraKeyframes(getCameraKeyframes());
+      }
+      if (getKeyframes) {
+        this.scene.setKeyframes(getKeyframes());
+      }
+      this.scene.timeline.setTime(timeMs);
+    }
+  }
+
   async _deckOnLoad(deck) {
     this.deck = deck;
 
-    const animationLoop = deck.animationLoop;
-    animationLoop.timeline.pause();
-    animationLoop.timeline.setTime(0);
+    const timeline = deck.animationLoop.timeline;
+    timeline.pause();
+    timeline.setTime(0);
 
-    await Promise.resolve(this.sceneBuilder(animationLoop)).then(scene => {
+    await Promise.resolve(this.sceneBuilder(timeline)).then(scene => {
       this._applyScene(scene);
     });
   }
@@ -166,7 +200,7 @@ export default class DeckAdapter {
     if (!this.scene) {
       return [];
     }
-    return this.scene.getLayers(getLayers);
+    return getLayers(this.scene);
   }
 
   /**
@@ -174,7 +208,7 @@ export default class DeckAdapter {
    */
   onAfterRender(proceedToNextFrame) {
     this.videoCapture.capture(this.deck.canvas, nextTimeMs => {
-      this.scene.animationLoop.timeline.setTime(nextTimeMs);
+      this.scene.timeline.setTime(nextTimeMs);
       proceedToNextFrame(nextTimeMs);
     });
   }

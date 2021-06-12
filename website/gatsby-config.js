@@ -13,8 +13,7 @@ module.exports = {
 
         DOCS: require('../docs/table-of-contents.json'),
         DOC_FOLDERS: [
-          `${__dirname}/../docs/`,
-          `${__dirname}/../modules/`
+          `${__dirname}/../docs/`
         ],
         SOURCE: [
           `${__dirname}/static`,
@@ -37,9 +36,20 @@ module.exports = {
         // Should be like btoa('YourUsername:YourKey') and should be readonly.
         GITHUB_KEY: null,
 
-        HOME_PATH: '/',
+        HOME_PATH: '',
         LINK_TO_GET_STARTED: '/docs',
-        INDEX_PAGE_URL: resolve(__dirname, './templates/index.jsx'),
+        PAGES: [
+          {
+            path: '/',
+            componentUrl: resolve(__dirname, './templates/index.jsx'),
+            content: ''
+          },
+          {
+            title: 'Showcase',
+            path: '/showcase',
+            componentUrl: resolve(__dirname, './src/pages/showcase.jsx'),
+          }
+        ],
 
         PROJECTS: [
           {name: 'deck.gl', url: 'https://deck.gl'},

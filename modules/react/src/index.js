@@ -27,6 +27,7 @@ export {
   injectKeplerUI,
   InjectKeplerUI,
   WithKeplerUI,
-  KeplerUIContext
+  KeplerUIContext,
+  QuickAnimation
 } from './components';
 export {useNextFrame} from './hooks';
