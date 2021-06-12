@@ -1,14 +1,14 @@
 # WebmEncoder
 
-A WebM video format encoder that inherits [FrameEncoder](/modules/core/docs/encoder/frame-encoder).
+A WebM video format encoder that inherits [FrameEncoder](/docs/api-reference/encoder/frame-encoder).
 
 ## Constructor
 
-Construction of the encoder class is not required. Refer to [DeckAdapter.render](/modules/core/docs/deck-adapter#render) for usage. The constructor accepts a `FrameEncoderSettings` object.
+Construction of the encoder class is not required. Refer to [DeckAdapter.render](/docs/api-reference/deck-adapter#render) for usage. The constructor accepts a `FrameEncoderSettings` object.
 
 ## FrameEncoderSettings
 
-In addition to the top level [FrameEncoder](/modules/core/docs/encoder/frame-encoder) settings, these settings are available under the `webm` namespace.
+In addition to the top level [FrameEncoder](/docs/api-reference/encoder/frame-encoder) settings, these settings are available under the `webm` namespace.
 
 * `quality` - See member note. Defaults to 0.8.
 

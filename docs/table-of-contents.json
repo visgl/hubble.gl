@@ -30,7 +30,7 @@
           "title": "Adapter",
           "entries": [
             {
-              "entry": "modules/core/docs/deck-adapter"
+              "entry": "docs/api-reference/deck-adapter"
             }
           ]
         },
@@ -38,7 +38,7 @@
           "title": "Scenes",
           "entries": [
             {
-              "entry": "modules/core/docs/scene/deck-scene"
+              "entry": "docs/api-reference/scene/deck-scene"
             }
           ]
         },
@@ -46,16 +46,16 @@
           "title": "Keyframes",
           "entries": [
             {
-              "entry": "modules/core/docs/keyframe"
+              "entry": "docs/api-reference/keyframe"
             },
             {
-              "entry": "modules/core/docs/keyframe/keyframes"
+              "entry": "docs/api-reference/keyframe/keyframes"
             },
             {
-              "entry": "modules/core/docs/keyframe/camera-keyframes"
+              "entry": "docs/api-reference/keyframe/camera-keyframes"
             },
             {
-              "entry": "modules/core/docs/keyframe/layer-keyframes"
+              "entry": "docs/api-reference/keyframe/layer-keyframes"
             }
           ]
         },
@@ -63,22 +63,22 @@
           "title": "Encoders",
           "entries": [
             {
-              "entry": "modules/core/docs/encoder"
+              "entry": "docs/api-reference/encoder"
             },
             {
-              "entry": "modules/core/docs/encoder/frame-encoder"
+              "entry": "docs/api-reference/encoder/frame-encoder"
             },
             {
-              "entry": "modules/core/docs/encoder/webm-encoder"
+              "entry": "docs/api-reference/encoder/webm-encoder"
             },
             {
-              "entry": "modules/core/docs/encoder/gif-encoder"
+              "entry": "docs/api-reference/encoder/gif-encoder"
             },
             {
-              "entry": "modules/core/docs/encoder/jpeg-sequence-encoder"
+              "entry": "docs/api-reference/encoder/jpeg-sequence-encoder"
             },
             {
-              "entry": "modules/core/docs/encoder/png-sequence-encoder"
+              "entry": "docs/api-reference/encoder/png-sequence-encoder"
             }
           ]
         }

@@ -23,7 +23,7 @@ export default function Showcase() {
 function Video({name, source, src}) {
     return (
         <div style={{paddingRight: "64px", paddingBottom: "64px", font: "normal 14px/20px 'Uber Move',Helvetica,Arial,sans-serif"}}>
-            <iframe frameBorder="0" width="640" height="360" allowFullScreen="true" src={src}/>
+            <iframe frameBorder="0" width="640" height="360" allowFullScreen={true} title={name} src={src}/>
             <H3 style={{margin: "12px 0 4px 0"}}>{name}</H3>
             <P style={{margin: 0}}>Source: {source}</P>
         </div>

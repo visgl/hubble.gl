@@ -10,7 +10,7 @@ new DeckAdapter(sceneBuilder);
 
 ##### `sceneBuilder` (`(timeline) => Promise<DeckScene> | DeckScene`)
 
-Function to build scene, async or sync. See [DeckScene](/modules/core/docs/scene/deck-scene) for more information.
+Function to build scene, async or sync. See [DeckScene](/docs/api-reference/scene/deck-scene) for more information.
 
 ```js
 async function sceneBuilder(timeline) {
@@ -55,11 +55,11 @@ This function is called after the last frame is rendered and a file is created f
 
 * **`Encoder` (`typeof FrameEncoder`, Optional) - Default: `PreviewEncoder`.**
 
-Provide a FrameEncoder class for capturing deck canvas. See [Encoders Overview](/modules/core/docs/encoder) for options.
+Provide a FrameEncoder class for capturing deck canvas. See [Encoders Overview](/docs/api-reference/encoder) for options.
 
 * **`formatConfigs` (`Object`, Optional) - Default: `{}`.**
 
-See [FrameEncoder](/modules/core/docs/encoder/frame-encoder#constructor-1) for internal defaults.
+See [FrameEncoder](/docs/api-reference/encoder/frame-encoder#constructor-1) for internal defaults.
 
 * **`timecode` (`{start: number, end: number, framerate: number}`)**
 
