@@ -19,9 +19,7 @@
 // THE SOFTWARE.
 
 import React from 'react';
-import document from 'global/document';
 import {Provider} from 'react-redux';
-import {render} from 'react-dom';
 import store from '../../../examples/kepler-integration/src/store';
 import App from '../../../examples/kepler-integration/src/app';
 
