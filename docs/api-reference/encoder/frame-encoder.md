@@ -42,7 +42,7 @@ Generic quality value. For canvas capture see [HTMLCanvasElement.toDataURL](http
 
 Initialize a capture and flush the existing encoder state.
 
-##### add(canvas: HTMLCanvasElement): Promise<void>
+##### add(canvas: HTMLCanvasElement): `Promise<void>`
 
 Add a canvas frame to an in-progress capture.
 

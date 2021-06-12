@@ -29,9 +29,9 @@
     "styled-components": "^4.4.1"
   },
   "devDependencies": {
-    "gatsby": "^2.20.0",
+    "gatsby": "^2.32.13",
     "gatsby-plugin-no-sourcemaps": "^2.1.2",
-    "gatsby-theme-ocular": "^1.2.0-beta.8",
+    "gatsby-theme-ocular": "^1.2.4",
     "gh-pages": "^2.2.0"
   }
 }

@@ -87,7 +87,7 @@ export default function App() {
     <div style={{position: 'relative'}}>
       <DeckGL
         ref={deckRef}
-        {...adapter.getProps({deckRef, setReady, onNextFrame})}
+        {...adapter.getProps({deckRef, setReady, onNextFrame, getLayers})}
       />
       <div style={{position: 'absolute'}}>{ready && <BasicControls adapter={adapter} busy={busy} setBusy={setBusy} timecode={timecode} getCameraKeyframes={getCameraKeyframes}/>}</div>
     </div>

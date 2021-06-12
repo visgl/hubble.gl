@@ -1,14 +1,14 @@
 # GifEncoder
 
-A GIF animated photo format encoder that inherits [FrameEncoder](/modules/core/docs/encoder/frame-encoder).
+A GIF animated photo format encoder that inherits [FrameEncoder](/docs/api-reference/encoder/frame-encoder).
 
 ## Constructor
 
-Construction of the encoder class is not required. Refer to [DeckAdapter.render](/modules/core/docs/deck-adapter#render) for usage. The constructor accepts a `FrameEncoderSettings` object.
+Construction of the encoder class is not required. Refer to [DeckAdapter.render](/docs/api-reference/deck-adapter#render) for usage. The constructor accepts a `FrameEncoderSettings` object.
 
 ## FrameEncoderSettings
 
-In addition to the top level [FrameEncoder](/modules/core/docs/encoder/frame-encoder) settings, these settings are available under the `gif` namespace.
+In addition to the top level [FrameEncoder](/docs/api-reference/encoder/frame-encoder) settings, these settings are available under the `gif` namespace.
 
 * `width` - The width in pixels the GIF is scaled to. Defaults to 720.
 
@@ -25,7 +25,7 @@ In addition to the top level [FrameEncoder](/modules/core/docs/encoder/frame-enc
 
 * `mimeType` - `"image/gif"`
 
-* `options` - The object under the `gif` namespace in the [FrameEncoder](/modules/core/docs/encoder/frame-encoder) settings, see above.
+* `options` - The object under the `gif` namespace in the [FrameEncoder](/docs/api-reference/encoder/frame-encoder) settings, see above.
 
 ## Source
 
