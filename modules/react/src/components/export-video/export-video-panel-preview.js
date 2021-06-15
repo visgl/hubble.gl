@@ -168,7 +168,7 @@ export class ExportVideoPanelPreview extends Component {
     }
 
     map.on('render', () =>
-      this.props.adapter.onAfterRender(deck, () => {
+      this.props.adapter.onAfterRender(() => {
         this.forceUpdate();
       })
     );
@@ -177,7 +177,7 @@ export class ExportVideoPanelPreview extends Component {
   render() {
     const {exportVideoWidth, rendering, viewState, setViewState, adapter, durationMs} = this.props;
     const {glContext, mapStyle} = this.state;
-
+    const deck = this.deckRef.current && this.deckRef.current.deck;
     const containerStyle = {
       width: `${exportVideoWidth}px`,
       height: `${this._getContainerHeight()}px`,
@@ -198,7 +198,7 @@ export class ExportVideoPanelPreview extends Component {
             onWebGLInitialized={gl => this.setState({glContext: gl})}
             onViewStateChange={setViewState}
             // onClick={visStateActions.onLayerClick}
-            {...adapter.getProps({setReady: () => {}})}
+            {...adapter.getProps({deck, setReady: () => {}})}
           >
             {glContext && (
               <StaticMap

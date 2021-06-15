@@ -24,6 +24,8 @@ import {DeckScene} from '../scene';
 import {VideoCapture} from '../capture/video-capture';
 
 export default class DeckAdapter {
+  /** @type {any} */
+  deck;
   /** @type {DeckScene} */
   scene;
   /** @type {boolean} */
@@ -64,6 +66,7 @@ export default class DeckAdapter {
     getLayers = undefined,
     extraProps = undefined
   }) {
+    this.deck = deck;
     const props = {
       onLoad: () => {
         this.scene.timeline.pause();
@@ -73,8 +76,8 @@ export default class DeckAdapter {
       _animate: this.shouldAnimate
     };
 
-    if (deck && onNextFrame) {
-      props.onAfterRender = () => this.onAfterRender(deck, onNextFrame);
+    if (onNextFrame) {
+      props.onAfterRender = () => this.onAfterRender(onNextFrame);
     }
 
     // Animating the camera is optional, but if a keyframe is defined then viewState is controlled by camera keyframe.
@@ -165,8 +168,8 @@ export default class DeckAdapter {
   /**
    * @param {(nextTimeMs: number) => void} proceedToNextFrame
    */
-  onAfterRender(deck, proceedToNextFrame) {
-    this.videoCapture.capture(deck.canvas, nextTimeMs => {
+  onAfterRender(proceedToNextFrame) {
+    this.videoCapture.capture(this.deck.canvas, nextTimeMs => {
       this.scene.timeline.setTime(nextTimeMs);
       proceedToNextFrame(nextTimeMs);
     });
