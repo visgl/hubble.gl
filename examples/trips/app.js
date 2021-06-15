@@ -135,7 +135,7 @@ export default function App({
     map.addLayer(new MapboxLayer({id: 'buildings', deck}));
     map.addLayer(new MapboxLayer({id: 'ground', deck}));
 
-    map.on('render', () => adapter.onAfterRender(deck, nextFrame));
+    map.on('render', () => adapter.onAfterRender(nextFrame));
   }, []);
 
   const animate = () => {
@@ -227,7 +227,7 @@ export default function App({
           // blendEquation: GL.FUNC_ADD,
           blendFunc: [GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA]
         }}
-        {...adapter.getProps({setReady})}
+        {...adapter.getProps({deck, setReady})}
       >
         {glContext && (
           <StaticMap
