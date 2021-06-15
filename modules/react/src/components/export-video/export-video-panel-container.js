@@ -52,7 +52,6 @@ export class ExportVideoPanelContainer extends Component {
     this.setResolution = this.setResolution.bind(this);
     this.setViewState = this.setViewState.bind(this);
     this.getCameraKeyframes = this.getCameraKeyframes.bind(this);
-    this.getDeckScene = this.getDeckScene.bind(this);
     this.onPreviewVideo = this.onPreviewVideo.bind(this);
     this.onRenderVideo = this.onRenderVideo.bind(this);
     this.setDuration = this.setDuration.bind(this);
@@ -71,10 +70,12 @@ export class ExportVideoPanelContainer extends Component {
       resolution: '1280x720',
       durationMs: 1000,
       viewState: mapState,
-      adapter: new DeckAdapter(this.getDeckScene, glContext),
       rendering: false, // Will set a spinner overlay if true
       ...(initialState || {})
     };
+    const {width, height} = this.getCanvasSize();
+    const scene = new DeckScene({width, height});
+    this.state.adapter = new DeckAdapter(scene, glContext);
   }
 
   getFileName() {
@@ -137,16 +138,6 @@ export class ExportVideoPanelContainer extends Component {
         parseSetCameraType(cameraPreset, viewState)
       ],
       easings: [easing.easeInOut]
-    });
-  }
-
-  getDeckScene(timeline) {
-    const {width, height} = this.getCanvasSize();
-
-    return new DeckScene({
-      timeline,
-      width,
-      height
     });
   }
 

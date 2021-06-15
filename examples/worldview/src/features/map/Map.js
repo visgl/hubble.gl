@@ -107,7 +107,7 @@ export class Map extends Component {
     }
 
     map.on('render', () =>
-      adapter.onAfterRender(() => {
+      adapter.onAfterRender(deck, () => {
         prepareFrame(adapter.scene);
         this.forceUpdate();
       })
@@ -140,7 +140,7 @@ export class Map extends Component {
           onWebGLInitialized={gl => this.setState({glContext: gl})}
           onViewStateChange={({viewState: vs}) => setViewState(vs)}
           // onClick={visStateActions.onLayerClick}
-          {...adapter.getProps({deckRef: this.deckRef, setReady: () => {}, extraProps: deckProps})}
+          {...adapter.getProps({setReady: () => {}, extraProps: deckProps})}
         >
           {this.state.glContext && (
             <StaticMap

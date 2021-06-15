@@ -18,13 +18,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import React, {useMemo, useCallback, useEffect} from 'react';
+import React, {useMemo, useEffect} from 'react';
 import {DeckAdapter, DeckScene} from '@hubble.gl/core';
 
 import {Map} from './Map';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {setupRenderer, dimensionSelector, durationSelector} from '../renderer';
+import {setupRenderer, dimensionSelector} from '../renderer';
 
 import {updateViewState, viewStateSelector} from './mapSlice';
 
@@ -39,24 +39,18 @@ export const MapContainer = ({
   const dispatch = useDispatch();
   const dimension = useSelector(dimensionSelector);
   const viewState = useSelector(viewStateSelector);
-  const duration = useSelector(durationSelector);
 
-  const getDeckScene = useCallback(
-    timeline => {
-      return new DeckScene({
-        timeline,
-        lengthMs: duration,
-        width: dimension.width,
-        height: dimension.height
-      });
-    },
-    [duration, dimension]
+  const adapter = useMemo(
+    () =>
+      new DeckAdapter(
+        new DeckScene({
+          width: dimension.width,
+          height: dimension.height
+        }),
+        glContext
+      ),
+    [glContext, dimension]
   );
-
-  const adapter = useMemo(() => new DeckAdapter(getDeckScene, glContext), [
-    getDeckScene,
-    glContext
-  ]);
 
   useEffect(() => {
     dispatch(setupRenderer(adapter));

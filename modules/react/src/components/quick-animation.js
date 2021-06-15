@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useMemo} from 'react';
 import DeckGL from '@deck.gl/react';
 import {DeckScene, DeckAdapter} from '@hubble.gl/core';
 import ResolutionGuide from './resolution-guide';
@@ -17,22 +17,22 @@ export const QuickAnimation = ({
   deckProps = {}
 }) => {
   const deckRef = useRef(null);
+  const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const onNextFrame = useNextFrame();
 
   const [viewState, setViewState] = useState(initialViewState);
 
-  const getDeckScene = timeline => {
-    return new DeckScene({
-      timeline,
-      width,
-      height,
-      initialKeyframes: getLayerKeyframes()
-    });
-  };
-
-  const [adapter] = useState(new DeckAdapter(getDeckScene));
+  const [adapter] = useState(
+    new DeckAdapter(
+      new DeckScene({
+        width,
+        height,
+        initialKeyframes: getLayerKeyframes()
+      })
+    )
+  );
 
   const mergedFormatConfigs = {
     webm: {
@@ -67,8 +67,7 @@ export const QuickAnimation = ({
           setViewState(vs);
         }}
         controller={true}
-        {...adapter.getProps({deckRef, setReady, onNextFrame, getLayers})}
-        {...deckProps}
+        {...adapter.getProps({deck, setReady, onNextFrame, getLayers, extraProps: deckProps})}
       />
       <div style={{position: 'absolute'}}>
         {ready && (

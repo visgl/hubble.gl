@@ -26,8 +26,6 @@ import {VideoCapture} from '../capture/video-capture';
 export default class DeckAdapter {
   /** @type {DeckScene} */
   scene;
-  /** @type {(timeline: any) => Promise<DeckScene> | DeckScene} */
-  sceneBuilder;
   /** @type {boolean} */
   shouldAnimate;
   /** @type {boolean} */
@@ -36,11 +34,11 @@ export default class DeckAdapter {
   glContext;
 
   /**
-   * @param {(timeline: any) => DeckScene | Promise<DeckScene>} sceneBuilder
+   * @param {DeckScene} scene
    * @param {WebGL2RenderingContext} glContext
    */
-  constructor(sceneBuilder, glContext = undefined) {
-    this.sceneBuilder = sceneBuilder;
+  constructor(scene, glContext = undefined) {
+    this.scene = scene;
     this.glContext = glContext;
     this.videoCapture = new VideoCapture();
     this.shouldAnimate = true;
@@ -49,38 +47,36 @@ export default class DeckAdapter {
     this.render = this.render.bind(this);
     this.stop = this.stop.bind(this);
     this.seek = this.seek.bind(this);
-    this._deckOnLoad = this._deckOnLoad.bind(this);
     this._getViewState = this._getViewState.bind(this);
     this._getLayers = this._getLayers.bind(this);
-    this._applyScene = this._applyScene.bind(this);
   }
 
   /**
    * @param {Object} params
-   * @param {{ current: { deck: any; }; }} params.deckRef
+   * @param {any} params.deck
    * @param {(ready: boolean) => void} params.setReady
    * @param {(nextTimeMs: number) => void} params.onNextFrame
    * @param {(scene: DeckScene) => any[]} params.getLayers
    * @param {Object} params.extraProps
    */
   getProps({
-    deckRef,
+    deck,
     setReady,
     onNextFrame = undefined,
     getLayers = undefined,
     extraProps = undefined
   }) {
     const props = {
-      onLoad: () =>
-        this._deckOnLoad(deckRef.current.deck).then(() => {
-          setReady(true);
-        }),
+      onLoad: () => {
+        this.scene.timeline.pause();
+        this.scene.timeline.setTime(0);
+        setReady(true);
+      },
       _animate: this.shouldAnimate
     };
 
-    if (onNextFrame) {
-      // Remove the underscore to make it public? Please verify
-      props.onAfterRender = () => this.onAfterRender(onNextFrame);
+    if (deck && onNextFrame) {
+      props.onAfterRender = () => this.onAfterRender(deck, onNextFrame);
     }
 
     // Animating the camera is optional, but if a keyframe is defined then viewState is controlled by camera keyframe.
@@ -98,6 +94,7 @@ export default class DeckAdapter {
     if (this.scene) {
       props.width = this.scene.width;
       props.height = this.scene.height;
+      props._timeline = this.scene.timeline;
     }
 
     if (this.glContext) {
@@ -171,23 +168,6 @@ export default class DeckAdapter {
     }
   }
 
-  async _deckOnLoad(deck) {
-    this.deck = deck;
-
-    const timeline = deck.animationLoop.timeline;
-    timeline.pause();
-    timeline.setTime(0);
-
-    await Promise.resolve(this.sceneBuilder(timeline)).then(scene => {
-      this._applyScene(scene);
-    });
-  }
-
-  // TODO: allow user to change scenes at runtime.
-  _applyScene(scene) {
-    this.scene = scene;
-  }
-
   _getViewState() {
     if (!this.scene) {
       return null;
@@ -206,8 +186,8 @@ export default class DeckAdapter {
   /**
    * @param {(nextTimeMs: number) => void} proceedToNextFrame
    */
-  onAfterRender(proceedToNextFrame) {
-    this.videoCapture.capture(this.deck.canvas, nextTimeMs => {
+  onAfterRender(deck, proceedToNextFrame) {
+    this.videoCapture.capture(deck.canvas, nextTimeMs => {
       this.scene.timeline.setTime(nextTimeMs);
       proceedToNextFrame(nextTimeMs);
     });

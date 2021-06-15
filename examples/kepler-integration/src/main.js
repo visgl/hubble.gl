@@ -27,7 +27,9 @@ import App from './app';
 
 const Root = () => (
   <Provider store={store}>
-    <App />
+    <div style={{height: '100vh', width: '100vw'}}>
+      <App />
+    </div>
   </Provider>
 );
 

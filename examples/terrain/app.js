@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useMemo} from 'react';
 import DeckGL from '@deck.gl/react';
 import {TerrainLayer} from '@deck.gl/geo-layers';
 import {useNextFrame, BasicControls, ResolutionGuide} from '@hubble.gl/react';
@@ -122,6 +122,7 @@ const timecode = {
 
 export default function App() {
   const deckRef = useRef(null);
+  const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
@@ -129,16 +130,15 @@ export default function App() {
   const onNextFrame = useNextFrame();
   const [rainbow, setRainbow] = useState(false);
 
-  const getDeckScene = timeline => {
-    return new DeckScene({
-      timeline,
-      width: 640,
-      height: 480,
-      initialKeyframes: getKeyframes()
-    });
-  };
-
-  const [adapter] = useState(new DeckAdapter(getDeckScene));
+  const [adapter] = useState(
+    new DeckAdapter(
+      new DeckScene({
+        width: 640,
+        height: 480,
+        initialKeyframes: getKeyframes()
+      })
+    )
+  );
 
   const getLayers = scene => {
     const terrain = scene.keyframes.terrain.getFrame();
@@ -170,7 +170,7 @@ export default function App() {
           setViewState(vs);
         }}
         controller={true}
-        {...adapter.getProps({deckRef, setReady, onNextFrame, getLayers})}
+        {...adapter.getProps({deck, setReady, onNextFrame, getLayers})}
       />
       <div style={{position: 'absolute'}}>
         {ready && (
