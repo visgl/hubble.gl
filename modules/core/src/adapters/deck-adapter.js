@@ -47,7 +47,6 @@ export default class DeckAdapter {
     this.render = this.render.bind(this);
     this.stop = this.stop.bind(this);
     this.seek = this.seek.bind(this);
-    this._getLayers = this._getLayers.bind(this);
   }
 
   /**
@@ -87,7 +86,7 @@ export default class DeckAdapter {
     // Construct layers using callback.
     // TODO: Could potentially concat instead of replace, but layers are supposed to be static.
     if (getLayers) {
-      props.layers = this._getLayers(getLayers);
+      props.layers = getLayers(this.scene);
     }
 
     props.width = this.scene.width;
@@ -161,10 +160,6 @@ export default class DeckAdapter {
       this.scene.setKeyframes(getKeyframes());
     }
     this.scene.timeline.setTime(timeMs);
-  }
-
-  _getLayers(getLayers) {
-    return getLayers(this.scene);
   }
 
   /**
