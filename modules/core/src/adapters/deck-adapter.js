@@ -47,7 +47,6 @@ export default class DeckAdapter {
     this.render = this.render.bind(this);
     this.stop = this.stop.bind(this);
     this.seek = this.seek.bind(this);
-    this._getViewState = this._getViewState.bind(this);
     this._getLayers = this._getLayers.bind(this);
   }
 
@@ -80,9 +79,9 @@ export default class DeckAdapter {
     }
 
     // Animating the camera is optional, but if a keyframe is defined then viewState is controlled by camera keyframe.
-    if (this.scene && this.scene.keyframes.camera && this.enabled) {
+    if (this.scene.keyframes.camera && this.enabled) {
       props.controller = false;
-      props.viewState = this._getViewState();
+      props.viewState = this.scene.keyframes.camera.getFrame();
     }
 
     // Construct layers using callback.
@@ -91,11 +90,9 @@ export default class DeckAdapter {
       props.layers = this._getLayers(getLayers);
     }
 
-    if (this.scene) {
-      props.width = this.scene.width;
-      props.height = this.scene.height;
-      props._timeline = this.scene.timeline;
-    }
+    props.width = this.scene.width;
+    props.height = this.scene.height;
+    props._timeline = this.scene.timeline;
 
     if (this.glContext) {
       props.gl = this.glContext;
@@ -157,29 +154,16 @@ export default class DeckAdapter {
    * @param {() => Object<string, import('../keyframes').Keyframes>} params.getKeyframes
    */
   seek({timeMs, getCameraKeyframes = undefined, getKeyframes = undefined}) {
-    if (this.scene) {
-      if (getCameraKeyframes) {
-        this.scene.setCameraKeyframes(getCameraKeyframes());
-      }
-      if (getKeyframes) {
-        this.scene.setKeyframes(getKeyframes());
-      }
-      this.scene.timeline.setTime(timeMs);
+    if (getCameraKeyframes) {
+      this.scene.setCameraKeyframes(getCameraKeyframes());
     }
-  }
-
-  _getViewState() {
-    if (!this.scene) {
-      return null;
+    if (getKeyframes) {
+      this.scene.setKeyframes(getKeyframes());
     }
-    const frame = this.scene.keyframes.camera.getFrame();
-    return frame;
+    this.scene.timeline.setTime(timeMs);
   }
 
   _getLayers(getLayers) {
-    if (!this.scene) {
-      return [];
-    }
     return getLayers(this.scene);
   }
 

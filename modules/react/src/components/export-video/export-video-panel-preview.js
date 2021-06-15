@@ -168,7 +168,7 @@ export class ExportVideoPanelPreview extends Component {
     }
 
     map.on('render', () =>
-      this.props.adapter.onAfterRender(() => {
+      this.props.adapter.onAfterRender(deck, () => {
         this.forceUpdate();
       })
     );
