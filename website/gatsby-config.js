@@ -76,6 +76,12 @@ module.exports = {
             path: 'examples/terrain/',
             image: 'images/demo-thumb-terrain.jpg',
             componentUrl: resolve('../examples/terrain/app.js')
+          },
+          {
+            title: 'Kepler.gl Animation',
+            path: 'examples/kepler-integration/',
+            image: 'images/demo-thumb-kepler-example.jpg',
+            componentUrl: resolve('./src/pages/kepler-example.jsx')
           }
         ],
       }

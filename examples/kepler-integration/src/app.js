@@ -34,12 +34,6 @@ import {loadSampleConfigurations} from './actions';
 
 import ExportVideo from './components/export-video';
 
-const KeplerGl = require('kepler.gl/components').injectComponents([
-  replaceLoadDataModal(),
-  replaceMapControl(),
-  replacePanelHeader()
-]);
-
 // Sample data
 /* eslint-disable no-unused-vars */
 import sampleTripData, {testCsvData, sampleTripDataConfig} from './data/sample-trip-data';
@@ -48,6 +42,12 @@ import {addDataToMap} from 'kepler.gl/actions';
 import {processCsvData, processGeojson} from 'kepler.gl/processors';
 /* eslint-enable no-unused-vars */
 
+const KeplerGl = require('kepler.gl/components').injectComponents([
+  replaceLoadDataModal(),
+  replaceMapControl(),
+  replacePanelHeader()
+]);
+
 const keplerGlGetState = state => state.demo.keplerGl;
 
 const GlobalStyle = styled.div`
@@ -55,6 +55,8 @@ const GlobalStyle = styled.div`
   font-weight: 400;
   font-size: 0.875em;
   line-height: 1.71429;
+  width: 100%;
+  height: 100%;
 
   *,
   *:before,
@@ -95,7 +97,6 @@ const GlobalStyle = styled.div`
 const WindowSize = styled.div`
   display: flex;
   flex-direction: column;
-  position: absolute;
   left: 0;
   top: 0;
   height: 100%;
