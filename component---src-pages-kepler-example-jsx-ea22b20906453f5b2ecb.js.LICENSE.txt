@@ -1,0 +1,131 @@
+/*
+ * Copyright 2012-2016 the original author or authors
+ * @license MIT, see LICENSE.txt for details
+ *
+ * @author Scott Andrews
+ */
+
+/*
+ * Copyright 2013-2016 the original author or authors
+ * @license MIT, see LICENSE.txt for details
+ *
+ * @author Scott Andrews
+ */
+
+/*
+ * Copyright 2014-2016 the original author or authors
+ * @license MIT, see LICENSE.txt for details
+ *
+ * @author Michael Jackson
+ */
+
+/*
+ * Copyright 2014-2016 the original author or authors
+ * @license MIT, see LICENSE.txt for details
+ *
+ * @author Scott Andrews
+ */
+
+/*
+ * Copyright 2015-2016 the original author or authors
+ * @license MIT, see LICENSE.txt for details
+ *
+ * @author Scott Andrews
+ */
+
+/*
+* Copyright 2014-2016 the original author or authors
+* @license MIT, see LICENSE.txt for details
+*
+* @author Scott Andrews
+*/
+
+/* @license
+Papa Parse
+v5.0.0-beta.0
+https://github.com/mholt/PapaParse
+License: MIT
+*/
+
+/*!
+  Copyright (c) 2015 Jed Watson.
+  Based on code that is Copyright 2013-2015, Facebook, Inc.
+  All rights reserved.
+*/
+
+/*!
+  Copyright (c) 2017 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+
+/*!
+ * @overview es6-promise - a tiny implementation of Promises/A+.
+ * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
+ * @license   Licensed under MIT license
+ *            See https://raw.githubusercontent.com/stefanpenner/es6-promise/master/LICENSE
+ * @version   v4.2.8+1e68dce6
+ */
+
+/*!
+ * Adapted from jQuery UI core
+ *
+ * http://jqueryui.com
+ *
+ * Copyright 2014 jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/category/ui-core/
+ */
+
+/*!
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+ * @license  MIT
+ */
+
+/*! Hammer.JS - v2.0.7 - 2016-04-22
+ * http://hammerjs.github.io/
+ *
+ * Copyright (c) 2016 Jorik Tangelder;
+ * Licensed under the MIT license */
+
+/*! https://mths.be/punycode v1.4.1 by @mathias */
+
+/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
+
+/**
+ * @license long.js (c) 2013 Daniel Wirtz <dcode@dcode.io>
+ * Released under the Apache License, Version 2.0
+ * see: https://github.com/dcodeIO/long.js for details
+ */
+
+/** @license React v16.13.1
+ * react-is.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+//! Copyright (c) JS Foundation and other contributors
+
+//! github.com/moment/moment-timezone
+
+//! license : MIT
+
+//! moment-timezone.js
+
+//! moment.js
+
+//! version : 0.5.33
