@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useMemo} from 'react';
 import DeckGL from '@deck.gl/react';
 import {DeckScene, DeckAdapter} from '@hubble.gl/core';
 import ResolutionGuide from './resolution-guide';
@@ -17,22 +17,23 @@ export const QuickAnimation = ({
   deckProps = {}
 }) => {
   const deckRef = useRef(null);
-  const [ready, setReady] = useState(false);
+  const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
   const [busy, setBusy] = useState(false);
   const onNextFrame = useNextFrame();
 
   const [viewState, setViewState] = useState(initialViewState);
 
-  const getDeckScene = timeline => {
-    return new DeckScene({
-      timeline,
-      width,
-      height,
-      initialKeyframes: getLayerKeyframes()
-    });
-  };
-
-  const [adapter] = useState(new DeckAdapter(getDeckScene));
+  const adapter = useMemo(
+    () =>
+      new DeckAdapter(
+        new DeckScene({
+          width,
+          height,
+          initialKeyframes: getLayerKeyframes()
+        })
+      ),
+    [width, height]
+  );
 
   const mergedFormatConfigs = {
     webm: {
@@ -67,23 +68,20 @@ export const QuickAnimation = ({
           setViewState(vs);
         }}
         controller={true}
-        {...adapter.getProps({deckRef, setReady, onNextFrame, getLayers})}
-        {...deckProps}
+        {...adapter.getProps({deck, onNextFrame, getLayers, extraProps: deckProps})}
       />
       <div style={{position: 'absolute'}}>
-        {ready && (
-          <BasicControls
-            adapter={adapter}
-            busy={busy}
-            setBusy={setBusy}
-            formatConfigs={mergedFormatConfigs}
-            timecode={mergedTimecode}
-            getCameraKeyframes={
-              getCameraKeyframes ? () => getCameraKeyframes(viewState) : getCameraKeyframes
-            }
-            getKeyframes={getLayerKeyframes}
-          />
-        )}
+        <BasicControls
+          adapter={adapter}
+          busy={busy}
+          setBusy={setBusy}
+          formatConfigs={mergedFormatConfigs}
+          timecode={mergedTimecode}
+          getCameraKeyframes={
+            getCameraKeyframes ? () => getCameraKeyframes(viewState) : getCameraKeyframes
+          }
+          getKeyframes={getLayerKeyframes}
+        />
       </div>
     </div>
   );

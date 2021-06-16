@@ -22,7 +22,7 @@ const getLayers = (scene) => {
 }
 
 const scene = new DeckScene({
-  timeline,  
+  initialKeyframes: keyframes, // optional
   width,         // optional
   height         // optional
 });
@@ -31,16 +31,16 @@ const scene = new DeckScene({
 ## Constructor
 
 ```js
-new DeckScene({timeline, initialKeyframes});
+new DeckScene({});
 ```
 
 Parameters:
 
-##### `timeline` (Object)
+##### `timeline` (`Object`, Optional)
 
-A lumagl `timeline` object.
+Override the lumagl `timeline` object used in scene.
 
-##### `initialKeyframes` (Object<string, Keyframes>)
+##### `initialKeyframes` (`Object<string, Keyframes>`, Optional)
 
 An initial set of keyframes. If they are static, supply them here. If the ever need to update, call `scene.setKeyframes`.
 

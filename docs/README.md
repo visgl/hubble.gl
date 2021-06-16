@@ -16,21 +16,27 @@ npm install hubble.gl
 
 ## Basic Scene
 
-To create an animation and render you will need to first create a [deck.gl](https://deck.gl/docs/get-started/getting-started) or [kepler.gl](https://docs.kepler.gl/#basic-usage) project. Then you will need to create a `getDeckScene` function for each scene where you'll define all of the elements of your animation, including any async data fetching.
+To create an animation and render it you will need to first create a [deck.gl](https://deck.gl/docs/get-started/getting-started) project. Then create a `DeckAdapter` and `DeckScene`, a `timecode` object, and define some keyframes (e.g. `CameraKeyframes`)
+
+Hubble.gl provide a `useNextFrame` hook for React.js to trigger a render when necessary, and provides the `<BasicControls/>` component for convenience to get your animation started.
 
 ```js
-// scene.js
-import {DeckScene, CameraKeyframes} from 'hubble.gl';
+import React, {useState, useRef, useMemo} from 'react';
+import DeckGL from '@deck.gl/react';
+import {useNextFrame, BasicControls} from '@hubble.gl/react';
 import {LineLayer} from '@deck.gl/layers';
+import {DeckScene, DeckAdapter, CameraKeyframes} from 'hubble.gl';
 import {easing} from 'popmotion';
 
-function getLayers(scene) {
-  return [
-    new LineLayer({id: 'line-layer', data: [{sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}]})
-  ]
+const timecode = {
+  start: 0,      // ms
+  end: 5000,     // ms
+  framerate: 30
 }
 
-export function getCameraKeyframes() {
+const adapter = new DeckAdapter(new DeckScene({width: 1920, height: 1080}));
+
+function getCameraKeyframes() {
   return new CameraKeyframes({
     timings: [0, 5000],
     keyframes: [
@@ -53,43 +59,27 @@ export function getCameraKeyframes() {
   });
 }
 
-export function getDeckScene(timeline) {
-  return new DeckScene({timeline, width: 1920, height: 1080});
-}
-```
-
-## Using With React
-
-With a `sceneBuilder` in hand, create a `DeckAdapter` and choose a `FrameEncoder` for rendering a variety of video and image sequence formats. Hubble.gl provide a `useNextFrame` hook for React.js, which is used to trigger a update when necessary.
-
-```js
-// app.js
-import React, {useState, useRef} from 'react';
-import DeckGL from '@deck.gl/react';
-import {DeckAdapter} from 'hubble.gl';
-import {useNextFrame, BasicControls} from '@hubble.gl/react';
-import {getDeckScene, getCameraKeyframes} from './scene';
-
-const timecode = {
-  start: 0,
-  end: 5000,
-  framerate: 30
+function getLayers(scene) {
+  return [
+    new LineLayer({id: 'line-layer', data: [{sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}]})
+  ]
 }
 
 export default function App() {
   const deckRef = useRef(null);
-  const [ready, setReady] = useState(false);
+  const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
   const [busy, setBusy] = useState(false);
   const onNextFrame = useNextFrame();
-  const [adapter] = useState(new DeckAdapter(getDeckScene));
-
+  
   return (
     <div style={{position: 'relative'}}>
       <DeckGL
         ref={deckRef}
-        {...adapter.getProps({deckRef, setReady, onNextFrame, getLayers})}
+        {...adapter.getProps({deck, onNextFrame, getLayers})}
       />
-      <div style={{position: 'absolute'}}>{ready && <BasicControls adapter={adapter} busy={busy} setBusy={setBusy} timecode={timecode} getCameraKeyframes={getCameraKeyframes}/>}</div>
+      <div style={{position: 'absolute'}}>
+        <BasicControls adapter={adapter} busy={busy} setBusy={setBusy} timecode={timecode} getCameraKeyframes={getCameraKeyframes}/>
+      </div>
     </div>
   );
 }

@@ -116,6 +116,7 @@ export class Map extends Component {
 
   render() {
     const {adapter, viewState, width, height, setViewState, deckProps, staticMapProps} = this.props;
+    const deck = this.deckRef.current && this.deckRef.current.deck;
 
     const deckStyle = {
       width: '100%',
@@ -140,7 +141,7 @@ export class Map extends Component {
           onWebGLInitialized={gl => this.setState({glContext: gl})}
           onViewStateChange={({viewState: vs}) => setViewState(vs)}
           // onClick={visStateActions.onLayerClick}
-          {...adapter.getProps({deckRef: this.deckRef, setReady: () => {}, extraProps: deckProps})}
+          {...adapter.getProps({deck, extraProps: deckProps})}
         >
           {this.state.glContext && (
             <StaticMap

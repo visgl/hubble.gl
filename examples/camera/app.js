@@ -1,4 +1,4 @@
-import React, {useState, useRef, useCallback} from 'react';
+import React, {useState, useRef, useCallback, useMemo} from 'react';
 import DeckGL from '@deck.gl/react';
 import {DeckAdapter, DeckScene, CameraKeyframes} from '@hubble.gl/core';
 import {useNextFrame, BasicControls, ResolutionGuide} from '@hubble.gl/react';
@@ -51,7 +51,7 @@ function filterCamera(viewState) {
 
 export default function App() {
   const deckRef = useRef(null);
-  const [ready, setReady] = useState(false);
+  const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
   const [busy, setBusy] = useState(false);
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
   const [viewStateA, setViewStateA] = useState(viewState);
@@ -71,16 +71,15 @@ export default function App() {
     });
   }, [viewStateA, viewStateB]);
 
-  const getDeckScene = timeline => {
-    return new DeckScene({
-      timeline,
-      width: 640,
-      height: 480,
-      initialKeyframes: getKeyframes()
-    });
-  };
-
-  const [adapter] = useState(new DeckAdapter(getDeckScene));
+  const [adapter] = useState(
+    new DeckAdapter(
+      new DeckScene({
+        width: 640,
+        height: 480,
+        initialKeyframes: getKeyframes()
+      })
+    )
+  );
 
   return (
     <div style={{position: 'relative'}}>
@@ -103,20 +102,18 @@ export default function App() {
         }}
         controller={true}
         effects={[vignetteEffect, aaEffect]}
-        {...adapter.getProps({deckRef, setReady, onNextFrame, getLayers})}
+        {...adapter.getProps({deck, onNextFrame, getLayers})}
       />
       <div style={{position: 'absolute'}}>
-        {ready && (
-          <BasicControls
-            adapter={adapter}
-            busy={busy}
-            setBusy={setBusy}
-            formatConfigs={formatConfigs}
-            timecode={timecode}
-            getCameraKeyframes={getCameraKeyframes}
-            getKeyframes={getKeyframes}
-          />
-        )}
+        <BasicControls
+          adapter={adapter}
+          busy={busy}
+          setBusy={setBusy}
+          formatConfigs={formatConfigs}
+          timecode={timecode}
+          getCameraKeyframes={getCameraKeyframes}
+          getKeyframes={getKeyframes}
+        />
         <button onClick={() => setViewStateA(filterCamera(viewState))}>Set Camera Start</button>
         <button onClick={() => setViewStateB(filterCamera(viewState))}>Set Camera End</button>
       </div>

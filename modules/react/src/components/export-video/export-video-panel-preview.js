@@ -50,7 +50,6 @@ export class ExportVideoPanelPreview extends Component {
     this._onMapLoad = this._onMapLoad.bind(this);
     this._resizeVideo = this._resizeVideo.bind(this);
     this._getContainerHeight = this._getContainerHeight.bind(this);
-
     this._resizeVideo();
   }
 
@@ -163,8 +162,6 @@ export class ExportVideoPanelPreview extends Component {
 
     const keplerLayers = this.createLayers();
 
-    map.addLayer(new MapboxLayer({id: 'my-deck', deck}));
-
     for (let i = 0; i < keplerLayers.length; i++) {
       // Adds DeckGL layers to Mapbox so Mapbox can be the bottom layer. Removing this clips DeckGL layers
       map.addLayer(new MapboxLayer({id: keplerLayers[i].id, deck}));
@@ -180,7 +177,7 @@ export class ExportVideoPanelPreview extends Component {
   render() {
     const {exportVideoWidth, rendering, viewState, setViewState, adapter, durationMs} = this.props;
     const {glContext, mapStyle} = this.state;
-
+    const deck = this.deckRef.current && this.deckRef.current.deck;
     const containerStyle = {
       width: `${exportVideoWidth}px`,
       height: `${this._getContainerHeight()}px`,
@@ -201,7 +198,7 @@ export class ExportVideoPanelPreview extends Component {
             onWebGLInitialized={gl => this.setState({glContext: gl})}
             onViewStateChange={setViewState}
             // onClick={visStateActions.onLayerClick}
-            {...adapter.getProps({deckRef: this.deckRef, setReady: () => {}})}
+            {...adapter.getProps({deck})}
           >
             {glContext && (
               <StaticMap

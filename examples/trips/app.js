@@ -3,7 +3,7 @@
  * Source code: https://github.com/visgl/deck.gl/tree/master/examples/website/trips
  */
 
-import React, {useState, useRef, useEffect, useCallback} from 'react';
+import React, {useState, useRef, useEffect, useCallback, useMemo} from 'react';
 import DeckGL from '@deck.gl/react';
 import {DeckScene, DeckAdapter, CameraKeyframes} from '@hubble.gl/core';
 import {useNextFrame, BasicControls} from '@hubble.gl/react';
@@ -107,9 +107,9 @@ export default function App({
   const [glContext, setGLContext] = useState();
 
   const deckRef = useRef(null);
+  const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
   const mapRef = useRef(null);
 
-  const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const nextFrame = useNextFrame();
 
@@ -130,7 +130,6 @@ export default function App({
   const onMapLoad = useCallback(() => {
     // Component did mount
     const map = mapRef.current.getMap();
-    const deck = deckRef.current.deck;
     map.addLayer(new MapboxLayer({id: 'trips', deck}));
     map.addLayer(new MapboxLayer({id: 'buildings', deck}));
     map.addLayer(new MapboxLayer({id: 'ground', deck}));
@@ -219,7 +218,6 @@ export default function App({
         onViewStateChange={({viewState: vs}) => {
           setViewState(vs);
         }}
-        {...adapter.getProps({deckRef, setReady})}
         onWebGLInitialized={setGLContext}
         parameters={{
           depthTest: true,
@@ -228,6 +226,7 @@ export default function App({
           // blendEquation: GL.FUNC_ADD,
           blendFunc: [GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA]
         }}
+        {...adapter.getProps({deck})}
       >
         {glContext && (
           <StaticMap
@@ -242,16 +241,14 @@ export default function App({
       </DeckGL>
 
       <div style={{position: 'absolute'}}>
-        {ready && (
-          <BasicControls
-            adapter={adapter}
-            busy={busy}
-            setBusy={setBusy}
-            formatConfigs={formatConfigs}
-            timecode={timecode}
-            getCameraKeyframes={getCameraKeyframes}
-          />
-        )}
+        <BasicControls
+          adapter={adapter}
+          busy={busy}
+          setBusy={setBusy}
+          formatConfigs={formatConfigs}
+          timecode={timecode}
+          getCameraKeyframes={getCameraKeyframes}
+        />
       </div>
     </div>
   );
