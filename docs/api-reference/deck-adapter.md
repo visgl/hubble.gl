@@ -3,35 +3,26 @@
 ## Constructor
 
 ```js
-new DeckAdapter(sceneBuilder);
+new DeckAdapter(scene);
 ```
 
 ## Parameters
 
-##### `sceneBuilder` (`(timeline) => Promise<DeckScene> | DeckScene`)
+##### `scene` (`DeckScene`)
 
-Function to build scene, async or sync. See [DeckScene](/docs/api-reference/scene/deck-scene) for more information.
-
-```js
-async function sceneBuilder(timeline) {
-  // See DeckScene API Reference for more info
-  const width = 1920 // px
-  const height = 1080 // px
-  return new DeckScene({timeline, width, height})
-}
-```
+See [DeckScene](/docs/api-reference/scene/deck-scene) for more information.
 
 ## Methods
 
-##### `getProps({deckRef, setReady, onNextFrame, getLayers, extraProps}): props`
+##### `getProps({deck, setReady, onNextFrame, getLayers, extraProps}): props`
 
 Supplies deck.gl properties from hubble.gl.
 
 Parameters:
 
-* `deckRef` (`React.RefObject`) - React ref eventually containing a `deck` object.
+* `deck` (`Deck`) - `deck` object from deck.gl.
 
-* `setReady` (`(ready: boolean) => void`, Optional) - Callback indicating webgl, scene, and deck are loaded. Scene is ready for rendering.
+* `setReady` (`(ready: boolean) => void`, Optional) - Callback indicating deck is loaded. Scene is ready for rendering.
 
 * `onNextFrame` (`(nextTimeMs: number) => void`, Optional) - Callback indicating the next frame in a rendering should be displayed.
 
