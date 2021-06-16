@@ -1,4 +1,4 @@
-// Copyright (c) 2020 Uber Technologies, Inc.
+// Copyright (c) 2021 Uber Technologies, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -95,7 +95,7 @@ export function msConversion(durationMs) {
 }
 
 const MB = 8 * 1024 * 1024;
-// NOTE: Bit depth is a guess because I couldn't find it. Same w/ compression ratio
+// NOTE: Bit depth and compression ratio is a guess.
 const COMPRESSION_RATIO = 0.8;
 const BIT_DEPTH = 6;
 
