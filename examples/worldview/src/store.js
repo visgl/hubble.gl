@@ -25,7 +25,7 @@ import {rendererMiddleware} from './features/renderer';
 // eslint-disable-next-line no-unused-vars
 import window from 'global/window';
 
-import appReducer from './app/appSlice';
+import {appReducer} from './app';
 import keplerGlReducer from './features/kepler/keplerSlice';
 
 import rendererReducer from './features/renderer/rendererSlice';
