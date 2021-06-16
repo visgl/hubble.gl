@@ -18,53 +18,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import keplerGlReducer, {
-  combinedUpdaters,
-  uiStateUpdaters,
-  mapStateUpdaters
-} from 'kepler.gl/reducers';
-import {AUTH_TOKENS} from '../../constants';
-import {EXPORT_MAP_FORMATS} from 'kepler.gl/constants';
-import {loadRemoteKeplerMap} from './loadKeplerMap';
+import keplerGlReducer, {mapStateUpdaters} from 'kepler.gl/reducers';
 import {updateViewState} from '../map';
 
-const {DEFAULT_EXPORT_MAP} = uiStateUpdaters;
-
-export default keplerGlReducer
-  .initialState({
-    // In order to provide single file export functionality
-    // we are going to set the mapbox access token to be used
-    // in the exported file
-    uiState: {
-      exportMap: {
-        ...DEFAULT_EXPORT_MAP,
-        [EXPORT_MAP_FORMATS.HTML]: {
-          ...DEFAULT_EXPORT_MAP[[EXPORT_MAP_FORMATS.HTML]],
-          exportMapboxAccessToken: AUTH_TOKENS.EXPORT_MAPBOX_TOKEN
-        }
-      }
-    },
-    visState: {
-      loaders: [], // Add additional loaders.gl loaders here
-      loadOptions: {} // Add additional loaders.gl loader options here
-    }
-  })
-  .plugin({
-    [loadRemoteKeplerMap.fulfilled]: (state, action) => {
-      return combinedUpdaters.addDataToMapUpdater(state, {
-        payload: {
-          datasets: action.payload.datasets,
-          config: action.payload.config
-        }
-      });
-    },
-    [updateViewState]: (state, action) => {
-      return {
-        ...state,
-        mapState: mapStateUpdaters.updateMapUpdater(state.mapState, action)
-      };
-    }
-  });
+export default keplerGlReducer.plugin({
+  [updateViewState]: (state, action) => {
+    return {
+      ...state,
+      mapState: mapStateUpdaters.updateMapUpdater(state.mapState, action)
+    };
+  }
+});
 
 const isKeplerReady = (state, mapId) => {
   if (state.keplerGl[mapId]) return true;
