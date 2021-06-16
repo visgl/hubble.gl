@@ -68,11 +68,7 @@ export default class DeckAdapter {
   }) {
     this.deck = deck;
     const props = {
-      onLoad: () => {
-        this.scene.timeline.pause();
-        this.scene.timeline.setTime(0);
-        setReady(true);
-      },
+      onLoad: () => setReady(true),
       _animate: this.shouldAnimate
     };
 
