@@ -2,6 +2,11 @@ import {GIFBuilder} from '@loaders.gl/video';
 import FrameEncoder from '../frame-encoder';
 
 export default class GifEncoder extends FrameEncoder {
+  /**
+   * @type {{width: number, height: number, numWorkers: number, sampleInterval: number, jpegQuality: number}}
+   */
+  options;
+
   /** @param {import('types').FrameEncoderSettings} settings */
   constructor(settings) {
     super(settings);
@@ -11,7 +16,7 @@ export default class GifEncoder extends FrameEncoder {
     this.options = {};
 
     if (settings.gif) {
-      this.options = settings.gif;
+      this.options = {...settings.gif};
     }
 
     this.options.width = this.options.width || 720;
