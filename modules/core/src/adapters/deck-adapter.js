@@ -23,6 +23,8 @@ import {PreviewEncoder} from '../encoders';
 import {DeckScene} from '../scene';
 import {VideoCapture} from '../capture/video-capture';
 
+function noop() {}
+
 export default class DeckAdapter {
   /** @type {any} */
   deck;
@@ -61,7 +63,7 @@ export default class DeckAdapter {
    */
   getProps({
     deck,
-    setReady,
+    setReady = noop,
     onNextFrame = undefined,
     getLayers = undefined,
     extraProps = undefined
@@ -165,9 +167,11 @@ export default class DeckAdapter {
    * @param {(nextTimeMs: number) => void} proceedToNextFrame
    */
   onAfterRender(proceedToNextFrame) {
-    this.videoCapture.capture(this.deck.canvas, nextTimeMs => {
-      this.scene.timeline.setTime(nextTimeMs);
-      proceedToNextFrame(nextTimeMs);
-    });
+    if (this.videoCapture.isRecording()) {
+      this.videoCapture.capture(this.deck.canvas, nextTimeMs => {
+        this.scene.timeline.setTime(nextTimeMs);
+        proceedToNextFrame(nextTimeMs);
+      });
+    }
   }
 }

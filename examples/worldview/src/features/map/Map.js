@@ -141,7 +141,7 @@ export class Map extends Component {
           onWebGLInitialized={gl => this.setState({glContext: gl})}
           onViewStateChange={({viewState: vs}) => setViewState(vs)}
           // onClick={visStateActions.onLayerClick}
-          {...adapter.getProps({deck, setReady: () => {}, extraProps: deckProps})}
+          {...adapter.getProps({deck, extraProps: deckProps})}
         >
           {this.state.glContext && (
             <StaticMap

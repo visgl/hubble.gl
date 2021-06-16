@@ -52,7 +52,6 @@ function filterCamera(viewState) {
 export default function App() {
   const deckRef = useRef(null);
   const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
-  const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
   const [viewStateA, setViewStateA] = useState(viewState);
@@ -103,20 +102,18 @@ export default function App() {
         }}
         controller={true}
         effects={[vignetteEffect, aaEffect]}
-        {...adapter.getProps({deck, setReady, onNextFrame, getLayers})}
+        {...adapter.getProps({deck, onNextFrame, getLayers})}
       />
       <div style={{position: 'absolute'}}>
-        {ready && (
-          <BasicControls
-            adapter={adapter}
-            busy={busy}
-            setBusy={setBusy}
-            formatConfigs={formatConfigs}
-            timecode={timecode}
-            getCameraKeyframes={getCameraKeyframes}
-            getKeyframes={getKeyframes}
-          />
-        )}
+        <BasicControls
+          adapter={adapter}
+          busy={busy}
+          setBusy={setBusy}
+          formatConfigs={formatConfigs}
+          timecode={timecode}
+          getCameraKeyframes={getCameraKeyframes}
+          getKeyframes={getKeyframes}
+        />
         <button onClick={() => setViewStateA(filterCamera(viewState))}>Set Camera Start</button>
         <button onClick={() => setViewStateB(filterCamera(viewState))}>Set Camera End</button>
       </div>

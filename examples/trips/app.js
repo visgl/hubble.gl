@@ -110,7 +110,6 @@ export default function App({
   const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
   const mapRef = useRef(null);
 
-  const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const nextFrame = useNextFrame();
 
@@ -227,7 +226,7 @@ export default function App({
           // blendEquation: GL.FUNC_ADD,
           blendFunc: [GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA]
         }}
-        {...adapter.getProps({deck, setReady})}
+        {...adapter.getProps({deck})}
       >
         {glContext && (
           <StaticMap
@@ -242,16 +241,14 @@ export default function App({
       </DeckGL>
 
       <div style={{position: 'absolute'}}>
-        {ready && (
-          <BasicControls
-            adapter={adapter}
-            busy={busy}
-            setBusy={setBusy}
-            formatConfigs={formatConfigs}
-            timecode={timecode}
-            getCameraKeyframes={getCameraKeyframes}
-          />
-        )}
+        <BasicControls
+          adapter={adapter}
+          busy={busy}
+          setBusy={setBusy}
+          formatConfigs={formatConfigs}
+          timecode={timecode}
+          getCameraKeyframes={getCameraKeyframes}
+        />
       </div>
     </div>
   );

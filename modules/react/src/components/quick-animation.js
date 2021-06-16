@@ -18,20 +18,21 @@ export const QuickAnimation = ({
 }) => {
   const deckRef = useRef(null);
   const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
-  const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const onNextFrame = useNextFrame();
 
   const [viewState, setViewState] = useState(initialViewState);
 
-  const [adapter] = useState(
-    new DeckAdapter(
-      new DeckScene({
-        width,
-        height,
-        initialKeyframes: getLayerKeyframes()
-      })
-    )
+  const adapter = useMemo(
+    () =>
+      new DeckAdapter(
+        new DeckScene({
+          width,
+          height,
+          initialKeyframes: getLayerKeyframes()
+        })
+      ),
+    [width, height]
   );
 
   const mergedFormatConfigs = {
@@ -67,22 +68,20 @@ export const QuickAnimation = ({
           setViewState(vs);
         }}
         controller={true}
-        {...adapter.getProps({deck, setReady, onNextFrame, getLayers, extraProps: deckProps})}
+        {...adapter.getProps({deck, onNextFrame, getLayers, extraProps: deckProps})}
       />
       <div style={{position: 'absolute'}}>
-        {ready && (
-          <BasicControls
-            adapter={adapter}
-            busy={busy}
-            setBusy={setBusy}
-            formatConfigs={mergedFormatConfigs}
-            timecode={mergedTimecode}
-            getCameraKeyframes={
-              getCameraKeyframes ? () => getCameraKeyframes(viewState) : getCameraKeyframes
-            }
-            getKeyframes={getLayerKeyframes}
-          />
-        )}
+        <BasicControls
+          adapter={adapter}
+          busy={busy}
+          setBusy={setBusy}
+          formatConfigs={mergedFormatConfigs}
+          timecode={mergedTimecode}
+          getCameraKeyframes={
+            getCameraKeyframes ? () => getCameraKeyframes(viewState) : getCameraKeyframes
+          }
+          getKeyframes={getLayerKeyframes}
+        />
       </div>
     </div>
   );
