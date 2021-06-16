@@ -14,15 +14,13 @@ See [DeckScene](/docs/api-reference/scene/deck-scene) for more information.
 
 ## Methods
 
-##### `getProps({deck, setReady, onNextFrame, getLayers, extraProps}): props`
+##### `getProps({deck, onNextFrame, getLayers, extraProps}): props`
 
 Supplies deck.gl properties from hubble.gl.
 
 Parameters:
 
 * `deck` (`Deck`) - `deck` object from deck.gl.
-
-* `setReady` (`(ready: boolean) => void`, Optional) - Callback indicating deck is loaded. Scene is ready for rendering.
 
 * `onNextFrame` (`(nextTimeMs: number) => void`, Optional) - Callback indicating the next frame in a rendering should be displayed.
 

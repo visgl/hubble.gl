@@ -23,8 +23,6 @@ import {PreviewEncoder} from '../encoders';
 import {DeckScene} from '../scene';
 import {VideoCapture} from '../capture/video-capture';
 
-function noop() {}
-
 export default class DeckAdapter {
   /** @type {any} */
   deck;
@@ -56,21 +54,13 @@ export default class DeckAdapter {
   /**
    * @param {Object} params
    * @param {any} params.deck
-   * @param {(ready: boolean) => void} params.setReady
    * @param {(nextTimeMs: number) => void} params.onNextFrame
    * @param {(scene: DeckScene) => any[]} params.getLayers
    * @param {Object} params.extraProps
    */
-  getProps({
-    deck,
-    setReady = noop,
-    onNextFrame = undefined,
-    getLayers = undefined,
-    extraProps = undefined
-  }) {
+  getProps({deck, onNextFrame = undefined, getLayers = undefined, extraProps = undefined}) {
     this.deck = deck;
     const props = {
-      onLoad: () => setReady(true),
       _animate: this.shouldAnimate
     };
 
