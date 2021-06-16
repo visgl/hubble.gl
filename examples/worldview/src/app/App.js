@@ -86,7 +86,6 @@ const selectKeplerLayers = createSelectKeplerLayers(KEPLER_MAP_ID);
 const selectMapStyle = createSelectMapStyle(KEPLER_MAP_ID);
 const sceneLayers = [];
 const App = ({}) => {
-  const ready = useSelector(state => state.hubbleGl.map.ready);
   useKepler(KEPLER_MAP_ID);
   const keplerLayers = useSelector(selectKeplerLayers);
   const getKeyframes = useKeplerKeyframes(keplerLayers);
@@ -113,17 +112,13 @@ const App = ({}) => {
         <GlobalStyle>
           <WindowSize>
             <InjectKeplerUI keplerUI={KEPLER_UI}>
-              {ready && (
-                <>
-                  <div style={{height: 1080, margin: 16}}>
-                    <MonitorPanel
-                      getKeyframes={getKeyframes}
-                      deckProps={deckProps}
-                      staticMapProps={staticMapProps}
-                    />
-                  </div>
-                </>
-              )}
+              <div style={{height: 1080, margin: 16}}>
+                <MonitorPanel
+                  getKeyframes={getKeyframes}
+                  deckProps={deckProps}
+                  staticMapProps={staticMapProps}
+                />
+              </div>
             </InjectKeplerUI>
           </WindowSize>
         </GlobalStyle>

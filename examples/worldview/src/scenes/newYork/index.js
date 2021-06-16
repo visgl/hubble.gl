@@ -1,5 +1,6 @@
 import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import {useAfterKepler} from '../../app';
 import {useKeplerMapState} from '../../features/kepler/hooks';
 import {loadSampleData} from './data';
 import {updateCameraKeyframes} from '../../features/timeline/timelineSlice';
@@ -10,7 +11,7 @@ import {
   formatConfigsChange,
   durationSelector
 } from '../../features/renderer';
-import {useWhenReady, viewStateSelector} from '../../features/map';
+import {viewStateSelector} from '../../features/map';
 import {easing} from 'popmotion';
 
 export const useNewYorkScene = () => {
@@ -53,6 +54,6 @@ export const useNewYorkScene = () => {
     }
   }, [viewState, duration]);
 
-  useWhenReady(newYorkScene);
+  useAfterKepler(newYorkScene);
   useKeplerMapState('map');
 };

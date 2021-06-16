@@ -17,40 +17,19 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+/* eslint-disable no-void */
+import {createSlice} from '@reduxjs/toolkit';
 
-import {handleActions} from 'redux-actions';
-
-export const SET_SAMPLE_LOADING_STATUS = 'SET_SAMPLE_LOADING_STATUS';
-
-export function setLoadingMapStatus(isMapLoading) {
-  return {
-    type: SET_SAMPLE_LOADING_STATUS,
-    isMapLoading
-  };
-}
-
-// INITIAL_APP_STATE
-const initialAppState = {
-  appName: 'example',
-  loaded: false,
-  isMapLoading: false, // determine whether we are loading a sample map,
-  error: null // contains error when loading/retrieving data/configuration
-  // {
-  //   status: null,
-  //   message: null
-  // }
-  // eventually we may have an async process to fetch these from a remote location
+const initialState = {
+  keplerRegistered: false
 };
 
-// App reducer
-const appReducer = handleActions(
-  {
-    [SET_SAMPLE_LOADING_STATUS]: (state, action) => ({
-      ...state,
-      isMapLoading: action.isMapLoading
-    })
-  },
-  initialAppState
-);
+const appSlice = createSlice({
+  name: 'app',
+  initialState,
+  extraReducers: builder => {
+    builder.addCase('@@kepler.gl/REGISTER_ENTRY', state => void (state.keplerRegistered = true));
+  }
+});
 
-export default appReducer;
+export default appSlice.reducer;
