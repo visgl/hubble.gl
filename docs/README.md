@@ -16,7 +16,7 @@ npm install hubble.gl
 
 ## Basic Scene
 
-To create an animation and render it you will need to first create a [deck.gl](https://deck.gl/docs/get-started/getting-started) project. Then create a `DeckAdapter` and `DeckScene`, a `timecode` object, and define some keyframes (e.g. `CameraKeyframes`)
+To create an animation and render it you will need to first create a [deck.gl](https://deck.gl/docs/get-started/getting-started) project. Then create a `DeckAdapter`, a `timecode` object, and define some keyframes (e.g. `CameraKeyframes`)
 
 Hubble.gl provide a `useNextFrame` hook for React.js to trigger a render when necessary, and provides the `<BasicControls/>` component for convenience to get your animation started.
 
@@ -25,7 +25,7 @@ import React, {useState, useRef, useMemo} from 'react';
 import DeckGL from '@deck.gl/react';
 import {useNextFrame, BasicControls} from '@hubble.gl/react';
 import {LineLayer} from '@deck.gl/layers';
-import {DeckScene, DeckAdapter, CameraKeyframes} from 'hubble.gl';
+import {DeckAdapter, CameraKeyframes} from 'hubble.gl';
 import {easing} from 'popmotion';
 
 const timecode = {
@@ -34,7 +34,12 @@ const timecode = {
   framerate: 30
 }
 
-const adapter = new DeckAdapter(new DeckScene({width: 1920, height: 1080}));
+const dimension = {
+  width: 1920,
+  height: 1080
+}
+
+const adapter = new DeckAdapter({});
 
 function getCameraKeyframes() {
   return new CameraKeyframes({
@@ -75,6 +80,8 @@ export default function App() {
     <div style={{position: 'relative'}}>
       <DeckGL
         ref={deckRef}
+        width={dimension.width}
+        height={dimension.height}
         {...adapter.getProps({deck, onNextFrame, getLayers})}
       />
       <div style={{position: 'absolute'}}>

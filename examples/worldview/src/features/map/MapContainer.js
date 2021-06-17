@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 
 import React, {useMemo, useEffect} from 'react';
-import {DeckAdapter, DeckScene} from '@hubble.gl/core';
+import {DeckAdapter} from '@hubble.gl/core';
 
 import {Map} from './Map';
 import {useDispatch, useSelector} from 'react-redux';
@@ -40,17 +40,7 @@ export const MapContainer = ({
   const dimension = useSelector(dimensionSelector);
   const viewState = useSelector(viewStateSelector);
 
-  const adapter = useMemo(
-    () =>
-      new DeckAdapter(
-        new DeckScene({
-          width: dimension.width,
-          height: dimension.height
-        }),
-        glContext
-      ),
-    [glContext, dimension]
-  );
+  const adapter = useMemo(() => new DeckAdapter({glContext}), [glContext]);
 
   useEffect(() => {
     dispatch(setupRenderer(adapter));

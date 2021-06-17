@@ -20,11 +20,13 @@
 import {Timeline} from '@luma.gl/engine';
 
 export default class DeckScene {
-  /** @param {import('types').DeckSceneParams} params */
-  constructor({timeline, width, height, initialKeyframes = undefined}) {
-    this.width = width;
-    this.height = height;
+  /**
+   * @param {Object} params
+   * @param {any} params.timeline
+   * @param {Object<string, import('keyframes').Keyframes>} params.initialKeyframes
+   */
 
+  constructor({timeline = undefined, initialKeyframes = undefined}) {
     this.timeline = timeline || new Timeline();
     this.keyframes = {};
     this.animations = {};

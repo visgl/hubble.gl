@@ -175,7 +175,15 @@ export class ExportVideoPanelPreview extends Component {
   }
 
   render() {
-    const {exportVideoWidth, rendering, viewState, setViewState, adapter, durationMs} = this.props;
+    const {
+      exportVideoWidth,
+      rendering,
+      viewState,
+      setViewState,
+      adapter,
+      durationMs,
+      resolution
+    } = this.props;
     const {glContext, mapStyle} = this.state;
     const deck = this.deckRef.current && this.deckRef.current.deck;
     const containerStyle = {
@@ -197,6 +205,8 @@ export class ExportVideoPanelPreview extends Component {
             glOptions={{stencil: true}}
             onWebGLInitialized={gl => this.setState({glContext: gl})}
             onViewStateChange={setViewState}
+            width={resolution[0]}
+            height={resolution[1]}
             // onClick={visStateActions.onLayerClick}
             {...adapter.getProps({deck})}
           >
