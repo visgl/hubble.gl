@@ -24,15 +24,8 @@ export const QuickAnimation = ({
   const [viewState, setViewState] = useState(initialViewState);
 
   const adapter = useMemo(
-    () =>
-      new DeckAdapter(
-        new DeckScene({
-          width,
-          height,
-          initialKeyframes: getLayerKeyframes()
-        })
-      ),
-    [width, height]
+    () => new DeckAdapter({scene: new DeckScene({initialKeyframes: getLayerKeyframes()})}),
+    []
   );
 
   const mergedFormatConfigs = {
@@ -68,6 +61,8 @@ export const QuickAnimation = ({
           setViewState(vs);
         }}
         controller={true}
+        width={width}
+        height={height}
         {...adapter.getProps({deck, onNextFrame, getLayers, extraProps: deckProps})}
       />
       <div style={{position: 'absolute'}}>

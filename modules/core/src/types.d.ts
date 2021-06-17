@@ -47,8 +47,6 @@ interface FormatConfigs {
 
 interface DeckSceneParams {
   timeline: any
-  width: number
-  height: number
   initialKeyframes: Object<string, Keyframes>
 }
 

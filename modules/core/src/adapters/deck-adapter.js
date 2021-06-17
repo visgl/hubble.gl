@@ -36,11 +36,12 @@ export default class DeckAdapter {
   glContext;
 
   /**
-   * @param {DeckScene} scene
-   * @param {WebGL2RenderingContext} glContext
+   * @param {Object} params
+   * @param {DeckScene} params.scene
+   * @param {WebGL2RenderingContext} params.glContext
    */
-  constructor(scene, glContext = undefined) {
-    this.scene = scene;
+  constructor({scene = undefined, glContext = undefined}) {
+    this.scene = scene || new DeckScene({});
     this.glContext = glContext;
     this.videoCapture = new VideoCapture();
     this.shouldAnimate = true;
@@ -79,10 +80,6 @@ export default class DeckAdapter {
     if (getLayers) {
       props.layers = getLayers(this.scene);
     }
-
-    props.width = this.scene.width;
-    props.height = this.scene.height;
-    // props._timeline = this.scene.timeline; TODO: uncomment when shipped in deck.
 
     if (this.glContext) {
       props.gl = this.glContext;

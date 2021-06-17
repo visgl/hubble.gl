@@ -5,7 +5,7 @@
 
 import React, {useState, useRef, useEffect, useCallback, useMemo} from 'react';
 import DeckGL from '@deck.gl/react';
-import {DeckScene, DeckAdapter, CameraKeyframes} from '@hubble.gl/core';
+import {DeckAdapter, CameraKeyframes} from '@hubble.gl/core';
 import {useNextFrame, BasicControls} from '@hubble.gl/react';
 import {AmbientLight, PointLight, LightingEffect} from '@deck.gl/core';
 import {StaticMap} from 'react-map-gl';
@@ -88,15 +88,10 @@ const timecode = {
   framerate: 30
 };
 
-// Try to convert function to class
-// React.createRef
-//
-// useCallback
-// take onMaplOan outside of the class and call it to onMapLoans prop
-// equivalent to componentDidMount
-//
-// useEffect
-// similar to compontnetDidMount???
+const dimension = {
+  width: 1280,
+  height: 720
+};
 
 export default function App({
   mapStyle = 'mapbox://styles/mapbox/dark-v9',
@@ -117,25 +112,17 @@ export default function App({
   const [animation] = useState({});
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
 
-  const getDeckScene = timeline => {
-    return new DeckScene({
-      timeline,
-      width: 1280,
-      height: 720
-    });
-  };
-
-  const [adapter] = useState(new DeckAdapter(getDeckScene));
+  const [adapter] = useState(new DeckAdapter({}));
 
   const onMapLoad = useCallback(() => {
-    // Component did mount
-    const map = mapRef.current.getMap();
-    map.addLayer(new MapboxLayer({id: 'trips', deck}));
-    map.addLayer(new MapboxLayer({id: 'buildings', deck}));
-    map.addLayer(new MapboxLayer({id: 'ground', deck}));
-
-    map.on('render', () => adapter.onAfterRender(nextFrame));
-  }, []);
+    if (deck) {
+      const map = mapRef.current.getMap();
+      map.addLayer(new MapboxLayer({id: 'trips', deck}));
+      map.addLayer(new MapboxLayer({id: 'buildings', deck}));
+      map.addLayer(new MapboxLayer({id: 'ground', deck}));
+      map.on('render', () => adapter.onAfterRender(nextFrame));
+    }
+  }, [Boolean(deck)]);
 
   const animate = () => {
     setTime(t => (t + animationSpeed) % loopLength);
@@ -212,8 +199,6 @@ export default function App({
         layers={layers}
         effects={theme.effects}
         controller={true}
-        width={640}
-        height={480}
         viewState={viewState}
         onViewStateChange={({viewState: vs}) => {
           setViewState(vs);
@@ -226,6 +211,8 @@ export default function App({
           // blendEquation: GL.FUNC_ADD,
           blendFunc: [GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA]
         }}
+        width={dimension.width}
+        height={dimension.height}
         {...adapter.getProps({deck})}
       >
         {glContext && (

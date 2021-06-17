@@ -3,14 +3,16 @@
 ## Constructor
 
 ```js
-new DeckAdapter(scene);
+new DeckAdapter({scene, glContext});
 ```
 
 ## Parameters
 
-##### `scene` (`DeckScene`)
+##### `scene` (`DeckScene`, Optional)
 
 See [DeckScene](/docs/api-reference/scene/deck-scene) for more information.
+
+##### `glContext` (`WebGlContext`, Optional)
 
 ## Methods
 

@@ -36,6 +36,11 @@ const timecode = {
   framerate: 30
 };
 
+const dimension = {
+  width: 640,
+  height: 480
+};
+
 const aaEffect = new PostProcessEffect(fxaa, {});
 const vignetteEffect = new PostProcessEffect(vignette, {});
 
@@ -72,13 +77,7 @@ export default function App() {
   }, [viewStateA, viewStateB]);
 
   const [adapter] = useState(
-    new DeckAdapter(
-      new DeckScene({
-        width: 640,
-        height: 480,
-        initialKeyframes: getKeyframes()
-      })
-    )
+    new DeckAdapter({scene: new DeckScene({initialKeyframes: getKeyframes()})})
   );
 
   return (
@@ -102,6 +101,8 @@ export default function App() {
         }}
         controller={true}
         effects={[vignetteEffect, aaEffect]}
+        width={dimension.width}
+        height={dimension.height}
         {...adapter.getProps({deck, onNextFrame, getLayers})}
       />
       <div style={{position: 'absolute'}}>

@@ -120,6 +120,13 @@ const timecode = {
   framerate: 30
 };
 
+const dimension = {
+  width: 640,
+  height: 480
+};
+
+const adapter = new DeckAdapter({scene: new DeckScene({initialKeyframes: getKeyframes()})});
+
 export default function App() {
   const deckRef = useRef(null);
   const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
@@ -128,16 +135,6 @@ export default function App() {
 
   const onNextFrame = useNextFrame();
   const [rainbow, setRainbow] = useState(false);
-
-  const [adapter] = useState(
-    new DeckAdapter(
-      new DeckScene({
-        width: 640,
-        height: 480,
-        initialKeyframes: getKeyframes()
-      })
-    )
-  );
 
   const getLayers = scene => {
     const terrain = scene.keyframes.terrain.getFrame();
@@ -169,6 +166,8 @@ export default function App() {
           setViewState(vs);
         }}
         controller={true}
+        width={dimension.width}
+        height={dimension.height}
         {...adapter.getProps({deck, onNextFrame, getLayers})}
       />
       <div style={{position: 'absolute'}}>

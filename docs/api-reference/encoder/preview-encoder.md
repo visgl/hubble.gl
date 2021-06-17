@@ -10,7 +10,7 @@ Construction of the encoder class is not required. Refer to [DeckAdapter.render]
 
 ```js
 import {DeckAdapter, PreviewEncoder} from '@hubble.gl/core'
-const adapter = new DeckAdapter(sceneBuilder);
+const adapter = new DeckAdapter({});
 
 adapter.render({Encoder: PreviewEncoder});
 ```

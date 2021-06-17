@@ -3,9 +3,6 @@
 ## Usage
 
 ```js
-const width = 1280;
-const height = 720;
-
 const keyframes = {
   // Camera is optional unless animating the deck.gl viewState
   camera: new CameraKeyframes({...}) // camera is a reserved key
@@ -22,16 +19,14 @@ const getLayers = (scene) => {
 }
 
 const scene = new DeckScene({
-  initialKeyframes: keyframes, // optional
-  width,         // optional
-  height         // optional
+  initialKeyframes: keyframes // optional
 });
 ```
 
 ## Constructor
 
 ```js
-new DeckScene({});
+new DeckScene({timeline, initialKeyframes});
 ```
 
 Parameters:

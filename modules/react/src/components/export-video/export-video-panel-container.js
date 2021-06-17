@@ -22,7 +22,6 @@ import React, {Component} from 'react';
 import {easing} from 'popmotion';
 import {
   DeckAdapter,
-  DeckScene,
   CameraKeyframes,
   WebMEncoder,
   JPEGSequenceEncoder,
@@ -73,9 +72,7 @@ export class ExportVideoPanelContainer extends Component {
       rendering: false, // Will set a spinner overlay if true
       ...(initialState || {})
     };
-    const {width, height} = this.getCanvasSize();
-    const scene = new DeckScene({width, height});
-    this.state.adapter = new DeckAdapter(scene, glContext);
+    this.state.adapter = new DeckAdapter({glContext});
   }
 
   getFileName() {
