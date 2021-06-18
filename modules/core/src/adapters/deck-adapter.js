@@ -70,9 +70,9 @@ export default class DeckAdapter {
     }
 
     // Animating the camera is optional, but if a keyframe is defined then viewState is controlled by camera keyframe.
-    if (this.scene.keyframes.camera && this.enabled) {
+    if (this.scene.cameraKeyframes && this.enabled) {
       props.controller = false;
-      props.viewState = this.scene.keyframes.camera.getFrame();
+      props.viewState = this.scene.getCameraFrame();
     }
 
     // Construct layers using callback.

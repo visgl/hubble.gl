@@ -76,9 +76,7 @@ export default function App() {
     });
   }, [viewStateA, viewStateB]);
 
-  const [adapter] = useState(
-    new DeckAdapter({scene: new DeckScene({initialKeyframes: getKeyframes()})})
-  );
+  const [adapter] = useState(new DeckAdapter({scene: new DeckScene({keyframes: getKeyframes()})}));
 
   return (
     <div style={{position: 'relative'}}>

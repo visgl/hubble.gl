@@ -20,35 +20,59 @@
 import {Timeline} from '@luma.gl/engine';
 
 export default class DeckScene {
+  timeline;
+  /** @type {import('keyframes').CameraKeyframes} */
+  cameraKeyframes;
+  /** @type {Object<string, import('keyframes').Keyframes>} */
+  layerKeyframes;
+
   /**
    * @param {Object} params
    * @param {any} params.timeline
-   * @param {Object<string, import('keyframes').Keyframes>} params.initialKeyframes
+   * @param {import('keyframes').CameraKeyframes} params.cameraKeyframes
+   * @param {Object<string, import('keyframes').Keyframes>} params.layerKeyframes
    */
-
-  constructor({timeline = undefined, initialKeyframes = undefined}) {
+  constructor({timeline = undefined, cameraKeyframes = undefined, layerKeyframes = undefined}) {
     this.timeline = timeline || new Timeline();
-    this.keyframes = {};
-    this.animations = {};
-    if (initialKeyframes) {
-      this.setKeyframes(initialKeyframes);
+    this.layerKeyframes = {};
+
+    if (cameraKeyframes) {
+      this.setCameraKeyframes(cameraKeyframes);
     }
 
-    this.setCameraKeyframes = this.setCameraKeyframes.bind(this);
+    if (layerKeyframes) {
+      this.setLayerKeyframes(layerKeyframes);
+    }
+  }
+
+  attachAnimation(keyframes) {
+    if (keyframes.animationHandle) {
+      this.timeline.detachAnimation(keyframes.animationHandle);
+    }
+    keyframes.animationHandle = this.timeline.attachAnimation(keyframes);
   }
 
   setCameraKeyframes(cameraKeyframes) {
-    this.setKeyframes({camera: cameraKeyframes});
+    this.cameraKeyframes = cameraKeyframes;
+    this.attachAnimation(cameraKeyframes);
   }
 
-  setKeyframes(keyframes) {
-    this.keyframes = {...this.keyframes, ...keyframes};
-    for (const keyframe in keyframes) {
-      const animation = this.animations[keyframe];
-      if (animation) {
-        this.timeline.detachAnimation(animation);
-      }
-      this.animations[keyframe] = this.timeline.attachAnimation(this.keyframes[keyframe]);
+  getCameraFrame() {
+    if (!this.cameraKeyframes) return undefined;
+    return this.cameraKeyframes.getFrame();
+  }
+
+  setLayerKeyframes(layerKeyframes) {
+    this.layerKeyframes = {...this.layerKeyframes, ...layerKeyframes};
+    for (const keyframeId in layerKeyframes) {
+      this.attachAnimation(this.layerKeyframes[keyframeId]);
     }
+  }
+
+  getLayerFrame() {
+    return Object.entries(this.layerKeyframes).reduce((frame, [key, keyframe]) => {
+      frame[key] = keyframe.getFrame();
+      return frame;
+    }, {});
   }
 }

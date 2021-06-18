@@ -125,7 +125,9 @@ const dimension = {
   height: 480
 };
 
-const adapter = new DeckAdapter({scene: new DeckScene({initialKeyframes: getKeyframes()})});
+const adapter = new DeckAdapter({
+  scene: new DeckScene({keyframes: getKeyframes(), cameraKeyframes: getCameraKeyframes()})
+});
 
 export default function App() {
   const deckRef = useRef(null);

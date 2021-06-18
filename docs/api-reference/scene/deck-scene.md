@@ -3,12 +3,8 @@
 ## Usage
 
 ```js
-const keyframes = {
-  // Camera is optional unless animating the deck.gl viewState
-  camera: new CameraKeyframes({...}) // camera is a reserved key
-}
-// Attach each keyframe object to timeline.
-timeline.attachAnimation(keyframes.camera);
+// Camera is optional unless animating the deck.gl viewState
+const cameraKeyframes = new CameraKeyframes({...})
 
 // Optional unless animating deck.gl layer properties.
 const getLayers = (scene) => {
@@ -19,14 +15,14 @@ const getLayers = (scene) => {
 }
 
 const scene = new DeckScene({
-  initialKeyframes: keyframes // optional
+  cameraKeyframes // optional
 });
 ```
 
 ## Constructor
 
 ```js
-new DeckScene({timeline, initialKeyframes});
+new DeckScene({timeline, keyframes, cameraKeyframes});
 ```
 
 Parameters:
@@ -35,9 +31,13 @@ Parameters:
 
 Override the lumagl `timeline` object used in scene.
 
-##### `initialKeyframes` (`Object<string, Keyframes>`, Optional)
+##### `keyframes` (`Object<string, Keyframes>`, Optional)
 
 An initial set of keyframes. If they are static, supply them here. If the ever need to update, call `scene.setKeyframes`.
+
+##### `cameraKeyframes` (`CameraKeyframes`, Optional)
+
+An initial set of camera keyframes. If they are static, supply them here. If the ever need to update, call `scene.setCameraKeyframes`.
 
 ## Methods
 

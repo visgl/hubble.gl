@@ -6,7 +6,7 @@ import {
   PreviewEncoder,
   GifEncoder
 } from '@hubble.gl/core';
-import {updateFrame} from '../timeline/timelineSlice';
+import {updateLayerFrame, updateCameraFrame} from '../timeline/timelineSlice';
 
 import {
   setupRenderer,
@@ -103,14 +103,8 @@ export const rendererMiddleware = store => {
       case seekTime.type: {
         if (!busySelector(store.getState()) && adapter && adapter.scene) {
           adapter.seek(action.payload);
-          const sceneFrame = Object.entries(adapter.scene.keyframes).reduce(
-            (frame, [key, keyframe]) => {
-              frame[key] = keyframe.getFrame();
-              return frame;
-            },
-            {}
-          );
-          store.dispatch(updateFrame(sceneFrame));
+          store.dispatch(updateCameraFrame(adapter.scene.getCameraFrame()));
+          store.dispatch(updateLayerFrame(adapter.scene.getLayerFrame()));
         }
         break;
       }
