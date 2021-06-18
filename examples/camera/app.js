@@ -2,7 +2,7 @@ import React, {useState, useRef, useCallback, useMemo} from 'react';
 import DeckGL from '@deck.gl/react';
 import {DeckAdapter, DeckScene, CameraKeyframes} from '@hubble.gl/core';
 import {useNextFrame, BasicControls, ResolutionGuide} from '@hubble.gl/react';
-import {getLayers, getKeyframes} from './layers';
+import {getLayers, getLayerKeyframes} from './layers';
 import {vignette, fxaa} from '@luma.gl/shadertools';
 import {PostProcessEffect, MapView} from '@deck.gl/core';
 import {easing} from 'popmotion';
@@ -77,7 +77,7 @@ export default function App() {
   }, [viewStateA, viewStateB]);
 
   const [adapter] = useState(
-    new DeckAdapter({scene: new DeckScene({initialKeyframes: getKeyframes()})})
+    new DeckAdapter({scene: new DeckScene({layerKeyframes: getLayerKeyframes()})})
   );
 
   return (
@@ -113,7 +113,7 @@ export default function App() {
           formatConfigs={formatConfigs}
           timecode={timecode}
           getCameraKeyframes={getCameraKeyframes}
-          getKeyframes={getKeyframes}
+          getLayerKeyframes={getLayerKeyframes}
         />
         <button onClick={() => setViewStateA(filterCamera(viewState))}>Set Camera Start</button>
         <button onClick={() => setViewStateB(filterCamera(viewState))}>Set Camera End</button>

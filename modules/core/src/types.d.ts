@@ -1,4 +1,4 @@
-import { Keyframes } from "./keyframes";
+import { Keyframes, CameraKeyframes } from "./keyframes";
 import { FrameEncoder } from "./encoders";
 import { DeckScene } from "./scene";
 
@@ -47,7 +47,8 @@ interface FormatConfigs {
 
 interface DeckSceneParams {
   timeline: any
-  initialKeyframes: Object<string, Keyframes>
+  layerKeyframes: Object<string, Keyframes>
+  cameraKeyframes: CameraKeyframes
 }
 
 interface KeplerSceneParams {

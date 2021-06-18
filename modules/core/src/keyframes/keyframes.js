@@ -28,6 +28,7 @@ import {
 
 class Keyframes extends LumaKeyFrames {
   activeFeatures = {};
+  animationHandle;
   constructor({features, timings, keyframes, easings, interpolators = 'linear'}) {
     super([]);
     this._setActiveFeatures = this._setActiveFeatures.bind(this);

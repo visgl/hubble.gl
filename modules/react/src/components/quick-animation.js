@@ -24,7 +24,7 @@ export const QuickAnimation = ({
   const [viewState, setViewState] = useState(initialViewState);
 
   const adapter = useMemo(
-    () => new DeckAdapter({scene: new DeckScene({initialKeyframes: getLayerKeyframes()})}),
+    () => new DeckAdapter({scene: new DeckScene({layerKeyframes: getLayerKeyframes()})}),
     []
   );
 
@@ -72,10 +72,8 @@ export const QuickAnimation = ({
           setBusy={setBusy}
           formatConfigs={mergedFormatConfigs}
           timecode={mergedTimecode}
-          getCameraKeyframes={
-            getCameraKeyframes ? () => getCameraKeyframes(viewState) : getCameraKeyframes
-          }
-          getKeyframes={getLayerKeyframes}
+          getCameraKeyframes={getCameraKeyframes && (() => getCameraKeyframes(viewState))}
+          getLayerKeyframes={getLayerKeyframes}
         />
       </div>
     </div>

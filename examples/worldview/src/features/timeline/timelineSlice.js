@@ -6,7 +6,8 @@ const initialState = {
   filterKeyframes: undefined, // keyframe object
   tripLayerKeyframes: undefined, // keyframe object
   layerKeyframes: {}, // name: keyframe object
-  frame: {}
+  layerFrame: {},
+  cameraFrame: undefined // mapState
 };
 
 const timelineSlice = createSlice({
@@ -18,7 +19,8 @@ const timelineSlice = createSlice({
     updateTripLayerKeyframes: (state, action) => void (state.tripLayerKeyframes = action.payload),
     updateLayerKeyframes: (state, action) =>
       void (state.layerKeyframes = {...state.layerKeyframes, ...action.payload}),
-    updateFrame: (state, action) => void (state.frame = action.payload)
+    updateLayerFrame: (state, action) => void (state.frame = action.payload),
+    updateCameraFrame: (state, action) => void (state.cameraFrame = action.payload)
   }
 });
 
@@ -27,7 +29,8 @@ export const {
   updateFilterKeyframes,
   updateLayerKeyframes,
   updateTripLayerKeyframes,
-  updateFrame
+  updateLayerFrame,
+  updateCameraFrame
 } = timelineSlice.actions;
 
 export default timelineSlice.reducer;
@@ -40,4 +43,5 @@ export const cameraKeyframeSelector = state => state.hubbleGl.timeline.cameraKey
 export const filterKeyframeSelector = state => state.hubbleGl.timeline.filterKeyframes;
 export const tripLayerKeyframeSelector = state => state.hubbleGl.timeline.tripLayerKeyframes;
 export const layerKeyframeSelector = state => state.hubbleGl.timeline.layerKeyframes;
-export const frameSelector = state => state.hubbleGl.timeline.frame;
+export const frameLayerSelector = state => state.hubbleGl.timeline.layerFrame;
+export const cameraFrameSelector = state => state.hubbleGl.timeline.cameraFrame;

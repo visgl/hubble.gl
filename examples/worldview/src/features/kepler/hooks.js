@@ -12,7 +12,7 @@ import {createSelector} from 'reselect';
 import {
   filterKeyframeSelector,
   layerKeyframeSelector,
-  frameSelector,
+  frameLayerSelector,
   tripLayerKeyframeSelector
 } from '../timeline/timelineSlice';
 import {AUTH_TOKENS} from '../../constants';
@@ -93,7 +93,7 @@ export const useKeplerKeyframes = keplerLayers => {
 
 export const useKeplerFrame = (keplerLayers = []) => {
   const dispatch = useDispatch();
-  const frame = useSelector(frameSelector);
+  const frame = useSelector(frameLayerSelector);
 
   useEffect(() => {
     // Filter Frame
