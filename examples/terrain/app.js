@@ -72,7 +72,7 @@ const getCameraKeyframes = () => {
   });
 };
 
-const getKeyframes = () => {
+const getLayerKeyframes = () => {
   return {
     terrain: new LayerKeyframes({
       layerId: 'terrain',
@@ -126,7 +126,7 @@ const dimension = {
 };
 
 const adapter = new DeckAdapter({
-  scene: new DeckScene({keyframes: getKeyframes(), cameraKeyframes: getCameraKeyframes()})
+  scene: new DeckScene({layerKeyframes: getLayerKeyframes(), cameraKeyframes: getCameraKeyframes()})
 });
 
 export default function App() {
@@ -139,7 +139,7 @@ export default function App() {
   const [rainbow, setRainbow] = useState(false);
 
   const getLayers = scene => {
-    const terrain = scene.keyframes.terrain.getFrame();
+    const terrain = scene.layerKeyframes.terrain.getFrame();
     return [
       new TerrainLayer({
         id: 'terrain',
@@ -180,7 +180,7 @@ export default function App() {
           formatConfigs={formatConfigs}
           timecode={timecode}
           getCameraKeyframes={getCameraKeyframes}
-          getKeyframes={getKeyframes}
+          getLayerKeyframes={getLayerKeyframes}
         />
         <div style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}}>
           <label style={{fontFamily: 'sans-serif'}}>

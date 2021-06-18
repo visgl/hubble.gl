@@ -16,7 +16,7 @@ const TIMECODE = {
 };
 
 export default function App() {
-  const getKeyframes = () => {
+  const getLayerKeyframes = () => {
     return {
       circle: new Keyframes({
         features: ['opacity', 'radiusScale'],
@@ -44,8 +44,8 @@ export default function App() {
   };
 
   const getLayers = scene => {
-    const circleFrame = scene.keyframes.circle.getFrame();
-    const textFrame = scene.keyframes.text.getFrame();
+    const circleFrame = scene.layerKeyframes.circle.getFrame();
+    const textFrame = scene.layerKeyframes.text.getFrame();
     return [
       new ScatterplotLayer({
         data: [{position: [-122.402, 37.79], color: [255, 0, 0], radius: 1000}],
@@ -66,7 +66,7 @@ export default function App() {
       width={640}
       height={480}
       getLayers={getLayers}
-      getLayerKeyframes={getKeyframes}
+      getLayerKeyframes={getLayerKeyframes}
       deckProps={{
         parameters: {
           clearColor: [255, 255, 255, 1]

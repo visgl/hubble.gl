@@ -90,7 +90,7 @@ export default class DeckAdapter {
   /**
    * @param {Object} params
    * @param {() => import('../keyframes').CameraKeyframes} params.getCameraKeyframes
-   * @param {() => Object<string, import('../keyframes').Keyframes>} params.getKeyframes
+   * @param {() => Object<string, import('../keyframes').Keyframes>} params.getLayerKeyframes
    * @param {typeof import('../encoders').FrameEncoder} params.Encoder
    * @param {Partial<import('types').FormatConfigs>} params.formatConfigs
    * @param {() => void} params.onStop
@@ -99,7 +99,7 @@ export default class DeckAdapter {
    */
   render({
     getCameraKeyframes = undefined,
-    getKeyframes = undefined,
+    getLayerKeyframes = undefined,
     Encoder = PreviewEncoder,
     formatConfigs = {},
     onStop = undefined,
@@ -109,8 +109,8 @@ export default class DeckAdapter {
     if (getCameraKeyframes) {
       this.scene.setCameraKeyframes(getCameraKeyframes());
     }
-    if (getKeyframes) {
-      this.scene.setKeyframes(getKeyframes());
+    if (getLayerKeyframes) {
+      this.scene.setLayerKeyframes(getLayerKeyframes());
     }
 
     const innerOnStop = () => {
@@ -138,14 +138,14 @@ export default class DeckAdapter {
    * @param {Object} params
    * @param {number} params.timeMs
    * @param {() => import('../keyframes').CameraKeyframes} params.getCameraKeyframes
-   * @param {() => Object<string, import('../keyframes').Keyframes>} params.getKeyframes
+   * @param {() => Object<string, import('../keyframes').Keyframes>} params.getLayerKeyframes
    */
-  seek({timeMs, getCameraKeyframes = undefined, getKeyframes = undefined}) {
+  seek({timeMs, getCameraKeyframes = undefined, getLayerKeyframes = undefined}) {
     if (getCameraKeyframes) {
       this.scene.setCameraKeyframes(getCameraKeyframes());
     }
-    if (getKeyframes) {
-      this.scene.setKeyframes(getKeyframes());
+    if (getLayerKeyframes) {
+      this.scene.setLayerKeyframes(getLayerKeyframes());
     }
     this.scene.timeline.setTime(timeMs);
   }

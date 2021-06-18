@@ -11,7 +11,7 @@ export const previewVideo = createAction('renderer/previewVideo');
 /** @param payload: getCameraKeyframes, onStop */
 export const renderVideo = createAction('renderer/renderVideo');
 
-/** @param payload: timeMs, getCameraKeyframes, getKeyframes */
+/** @param payload: timeMs, getCameraKeyframes, getLayerKeyframes */
 export const seekTime = createAction('renderer/seekTime');
 
 /** @param payload: boolean */

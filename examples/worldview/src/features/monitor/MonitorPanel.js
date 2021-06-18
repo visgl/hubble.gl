@@ -128,19 +128,19 @@ const MapBox = styled.div`
   height: ${props => props.height}px;
 `;
 
-const SeekSlider = ({getCameraKeyframes, getKeyframes}) => {
+const SeekSlider = ({getCameraKeyframes, getLayerKeyframes}) => {
   const timecode = useSelector(timecodeSelector);
   const framestep = useSelector(framestepSelector);
   const dispatch = useDispatch();
   const onSeek = useCallback(
     timeMs => {
-      if (getCameraKeyframes && getKeyframes) {
-        dispatch(seekTime({timeMs, getCameraKeyframes, getKeyframes}));
+      if (getCameraKeyframes && getLayerKeyframes) {
+        dispatch(seekTime({timeMs, getCameraKeyframes, getLayerKeyframes}));
       }
     },
-    [getCameraKeyframes, getKeyframes]
+    [getCameraKeyframes, getLayerKeyframes]
   );
-  // useEffect(() => onSeek(timecode.start), [timecode.start, getCameraKeyframes, getKeyframes])
+  // useEffect(() => onSeek(timecode.start), [timecode.start, getCameraKeyframes, getLayerKeyframes])
 
   return (
     <input
@@ -155,7 +155,7 @@ const SeekSlider = ({getCameraKeyframes, getKeyframes}) => {
 
 export const MonitorPanel = ({
   getCameraKeyframes = undefined,
-  getKeyframes,
+  getLayerKeyframes,
   deckProps = undefined,
   staticMapProps = undefined
 }) => {
@@ -169,8 +169,8 @@ export const MonitorPanel = ({
 
   useCameraFrame();
   const prepareFrame = usePrepareFrame();
-  const onPreview = usePreviewHandler({getCameraKeyframes, getKeyframes});
-  const onRender = useRenderHandler({getCameraKeyframes, getKeyframes});
+  const onPreview = usePreviewHandler({getCameraKeyframes, getLayerKeyframes});
+  const onRender = useRenderHandler({getCameraKeyframes, getLayerKeyframes});
 
   return (
     <div
@@ -209,7 +209,7 @@ export const MonitorPanel = ({
       </div>
       <MonitorBottomToolbar playing={Boolean(rendererBusy)} onPreview={onPreview} />
       <button onClick={onRender}>Render</button>
-      <SeekSlider getCameraKeyframes={getCameraKeyframes} getKeyframes={getKeyframes} />
+      <SeekSlider getCameraKeyframes={getCameraKeyframes} getLayerKeyframes={getLayerKeyframes} />
     </div>
   );
 };

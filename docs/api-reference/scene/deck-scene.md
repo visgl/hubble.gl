@@ -22,7 +22,7 @@ const scene = new DeckScene({
 ## Constructor
 
 ```js
-new DeckScene({timeline, keyframes, cameraKeyframes});
+new DeckScene({timeline, layerKeyframes, cameraKeyframes});
 ```
 
 Parameters:
@@ -31,9 +31,9 @@ Parameters:
 
 Override the lumagl `timeline` object used in scene.
 
-##### `keyframes` (`Object<string, Keyframes>`, Optional)
+##### `layerKeyframes` (`Object<string, Keyframes>`, Optional)
 
-An initial set of keyframes. If they are static, supply them here. If the ever need to update, call `scene.setKeyframes`.
+An initial set of layer keyframes. If they are static, supply them here. If the ever need to update, call `scene.setLayerKeyframes`.
 
 ##### `cameraKeyframes` (`CameraKeyframes`, Optional)
 
@@ -41,28 +41,13 @@ An initial set of camera keyframes. If they are static, supply them here. If the
 
 ## Methods
 
-##### `getLayers` (`((scene: DeckScene) => any[]) => any[]`)
-
-A callback function to create deckgl layer objects provided the scene object.
-
-Returns:
-
-`Array` of deck.gl layers.
-
-##### `setKeyframes` (`Object`)
+##### `setLayerKeyframes` (`Object<string, Keyframes>`)
 
 Keyframe objects registered to the Timeline.
 
-- `camera` (`CameraKeyframes`, Optional) - supply a camera animation. If set, `deck.viewState` will be set with this keyframe object.
+##### `setCameraKeyframes` (`CameraKeyframes`)
 
-- Add additional keyframe objects to the object.
-
-The object is accessible in `getLayers` function via `scene.keyframes`.
-
-## Remarks
-
-- `camera` is a reserved object key within `keyframes`.
-
+Supply a camera animation. If set, `deck.viewState` will be set with this keyframe object.
 
 ## Source
 

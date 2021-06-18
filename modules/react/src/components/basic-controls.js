@@ -43,14 +43,14 @@ export default function BasicControls({
   formatConfigs,
   timecode,
   getCameraKeyframes,
-  getKeyframes = undefined
+  getLayerKeyframes = undefined
 }) {
   const [encoder, setEncoder] = useState('gif');
 
   const onRender = () => {
     adapter.render({
       getCameraKeyframes,
-      getKeyframes,
+      getLayerKeyframes,
       Encoder: ENCODERS[encoder],
       formatConfigs,
       timecode,

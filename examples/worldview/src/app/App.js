@@ -88,7 +88,7 @@ const sceneLayers = [];
 const App = ({}) => {
   useKepler(KEPLER_MAP_ID);
   const keplerLayers = useSelector(selectKeplerLayers);
-  const getKeyframes = useKeplerKeyframes(keplerLayers);
+  const getLayerKeyframes = useKeplerKeyframes(keplerLayers);
   useKeplerFrame(keplerLayers);
   const keplerDeckLayers = useKeplerDeckLayers(KEPLER_MAP_ID);
   const deckProps = useMemo(() => {
@@ -114,7 +114,7 @@ const App = ({}) => {
             <InjectKeplerUI keplerUI={KEPLER_UI}>
               <div style={{height: 1080, margin: 16}}>
                 <MonitorPanel
-                  getKeyframes={getKeyframes}
+                  getLayerKeyframes={getLayerKeyframes}
                   deckProps={deckProps}
                   staticMapProps={staticMapProps}
                 />

@@ -10,8 +10,8 @@ const zipCodeData =
   'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/sf-zipcodes.json';
 
 export function getLayers(scene) {
-  const stationFrame = scene.keyframes.station.getFrame();
-  const textFrame = scene.keyframes.text.getFrame();
+  const stationFrame = scene.layerKeyframes.station.getFrame();
+  const textFrame = scene.layerKeyframes.text.getFrame();
   return [
     new PolygonLayer({
       id: 'polygon-layer',
@@ -81,7 +81,7 @@ export function getLayers(scene) {
   ];
 }
 
-export const getKeyframes = () => {
+export const getLayerKeyframes = () => {
   return {
     station: new LayerKeyframes({
       layerId: 'scatterplot-layer',
