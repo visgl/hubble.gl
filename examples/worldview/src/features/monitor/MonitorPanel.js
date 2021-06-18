@@ -1,6 +1,7 @@
 import React, {useMemo, useCallback} from 'react';
 import {Play, Search, Maximize} from './Icons';
 import {useDispatch, useSelector} from 'react-redux';
+import styled from 'styled-components';
 import {
   busySelector,
   durationSelector,
@@ -89,12 +90,12 @@ const MapOverlay = ({rendererBusy, currentTime, duration, width, height}) => {
   );
 };
 
-const AutoSizeStage = ({children}) => {
+const AutoSizeMapBox = ({children}) => {
   const dimension = useSelector(dimensionSelector);
 
   const getMapDimensions = useCallback(
-    (availableWidth, availableHeight) => {
-      const scale = Math.min(availableWidth / dimension.width, availableHeight / dimension.height);
+    (containerWidth, containerHeight) => {
+      const scale = Math.min(containerWidth / dimension.width, containerHeight / dimension.height);
 
       return {
         mapWidth: nearestEven(dimension.width * scale, 0),
@@ -111,19 +112,21 @@ const AutoSizeStage = ({children}) => {
         return children({
           mapHeight,
           mapWidth,
-          availableHeight: nearestEven(height, 0),
-          availableWidth: nearestEven(width, 0)
+          containerHeight: nearestEven(height, 0),
+          containerWidth: nearestEven(width, 0)
         });
       }}
     </AutoSizer>
   );
 };
 
-const MapBox = ({height, width, children}) => (
-  <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width, height}}>
-    {children}
-  </div>
-);
+const MapBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: ${props => props.width}px;
+  height: ${props => props.height}px;
+`;
 
 const SeekSlider = ({getCameraKeyframes, getKeyframes}) => {
   const timecode = useSelector(timecodeSelector);
@@ -182,9 +185,9 @@ export const MonitorPanel = ({
       }}
     >
       <div style={{flex: 1, position: 'relative'}}>
-        <AutoSizeStage>
-          {({mapHeight, mapWidth, availableHeight, availableWidth}) => (
-            <MapBox width={availableWidth} height={availableHeight}>
+        <AutoSizeMapBox>
+          {({mapHeight, mapWidth, containerHeight, containerWidth}) => (
+            <MapBox width={containerWidth} height={containerHeight}>
               {/* <div style={{width: mapWidth, height: mapHeight, backgroundColor: 'green'}} /> */}
               <Map
                 width={mapWidth}
@@ -197,12 +200,12 @@ export const MonitorPanel = ({
               <MapOverlay
                 rendererBusy={rendererBusy}
                 duration={duration}
-                width={availableWidth}
-                height={availableHeight}
+                width={containerWidth}
+                height={containerHeight}
               />
             </MapBox>
           )}
-        </AutoSizeStage>
+        </AutoSizeMapBox>
       </div>
       <MonitorBottomToolbar playing={Boolean(rendererBusy)} onPreview={onPreview} />
       <button onClick={onRender}>Render</button>
