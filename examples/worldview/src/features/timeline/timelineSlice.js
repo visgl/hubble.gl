@@ -19,7 +19,7 @@ const timelineSlice = createSlice({
     updateTripLayerKeyframes: (state, action) => void (state.tripLayerKeyframes = action.payload),
     updateLayerKeyframes: (state, action) =>
       void (state.layerKeyframes = {...state.layerKeyframes, ...action.payload}),
-    updateLayerFrame: (state, action) => void (state.frame = action.payload),
+    updateLayerFrame: (state, action) => void (state.layerFrame = action.payload),
     updateCameraFrame: (state, action) => void (state.cameraFrame = action.payload)
   }
 });
