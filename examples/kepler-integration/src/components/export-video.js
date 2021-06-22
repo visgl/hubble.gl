@@ -37,7 +37,7 @@ import {
 
 // Redux stores/actions
 // import {connect as keplerGlConnect} from 'kepler.gl';
-import toggleHubbleExportModal from 'kepler.gl'; // TODO make custom action
+import {toggleHubbleExportModal} from '../actions';
 
 const IconButton = styled(Button)`
   padding: 0;
@@ -58,7 +58,7 @@ const KEPLER_UI = {
 };
 
 const mapStateToProps = state => {
-  return {mapData: state.demo.keplerGl.map};
+  return {mapData: state.demo.keplerGl.map, isVideoModalOpen: state.demo.app.isVideoModalOpen};
 };
 
 // NOTE: This commented out code is here to connect to Redux store in future
@@ -80,7 +80,7 @@ const mapStateToProps = state => {
 // const mapDispatchToProps = () => (noResultDispatch, ownProps, dispatch) => {
 const mapDispatchToProps = () => (dispatch, props) => {
   return {
-    toggleHubbleExportModal: isOpen => dispatch(toggleHubbleExportModal(isOpen)) // NOTE gives dispatch error
+    toggleHubbleExportModal: isVideoModalOpen => dispatch(toggleHubbleExportModal(isVideoModalOpen)) // NOTE gives dispatch error
   };
 };
 
@@ -88,28 +88,32 @@ class ExportVideo extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      isOpen: false
-    };
+    // this.state = {
+    //   isOpen: false
+    // };
     this.handleClose = this.handleClose.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
   }
 
   // NOTE: This commented out code is here to connect to Redux store in future
-  // handleClose() {this.props.toggleHubbleExportModal(false)} // X button in ExportVideoModal was clicked
-  // handleOpen() {this.props.toggleHubbleExportModal(true)} // Export button in Kepler UI was clicked
   handleClose() {
-    this.setState({isOpen: false});
+    this.props.toggleHubbleExportModal(false);
   } // X button in ExportVideoModal was clicked
   handleOpen() {
-    this.setState({isOpen: true});
+    this.props.toggleHubbleExportModal(true);
   } // Export button in Kepler UI was clicked
+  // handleClose() {
+  //   this.setState({isOpen: false});
+  // } // X button in ExportVideoModal was clicked
+  // handleOpen() {
+  //   this.setState({isOpen: true});
+  // } // Export button in Kepler UI was clicked
 
   render() {
     return (
       <InjectKeplerUI keplerUI={KEPLER_UI}>
         <div>
-          <ExportVideoModal isOpen={this.state.isOpen} theme={this.props.theme}>
+          <ExportVideoModal isOpen={this.props.isVideoModalOpen} theme={this.props.theme}>
             <ExportVideoPanelContainer
               handleClose={this.handleClose}
               mapData={this.props.mapData}

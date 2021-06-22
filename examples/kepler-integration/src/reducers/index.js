@@ -31,7 +31,8 @@ import {
   LOAD_MAP_SAMPLE_FILE,
   LOAD_REMOTE_RESOURCE_SUCCESS,
   LOAD_REMOTE_RESOURCE_ERROR,
-  SET_SAMPLE_LOADING_STATUS
+  SET_SAMPLE_LOADING_STATUS,
+  VIDEO_MODAL_MODE
 } from '../actions';
 
 import {AUTH_TOKENS, DEFAULT_FEATURE_FLAGS} from '../constants/default-settings';
@@ -49,7 +50,8 @@ const initialAppState = {
   //   message: null
   // }
   // eventually we may have an async process to fetch these from a remote location
-  featureFlags: DEFAULT_FEATURE_FLAGS
+  featureFlags: DEFAULT_FEATURE_FLAGS,
+  isVideoModalOpen: false
 };
 
 // App reducer
@@ -66,6 +68,11 @@ export const appReducer = handleActions(
     [SET_SAMPLE_LOADING_STATUS]: (state, action) => ({
       ...state,
       isMapLoading: action.isMapLoading
+    }),
+    [VIDEO_MODAL_MODE]: (state, action) => ({
+      // TODO Think of better name
+      ...state,
+      isVideoModalOpen: action.isVideoModalOpen
     })
   },
   initialAppState

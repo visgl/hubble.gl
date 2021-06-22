@@ -29,6 +29,7 @@ import {theme} from 'kepler.gl/styles';
 import {replaceLoadDataModal} from './factories/load-data-modal';
 import {replaceMapControl} from './factories/map-control';
 import {replacePanelHeader} from './factories/panel-header';
+import {replaceSaveExportDropdown} from './factories/export-modal';
 import {AUTH_TOKENS} from './constants/default-settings';
 import {loadSampleConfigurations} from './actions';
 
@@ -45,7 +46,8 @@ import {processCsvData, processGeojson} from 'kepler.gl/processors';
 const KeplerGl = require('kepler.gl/components').injectComponents([
   replaceLoadDataModal(),
   replaceMapControl(),
-  replacePanelHeader()
+  replacePanelHeader(),
+  replaceSaveExportDropdown()
 ]);
 
 const keplerGlGetState = state => state.demo.keplerGl;
