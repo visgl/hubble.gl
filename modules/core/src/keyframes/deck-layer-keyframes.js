@@ -17,11 +17,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-import Keyframes from '../keyframes';
-export default class LayerKeyframes extends Keyframes {
-  layerId;
-  constructor({layerId, features, timings, keyframes, easings}) {
-    super({timings, keyframes, easings, features});
-    this.layerId = layerId;
+import Keyframes from './keyframes';
+
+function getFeatures(keyframes) {
+  return keyframes && keyframes[0] ? Object.keys(keyframes[0]) : [];
+}
+
+export default class DeckLayerKeyframes extends Keyframes {
+  id;
+  constructor({id, features, timings, keyframes, easings}) {
+    super({timings, keyframes, easings, features: features || getFeatures(keyframes)});
+    this.id = id;
   }
 }

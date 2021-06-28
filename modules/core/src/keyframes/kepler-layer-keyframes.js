@@ -17,6 +17,22 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-export {default as LayerKeyframes} from './layer-keyframes';
-export {default as GridLayerKeyframes} from './grid-layer-keyframes';
-export {default as ScatterPlotLayerKeyframes} from './scatter-plot-layer-keyframes';
+import Keyframes from './keyframes';
+
+function getFeatures(layer) {
+  return Object.keys(layer.config.visConfig);
+}
+
+class KeplerLayerKeyframes extends Keyframes {
+  constructor({layer, timings, keyframes, easings}) {
+    super({timings, keyframes, easings, features: getFeatures(layer)});
+    // TODO: will this layer reference ever become outdated? layerVisConfigChange updates from this reference rather pulling from the store.
+    this.layer = layer;
+  }
+
+  set({layer = undefined, timings, keyframes, easings, interpolators}) {
+    if (layer) this.layer = layer;
+    super.set({timings, keyframes, easings, interpolators});
+  }
+}
+export default KeplerLayerKeyframes;
