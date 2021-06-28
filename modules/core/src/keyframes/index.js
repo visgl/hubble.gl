@@ -19,7 +19,6 @@
 // THE SOFTWARE.
 export {default as Keyframes} from './keyframes';
 export {default as CameraKeyframes} from './camera-keyframes';
-export {FilterValueKeyframes} from './kepler';
 export {default as DeckLayerKeyframes} from './deck-layer-keyframes';
 export {default as KeplerLayerKeyframes} from './kepler-layer-keyframes';
 export {default as KeplerFilterKeyframes} from './kepler-filter-keyframes';

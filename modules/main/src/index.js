@@ -34,7 +34,6 @@ export {
   // Keyframes
   Keyframes,
   CameraKeyframes,
-  FilterValueKeyframes,
   DeckLayerKeyframes,
   KeplerFilterKeyframes,
   KeplerLayerKeyframes,
