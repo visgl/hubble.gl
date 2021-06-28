@@ -105,7 +105,6 @@ export const rendererMiddleware = store => next => action => {
       }
       break;
     }
-      }
     default: {
       break;
     }
