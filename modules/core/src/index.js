@@ -34,11 +34,12 @@ export {
 export {
   Keyframes,
   CameraKeyframes,
-  FilterValueKeyframes,
   hold,
-  LayerKeyframes,
-  GridLayerKeyframes,
-  ScatterPlotLayerKeyframes
+  linear,
+  DeckLayerKeyframes,
+  KeplerFilterKeyframes,
+  KeplerLayerKeyframes,
+  KeplerTripKeyframes
 } from './keyframes';
 
 export {DeckScene, KeplerScene} from './scene';

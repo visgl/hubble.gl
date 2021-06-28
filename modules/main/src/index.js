@@ -33,13 +33,14 @@ export {
   PreviewEncoder,
   // Keyframes
   Keyframes,
-  LayerKeyframes,
   CameraKeyframes,
-  FilterValueKeyframes,
-  GridLayerKeyframes,
-  ScatterPlotLayerKeyframes,
+  DeckLayerKeyframes,
+  KeplerFilterKeyframes,
+  KeplerLayerKeyframes,
+  KeplerTripKeyframes,
   // Easings
-  hold
+  hold,
+  linear
 } from '@hubble.gl/core';
 
 export {useNextFrame, BasicControls, EncoderDropdown, QuickAnimation} from '@hubble.gl/react';

@@ -18,6 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 import {KeyFrames as LumaKeyFrames} from '@luma.gl/engine';
+import {linear} from './easings';
 import {
   sanitizeEasings,
   merge,
@@ -29,11 +30,21 @@ import {
 class Keyframes extends LumaKeyFrames {
   activeFeatures = {};
   animationHandle;
-  constructor({features, timings, keyframes, easings, interpolators = 'linear'}) {
+  constructor({features, timings, keyframes, easings = linear, interpolators = 'linear'}) {
     super([]);
     this._setActiveFeatures = this._setActiveFeatures.bind(this);
     this.getFrame = this.getFrame.bind(this);
+    this.set = this.set.bind(this);
 
+    this.activeFeatures = features.reduce((activeFeatures, feature) => {
+      activeFeatures[feature] = false;
+      return activeFeatures;
+    }, {});
+
+    this.set({timings, keyframes, easings, interpolators});
+  }
+
+  set({timings, keyframes, easings = linear, interpolators = 'linear'}) {
     if (keyframes.length === 0) {
       throw new Error('There must be at least one keyframe');
     }
@@ -44,25 +55,9 @@ class Keyframes extends LumaKeyFrames {
 
     const _timings = sanitizeTimings(keyframes, timings);
 
-    this.activeFeatures = features.reduce((activeFeatures, feature) => {
-      activeFeatures[feature] = false;
-      return activeFeatures;
-    }, {});
-
     this._setActiveFeatures(keyframes);
     const _keyframes = merge(_timings, keyframes, _easings, _interpolators);
     this.setKeyFrames(_keyframes);
-  }
-
-  _setActiveFeatures(keyframes) {
-    const firstKeyframe = keyframes[0];
-    this.activeFeatures = Object.keys(firstKeyframe).reduce((activeFeatures, key) => {
-      // activate only keys that are expected
-      if (firstKeyframe[key] !== undefined) {
-        activeFeatures[key] = true;
-      }
-      return activeFeatures;
-    }, this.activeFeatures);
   }
 
   getFrame() {
@@ -78,6 +73,17 @@ class Keyframes extends LumaKeyFrames {
     });
 
     return frame;
+  }
+
+  _setActiveFeatures(keyframes) {
+    const firstKeyframe = keyframes[0];
+    this.activeFeatures = Object.keys(firstKeyframe).reduce((activeFeatures, key) => {
+      // activate only keys that are expected
+      if (firstKeyframe[key] !== undefined) {
+        activeFeatures[key] = true;
+      }
+      return activeFeatures;
+    }, this.activeFeatures);
   }
 }
 

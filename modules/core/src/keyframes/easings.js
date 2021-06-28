@@ -21,3 +21,7 @@
  * @param {number} p
  */
 export const hold = p => (p === 1 ? 1 : 0);
+/**
+ * @param {number} p
+ */
+export const linear = p => p;
