@@ -43,3 +43,5 @@ export {
 } from './keyframes';
 
 export {DeckScene, KeplerScene} from './scene';
+
+export {Animation, DeckAnimation, KeplerAnimation} from './animations';
