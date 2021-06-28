@@ -41,7 +41,7 @@ export {
   KeplerTripKeyframes,
   // Easings
   hold,
-  linear,
+  linear
 } from '@hubble.gl/core';
 
 export {useNextFrame, BasicControls, EncoderDropdown, QuickAnimation} from '@hubble.gl/react';
