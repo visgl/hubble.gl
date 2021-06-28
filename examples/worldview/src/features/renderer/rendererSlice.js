@@ -1,9 +1,7 @@
 /* eslint-disable no-void */
 import {createAction, createSelector, nanoid, createSlice} from '@reduxjs/toolkit';
+import {DeckAdapter} from '@hubble.gl/core';
 import {DEFAULT_FILENAME, getResolutionSetting} from './constants';
-
-/** @param payload: adapter */
-export const setupRenderer = createAction('renderer/setupRenderer');
 
 /** @param payload: getCameraKeyframes, onStop */
 export const previewVideo = createAction('renderer/previewVideo');
@@ -34,6 +32,7 @@ function msToSec(ms) {
 const defaultResolution = getResolutionSetting();
 
 const initialState = {
+  adapter: new DeckAdapter({}),
   busy: false, // 'rendering' | 'previewing'
   dimensionState: defaultResolution,
   filename: DEFAULT_FILENAME,
@@ -107,6 +106,8 @@ const rendererSlice = createSlice({
   name: 'renderer',
   initialState,
   reducers: {
+    setupRenderer: (state, action /** payload: DeckAdapter */) =>
+      void (state.adapter = action.payload),
     filenameChange: filenameChangeSlice,
     formatChange: (state, action /** payload: string */) => void (state.format = action.payload),
     formatConfigsChange: (state, action /** payload: <{[Format]: {}}> */) => {
@@ -127,7 +128,8 @@ export const {
   formatChange,
   formatConfigsChange,
   resolutionChange,
-  timecodeChange
+  timecodeChange,
+  setupRenderer
 } = rendererSlice.actions;
 
 export default rendererSlice.reducer;
@@ -135,6 +137,7 @@ export default rendererSlice.reducer;
 /**
  * Selectors
  */
+export const adapterSelector = state => state.hubbleGl.renderer.adapter;
 
 export const framerateSelector = state => state.hubbleGl.renderer.timecodeState.framerate;
 export const framestepSelector = createSelector(framerateSelector, framerate => {
