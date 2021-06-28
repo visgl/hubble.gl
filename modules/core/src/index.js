@@ -34,7 +34,6 @@ export {
 export {
   Keyframes,
   CameraKeyframes,
-  FilterValueKeyframes,
   hold,
   linear,
   DeckLayerKeyframes,
