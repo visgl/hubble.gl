@@ -18,13 +18,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import React, {useMemo, useEffect} from 'react';
-import {DeckAdapter} from '@hubble.gl/core';
+import React from 'react';
 
 import {Map} from './Map';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {setupRenderer, dimensionSelector} from '../renderer';
+import {dimensionSelector, adapterSelector} from '../renderer';
 
 import {updateViewState, viewStateSelector} from './mapSlice';
 
@@ -39,12 +38,7 @@ export const MapContainer = ({
   const dispatch = useDispatch();
   const dimension = useSelector(dimensionSelector);
   const viewState = useSelector(viewStateSelector);
-
-  const adapter = useMemo(() => new DeckAdapter({glContext}), [glContext]);
-
-  useEffect(() => {
-    dispatch(setupRenderer(adapter));
-  }, [adapter]);
+  const adapter = useSelector(adapterSelector);
 
   return (
     <Map

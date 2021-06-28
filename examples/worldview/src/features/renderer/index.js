@@ -15,7 +15,8 @@ export {
   timecodeChange,
   dimensionSelector,
   busySelector,
-  durationSelector
+  durationSelector,
+  adapterSelector
 } from './rendererSlice';
 
 export {useRenderHandler, usePreviewHandler} from './hooks';
