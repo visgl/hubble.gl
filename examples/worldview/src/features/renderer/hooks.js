@@ -2,28 +2,28 @@ import {busySelector, previewVideo, stopVideo, renderVideo} from '../renderer';
 import {useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
-export function usePreviewHandler({getCameraKeyframes, getLayerKeyframes}) {
+export function usePreviewHandler() {
   const rendererBusy = useSelector(busySelector);
   const dispatch = useDispatch();
   const handlePreview = useCallback(() => {
     if (rendererBusy === false) {
-      dispatch(previewVideo({getCameraKeyframes, getLayerKeyframes}));
+      dispatch(previewVideo({}));
     } else {
       dispatch(stopVideo());
     }
-  }, [rendererBusy, getCameraKeyframes, getLayerKeyframes]);
+  }, [rendererBusy]);
   return handlePreview;
 }
 
-export function useRenderHandler({getCameraKeyframes, getLayerKeyframes}) {
+export function useRenderHandler() {
   const rendererBusy = useSelector(busySelector);
   const dispatch = useDispatch();
   const handleRender = useCallback(() => {
     if (rendererBusy === false) {
-      dispatch(renderVideo({getCameraKeyframes, getLayerKeyframes}));
+      dispatch(renderVideo({}));
     } else {
       dispatch(stopVideo());
     }
-  }, [rendererBusy, getCameraKeyframes, getLayerKeyframes]);
+  }, [rendererBusy]);
   return handleRender;
 }

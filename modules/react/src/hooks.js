@@ -35,7 +35,7 @@ export function useDeckAdapter(deckAnimation, initialViewState = undefined) {
     if (cameraFrame) {
       deckAnimation.setOnCameraUpdate(setCameraFrame);
     }
-    a.scene.attachAnimation(deckAnimation);
+    a.animationManager.attachAnimation(deckAnimation);
     deckAnimation.draw();
     return a;
   }, []);

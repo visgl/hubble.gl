@@ -1,8 +1,7 @@
-import React, {useState, useRef, useCallback, useMemo} from 'react';
+import React, {useState, useRef, useEffect, useMemo} from 'react';
 import DeckGL from '@deck.gl/react';
-import {DeckAdapter, DeckScene, CameraKeyframes} from '@hubble.gl/core';
-import {useNextFrame, BasicControls, ResolutionGuide} from '@hubble.gl/react';
-import {getLayers, getLayerKeyframes} from './layers';
+import {useNextFrame, BasicControls, ResolutionGuide, useDeckAdapter} from '@hubble.gl/react';
+import {animation} from './layers';
 import {vignette, fxaa} from '@luma.gl/shadertools';
 import {PostProcessEffect, MapView} from '@deck.gl/core';
 import {easing} from 'popmotion';
@@ -45,9 +44,9 @@ const aaEffect = new PostProcessEffect(fxaa, {});
 const vignetteEffect = new PostProcessEffect(vignette, {});
 
 function filterCamera(viewState) {
-  const features = ['latitude', 'longitude', 'zoom', 'bearing', 'pitch'];
+  const exclude = ['width', 'height', 'altitude'];
   return Object.keys(viewState)
-    .filter(key => features.includes(key))
+    .filter(key => !exclude.includes(key))
     .reduce((obj, key) => {
       obj[key] = viewState[key];
       return obj;
@@ -58,7 +57,7 @@ export default function App() {
   const deckRef = useRef(null);
   const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
   const [busy, setBusy] = useState(false);
-  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
+  const {adapter, layers, viewState, setViewState} = useDeckAdapter(animation, INITIAL_VIEW_STATE);
   const [viewStateA, setViewStateA] = useState(viewState);
   const [viewStateB, setViewStateB] = useState({
     ...viewState,
@@ -68,17 +67,17 @@ export default function App() {
 
   const onNextFrame = useNextFrame();
 
-  const getCameraKeyframes = useCallback(() => {
-    return new CameraKeyframes({
-      timings: [0, timecode.end - 250],
-      keyframes: [viewStateA, viewStateB],
-      easings: easing.easeInOut
+  useEffect(() => {
+    adapter.animationManager.setKeyframes('deck', {
+      cameraKeyframe: {
+        width: dimension.width,
+        height: dimension.height,
+        timings: [0, timecode.end - 250],
+        keyframes: [viewStateA, viewStateB],
+        easings: easing.easeInOut
+      }
     });
   }, [viewStateA, viewStateB]);
-
-  const [adapter] = useState(
-    new DeckAdapter({scene: new DeckScene({layerKeyframes: getLayerKeyframes()})})
-  );
 
   return (
     <div style={{position: 'relative'}}>
@@ -103,7 +102,8 @@ export default function App() {
         effects={[vignetteEffect, aaEffect]}
         width={dimension.width}
         height={dimension.height}
-        {...adapter.getProps({deck, onNextFrame, getLayers})}
+        layers={layers}
+        {...adapter.getProps({deck, onNextFrame})}
       />
       <div style={{position: 'absolute'}}>
         <BasicControls
@@ -112,8 +112,6 @@ export default function App() {
           setBusy={setBusy}
           formatConfigs={formatConfigs}
           timecode={timecode}
-          getCameraKeyframes={getCameraKeyframes}
-          getLayerKeyframes={getLayerKeyframes}
         />
         <button onClick={() => setViewStateA(filterCamera(viewState))}>Set Camera Start</button>
         <button onClick={() => setViewStateB(filterCamera(viewState))}>Set Camera End</button>

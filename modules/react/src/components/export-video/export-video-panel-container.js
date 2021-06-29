@@ -22,7 +22,7 @@ import React, {Component} from 'react';
 import {easing} from 'popmotion';
 import {
   DeckAdapter,
-  CameraKeyframes,
+  KeplerAnimation,
   WebMEncoder,
   JPEGSequenceEncoder,
   PNGSequenceEncoder,
@@ -63,7 +63,7 @@ export class ExportVideoPanelContainer extends Component {
 
     this.state = {
       mediaType: 'gif',
-      cameraPreset: 'Orbit (90º)',
+      cameraPreset: 'None',
       fileName: '',
       resolution: '1280x720',
       durationMs: 1000,
@@ -72,6 +72,14 @@ export class ExportVideoPanelContainer extends Component {
       ...(initialState || {})
     };
     this.state.adapter = new DeckAdapter({glContext});
+  }
+
+  componentDidMount() {
+    const animation = new KeplerAnimation({
+      cameraKeyframe: this.getCameraKeyframes(),
+      onCameraFrameUpdate: this.setViewState,
+    });
+    this.state.adapter.animationManager.attachAnimation(animation);
   }
 
   getFileName() {
@@ -121,7 +129,7 @@ export class ExportVideoPanelContainer extends Component {
     const {viewState, cameraPreset, durationMs} = this.state;
     const {longitude, latitude, zoom, pitch, bearing} = viewState;
 
-    return new CameraKeyframes({
+    return {
       timings: [0, durationMs],
       keyframes: [
         {
@@ -134,7 +142,7 @@ export class ExportVideoPanelContainer extends Component {
         parseSetCameraType(cameraPreset, viewState)
       ],
       easings: [easing.easeInOut]
-    });
+    };
   }
 
   setStateAndNotify(update) {
@@ -190,7 +198,6 @@ export class ExportVideoPanelContainer extends Component {
       this.forceUpdate();
     };
     adapter.render({
-      getCameraKeyframes: this.getCameraKeyframes,
       Encoder: PreviewEncoder,
       formatConfigs,
       timecode,
@@ -212,7 +219,6 @@ export class ExportVideoPanelContainer extends Component {
     }; // Disables overlay once export is done saving (generates file to download)
 
     adapter.render({
-      getCameraKeyframes: this.getCameraKeyframes,
       Encoder,
       formatConfigs,
       timecode,

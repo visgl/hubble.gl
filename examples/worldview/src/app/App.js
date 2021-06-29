@@ -30,14 +30,7 @@ const KEPLER_UI = {
   LoadingSpinner
 };
 import {MonitorPanel} from '../features/monitor/MonitorPanel';
-import {
-  useKepler,
-  useKeplerDeckLayers,
-  useKeplerKeyframes,
-  useKeplerFrame,
-  createSelectMapStyle,
-  createSelectKeplerLayers
-} from '../features/kepler';
+import {useKeplerDeckLayers, createSelectMapStyle} from '../features/kepler';
 
 import {useNewYorkScene} from '../scenes/newYork';
 
@@ -82,14 +75,10 @@ const WindowSize = styled.div`
 `;
 
 const KEPLER_MAP_ID = 'map';
-const selectKeplerLayers = createSelectKeplerLayers(KEPLER_MAP_ID);
 const selectMapStyle = createSelectMapStyle(KEPLER_MAP_ID);
 const sceneLayers = [];
 const App = ({}) => {
-  useKepler(KEPLER_MAP_ID);
-  const keplerLayers = useSelector(selectKeplerLayers);
-  const getLayerKeyframes = useKeplerKeyframes(keplerLayers);
-  useKeplerFrame(keplerLayers);
+  useNewYorkScene();
   const keplerDeckLayers = useKeplerDeckLayers(KEPLER_MAP_ID);
   const deckProps = useMemo(() => {
     return {
@@ -101,11 +90,6 @@ const App = ({}) => {
     mapStyle
   };
 
-  // const state = useSelector(state => state);
-  // console.log(state);
-
-  useNewYorkScene();
-
   return (
     <IntlProvider locale="en" messages={messages.en}>
       <ThemeProvider theme={theme}>
@@ -113,11 +97,7 @@ const App = ({}) => {
           <WindowSize>
             <InjectKeplerUI keplerUI={KEPLER_UI}>
               <div style={{height: 1080, margin: 16}}>
-                <MonitorPanel
-                  getLayerKeyframes={getLayerKeyframes}
-                  deckProps={deckProps}
-                  staticMapProps={staticMapProps}
-                />
+                <MonitorPanel deckProps={deckProps} staticMapProps={staticMapProps} />
               </div>
             </InjectKeplerUI>
           </WindowSize>

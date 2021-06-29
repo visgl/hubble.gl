@@ -25,7 +25,7 @@ Override the lumagl `timeline` object used in animationManager.
 
 ##### `animations` (`Animation[]`, Optional)
 
-An initial set of layer keyframes. If they are static, supply them here. If the ever need to update, call `scene.setLayerKeyframes`.
+An initial set of animations. If they are static, supply them here. If the ever need to update, call `animationManager.setKeyframes`.
 
 ## Source
 

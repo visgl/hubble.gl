@@ -27,14 +27,7 @@ import {dimensionSelector, adapterSelector} from '../renderer';
 
 import {updateViewState, viewStateSelector} from './mapSlice';
 
-export const MapContainer = ({
-  width = 540,
-  height,
-  deckProps,
-  staticMapProps,
-  prepareFrame,
-  glContext
-}) => {
+export const MapContainer = ({width = 540, height, deckProps, staticMapProps}) => {
   const dispatch = useDispatch();
   const dimension = useSelector(dimensionSelector);
   const viewState = useSelector(viewStateSelector);
@@ -53,7 +46,6 @@ export const MapContainer = ({
       // Hubble Props
       adapter={adapter}
       dimension={dimension}
-      prepareFrame={prepareFrame}
     />
   );
 };

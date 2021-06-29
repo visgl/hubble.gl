@@ -3,14 +3,17 @@ import {createAction, createSelector, nanoid, createSlice} from '@reduxjs/toolki
 import {DeckAdapter} from '@hubble.gl/core';
 import {DEFAULT_FILENAME, getResolutionSetting} from './constants';
 
-/** @param payload: getCameraKeyframes, onStop */
+/** @param payload: onStop */
 export const previewVideo = createAction('renderer/previewVideo');
 
-/** @param payload: getCameraKeyframes, onStop */
+/** @param payload: onStop */
 export const renderVideo = createAction('renderer/renderVideo');
 
-/** @param payload: timeMs, getCameraKeyframes, getLayerKeyframes */
+/** @param payload: timeMs */
 export const seekTime = createAction('renderer/seekTime');
+
+/** @param payload: animation */
+export const attachAnimation = createAction('renderer/attachAnimation');
 
 /** @param payload: boolean */
 export const signalRendering = createAction('renderer/signalRendering', busy => {
@@ -145,7 +148,6 @@ export const framestepSelector = createSelector(framerateSelector, framerate => 
 });
 export const timecodeSelector = state => state.hubbleGl.renderer.timecodeState;
 
-// TODO: deprecate when DeckScene supports timecode object
 export const durationSelector = createSelector(timecodeSelector, timecode => {
   return timecode.end - timecode.start;
 });

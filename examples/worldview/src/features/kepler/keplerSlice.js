@@ -42,6 +42,20 @@ export const createSelectKeplerLayers = mapId => {
   };
 };
 
+export const createSelectKeplerFilters = mapId => {
+  return state => {
+    if (!isKeplerReady(state, mapId)) return undefined;
+    return state.keplerGl[mapId].visState.filters;
+  };
+};
+
+export const createSelectKeplerAnimationConfig = mapId => {
+  return state => {
+    if (!isKeplerReady(state, mapId)) return undefined;
+    return state.keplerGl[mapId].visState.animationConfig;
+  };
+};
+
 export const createSelectKeplerMap = mapId => {
   return state => {
     if (!isKeplerReady(state, mapId)) return undefined;

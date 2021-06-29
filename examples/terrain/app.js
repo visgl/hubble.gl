@@ -1,8 +1,8 @@
-import React, {useState, useRef, useMemo} from 'react';
+import React, {useState, useRef, useMemo, useEffect} from 'react';
 import DeckGL from '@deck.gl/react';
 import {TerrainLayer} from '@deck.gl/geo-layers';
-import {useNextFrame, BasicControls, ResolutionGuide} from '@hubble.gl/react';
-import {DeckAdapter, DeckScene, CameraKeyframes, hold, LayerKeyframes} from '@hubble.gl/core';
+import {useNextFrame, BasicControls, ResolutionGuide, useDeckAdapter} from '@hubble.gl/react';
+import {hold, DeckAnimation} from '@hubble.gl/core';
 import {easing} from 'popmotion';
 
 const INITIAL_VIEW_STATE = {
@@ -28,8 +28,8 @@ const ELEVATION_DECODER = {
   offset: -10000
 };
 
-const getCameraKeyframes = () => {
-  return new CameraKeyframes({
+const deckAnimation = new DeckAnimation({
+  cameraKeyframe: {
     timings: [0, 6000, 7000, 8000, 14000],
     keyframes: [
       {
@@ -69,13 +69,10 @@ const getCameraKeyframes = () => {
       }
     ],
     easings: [easing.easeInOut, hold, easing.easeInOut, easing.easeInOut]
-  });
-};
-
-const getLayerKeyframes = () => {
-  return {
-    terrain: new LayerKeyframes({
-      layerId: 'terrain',
+  },
+  layerKeyframes: [
+    {
+      id: 'terrain',
       features: ['r', 'g', 'b'],
       keyframes: [
         {r: 255, g: 255, b: 255},
@@ -88,18 +85,10 @@ const getLayerKeyframes = () => {
         {r: 255, g: 255, b: 255}
       ],
       timings: [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000],
-      easings: [
-        easing.linear,
-        easing.linear,
-        easing.linear,
-        easing.linear,
-        easing.linear,
-        easing.linear,
-        easing.linear
-      ]
-    })
-  };
-};
+      easings: easing.linear
+    }
+  ]
+});
 
 /** @type {import('@hubble.gl/core/src/types').FormatConfigs} */
 const formatConfigs = {
@@ -125,35 +114,35 @@ const dimension = {
   height: 480
 };
 
-const adapter = new DeckAdapter({
-  scene: new DeckScene({layerKeyframes: getLayerKeyframes(), cameraKeyframes: getCameraKeyframes()})
-});
-
 export default function App() {
   const deckRef = useRef(null);
   const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
   const [busy, setBusy] = useState(false);
-  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
-
-  const onNextFrame = useNextFrame();
   const [rainbow, setRainbow] = useState(false);
 
-  const getLayers = scene => {
-    const terrain = scene.layerKeyframes.terrain.getFrame();
-    return [
-      new TerrainLayer({
-        id: 'terrain',
-        minZoom: 0,
-        maxZoom: 23,
-        strategy: 'no-overlap',
-        elevationDecoder: ELEVATION_DECODER,
-        elevationData: TERRAIN_IMAGE,
-        texture: rainbow ? null : SURFACE_IMAGE,
-        wireframe: false,
-        color: [terrain.r, terrain.g, terrain.b]
-      })
-    ];
-  };
+  const onNextFrame = useNextFrame();
+  useEffect(() => {
+    deckAnimation.setGetLayers(animation => {
+      const terrain = animation.layerKeyframes.terrain.getFrame();
+      return [
+        new TerrainLayer({
+          id: 'terrain',
+          minZoom: 0,
+          maxZoom: 23,
+          strategy: 'no-overlap',
+          elevationDecoder: ELEVATION_DECODER,
+          elevationData: TERRAIN_IMAGE,
+          texture: rainbow ? null : SURFACE_IMAGE,
+          wireframe: false,
+          color: [terrain.r, terrain.g, terrain.b]
+        })
+      ];
+    });
+  }, [rainbow]);
+  const {adapter, layers, viewState, setViewState} = useDeckAdapter(
+    deckAnimation,
+    INITIAL_VIEW_STATE
+  );
 
   return (
     <div style={{position: 'relative'}}>
@@ -170,7 +159,8 @@ export default function App() {
         controller={true}
         width={dimension.width}
         height={dimension.height}
-        {...adapter.getProps({deck, onNextFrame, getLayers})}
+        layers={layers}
+        {...adapter.getProps({deck, onNextFrame})}
       />
       <div style={{position: 'absolute'}}>
         <BasicControls
@@ -179,8 +169,6 @@ export default function App() {
           setBusy={setBusy}
           formatConfigs={formatConfigs}
           timecode={timecode}
-          getCameraKeyframes={getCameraKeyframes}
-          getLayerKeyframes={getLayerKeyframes}
         />
         <div style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}}>
           <label style={{fontFamily: 'sans-serif'}}>
