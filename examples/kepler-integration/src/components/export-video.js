@@ -102,6 +102,7 @@ class ExportVideo extends Component {
               onCameraFrameUpdate={onCameraFrameUpdate}
               deckProps={{}}
               staticMapProps={{}}
+              exportVideoWidth={720}
             />
           </ExportVideoModal>
         </div>

@@ -24,7 +24,6 @@ import Modal from 'react-modal';
 import {ThemeProvider} from 'styled-components';
 import {ModalContainer} from './styled-components';
 import {createSelector} from 'reselect';
-import {SIDEPANEL_WIDTH} from './constants';
 
 class ExportVideoModal extends Component {
   static defaultProps = {
@@ -67,7 +66,7 @@ class ExportVideoModal extends Component {
       content: {
         top: 'auto',
         left: 'auto',
-        right: `calc(50% - ${SIDEPANEL_WIDTH / 2}px)`,
+        right: `50%`,
         bottom: '50%',
         transform: 'translate(50%, 50%)',
         padding: '0px 0px 0px 0px',
