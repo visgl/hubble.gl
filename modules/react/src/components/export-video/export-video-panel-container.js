@@ -197,6 +197,9 @@ export class ExportVideoPanelContainer extends Component {
     const onStop = () => {
       this.forceUpdate();
     };
+    adapter.animationManager.setKeyframes('kepler', {
+      cameraKeyframe: this.getCameraKeyframes()
+    });
     adapter.render({
       Encoder: PreviewEncoder,
       formatConfigs,
@@ -218,6 +221,9 @@ export class ExportVideoPanelContainer extends Component {
       this.setState({rendering: false});
     }; // Disables overlay once export is done saving (generates file to download)
 
+    adapter.animationManager.setKeyframes('kepler', {
+      cameraKeyframe: this.getCameraKeyframes()
+    });
     adapter.render({
       Encoder,
       formatConfigs,
