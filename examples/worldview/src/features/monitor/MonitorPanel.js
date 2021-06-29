@@ -1,4 +1,4 @@
-import React, {useMemo, useCallback} from 'react';
+import React, {useMemo, useCallback, useEffect} from 'react';
 import {Play, Search, Maximize} from './Icons';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
@@ -12,11 +12,11 @@ import {
 } from '../renderer';
 import {AutoSizer} from 'react-virtualized';
 import {WithKeplerUI} from '@hubble.gl/react';
-import {useCameraKeyframes, useCameraFrame, usePrepareFrame} from '../timeline/hooks';
 import {Map, viewStateSelector} from '../map';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {nearestEven} from '../../utils';
 import {framestepSelector, timecodeSelector} from '../renderer/rendererSlice';
+import {timeCursorSelector} from '../timeline/timelineSlice';
 
 const MonitorBottomToolbar = ({playing, onPreview}) => {
   return (
@@ -128,19 +128,12 @@ const MapBox = styled.div`
   height: ${props => props.height}px;
 `;
 
-const SeekSlider = ({getCameraKeyframes, getLayerKeyframes}) => {
+const SeekSlider = () => {
   const timecode = useSelector(timecodeSelector);
   const framestep = useSelector(framestepSelector);
+  const timeCursor = useSelector(timeCursorSelector);
   const dispatch = useDispatch();
-  const onSeek = useCallback(
-    timeMs => {
-      if (getCameraKeyframes && getLayerKeyframes) {
-        dispatch(seekTime({timeMs, getCameraKeyframes, getLayerKeyframes}));
-      }
-    },
-    [getCameraKeyframes, getLayerKeyframes]
-  );
-  // useEffect(() => onSeek(timecode.start), [timecode.start, getCameraKeyframes, getLayerKeyframes])
+  useEffect(() => dispatch(seekTime({timeMs: timecode.start})), [timecode.start]);
 
   return (
     <input
@@ -148,29 +141,19 @@ const SeekSlider = ({getCameraKeyframes, getLayerKeyframes}) => {
       min={timecode.start}
       max={timecode.end}
       step={framestep}
-      onChange={e => onSeek(parseInt(e.target.value, 10))}
+      value={timeCursor}
+      onChange={e => dispatch(seekTime({timeMs: parseInt(e.target.value, 10)}))}
     />
   );
 };
 
-export const MonitorPanel = ({
-  getCameraKeyframes = undefined,
-  getLayerKeyframes,
-  deckProps = undefined,
-  staticMapProps = undefined
-}) => {
+export const MonitorPanel = ({deckProps = undefined, staticMapProps = undefined}) => {
   const rendererBusy = useSelector(busySelector);
   const duration = useSelector(durationSelector);
+  const timeCursor = useSelector(timeCursorSelector);
   const viewState = useSelector(viewStateSelector);
-
-  if (!getCameraKeyframes) {
-    getCameraKeyframes = useCameraKeyframes();
-  }
-
-  useCameraFrame();
-  const prepareFrame = usePrepareFrame();
-  const onPreview = usePreviewHandler({getCameraKeyframes, getLayerKeyframes});
-  const onRender = useRenderHandler({getCameraKeyframes, getLayerKeyframes});
+  const onPreview = usePreviewHandler();
+  const onRender = useRenderHandler();
 
   return (
     <div
@@ -192,7 +175,6 @@ export const MonitorPanel = ({
               <Map
                 width={mapWidth}
                 height={mapHeight}
-                prepareFrame={prepareFrame}
                 deckProps={deckProps}
                 staticMapProps={staticMapProps}
               />
@@ -202,6 +184,7 @@ export const MonitorPanel = ({
                 duration={duration}
                 width={containerWidth}
                 height={containerHeight}
+                currentTime={timeCursor}
               />
             </MapBox>
           )}
@@ -209,7 +192,7 @@ export const MonitorPanel = ({
       </div>
       <MonitorBottomToolbar playing={Boolean(rendererBusy)} onPreview={onPreview} />
       <button onClick={onRender}>Render</button>
-      <SeekSlider getCameraKeyframes={getCameraKeyframes} getLayerKeyframes={getLayerKeyframes} />
+      <SeekSlider />
     </div>
   );
 };

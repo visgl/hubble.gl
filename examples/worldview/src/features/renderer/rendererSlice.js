@@ -1,18 +1,19 @@
 /* eslint-disable no-void */
 import {createAction, createSelector, nanoid, createSlice} from '@reduxjs/toolkit';
+import {DeckAdapter} from '@hubble.gl/core';
 import {DEFAULT_FILENAME, getResolutionSetting} from './constants';
 
-/** @param payload: adapter */
-export const setupRenderer = createAction('renderer/setupRenderer');
-
-/** @param payload: getCameraKeyframes, onStop */
+/** @param payload: onStop */
 export const previewVideo = createAction('renderer/previewVideo');
 
-/** @param payload: getCameraKeyframes, onStop */
+/** @param payload: onStop */
 export const renderVideo = createAction('renderer/renderVideo');
 
-/** @param payload: timeMs, getCameraKeyframes, getLayerKeyframes */
+/** @param payload: timeMs */
 export const seekTime = createAction('renderer/seekTime');
+
+/** @param payload: animation */
+export const attachAnimation = createAction('renderer/attachAnimation');
 
 /** @param payload: boolean */
 export const signalRendering = createAction('renderer/signalRendering', busy => {
@@ -34,6 +35,7 @@ function msToSec(ms) {
 const defaultResolution = getResolutionSetting();
 
 const initialState = {
+  adapter: new DeckAdapter({}),
   busy: false, // 'rendering' | 'previewing'
   dimensionState: defaultResolution,
   filename: DEFAULT_FILENAME,
@@ -107,6 +109,8 @@ const rendererSlice = createSlice({
   name: 'renderer',
   initialState,
   reducers: {
+    setupRenderer: (state, action /** payload: DeckAdapter */) =>
+      void (state.adapter = action.payload),
     filenameChange: filenameChangeSlice,
     formatChange: (state, action /** payload: string */) => void (state.format = action.payload),
     formatConfigsChange: (state, action /** payload: <{[Format]: {}}> */) => {
@@ -127,7 +131,8 @@ export const {
   formatChange,
   formatConfigsChange,
   resolutionChange,
-  timecodeChange
+  timecodeChange,
+  setupRenderer
 } = rendererSlice.actions;
 
 export default rendererSlice.reducer;
@@ -135,6 +140,7 @@ export default rendererSlice.reducer;
 /**
  * Selectors
  */
+export const adapterSelector = state => state.hubbleGl.renderer.adapter;
 
 export const framerateSelector = state => state.hubbleGl.renderer.timecodeState.framerate;
 export const framestepSelector = createSelector(framerateSelector, framerate => {
@@ -142,7 +148,6 @@ export const framestepSelector = createSelector(framerateSelector, framerate => 
 });
 export const timecodeSelector = state => state.hubbleGl.renderer.timecodeState;
 
-// TODO: deprecate when DeckScene supports timecode object
 export const durationSelector = createSelector(timecodeSelector, timecode => {
   return timecode.end - timecode.start;
 });

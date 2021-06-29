@@ -36,21 +36,11 @@ const ENCODERS = {
   png: PNGSequenceEncoder
 };
 
-export default function BasicControls({
-  adapter,
-  busy,
-  setBusy,
-  formatConfigs,
-  timecode,
-  getCameraKeyframes,
-  getLayerKeyframes = undefined
-}) {
+export default function BasicControls({adapter, busy, setBusy, formatConfigs, timecode}) {
   const [encoder, setEncoder] = useState('gif');
 
   const onRender = () => {
     adapter.render({
-      getCameraKeyframes,
-      getLayerKeyframes,
       Encoder: ENCODERS[encoder],
       formatConfigs,
       timecode,

@@ -22,7 +22,7 @@ import React, {Component} from 'react';
 import {easing} from 'popmotion';
 import {
   DeckAdapter,
-  CameraKeyframes,
+  KeplerAnimation,
   WebMEncoder,
   JPEGSequenceEncoder,
   PNGSequenceEncoder,
@@ -31,7 +31,7 @@ import {
 } from '@hubble.gl/core';
 
 import ExportVideoPanel from './export-video-panel';
-import {parseSetCameraType} from './utils';
+import {parseSetCameraType, filterCamera} from './utils';
 import {DEFAULT_FILENAME, getResolutionSetting} from './constants';
 
 const ENCODERS = {
@@ -54,7 +54,7 @@ export class ExportVideoPanelContainer extends Component {
     this.onPreviewVideo = this.onPreviewVideo.bind(this);
     this.onRenderVideo = this.onRenderVideo.bind(this);
     this.setDuration = this.setDuration.bind(this);
-    this.setViewState = this.setViewState.bind(this);
+    this.getFilterKeyframes = this.getFilterKeyframes.bind(this);
 
     const {
       initialState,
@@ -64,7 +64,7 @@ export class ExportVideoPanelContainer extends Component {
 
     this.state = {
       mediaType: 'gif',
-      cameraPreset: 'Orbit (90º)',
+      cameraPreset: 'None',
       fileName: '',
       resolution: '1280x720',
       durationMs: 1000,
@@ -73,6 +73,41 @@ export class ExportVideoPanelContainer extends Component {
       ...(initialState || {})
     };
     this.state.adapter = new DeckAdapter({glContext});
+  }
+
+  componentDidMount() {
+    const {
+      mapData: {
+        visState: {animationConfig, filters}
+      },
+      onTripFrameUpdate,
+      onFilterFrameUpdate
+    } = this.props;
+    const animation = new KeplerAnimation({
+      filters,
+      filterKeyframes: this.getFilterKeyframes(),
+      animationConfig,
+      tripKeyframe: {timings: [0, this.state.durationMs]},
+      cameraKeyframe: this.getCameraKeyframes(),
+      onCameraFrameUpdate: this.setViewState,
+      onTripFrameUpdate,
+      onFilterFrameUpdate
+    });
+    this.state.adapter.animationManager.attachAnimation(animation);
+  }
+
+  getFilterKeyframes() {
+    const {
+      mapData: {
+        visState: {filters}
+      }
+    } = this.props;
+    return filters
+      .filter(f => f.type === 'timeRange')
+      .map(f => ({
+        id: f.id,
+        timings: [0, this.state.durationMs]
+      }));
   }
 
   getFileName() {
@@ -122,7 +157,7 @@ export class ExportVideoPanelContainer extends Component {
     const {viewState, cameraPreset, durationMs} = this.state;
     const {longitude, latitude, zoom, pitch, bearing} = viewState;
 
-    return new CameraKeyframes({
+    return {
       timings: [0, durationMs],
       keyframes: [
         {
@@ -135,7 +170,7 @@ export class ExportVideoPanelContainer extends Component {
         parseSetCameraType(cameraPreset, viewState)
       ],
       easings: [easing.easeInOut]
-    });
+    };
   }
 
   setStateAndNotify(update) {
@@ -174,20 +209,35 @@ export class ExportVideoPanelContainer extends Component {
     this.setStateAndNotify({resolution});
   }
 
-  setViewState(vs) {
-    this.setState({viewState: vs.viewState});
+  setViewState(viewState) {
+    const {onCameraFrameUpdate} = this.props;
+    if (onCameraFrameUpdate) {
+      onCameraFrameUpdate(filterCamera(viewState));
+    }
+    this.setState({viewState});
   }
 
   onPreviewVideo() {
-    const {adapter} = this.state;
+    const {
+      mapData: {
+        visState: {animationConfig, filters}
+      }
+    } = this.props;
+    const {adapter, durationMs} = this.state;
     const filename = this.getFileName();
     const formatConfigs = this.getFormatConfigs();
     const timecode = this.getTimecode();
     const onStop = () => {
       this.forceUpdate();
     };
+    adapter.animationManager.setKeyframes('kepler', {
+      filters,
+      filterKeyframes: this.getFilterKeyframes(),
+      animationConfig,
+      tripKeyframe: {timings: [0, durationMs]},
+      cameraKeyframe: this.getCameraKeyframes()
+    });
     adapter.render({
-      getCameraKeyframes: this.getCameraKeyframes,
       Encoder: PreviewEncoder,
       formatConfigs,
       timecode,
@@ -197,7 +247,12 @@ export class ExportVideoPanelContainer extends Component {
   }
 
   onRenderVideo() {
-    const {adapter} = this.state;
+    const {
+      mapData: {
+        visState: {animationConfig, filters}
+      }
+    } = this.props;
+    const {adapter, durationMs} = this.state;
     const filename = this.getFileName();
     const Encoder = this.getEncoder();
     const formatConfigs = this.getFormatConfigs();
@@ -207,9 +262,14 @@ export class ExportVideoPanelContainer extends Component {
     const onStop = () => {
       this.setState({rendering: false});
     }; // Disables overlay once export is done saving (generates file to download)
-
+    adapter.animationManager.setKeyframes('kepler', {
+      filters,
+      filterKeyframes: this.getFilterKeyframes(),
+      animationConfig,
+      tripKeyframe: {timings: [0, durationMs]},
+      cameraKeyframe: this.getCameraKeyframes()
+    });
     adapter.render({
-      getCameraKeyframes: this.getCameraKeyframes,
       Encoder,
       formatConfigs,
       timecode,
@@ -223,7 +283,7 @@ export class ExportVideoPanelContainer extends Component {
   }
 
   render() {
-    const {exportVideoWidth, handleClose, mapData, header} = this.props;
+    const {exportVideoWidth, handleClose, mapData, header, deckProps, staticMapProps} = this.props;
     const {
       adapter,
       durationMs,
@@ -250,6 +310,8 @@ export class ExportVideoPanelContainer extends Component {
         mapData={mapData}
         viewState={viewState}
         setViewState={this.setViewState}
+        deckProps={deckProps}
+        staticMapProps={staticMapProps}
         // Settings Props
         settingsData={settingsData}
         setMediaType={this.setMediaType}

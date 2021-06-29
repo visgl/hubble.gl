@@ -1,7 +1,6 @@
 export {rendererMiddleware} from './rendererMiddleware';
 
 export {
-  setupRenderer,
   previewVideo,
   renderVideo,
   signalRendering,
@@ -15,7 +14,8 @@ export {
   timecodeChange,
   dimensionSelector,
   busySelector,
-  durationSelector
+  durationSelector,
+  adapterSelector
 } from './rendererSlice';
 
 export {useRenderHandler, usePreviewHandler} from './hooks';

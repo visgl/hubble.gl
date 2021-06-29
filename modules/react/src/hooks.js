@@ -18,9 +18,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import {useState, useCallback} from 'react';
+import {useState, useCallback, useMemo} from 'react';
+import {DeckAdapter} from '@hubble.gl/core';
 
 export function useNextFrame() {
   const [, updateState] = useState();
   return useCallback(() => updateState({}), []);
+}
+
+export function useDeckAdapter(deckAnimation, initialViewState = undefined) {
+  const [layers, setLayers] = useState([]);
+  const [cameraFrame, setCameraFrame] = useState(initialViewState);
+  const adapter = useMemo(() => {
+    const a = new DeckAdapter({});
+    deckAnimation.setOnLayersUpdate(setLayers);
+    if (cameraFrame) {
+      deckAnimation.setOnCameraUpdate(setCameraFrame);
+    }
+    a.animationManager.attachAnimation(deckAnimation);
+    deckAnimation.draw();
+    return a;
+  }, []);
+  return {adapter, layers, cameraFrame, setCameraFrame};
 }

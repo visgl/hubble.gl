@@ -17,23 +17,22 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-export default class KeplerScene {
-  /** @param {import('types').KeplerSceneParams} params */
-  constructor({timeline, keyframes, filters, getFrame, lengthMs, width, height}) {
-    this.timeline = timeline;
-    this.keyframes = keyframes;
-    this._getFrame = getFrame;
-    this.filters = filters;
-    this.getFrame = this.getFrame.bind(this);
-    this.lengthMs = lengthMs;
-    this.width = width;
-    this.height = height;
+import Keyframes from './keyframes';
+
+function getFeatures(layer) {
+  return Object.keys(layer.config.visConfig);
+}
+
+class KeplerLayerKeyframes extends Keyframes {
+  constructor({layer, timings, keyframes, easings}) {
+    super({timings, keyframes, easings, features: getFeatures(layer)});
+    // TODO: will this layer reference ever become outdated? layerVisConfigChange updates from this reference rather pulling from the store.
+    this.layer = layer;
   }
 
-  /**
-   * @param {any} keplerGl
-   */
-  getFrame(keplerGl) {
-    return this._getFrame(keplerGl, this.keyframes, this.filters);
+  set({layer = undefined, timings, keyframes, easings, interpolators}) {
+    if (layer) this.layer = layer;
+    super.set({timings, keyframes, easings, interpolators});
   }
 }
+export default KeplerLayerKeyframes;

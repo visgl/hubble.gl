@@ -4,9 +4,9 @@
 
  - [DeckAdapter](/docs/api-reference/deck-adapter)
 
-#### Scene
+#### AnimationManager
 
- - [DeckScene](/docs/api-reference/scene/deck-scene)
+ - [AnimationManager](/docs/api-reference/animations/animation-manager)
 
 
 

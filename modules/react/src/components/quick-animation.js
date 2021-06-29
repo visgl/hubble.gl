@@ -1,18 +1,14 @@
 import React, {useState, useRef, useMemo} from 'react';
 import DeckGL from '@deck.gl/react';
-import {DeckScene, DeckAdapter} from '@hubble.gl/core';
 import ResolutionGuide from './resolution-guide';
 import BasicControls from './basic-controls';
-import {useNextFrame} from '../hooks';
+import {useDeckAdapter, useNextFrame} from '../hooks';
 
 export const QuickAnimation = ({
-  getCameraKeyframes = undefined,
-  getLayerKeyframes,
-  getLayers,
   initialViewState,
+  animation,
   timecode,
-  width = 640,
-  height = 480,
+  dimension = {width: 640, height: 480},
   formatConfigs = {},
   deckProps = {}
 }) => {
@@ -20,12 +16,9 @@ export const QuickAnimation = ({
   const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
   const [busy, setBusy] = useState(false);
   const onNextFrame = useNextFrame();
-
-  const [viewState, setViewState] = useState(initialViewState);
-
-  const adapter = useMemo(
-    () => new DeckAdapter({scene: new DeckScene({layerKeyframes: getLayerKeyframes()})}),
-    []
+  const {adapter, layers, cameraFrame, setCameraFrame} = useDeckAdapter(
+    animation,
+    initialViewState
   );
 
   const mergedFormatConfigs = {
@@ -37,8 +30,8 @@ export const QuickAnimation = ({
     },
     gif: {
       sampleInterval: 1,
-      width,
-      height
+      width: dimension.width,
+      height: dimension.height
     },
     ...formatConfigs
   };
@@ -56,14 +49,15 @@ export const QuickAnimation = ({
       </div>
       <DeckGL
         ref={deckRef}
-        viewState={viewState}
+        viewState={cameraFrame}
         onViewStateChange={({viewState: vs}) => {
-          setViewState(vs);
+          setCameraFrame(vs);
         }}
         controller={true}
-        width={width}
-        height={height}
-        {...adapter.getProps({deck, onNextFrame, getLayers, extraProps: deckProps})}
+        width={dimension.width}
+        height={dimension.height}
+        layers={layers}
+        {...adapter.getProps({deck, onNextFrame, extraProps: deckProps})}
       />
       <div style={{position: 'absolute'}}>
         <BasicControls
@@ -72,8 +66,6 @@ export const QuickAnimation = ({
           setBusy={setBusy}
           formatConfigs={mergedFormatConfigs}
           timecode={mergedTimecode}
-          getCameraKeyframes={getCameraKeyframes && (() => getCameraKeyframes(viewState))}
-          getLayerKeyframes={getLayerKeyframes}
         />
       </div>
     </div>

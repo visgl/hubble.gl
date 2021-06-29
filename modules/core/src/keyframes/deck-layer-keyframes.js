@@ -17,5 +17,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-export {default as DeckScene} from './deck-scene';
-export {default as KeplerScene} from './kepler-scene';
+import Keyframes from './keyframes';
+
+function getFeatures(keyframes) {
+  return keyframes && keyframes[0] ? Object.keys(keyframes[0]) : [];
+}
+
+export default class DeckLayerKeyframes extends Keyframes {
+  id;
+  constructor({id, features, timings, keyframes, easings}) {
+    super({timings, keyframes, easings, features: features || getFeatures(keyframes)});
+    this.id = id;
+  }
+}
