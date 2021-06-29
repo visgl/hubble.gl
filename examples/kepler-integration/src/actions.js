@@ -33,6 +33,7 @@ export const LOAD_REMOTE_RESOURCE_SUCCESS = 'LOAD_REMOTE_RESOURCE_SUCCESS';
 export const LOAD_REMOTE_RESOURCE_ERROR = 'LOAD_REMOTE_RESOURCE_ERROR';
 export const LOAD_MAP_SAMPLE_FILE = 'LOAD_MAP_SAMPLE_FILE';
 export const SET_SAMPLE_LOADING_STATUS = 'SET_SAMPLE_LOADING_STATUS';
+export const VIDEO_MODAL_MODE = 'VIDEO_MODAL_MODE';
 
 // ACTIONS
 export function initApp() {
@@ -69,6 +70,13 @@ export function setLoadingMapStatus(isMapLoading) {
   return {
     type: SET_SAMPLE_LOADING_STATUS,
     isMapLoading
+  };
+}
+
+export function toggleHubbleExportModal(isVideoModalOpen) {
+  return {
+    type: VIDEO_MODAL_MODE,
+    isVideoModalOpen
   };
 }
 

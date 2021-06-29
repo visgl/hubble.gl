@@ -20,7 +20,7 @@
 
 import React, {Component} from 'react';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
-import styled, {ThemeProvider} from 'styled-components';
+import styled, {createGlobalStyle, ThemeProvider} from 'styled-components';
 import window from 'global/window';
 import {connect} from 'react-redux';
 import {IntlProvider} from 'react-intl';
@@ -29,6 +29,7 @@ import {theme} from 'kepler.gl/styles';
 import {replaceLoadDataModal} from './factories/load-data-modal';
 import {replaceMapControl} from './factories/map-control';
 import {replacePanelHeader} from './factories/panel-header';
+import {replaceSaveExportDropdown} from './factories/export-modal';
 import {AUTH_TOKENS} from './constants/default-settings';
 import {loadSampleConfigurations} from './actions';
 
@@ -45,18 +46,16 @@ import {processCsvData, processGeojson} from 'kepler.gl/processors';
 const KeplerGl = require('kepler.gl/components').injectComponents([
   replaceLoadDataModal(),
   replaceMapControl(),
-  replacePanelHeader()
+  replacePanelHeader(),
+  replaceSaveExportDropdown()
 ]);
 
 const keplerGlGetState = state => state.demo.keplerGl;
 
-const GlobalStyle = styled.div`
-  font-family: ff-clan-web-pro, 'Helvetica Neue', Helvetica, sans-serif;
-  font-weight: 400;
-  font-size: 0.875em;
-  line-height: 1.71429;
-  width: 100%;
-  height: 100%;
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+  }
 
   *,
   *:before,
@@ -101,11 +100,16 @@ const WindowSize = styled.div`
   top: 0;
   height: 100%;
   width: 100%;
+  font-family: ff-clan-web-pro, 'Helvetica Neue', Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 0.875em;
+  line-height: 1.71429;
 `;
 
 // Custom localizations needed for export video modal
 messages.en['exportVideoModal.edit'] = 'Edit';
 messages.en['exportVideoModal.export'] = 'Export';
+messages.en['toolbar.exportVideoModal'] = 'Export Video';
 
 class App extends Component {
   state = {
@@ -183,36 +187,26 @@ class App extends Component {
     return (
       <IntlProvider locale="en" messages={messages.en}>
         <ThemeProvider theme={theme}>
-          <GlobalStyle
-            // this is to apply the same modal style as kepler.gl core
-            // because styled-components doesn't always return a node
-            // https://github.com/styled-components/styled-components/issues/617
-            ref={node => {
-              if (node) {
-                this.root = node;
-              }
-            }}
-          >
-            <WindowSize>
-              <ExportVideo />
-              <div style={{transition: 'margin 1s, height 1s', flex: 1}}>
-                <AutoSizer>
-                  {({height, width}) => (
-                    <KeplerGl
-                      mapboxApiAccessToken={AUTH_TOKENS.MAPBOX_TOKEN}
-                      id="map"
-                      /*
-                       * Specify path to keplerGl state, because it is not mount at the root
-                       */
-                      getState={keplerGlGetState}
-                      width={width}
-                      height={height}
-                    />
-                  )}
-                </AutoSizer>
-              </div>
-            </WindowSize>
-          </GlobalStyle>
+          <GlobalStyle />
+          <WindowSize>
+            <ExportVideo />
+            <div style={{transition: 'margin 1s, height 1s', flex: 1}}>
+              <AutoSizer>
+                {({height, width}) => (
+                  <KeplerGl
+                    mapboxApiAccessToken={AUTH_TOKENS.MAPBOX_TOKEN}
+                    id="map"
+                    /*
+                     * Specify path to keplerGl state, because it is not mount at the root
+                     */
+                    getState={keplerGlGetState}
+                    width={width}
+                    height={height}
+                  />
+                )}
+              </AutoSizer>
+            </div>
+          </WindowSize>
         </ThemeProvider>
       </IntlProvider>
     );

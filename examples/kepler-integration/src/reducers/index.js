@@ -31,7 +31,8 @@ import {
   LOAD_MAP_SAMPLE_FILE,
   LOAD_REMOTE_RESOURCE_SUCCESS,
   LOAD_REMOTE_RESOURCE_ERROR,
-  SET_SAMPLE_LOADING_STATUS
+  SET_SAMPLE_LOADING_STATUS,
+  VIDEO_MODAL_MODE
 } from '../actions';
 
 import {AUTH_TOKENS, DEFAULT_FEATURE_FLAGS} from '../constants/default-settings';
@@ -43,7 +44,8 @@ const initialAppState = {
   sampleMaps: [], // this is used to store sample maps fetch from a remote json file
   isMapLoading: false, // determine whether we are loading a sample map,
   error: null, // contains error when loading/retrieving data/configuration
-  featureFlags: DEFAULT_FEATURE_FLAGS
+  featureFlags: DEFAULT_FEATURE_FLAGS,
+  isVideoModalOpen: true
 };
 
 // App reducer
@@ -60,6 +62,11 @@ export const appReducer = handleActions(
     [SET_SAMPLE_LOADING_STATUS]: (state, action) => ({
       ...state,
       isMapLoading: action.isMapLoading
+    }),
+    [VIDEO_MODAL_MODE]: (state, action) => ({
+      // TODO Think of better name
+      ...state,
+      isVideoModalOpen: action.isVideoModalOpen
     })
   },
   initialAppState

@@ -23,6 +23,9 @@ import {connect} from 'react-redux';
 import styled, {withTheme} from 'styled-components';
 
 import {InjectKeplerUI, ExportVideoModal, ExportVideoPanelContainer} from '@hubble.gl/react';
+// Redux stores/actions
+import {toggleHubbleExportModal} from '../actions';
+import {setFilter, setLayerAnimationTime, updateMap} from 'kepler.gl/actions';
 
 // Hook up mutual kepler imports
 import {
@@ -35,7 +38,6 @@ import {
   ModalTabsFactory
 } from 'kepler.gl/components';
 
-import {setFilter, setLayerAnimationTime, updateMap} from 'kepler.gl/actions';
 const IconButton = styled(Button)`
   padding: 0;
   svg {
@@ -55,10 +57,11 @@ const KEPLER_UI = {
 };
 
 const mapStateToProps = state => {
-  return {mapData: state.demo.keplerGl.map};
+  return {mapData: state.demo.keplerGl.map, isVideoModalOpen: state.demo.app.isVideoModalOpen};
 };
 
 const mapDispatchToProps = {
+  toggleHubbleExportModal,
   onFilterFrameUpdate: setFilter,
   onTripFrameUpdate: setLayerAnimationTime,
   onCameraFrameUpdate: updateMap
@@ -67,23 +70,16 @@ const mapDispatchToProps = {
 class ExportVideo extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      isOpen: false
-    };
     this.handleClose = this.handleClose.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
   }
 
-  // NOTE: This commented out code is here to connect to Redux store in future
-  // handleClose() {this.props.toggleHubbleExportModal(false)} // X button in ExportVideoModal was clicked
-  // handleOpen() {this.props.toggleHubbleExportModal(true)} // Export button in Kepler UI was clicked
   handleClose() {
-    this.setState({isOpen: false});
-  } // X button in ExportVideoModal was clicked
+    this.props.toggleHubbleExportModal(false);
+  }
   handleOpen() {
-    this.setState({isOpen: true});
-  } // Export button in Kepler UI was clicked
+    this.props.toggleHubbleExportModal(true);
+  }
 
   render() {
     const {
@@ -91,12 +87,13 @@ class ExportVideo extends Component {
       theme,
       onFilterFrameUpdate,
       onTripFrameUpdate,
-      onCameraFrameUpdate
+      onCameraFrameUpdate,
+      isVideoModalOpen
     } = this.props;
     return (
       <InjectKeplerUI keplerUI={KEPLER_UI}>
         <div>
-          <ExportVideoModal isOpen={this.state.isOpen} theme={theme}>
+          <ExportVideoModal isOpen={isVideoModalOpen} theme={theme}>
             <ExportVideoPanelContainer
               handleClose={this.handleClose}
               mapData={mapData}
@@ -105,14 +102,9 @@ class ExportVideo extends Component {
               onCameraFrameUpdate={onCameraFrameUpdate}
               deckProps={{}}
               staticMapProps={{}}
+              exportVideoWidth={720}
             />
           </ExportVideoModal>
-          <h1>
-            Use this button to export an animation using Hubble
-            <button style={{marginLeft: '10px'}} onClick={this.handleOpen}>
-              Export
-            </button>
-          </h1>
         </div>
       </InjectKeplerUI>
     );
