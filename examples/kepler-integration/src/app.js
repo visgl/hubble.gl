@@ -20,7 +20,7 @@
 
 import React, {Component} from 'react';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
-import styled, {ThemeProvider} from 'styled-components';
+import styled, {createGlobalStyle, ThemeProvider} from 'styled-components';
 import window from 'global/window';
 import {connect} from 'react-redux';
 import {IntlProvider} from 'react-intl';
@@ -52,13 +52,10 @@ const KeplerGl = require('kepler.gl/components').injectComponents([
 
 const keplerGlGetState = state => state.demo.keplerGl;
 
-const GlobalStyle = styled.div`
-  font-family: ff-clan-web-pro, 'Helvetica Neue', Helvetica, sans-serif;
-  font-weight: 400;
-  font-size: 0.875em;
-  line-height: 1.71429;
-  width: 100%;
-  height: 100%;
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+  }
 
   *,
   *:before,
@@ -103,6 +100,10 @@ const WindowSize = styled.div`
   top: 0;
   height: 100%;
   width: 100%;
+  font-family: ff-clan-web-pro, 'Helvetica Neue', Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 0.875em;
+  line-height: 1.71429;
 `;
 
 // Custom localizations needed for export video modal
@@ -186,36 +187,26 @@ class App extends Component {
     return (
       <IntlProvider locale="en" messages={messages.en}>
         <ThemeProvider theme={theme}>
-          <GlobalStyle
-            // this is to apply the same modal style as kepler.gl core
-            // because styled-components doesn't always return a node
-            // https://github.com/styled-components/styled-components/issues/617
-            ref={node => {
-              if (node) {
-                this.root = node;
-              }
-            }}
-          >
-            <WindowSize>
-              <ExportVideo />
-              <div style={{transition: 'margin 1s, height 1s', flex: 1}}>
-                <AutoSizer>
-                  {({height, width}) => (
-                    <KeplerGl
-                      mapboxApiAccessToken={AUTH_TOKENS.MAPBOX_TOKEN}
-                      id="map"
-                      /*
-                       * Specify path to keplerGl state, because it is not mount at the root
-                       */
-                      getState={keplerGlGetState}
-                      width={width}
-                      height={height}
-                    />
-                  )}
-                </AutoSizer>
-              </div>
-            </WindowSize>
-          </GlobalStyle>
+          <GlobalStyle />
+          <WindowSize>
+            <ExportVideo />
+            <div style={{transition: 'margin 1s, height 1s', flex: 1}}>
+              <AutoSizer>
+                {({height, width}) => (
+                  <KeplerGl
+                    mapboxApiAccessToken={AUTH_TOKENS.MAPBOX_TOKEN}
+                    id="map"
+                    /*
+                     * Specify path to keplerGl state, because it is not mount at the root
+                     */
+                    getState={keplerGlGetState}
+                    width={width}
+                    height={height}
+                  />
+                )}
+              </AutoSizer>
+            </div>
+          </WindowSize>
         </ThemeProvider>
       </IntlProvider>
     );

@@ -45,7 +45,7 @@ const initialAppState = {
   isMapLoading: false, // determine whether we are loading a sample map,
   error: null, // contains error when loading/retrieving data/configuration
   featureFlags: DEFAULT_FEATURE_FLAGS,
-  isVideoModalOpen: false
+  isVideoModalOpen: true
 };
 
 // App reducer
