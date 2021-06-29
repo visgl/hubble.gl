@@ -35,10 +35,7 @@ import {
   ModalTabsFactory
 } from 'kepler.gl/components';
 
-// Redux stores/actions
-// import {connect as keplerGlConnect} from 'kepler.gl';
-import toggleHubbleExportModal from 'kepler.gl'; // TODO make custom action
-
+import {setFilter, setLayerAnimationTime, updateMap} from 'kepler.gl/actions';
 const IconButton = styled(Button)`
   padding: 0;
   svg {
@@ -61,27 +58,10 @@ const mapStateToProps = state => {
   return {mapData: state.demo.keplerGl.map};
 };
 
-// NOTE: This commented out code is here to connect to Redux store in future
-// function mapStateToProps(state = {}, props) {
-//     return { // TODO unsure if other redux stores are needed atm
-//       ...props,
-//       visState: state.visState,
-//       mapStyle: state.mapStyle,
-//       mapState: state.mapState,
-//       uiState: state.uiState,
-//       providerState: state.providerState,
-//     };
-// }
-
-// NOTE: This commented out code is here to connect to Redux store in future
-// noResultDispatch returns nothing in this case. Undefined if console.log
-// because we're using Kepler's connect (wrapper of Redux connect) it has 3 arguments (2 are dispatches)
-// the code can be found from ../connect/keplergl-connect
-// const mapDispatchToProps = () => (noResultDispatch, ownProps, dispatch) => {
-const mapDispatchToProps = () => (dispatch, props) => {
-  return {
-    toggleHubbleExportModal: isOpen => dispatch(toggleHubbleExportModal(isOpen)) // NOTE gives dispatch error
-  };
+const mapDispatchToProps = {
+  onFilterFrameUpdate: setFilter,
+  onTripFrameUpdate: setLayerAnimationTime,
+  onCameraFrameUpdate: updateMap
 };
 
 class ExportVideo extends Component {
@@ -106,13 +86,23 @@ class ExportVideo extends Component {
   } // Export button in Kepler UI was clicked
 
   render() {
+    const {
+      mapData,
+      theme,
+      onFilterFrameUpdate,
+      onTripFrameUpdate,
+      onCameraFrameUpdate
+    } = this.props;
     return (
       <InjectKeplerUI keplerUI={KEPLER_UI}>
         <div>
-          <ExportVideoModal isOpen={this.state.isOpen} theme={this.props.theme}>
+          <ExportVideoModal isOpen={this.state.isOpen} theme={theme}>
             <ExportVideoPanelContainer
               handleClose={this.handleClose}
-              mapData={this.props.mapData}
+              mapData={mapData}
+              onFilterFrameUpdate={onFilterFrameUpdate}
+              onTripFrameUpdate={onTripFrameUpdate}
+              onCameraFrameUpdate={onCameraFrameUpdate}
               deckProps={{}}
               staticMapProps={{}}
             />
@@ -123,7 +113,6 @@ class ExportVideo extends Component {
               Export
             </button>
           </h1>
-          {/* anonymous function to bind state onclick  */}
         </div>
       </InjectKeplerUI>
     );
@@ -131,6 +120,3 @@ class ExportVideo extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(ExportVideo));
-// NOTE: This commented out code is here to connect to Redux store in future
-// keplerGlConnect is a wrapper of Redux's standard connect w/ access to Kepler's Redux store
-// export default keplerGlConnect(mapStateToProps, mapDispatchToProps); // Object(...) is not a function
