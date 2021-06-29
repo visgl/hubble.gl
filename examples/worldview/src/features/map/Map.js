@@ -88,7 +88,8 @@ export class Map extends Component {
   _onMapLoad() {
     const {
       adapter,
-      deckProps: {layers}
+      deckProps: {layers},
+      updateTimeCursor
     } = this.props;
     // Adds mapbox layer to modal
     const map = this.mapRef.current.getMap();
@@ -106,7 +107,11 @@ export class Map extends Component {
       map.addLayer(new MapboxLayer({id: layers[i].id, deck}));
     }
 
-    map.on('render', () => adapter.onAfterRender(() => {}));
+    map.on('render', () =>
+      adapter.onAfterRender(timeMs => {
+        updateTimeCursor(timeMs);
+      })
+    );
   }
 
   render() {
