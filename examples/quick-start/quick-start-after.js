@@ -59,14 +59,17 @@ export default function App() {
       })
     ];
   };
+const DIMENSION = {
+  width: 640,
+  height: 480
+};
 
   return (
     <QuickAnimation
       initialViewState={INITIAL_VIEW_STATE}
-      width={640}
-      height={480}
       getLayers={getLayers}
       getLayerKeyframes={getLayerKeyframes}
+      dimension={DIMENSION}
       deckProps={{
         parameters: {
           clearColor: [255, 255, 255, 1]
