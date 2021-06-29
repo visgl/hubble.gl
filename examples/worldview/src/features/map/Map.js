@@ -44,7 +44,7 @@ export class Map extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (!isEqual(prevProps.resolution, this.props.resolution)) {
+    if (!isEqual(prevProps.dimension, this.props.dimension)) {
       this._resizeVideo();
     }
   }
