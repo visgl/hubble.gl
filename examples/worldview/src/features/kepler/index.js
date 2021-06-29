@@ -1,2 +1,8 @@
-export {useKepler, useKeplerDeckLayers, useKeplerKeyframes, useKeplerFrame} from './hooks';
-export {createSelectMapStyle, createSelectKeplerLayers} from './keplerSlice';
+export {useKepler, useKeplerDeckLayers} from './hooks';
+export {
+  createSelectMapStyle,
+  createSelectKeplerLayers,
+  createSelectKeplerFilters,
+  createSelectKeplerAnimationConfig
+} from './keplerSlice';
+export {loadKeplerJson} from './loadJson';

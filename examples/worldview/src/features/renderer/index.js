@@ -1,7 +1,6 @@
 export {rendererMiddleware} from './rendererMiddleware';
 
 export {
-  setupRenderer,
   previewVideo,
   renderVideo,
   signalRendering,

@@ -1,5 +1,5 @@
 import {PathLayer, ScatterplotLayer, TextLayer, PolygonLayer} from '@deck.gl/layers';
-import {LayerKeyframes} from '@hubble.gl/core';
+import {DeckAnimation} from '@hubble.gl/core';
 import {easing} from 'popmotion';
 
 const pathData =
@@ -9,9 +9,9 @@ const stationData =
 const zipCodeData =
   'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/sf-zipcodes.json';
 
-export function getLayers(scene) {
-  const stationFrame = scene.layerKeyframes.station.getFrame();
-  const textFrame = scene.layerKeyframes.text.getFrame();
+function getLayers(animation) {
+  const stationFrame = animation.layerKeyframes['scatterplot-layer'].getFrame();
+  const textFrame = animation.layerKeyframes['text-layer'].getFrame();
   return [
     new PolygonLayer({
       id: 'polygon-layer',
@@ -81,17 +81,18 @@ export function getLayers(scene) {
   ];
 }
 
-export const getLayerKeyframes = () => {
-  return {
-    station: new LayerKeyframes({
-      layerId: 'scatterplot-layer',
+export const animation = new DeckAnimation({
+  getLayers,
+  layerKeyframes: [
+    {
+      id: 'scatterplot-layer',
       features: ['radiusScale'],
       keyframes: [{radiusScale: 0}, {radiusScale: 6}],
       timings: [0, 2000],
       easings: [easing.anticipate]
-    }),
-    text: new LayerKeyframes({
-      layerId: 'text-layer',
+    },
+    {
+      id: 'text-layer',
       features: ['opacity', 'pixelOffsetX'],
       keyframes: [
         {opacity: 0, pixelOffsetX: 200},
@@ -99,6 +100,6 @@ export const getLayerKeyframes = () => {
       ],
       timings: [500, 2000],
       easings: [easing.easeOut]
-    })
-  };
-};
+    }
+  ]
+});

@@ -21,8 +21,6 @@
 export {
   // Adapter
   DeckAdapter,
-  // Scene
-  DeckScene,
   // Encoders
   PNGSequenceEncoder,
   JPEGSequenceEncoder,
@@ -42,9 +40,16 @@ export {
   hold,
   linear,
   // Animations
+  AnimationManager,
   Animation,
   DeckAnimation,
   KeplerAnimation
 } from '@hubble.gl/core';
 
-export {useNextFrame, BasicControls, EncoderDropdown, QuickAnimation} from '@hubble.gl/react';
+export {
+  useNextFrame,
+  useDeckAdapter,
+  BasicControls,
+  EncoderDropdown,
+  QuickAnimation
+} from '@hubble.gl/react';

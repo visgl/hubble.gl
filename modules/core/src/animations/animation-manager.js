@@ -17,23 +17,37 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-export default class KeplerScene {
-  /** @param {import('types').KeplerSceneParams} params */
-  constructor({timeline, keyframes, filters, getFrame, lengthMs, width, height}) {
-    this.timeline = timeline;
-    this.keyframes = keyframes;
-    this._getFrame = getFrame;
-    this.filters = filters;
-    this.getFrame = this.getFrame.bind(this);
-    this.lengthMs = lengthMs;
-    this.width = width;
-    this.height = height;
-  }
+import {Timeline} from '@luma.gl/engine';
+
+export default class AnimationManager {
+  timeline;
+  animations = {};
 
   /**
-   * @param {any} keplerGl
+   * @param {Object} params
+   * @param {any} params.timeline
+   * @param {any[]} params.animations
    */
-  getFrame(keplerGl) {
-    return this._getFrame(keplerGl, this.keyframes, this.filters);
+  constructor({timeline = undefined, animations = []}) {
+    this.timeline = timeline || new Timeline();
+    for (const animation of animations) {
+      this.attachAnimation(animation);
+    }
+  }
+
+  attachAnimation(animation) {
+    animation.attachKeyframes(this.timeline);
+    this.animations[animation.id] = animation;
+  }
+
+  setKeyframes(animationId, params) {
+    this.animations[animationId].setKeyframes({
+      timeline: this.timeline,
+      ...params
+    });
+  }
+
+  draw() {
+    Object.values(this.animations).forEach(animation => animation.draw());
   }
 }

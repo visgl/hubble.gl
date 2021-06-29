@@ -8,9 +8,9 @@ new DeckAdapter({scene, glContext});
 
 ## Parameters
 
-##### `scene` (`DeckScene`, Optional)
+##### `scene` (`AnimationManager`, Optional)
 
-See [DeckScene](/docs/api-reference/scene/deck-scene) for more information.
+See [AnimationManager](/docs/api-reference/animations/animation-manager) for more information.
 
 ##### `glContext` (`WebGlContext`, Optional)
 
@@ -25,8 +25,6 @@ Parameters:
 * `deck` (`Deck`) - `deck` object from deck.gl.
 
 * `onNextFrame` (`(nextTimeMs: number) => void`, Optional) - Callback indicating the next frame in a rendering should be displayed.
-
-* `getLayers` (`(scene: DeckScene) => any[]`, Optional) - Callback to construct deck.gl layers provided the scene. If set, `deck.layers` will be set to the layers returned by this function.
 
 * `extraProps` (`DeckGlProps`, Optional) - Apply extra props to deckgl. Note: Hubble will override props as needed.
 

@@ -20,14 +20,14 @@
 /* eslint-disable no-console */
 import {PreviewEncoder} from '../encoders';
 // eslint-disable-next-line no-unused-vars
-import {DeckScene} from '../scene';
+import {AnimationManager} from '../animations';
 import {VideoCapture} from '../capture/video-capture';
 
 export default class DeckAdapter {
   /** @type {any} */
   deck;
-  /** @type {DeckScene} */
-  scene;
+  /** @type {AnimationManager} */
+  animationManager;
   /** @type {boolean} */
   shouldAnimate;
   /** @type {boolean} */
@@ -37,11 +37,11 @@ export default class DeckAdapter {
 
   /**
    * @param {Object} params
-   * @param {DeckScene} params.scene
+   * @param {AnimationManager} params.animationManager
    * @param {WebGL2RenderingContext} params.glContext
    */
-  constructor({scene = undefined, glContext = undefined}) {
-    this.scene = scene || new DeckScene({});
+  constructor({animationManager = undefined, glContext = undefined}) {
+    this.animationManager = animationManager || new AnimationManager({});
     this.glContext = glContext;
     this.videoCapture = new VideoCapture();
     this.shouldAnimate = true;
@@ -56,10 +56,9 @@ export default class DeckAdapter {
    * @param {Object} params
    * @param {any} params.deck
    * @param {(nextTimeMs: number) => void} params.onNextFrame
-   * @param {(scene: DeckScene) => any[]} params.getLayers
    * @param {Object} params.extraProps
    */
-  getProps({deck, onNextFrame = undefined, getLayers = undefined, extraProps = undefined}) {
+  getProps({deck, onNextFrame = undefined, extraProps = undefined}) {
     this.deck = deck;
     const props = {
       _animate: this.shouldAnimate
@@ -69,16 +68,8 @@ export default class DeckAdapter {
       props.onAfterRender = () => this.onAfterRender(onNextFrame);
     }
 
-    // Animating the camera is optional, but if a keyframe is defined then viewState is controlled by camera keyframe.
-    if (this.scene.cameraKeyframes && this.enabled) {
+    if (this.enabled) {
       props.controller = false;
-      props.viewState = this.scene.getCameraFrame();
-    }
-
-    // Construct layers using callback.
-    // TODO: Could potentially concat instead of replace, but layers are supposed to be static.
-    if (getLayers) {
-      props.layers = getLayers(this.scene);
     }
 
     if (this.glContext) {
@@ -89,8 +80,6 @@ export default class DeckAdapter {
 
   /**
    * @param {Object} params
-   * @param {() => import('../keyframes').CameraKeyframes} params.getCameraKeyframes
-   * @param {() => Object<string, import('../keyframes').Keyframes>} params.getLayerKeyframes
    * @param {typeof import('../encoders').FrameEncoder} params.Encoder
    * @param {Partial<import('types').FormatConfigs>} params.formatConfigs
    * @param {() => void} params.onStop
@@ -98,21 +87,12 @@ export default class DeckAdapter {
    * @param {{start: number, end: number, framerate: number}} params.timecode
    */
   render({
-    getCameraKeyframes = undefined,
-    getLayerKeyframes = undefined,
     Encoder = PreviewEncoder,
     formatConfigs = {},
     onStop = undefined,
     filename = undefined,
     timecode = {start: 0, end: 0, framerate: 30}
   }) {
-    if (getCameraKeyframes) {
-      this.scene.setCameraKeyframes(getCameraKeyframes());
-    }
-    if (getLayerKeyframes) {
-      this.scene.setLayerKeyframes(getLayerKeyframes());
-    }
-
     const innerOnStop = () => {
       this.enabled = false;
       if (onStop) {
@@ -121,8 +101,8 @@ export default class DeckAdapter {
     };
     this.shouldAnimate = true;
     this.videoCapture.render(Encoder, formatConfigs, timecode, filename, innerOnStop);
-    this.scene.timeline.setTime(timecode.start);
     this.enabled = true;
+    this.seek({timeMs: timecode.start});
   }
 
   /**
@@ -137,17 +117,10 @@ export default class DeckAdapter {
   /**
    * @param {Object} params
    * @param {number} params.timeMs
-   * @param {() => import('../keyframes').CameraKeyframes} params.getCameraKeyframes
-   * @param {() => Object<string, import('../keyframes').Keyframes>} params.getLayerKeyframes
    */
-  seek({timeMs, getCameraKeyframes = undefined, getLayerKeyframes = undefined}) {
-    if (getCameraKeyframes) {
-      this.scene.setCameraKeyframes(getCameraKeyframes());
-    }
-    if (getLayerKeyframes) {
-      this.scene.setLayerKeyframes(getLayerKeyframes());
-    }
-    this.scene.timeline.setTime(timeMs);
+  seek({timeMs}) {
+    this.animationManager.timeline.setTime(timeMs);
+    this.animationManager.draw();
   }
 
   /**
@@ -156,7 +129,7 @@ export default class DeckAdapter {
   onAfterRender(proceedToNextFrame) {
     if (this.videoCapture.isRecording()) {
       this.videoCapture.capture(this.deck.canvas, nextTimeMs => {
-        this.scene.timeline.setTime(nextTimeMs);
+        this.seek({timeMs: nextTimeMs});
         proceedToNextFrame(nextTimeMs);
       });
     }

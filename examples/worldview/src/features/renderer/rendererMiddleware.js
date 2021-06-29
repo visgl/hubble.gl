@@ -8,13 +8,13 @@ import {
 } from '@hubble.gl/core';
 
 import {
-  setupRenderer,
   previewVideo,
   renderVideo,
   signalRendering,
   signalPreviewing,
   stopVideo,
   seekTime,
+  attachAnimation,
   busySelector,
   timecodeSelector,
   filenameSelector,
@@ -34,17 +34,8 @@ const encoderSelector = state => ENCODERS[formatSelector(state)] || ENCODERS.web
 
 export const rendererMiddleware = store => next => action => {
   switch (action.type) {
-    case setupRenderer.type: {
-      if (busySelector(store.getState())) {
-        const adapter = adapterSelector(store.getState());
-        adapter.stop(() => {
-          store.dispatch(signalRendering(false)); // equivalent to signalPreviewing(false)
-        });
-      }
-      break;
-    }
     case previewVideo.type: {
-      const {getCameraKeyframes, getLayerKeyframes, onStop} = action.payload;
+      const {onStop} = action.payload;
       const state = store.getState();
       store.dispatch(signalPreviewing(true));
       const innerOnStop = () => {
@@ -53,18 +44,16 @@ export const rendererMiddleware = store => next => action => {
       };
       const adapter = adapterSelector(state);
       adapter.render({
-        getCameraKeyframes,
         Encoder: PreviewEncoder,
         formatConfigs: formatConfigsSelector(state),
         timecode: timecodeSelector(state),
         filename: filenameSelector(state),
-        onStop: innerOnStop,
-        getLayerKeyframes
+        onStop: innerOnStop
       });
       break;
     }
     case renderVideo.type: {
-      const {getCameraKeyframes, getLayerKeyframes, onStop} = action.payload;
+      const {onStop} = action.payload;
       const state = store.getState();
       const Encoder = encoderSelector(state);
 
@@ -76,13 +65,11 @@ export const rendererMiddleware = store => next => action => {
       };
       const adapter = adapterSelector(state);
       adapter.render({
-        getCameraKeyframes,
         Encoder,
         formatConfigs: formatConfigsSelector(state),
         timecode: timecodeSelector(state),
         filename: filenameSelector(state),
-        onStop: innerOnStop,
-        getLayerKeyframes
+        onStop: innerOnStop
       });
 
       break;
@@ -102,6 +89,14 @@ export const rendererMiddleware = store => next => action => {
       if (!busySelector(state)) {
         const adapter = adapterSelector(state);
         adapter.seek(action.payload);
+      }
+      break;
+    }
+    case attachAnimation.type: {
+      const state = store.getState();
+      if (!busySelector(state)) {
+        const adapter = adapterSelector(state);
+        adapter.animationManager.attachAnimation(action.payload);
       }
       break;
     }

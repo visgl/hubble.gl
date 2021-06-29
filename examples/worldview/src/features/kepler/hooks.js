@@ -4,34 +4,67 @@ import {
   setFilter,
   layerVisConfigChange,
   setLayerAnimationTime
+  // updateMap
 } from 'kepler.gl/actions';
-import {FilterValueKeyframes, Keyframes} from '@hubble.gl/core';
 import {useDispatch, useSelector} from 'react-redux';
 import {createSelector} from 'reselect';
 
-import {
-  filterKeyframeSelector,
-  layerKeyframeSelector,
-  frameLayerSelector,
-  tripLayerKeyframeSelector
-} from '../timeline/timelineSlice';
 import {AUTH_TOKENS} from '../../constants';
 import {updateViewState} from '../map';
-import {createSelectKeplerMap} from './keplerSlice';
+import {
+  createSelectKeplerAnimationConfig,
+  createSelectKeplerFilters,
+  createSelectKeplerLayers,
+  createSelectKeplerMap
+} from './keplerSlice';
+import {attachAnimation} from '../renderer/rendererSlice';
+import {KeplerAnimation} from '@hubble.gl/core';
 
-export const useKepler = mapId => {
+export const useKepler = ({mapId, fetchMap, filterKeyframes, layerKeyframes, tripKeyframe}) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(
-      registerEntry({
-        id: mapId,
-        mint: true,
-        mapboxApiAccessToken: AUTH_TOKENS.MAPBOX_TOKEN
-        // mapboxApiUrl,
-        // mapStylesReplaceDefault,
-        // initialUiState
-      })
-    );
+    dispatch((_, getState) => {
+      dispatch(
+        registerEntry({
+          id: mapId,
+          mint: true,
+          mapboxApiAccessToken: AUTH_TOKENS.MAPBOX_TOKEN
+          // mapboxApiUrl,
+          // mapStylesReplaceDefault,
+          // initialUiState
+        })
+      );
+
+      const setupAnimation = () => {
+        const selectKeplerLayers = createSelectKeplerLayers(mapId);
+        const selectKeplerFilters = createSelectKeplerFilters(mapId);
+        const selectKeplerAnimationConfig = createSelectKeplerAnimationConfig(mapId);
+        const state = getState();
+        const layers = selectKeplerLayers(state);
+        const filters = selectKeplerFilters(state);
+        const animationConfig = selectKeplerAnimationConfig(state);
+
+        const animation = new KeplerAnimation({
+          mapId,
+          layers,
+          layerKeyframes,
+          filters,
+          filterKeyframes,
+          animationConfig,
+          tripKeyframe,
+          onTripFrameUpdate: time => dispatch(setLayerAnimationTime(time)),
+          onFilterFrameUpdate: (idx, prop, value) => dispatch(setFilter(idx, prop, value)),
+          onLayerFrameUpdate: (layer, visConfig) =>
+            dispatch(layerVisConfigChange(layer, visConfig)),
+          // onCameraFrameUpdate: cameraFrame => dispatch(updateMap(cameraFrame))
+          onCameraFrameUpdate: cameraFrame => dispatch(updateViewState(cameraFrame))
+        });
+
+        dispatch(attachAnimation(animation));
+      };
+
+      fetchMap().then(() => setupAnimation());
+    });
   }, []);
 };
 
@@ -56,68 +89,6 @@ export const useKeplerMapState = mapId => {
       );
     }
   }, [Boolean(map)]);
-};
-
-export const useKeplerKeyframes = keplerLayers => {
-  const filterKeyframe = useSelector(filterKeyframeSelector);
-  const layerKeyframe = useSelector(layerKeyframeSelector);
-  const tripLayerKeyframe = useSelector(tripLayerKeyframeSelector);
-
-  const getKeplerKeyframes = useCallback(() => {
-    let keyframes = {};
-    if (tripLayerKeyframe) {
-      keyframes.kepler_tripLayer = new Keyframes({features: ['time'], ...tripLayerKeyframe});
-    }
-
-    if (Object.keys(layerKeyframe).length > 0) {
-      keyframes = Object.entries(layerKeyframe).reduce((acc, [key, value]) => {
-        // TODO: Use layer ID instead of label.
-        const matchedLayer = keplerLayers.find(layer => layer.config.label === value.label);
-        if (matchedLayer) {
-          const features = Object.keys(matchedLayer.config.visConfig);
-          acc[`kepler_${key}`] = new Keyframes({...value, features});
-        }
-        return acc;
-      }, keyframes);
-    }
-    // console.log(keyframes, keplerLayers);
-    if (filterKeyframe) {
-      // TODO: Support more than one filter.
-      keyframes.kepler_timeFilter = new FilterValueKeyframes(filterKeyframe);
-    }
-    return keyframes;
-  }, [filterKeyframe, layerKeyframe, tripLayerKeyframe, keplerLayers]);
-
-  return getKeplerKeyframes;
-};
-
-export const useKeplerFrame = (keplerLayers = []) => {
-  const dispatch = useDispatch();
-  const frame = useSelector(frameLayerSelector);
-
-  useEffect(() => {
-    // Filter Frame
-    if (frame.kepler_timeFilter) {
-      dispatch(
-        setFilter(0, 'value', [frame.kepler_timeFilter.left, frame.kepler_timeFilter.right])
-      );
-    }
-
-    // Vis Config Frame
-    keplerLayers.forEach(layer => {
-      // TODO: Use layer ID instead of label.
-      const keyframe = frame[`kepler_${layer.config.label}`];
-      if (keyframe) {
-        dispatch(layerVisConfigChange(layer, keyframe));
-      }
-    });
-
-    if (frame.kepler_tripLayer) {
-      dispatch(setLayerAnimationTime(frame.kepler_tripLayer.time));
-    }
-
-    // Note: Map State is kept in sync using plugin.
-  }, [frame]);
 };
 
 /**

@@ -42,6 +42,4 @@ export {
   KeplerTripKeyframes
 } from './keyframes';
 
-export {DeckScene, KeplerScene} from './scene';
-
-export {Animation, DeckAnimation, KeplerAnimation} from './animations';
+export {AnimationManager, Animation, DeckAnimation, KeplerAnimation} from './animations';

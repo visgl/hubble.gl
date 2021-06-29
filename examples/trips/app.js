@@ -5,8 +5,8 @@
 
 import React, {useState, useRef, useEffect, useCallback, useMemo} from 'react';
 import DeckGL from '@deck.gl/react';
-import {DeckAdapter, CameraKeyframes} from '@hubble.gl/core';
-import {useNextFrame, BasicControls} from '@hubble.gl/react';
+import {DeckAnimation} from '@hubble.gl/core';
+import {useNextFrame, BasicControls, useDeckAdapter} from '@hubble.gl/react';
 import {AmbientLight, PointLight, LightingEffect} from '@deck.gl/core';
 import {StaticMap} from 'react-map-gl';
 import {PolygonLayer} from '@deck.gl/layers';
@@ -93,48 +93,8 @@ const dimension = {
   height: 720
 };
 
-export default function App({
-  mapStyle = 'mapbox://styles/mapbox/dark-v9',
-  theme = DEFAULT_THEME,
-  loopLength = 1800,
-  animationSpeed = 1
-}) {
-  const [glContext, setGLContext] = useState();
-
-  const deckRef = useRef(null);
-  const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
-  const mapRef = useRef(null);
-
-  const [busy, setBusy] = useState(false);
-  const nextFrame = useNextFrame();
-
-  const [time, setTime] = useState(0);
-  const [animation] = useState({});
-  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
-
-  const [adapter] = useState(new DeckAdapter({}));
-
-  const onMapLoad = useCallback(() => {
-    if (deck) {
-      const map = mapRef.current.getMap();
-      map.addLayer(new MapboxLayer({id: 'trips', deck}));
-      map.addLayer(new MapboxLayer({id: 'buildings', deck}));
-      map.addLayer(new MapboxLayer({id: 'ground', deck}));
-      map.on('render', () => adapter.onAfterRender(nextFrame));
-    }
-  }, [Boolean(deck)]);
-
-  const animate = () => {
-    setTime(t => (t + animationSpeed) % loopLength);
-    animation.id = window.requestAnimationFrame(animate);
-  };
-
-  useEffect(() => {
-    animation.id = window.requestAnimationFrame(animate);
-    return () => window.cancelAnimationFrame(animation.id);
-  }, [animation]);
-
-  const layers = [
+const animation = new DeckAnimation({
+  layers: [
     new PolygonLayer({
       id: 'ground',
       data: landCover,
@@ -147,13 +107,11 @@ export default function App({
       data: DATA_URL.TRIPS,
       getPath: d => d.path,
       getTimestamps: d => d.timestamps,
-      getColor: d => (d.vendor === 0 ? theme.trailColor0 : theme.trailColor1),
+      getColor: d => (d.vendor === 0 ? DEFAULT_THEME.trailColor0 : DEFAULT_THEME.trailColor1),
       opacity: 1,
       widthMinPixels: 2,
       rounded: true,
       trailLength: 180,
-      currentTime: time,
-
       shadowEnabled: false
     }),
     new PolygonLayer({
@@ -164,45 +122,82 @@ export default function App({
       opacity: 0.5,
       getPolygon: f => f.polygon,
       getElevation: f => f.height,
-      getFillColor: theme.buildingColor,
-      material: theme.material
+      getFillColor: DEFAULT_THEME.buildingColor,
+      material: DEFAULT_THEME.material
     })
-  ];
-
-  const getCameraKeyframes = useCallback(() => {
-    return new CameraKeyframes({
+  ],
+  layerKeyframes: [
+    {
+      id: 'trips',
       timings: [0, timecode.end],
-      keyframes: [
-        {
-          longitude: viewState.longitude,
-          latitude: viewState.latitude,
-          zoom: viewState.zoom,
-          pitch: viewState.pitch,
-          bearing: viewState.bearing
-        },
-        {
-          longitude: viewState.longitude,
-          latitude: viewState.latitude,
-          zoom: viewState.zoom,
-          bearing: viewState.bearing + 180,
-          pitch: viewState.pitch
+      keyframes: [{currentTime: 0}, {currentTime: 1800}]
+    }
+  ]
+});
+
+export default function App({mapStyle = 'mapbox://styles/mapbox/dark-v9'}) {
+  const [glContext, setGLContext] = useState();
+
+  const deckRef = useRef(null);
+  const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
+  const mapRef = useRef(null);
+
+  const [busy, setBusy] = useState(false);
+  const nextFrame = useNextFrame();
+
+  const {adapter, layers, cameraFrame, setCameraFrame} = useDeckAdapter(
+    animation,
+    INITIAL_VIEW_STATE
+  );
+  const onViewStateChange = useCallback(
+    ({viewState: vs}) => {
+      adapter.animationManager.setKeyframes('deck', {
+        cameraKeyframe: {
+          timings: [0, timecode.end],
+          keyframes: [
+            {
+              longitude: vs.longitude,
+              latitude: vs.latitude,
+              zoom: vs.zoom,
+              pitch: vs.pitch,
+              bearing: vs.bearing
+            },
+            {
+              longitude: vs.longitude,
+              latitude: vs.latitude,
+              zoom: vs.zoom,
+              bearing: vs.bearing + 180,
+              pitch: vs.pitch
+            }
+          ],
+          easings: [easing.easeInOut]
         }
-      ],
-      easings: [easing.easeInOut]
-    });
-  }, [timecode.end, viewState]);
+      });
+      setCameraFrame(vs);
+    },
+    [timecode.end]
+  );
+  useEffect(() => onViewStateChange({viewState: cameraFrame}), []);
+
+  const onMapLoad = useCallback(() => {
+    if (deck) {
+      const map = mapRef.current.getMap();
+      map.addLayer(new MapboxLayer({id: 'trips', deck}));
+      map.addLayer(new MapboxLayer({id: 'buildings', deck}));
+      map.addLayer(new MapboxLayer({id: 'ground', deck}));
+      map.on('render', () => adapter.onAfterRender(nextFrame));
+    }
+  }, [Boolean(deck)]);
 
   return (
     <div style={{position: 'relative'}}>
       <DeckGL
         ref={deckRef}
         layers={layers}
-        effects={theme.effects}
+        effects={DEFAULT_THEME.effects}
         controller={true}
-        viewState={viewState}
-        onViewStateChange={({viewState: vs}) => {
-          setViewState(vs);
-        }}
+        viewState={cameraFrame}
+        onViewStateChange={onViewStateChange}
         onWebGLInitialized={setGLContext}
         parameters={{
           depthTest: true,
@@ -234,7 +229,6 @@ export default function App({
           setBusy={setBusy}
           formatConfigs={formatConfigs}
           timecode={timecode}
-          getCameraKeyframes={getCameraKeyframes}
         />
       </div>
     </div>
