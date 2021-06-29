@@ -31,7 +31,7 @@ import {
 } from '@hubble.gl/core';
 
 import ExportVideoPanel from './export-video-panel';
-import {parseSetCameraType} from './utils';
+import {parseSetCameraType, filterCamera} from './utils';
 import {DEFAULT_FILENAME, getResolutionSetting} from './constants';
 
 const ENCODERS = {
@@ -54,7 +54,6 @@ export class ExportVideoPanelContainer extends Component {
     this.onPreviewVideo = this.onPreviewVideo.bind(this);
     this.onRenderVideo = this.onRenderVideo.bind(this);
     this.setDuration = this.setDuration.bind(this);
-    this.setViewState = this.setViewState.bind(this);
 
     const {
       initialState,
@@ -174,8 +173,12 @@ export class ExportVideoPanelContainer extends Component {
     this.setStateAndNotify({resolution});
   }
 
-  setViewState(vs) {
-    this.setState({viewState: vs.viewState});
+  setViewState(viewState) {
+    const {onCameraFrameUpdate} = this.props;
+    if (onCameraFrameUpdate) {
+      onCameraFrameUpdate(filterCamera(viewState));
+    }
+    this.setState({viewState});
   }
 
   onPreviewVideo() {
@@ -223,7 +226,7 @@ export class ExportVideoPanelContainer extends Component {
   }
 
   render() {
-    const {exportVideoWidth, handleClose, mapData, header} = this.props;
+    const {exportVideoWidth, handleClose, mapData, header, deckProps, staticMapProps} = this.props;
     const {
       adapter,
       durationMs,
@@ -250,6 +253,8 @@ export class ExportVideoPanelContainer extends Component {
         mapData={mapData}
         viewState={viewState}
         setViewState={this.setViewState}
+        deckProps={deckProps}
+        staticMapProps={staticMapProps}
         // Settings Props
         settingsData={settingsData}
         setMediaType={this.setMediaType}

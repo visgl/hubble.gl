@@ -113,6 +113,8 @@ class ExportVideo extends Component {
             <ExportVideoPanelContainer
               handleClose={this.handleClose}
               mapData={this.props.mapData}
+              deckProps={{}}
+              staticMapProps={{}}
             />
           </ExportVideoModal>
           <h1>
