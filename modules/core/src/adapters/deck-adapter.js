@@ -20,13 +20,13 @@
 /* eslint-disable no-console */
 import {PreviewEncoder} from '../encoders';
 // eslint-disable-next-line no-unused-vars
-import {DeckScene} from '../scene';
+import {AnimationManager} from '../animations';
 import {VideoCapture} from '../capture/video-capture';
 
 export default class DeckAdapter {
   /** @type {any} */
   deck;
-  /** @type {DeckScene} */
+  /** @type {AnimationManager} */
   scene;
   /** @type {boolean} */
   shouldAnimate;
@@ -37,11 +37,11 @@ export default class DeckAdapter {
 
   /**
    * @param {Object} params
-   * @param {DeckScene} params.scene
+   * @param {AnimationManager} params.scene
    * @param {WebGL2RenderingContext} params.glContext
    */
   constructor({scene = undefined, glContext = undefined}) {
-    this.scene = scene || new DeckScene({});
+    this.scene = scene || new AnimationManager({});
     this.glContext = glContext;
     this.videoCapture = new VideoCapture();
     this.shouldAnimate = true;
@@ -56,10 +56,9 @@ export default class DeckAdapter {
    * @param {Object} params
    * @param {any} params.deck
    * @param {(nextTimeMs: number) => void} params.onNextFrame
-   * @param {(scene: DeckScene) => any[]} params.getLayers
    * @param {Object} params.extraProps
    */
-  getProps({deck, onNextFrame = undefined, getLayers = undefined, extraProps = undefined}) {
+  getProps({deck, onNextFrame = undefined, extraProps = undefined}) {
     this.deck = deck;
     const props = {
       _animate: this.shouldAnimate

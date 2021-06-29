@@ -1,6 +1,5 @@
 import { Keyframes, CameraKeyframes } from "./keyframes";
 import { FrameEncoder } from "./encoders";
-import { DeckScene } from "./scene";
 
 
 type CaptureStepSuccess = {

@@ -21,8 +21,6 @@
 export {
   // Adapter
   DeckAdapter,
-  // Scene
-  DeckScene,
   // Encoders
   PNGSequenceEncoder,
   JPEGSequenceEncoder,
@@ -42,6 +40,7 @@ export {
   hold,
   linear,
   // Animations
+  AnimationManager,
   Animation,
   DeckAnimation,
   KeplerAnimation
