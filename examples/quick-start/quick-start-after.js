@@ -15,6 +15,11 @@ const TIMECODE = {
   framerate: 30
 };
 
+const DIMENSION = {
+  width: 640,
+  height: 480
+};
+
 export default function App() {
   const getLayerKeyframes = () => {
     return {
@@ -58,10 +63,6 @@ export default function App() {
         ...textFrame
       })
     ];
-  };
-  const DIMENSION = {
-    width: 640,
-    height: 480
   };
 
   return (
