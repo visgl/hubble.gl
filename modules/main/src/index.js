@@ -46,4 +46,10 @@ export {
   KeplerAnimation
 } from '@hubble.gl/core';
 
-export {useNextFrame, BasicControls, EncoderDropdown, QuickAnimation} from '@hubble.gl/react';
+export {
+  useNextFrame,
+  useDeckAdapter,
+  BasicControls,
+  EncoderDropdown,
+  QuickAnimation
+} from '@hubble.gl/react';

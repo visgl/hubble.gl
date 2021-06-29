@@ -30,4 +30,4 @@ export {
   KeplerUIContext,
   QuickAnimation
 } from './components';
-export {useNextFrame} from './hooks';
+export {useNextFrame, useDeckAdapter} from './hooks';
