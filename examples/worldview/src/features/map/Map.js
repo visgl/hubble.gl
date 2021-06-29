@@ -106,10 +106,7 @@ export class Map extends Component {
       map.addLayer(new MapboxLayer({id: layers[i].id, deck}));
     }
 
-    map.on('render', () =>
-      adapter.onAfterRender(() => {
-      })
-    );
+    map.on('render', () => adapter.onAfterRender(() => {}));
   }
 
   render() {

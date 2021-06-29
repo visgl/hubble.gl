@@ -77,7 +77,7 @@ export class ExportVideoPanelContainer extends Component {
   componentDidMount() {
     const animation = new KeplerAnimation({
       cameraKeyframe: this.getCameraKeyframes(),
-      onCameraFrameUpdate: this.setViewState,
+      onCameraFrameUpdate: this.setViewState
     });
     this.state.adapter.animationManager.attachAnimation(animation);
   }

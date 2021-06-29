@@ -1,22 +1,18 @@
 /* eslint-disable no-void */
 import {createSlice} from '@reduxjs/toolkit';
 
-const initialState = {
-};
+const initialState = {};
 
 const timelineSlice = createSlice({
   name: 'timeline',
   initialState,
-  reducers: {
-  }
+  reducers: {}
 });
 
-export const {
-} = timelineSlice.actions;
+export const {} = timelineSlice.actions;
 
 export default timelineSlice.reducer;
 
 /**
  * Selectors
  */
-
