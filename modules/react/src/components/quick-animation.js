@@ -16,7 +16,10 @@ export const QuickAnimation = ({
   const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
   const [busy, setBusy] = useState(false);
   const onNextFrame = useNextFrame();
-  const {adapter, layers, viewState, setViewState} = useDeckAdapter(animation, initialViewState);
+  const {adapter, layers, cameraFrame, setCameraFrame} = useDeckAdapter(
+    animation,
+    initialViewState
+  );
 
   const mergedFormatConfigs = {
     webm: {
@@ -46,9 +49,9 @@ export const QuickAnimation = ({
       </div>
       <DeckGL
         ref={deckRef}
-        viewState={viewState}
+        viewState={cameraFrame}
         onViewStateChange={({viewState: vs}) => {
-          setViewState(vs);
+          setCameraFrame(vs);
         }}
         controller={true}
         width={dimension.width}

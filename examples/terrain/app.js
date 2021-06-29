@@ -139,7 +139,7 @@ export default function App() {
       ];
     });
   }, [rainbow]);
-  const {adapter, layers, viewState, setViewState} = useDeckAdapter(
+  const {adapter, layers, cameraFrame, setCameraFrame} = useDeckAdapter(
     deckAnimation,
     INITIAL_VIEW_STATE
   );
@@ -151,10 +151,9 @@ export default function App() {
       </div>
       <DeckGL
         ref={deckRef}
-        initialViewState={INITIAL_VIEW_STATE}
-        viewState={viewState}
+        viewState={cameraFrame}
         onViewStateChange={({viewState: vs}) => {
-          setViewState(vs);
+          setCameraFrame(vs);
         }}
         controller={true}
         width={dimension.width}

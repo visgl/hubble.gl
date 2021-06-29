@@ -57,12 +57,15 @@ export default function App() {
   const deckRef = useRef(null);
   const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
   const [busy, setBusy] = useState(false);
-  const {adapter, layers, viewState, setViewState} = useDeckAdapter(animation, INITIAL_VIEW_STATE);
-  const [viewStateA, setViewStateA] = useState(viewState);
+  const {adapter, layers, cameraFrame, setCameraFrame} = useDeckAdapter(
+    animation,
+    INITIAL_VIEW_STATE
+  );
+  const [viewStateA, setViewStateA] = useState(cameraFrame);
   const [viewStateB, setViewStateB] = useState({
-    ...viewState,
-    zoom: viewState.zoom + 1,
-    pitch: viewState.pitch + 37
+    ...cameraFrame,
+    zoom: cameraFrame.zoom + 1,
+    pitch: cameraFrame.pitch + 37
   });
 
   const onNextFrame = useNextFrame();
@@ -94,9 +97,9 @@ export default function App() {
           // blendEquation: GL.FUNC_ADD,
           // blendFunc: [GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA]
         }}
-        viewState={viewState}
+        viewState={cameraFrame}
         onViewStateChange={({viewState: vs}) => {
-          setViewState(vs);
+          setCameraFrame(vs);
         }}
         controller={true}
         effects={[vignetteEffect, aaEffect]}
@@ -113,8 +116,8 @@ export default function App() {
           formatConfigs={formatConfigs}
           timecode={timecode}
         />
-        <button onClick={() => setViewStateA(filterCamera(viewState))}>Set Camera Start</button>
-        <button onClick={() => setViewStateB(filterCamera(viewState))}>Set Camera End</button>
+        <button onClick={() => setViewStateA(filterCamera(cameraFrame))}>Set Camera Start</button>
+        <button onClick={() => setViewStateB(filterCamera(cameraFrame))}>Set Camera End</button>
       </div>
     </div>
   );
