@@ -26,6 +26,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {dimensionSelector, adapterSelector} from '../renderer';
 
 import {updateViewState, viewStateSelector} from './mapSlice';
+import {updateTimeCursor} from '../timeline/timelineSlice';
 
 export const MapContainer = ({width = 540, height, deckProps, staticMapProps}) => {
   const dispatch = useDispatch();
@@ -46,6 +47,7 @@ export const MapContainer = ({width = 540, height, deckProps, staticMapProps}) =
       // Hubble Props
       adapter={adapter}
       dimension={dimension}
+      updateTimeCursor={timeMs => dispatch(updateTimeCursor(timeMs))}
     />
   );
 };

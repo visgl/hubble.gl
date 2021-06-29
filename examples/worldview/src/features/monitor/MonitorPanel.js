@@ -16,6 +16,7 @@ import {Map, viewStateSelector} from '../map';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {nearestEven} from '../../utils';
 import {framestepSelector, timecodeSelector} from '../renderer/rendererSlice';
+import {timeCursorSelector} from '../timeline/timelineSlice';
 
 const MonitorBottomToolbar = ({playing, onPreview}) => {
   return (
@@ -130,6 +131,7 @@ const MapBox = styled.div`
 const SeekSlider = () => {
   const timecode = useSelector(timecodeSelector);
   const framestep = useSelector(framestepSelector);
+  const timeCursor = useSelector(timeCursorSelector);
   const dispatch = useDispatch();
   useEffect(() => dispatch(seekTime({timeMs: timecode.start})), [timecode.start]);
 
@@ -139,6 +141,7 @@ const SeekSlider = () => {
       min={timecode.start}
       max={timecode.end}
       step={framestep}
+      value={timeCursor}
       onChange={e => dispatch(seekTime({timeMs: parseInt(e.target.value, 10)}))}
     />
   );
@@ -147,6 +150,7 @@ const SeekSlider = () => {
 export const MonitorPanel = ({deckProps = undefined, staticMapProps = undefined}) => {
   const rendererBusy = useSelector(busySelector);
   const duration = useSelector(durationSelector);
+  const timeCursor = useSelector(timeCursorSelector);
   const viewState = useSelector(viewStateSelector);
   const onPreview = usePreviewHandler();
   const onRender = useRenderHandler();
@@ -180,6 +184,7 @@ export const MonitorPanel = ({deckProps = undefined, staticMapProps = undefined}
                 duration={duration}
                 width={containerWidth}
                 height={containerHeight}
+                currentTime={timeCursor}
               />
             </MapBox>
           )}

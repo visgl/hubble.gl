@@ -6,6 +6,7 @@ import {
   PreviewEncoder,
   GifEncoder
 } from '@hubble.gl/core';
+import {updateTimeCursor} from '../timeline/timelineSlice';
 
 import {
   previewVideo,
@@ -87,6 +88,7 @@ export const rendererMiddleware = store => next => action => {
     case seekTime.type: {
       const state = store.getState();
       if (!busySelector(state)) {
+        store.dispatch(updateTimeCursor(action.payload.timeMs));
         const adapter = adapterSelector(state);
         adapter.seek(action.payload);
       }
