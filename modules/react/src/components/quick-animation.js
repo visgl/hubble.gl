@@ -11,8 +11,7 @@ export const QuickAnimation = ({
   getLayers,
   initialViewState,
   timecode,
-  width = 640,
-  height = 480,
+  dimension = {width: 640, height: 480},
   formatConfigs = {},
   deckProps = {}
 }) => {
@@ -37,8 +36,8 @@ export const QuickAnimation = ({
     },
     gif: {
       sampleInterval: 1,
-      width,
-      height
+      width: dimension.width,
+      height: dimension.height
     },
     ...formatConfigs
   };
@@ -61,9 +60,9 @@ export const QuickAnimation = ({
           setViewState(vs);
         }}
         controller={true}
-        width={width}
-        height={height}
         {...adapter.getProps({deck, onNextFrame, getLayers, extraProps: deckProps})}
+        width={dimension.width}
+        height={dimension.height}
       />
       <div style={{position: 'absolute'}}>
         <BasicControls

@@ -67,10 +67,9 @@ export default function App() {
   return (
     <QuickAnimation
       initialViewState={INITIAL_VIEW_STATE}
-      width={DIMENSION.width}
-      height={DIMENSION.height}
       getLayers={getLayers}
       getLayerKeyframes={getLayerKeyframes}
+      dimension={DIMENSION}
       deckProps={{
         parameters: {
           clearColor: [255, 255, 255, 1]
