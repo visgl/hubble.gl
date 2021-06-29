@@ -29,7 +29,6 @@ const animation = new DeckAnimation({
   layerKeyframes: [
     {
       id: 'circle',
-      features: ['opacity', 'radiusScale'],
       keyframes: [
         {opacity: 0, radiusScale: 0.01},
         {opacity: 1, radiusScale: 1},
@@ -42,7 +41,6 @@ const animation = new DeckAnimation({
     },
     {
       id: 'text',
-      features: ['opacity', 'getAngle'],
       keyframes: [
         {opacity: 0, getAngle: -90},
         {opacity: 1, getAngle: 0},
