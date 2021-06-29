@@ -16,6 +16,7 @@
     "d3-request": "^1.0.6",
     "global": "^4.3.0",
     "hubble.gl": "^1.1.0",
+    "lodash.isequal": "^4.5.0",
     "react-copy-to-clipboard": "^5.0.3",
     "react-helmet": "^6.1.0",
     "react-map-gl": "^6.1.15",

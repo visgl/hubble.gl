@@ -22,6 +22,7 @@ import React, {Component} from 'react';
 import DeckGL from '@deck.gl/react';
 import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
+import isEqual from 'lodash.isequal';
 
 import {deckStyle} from './constants';
 import {RenderingSpinner} from './rendering-spinner';
@@ -36,10 +37,6 @@ export class ExportVideoPanelPreview extends Component {
     this.deckRef = React.createRef();
 
     this.state = {
-      timestamp: {
-        latitude: 47.65,
-        longitude: 7
-      },
       mapStyle: mapStyleUrl, // Unsure if mapStyle would ever change but allowing it just in case
       glContext: undefined,
       memoDevicePixelRatio: window.devicePixelRatio // memoize
@@ -54,7 +51,7 @@ export class ExportVideoPanelPreview extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.resolution !== this.props.resolution) {
+    if (!isEqual(prevProps.resolution, this.props.resolution)) {
       this._resizeVideo();
     }
   }
@@ -182,7 +179,9 @@ export class ExportVideoPanelPreview extends Component {
       setViewState,
       adapter,
       durationMs,
-      resolution
+      resolution,
+      deckProps,
+      staticMapProps
     } = this.props;
     const {glContext, mapStyle} = this.state;
     const deck = this.deckRef.current && this.deckRef.current.deck;
@@ -204,11 +203,11 @@ export class ExportVideoPanelPreview extends Component {
             controller={true}
             glOptions={{stencil: true}}
             onWebGLInitialized={gl => this.setState({glContext: gl})}
-            onViewStateChange={setViewState}
+            onViewStateChange={({viewState: vs}) => setViewState(vs)}
             width={resolution[0]}
             height={resolution[1]}
             // onClick={visStateActions.onLayerClick}
-            {...adapter.getProps({deck})}
+            {...adapter.getProps({deck, extraProps: deckProps})}
           >
             {glContext && (
               <StaticMap
@@ -217,6 +216,7 @@ export class ExportVideoPanelPreview extends Component {
                 preventStyleDiffing={true}
                 gl={glContext}
                 onLoad={this._onMapLoad}
+                {...staticMapProps}
               />
             )}
           </DeckGL>

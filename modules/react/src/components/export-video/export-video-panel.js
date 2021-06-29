@@ -70,7 +70,9 @@ const PanelBody = ({
   mediaType,
   viewState,
   setDuration,
-  rendering
+  rendering,
+  deckProps,
+  staticMapProps
 }) => (
   <PanelBodyInner className="export-video-panel__body" exportVideoWidth={exportVideoWidth}>
     <ExportVideoPanelPreview
@@ -82,6 +84,8 @@ const PanelBody = ({
       viewState={viewState}
       rendering={rendering}
       durationMs={durationMs}
+      deckProps={deckProps}
+      staticMapProps={staticMapProps}
     />
     <ExportVideoPanelSettings
       setMediaType={setMediaType}
@@ -128,7 +132,9 @@ const ExportVideoPanel = ({
   mediaType,
   viewState,
   setDuration,
-  rendering
+  rendering,
+  deckProps,
+  staticMapProps
 }) => {
   return (
     <Panel exportVideoWidth={exportVideoWidth} className="export-video-panel">
@@ -155,6 +161,8 @@ const ExportVideoPanel = ({
         viewState={viewState}
         setDuration={setDuration}
         rendering={rendering}
+        deckProps={deckProps}
+        staticMapProps={staticMapProps}
       />
       <ExportVideoPanelFooter
         handleClose={handleClose}

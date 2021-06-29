@@ -38,6 +38,7 @@
     "global": "^4.4.0",
     "lodash.get": "^4.4.2",
     "lodash.uniqby": "^4.7.0",
+    "lodash.isequal": "^4.5.0",
     "popmotion": "^8.6.10",
     "prop-types": "^15.7.2",
     "react-intl": "^3.12.0",

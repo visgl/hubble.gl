@@ -42,7 +42,7 @@ export function parseSetCameraType(strCameraType, viewState) {
   // Converts mapState object to turf friendly Point obj (GEOJSON)
   const turfPoint = point([modifiedViewState.longitude, modifiedViewState.latitude]);
   if (match[0] === 'Orbit') {
-    modifiedViewState.bearing = parseInt(match[1], 10);
+    modifiedViewState.bearing = modifiedViewState.bearing + parseInt(match[1], 10);
   }
 
   // TODO future option that'll allow user to set X distance (km OR miles) directionally. Options inside turf
@@ -119,4 +119,14 @@ export function estimateFileSize(frameRate, resolution, durationMs, mediaType) {
     )} MB`;
   }
   return 'Size estimation unavailable';
+}
+
+export function filterCamera(viewState) {
+  const exclude = ['width', 'height', 'altitude'];
+  return Object.keys(viewState)
+    .filter(key => !exclude.includes(key))
+    .reduce((obj, key) => {
+      obj[key] = viewState[key];
+      return obj;
+    }, {});
 }
