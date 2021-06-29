@@ -59,10 +59,10 @@ export default function App() {
       })
     ];
   };
-const DIMENSION = {
-  width: 640,
-  height: 480
-};
+  const DIMENSION = {
+    width: 640,
+    height: 480
+  };
 
   return (
     <QuickAnimation
