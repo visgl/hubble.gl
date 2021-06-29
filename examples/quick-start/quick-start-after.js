@@ -15,6 +15,11 @@ const TIMECODE = {
   framerate: 30
 };
 
+const DIMENSION = {
+  width: 640,
+  height: 480
+};
+
 export default function App() {
   const getLayerKeyframes = () => {
     return {
@@ -63,10 +68,9 @@ export default function App() {
   return (
     <QuickAnimation
       initialViewState={INITIAL_VIEW_STATE}
-      width={640}
-      height={480}
       getLayers={getLayers}
       getLayerKeyframes={getLayerKeyframes}
+      dimension={DIMENSION}
       deckProps={{
         parameters: {
           clearColor: [255, 255, 255, 1]
