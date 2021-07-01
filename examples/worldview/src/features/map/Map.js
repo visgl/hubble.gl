@@ -95,9 +95,13 @@ export class Map extends Component {
     const map = this.mapRef.current.getMap();
     const deck = this.deckRef.current.deck;
 
-    // map.addLayer(new MapboxLayer({id: 'hubblegl-overlay', deck}));
     // var mapboxLayers = map.getStyle().layers;
     // console.log(mapboxLayers)
+
+    // If there aren't any layers, combine map and deck with a fake layer.
+    if (!layers.length) {
+      map.addLayer(new MapboxLayer({id: '%%blank-layer', deck}));
+    }
 
     for (let i = 0; i < layers.length; i++) {
       // TODO: layer mapbox and deck layers in order according to kepler config.
