@@ -31,7 +31,7 @@ import {
 } from '@hubble.gl/core';
 
 import ExportVideoPanel from './export-video-panel';
-import {parseSetCameraType, filterCamera} from './utils';
+import {parseSetCameraType} from './utils';
 import {DEFAULT_FILENAME, getResolutionSetting} from './constants';
 
 const ENCODERS = {
@@ -234,10 +234,6 @@ export class ExportVideoPanelContainer extends Component {
   }
 
   setViewState(viewState) {
-    const {onCameraFrameUpdate} = this.props;
-    if (onCameraFrameUpdate) {
-      onCameraFrameUpdate(filterCamera(viewState));
-    }
     this.setState({viewState});
   }
 
@@ -346,5 +342,7 @@ export class ExportVideoPanelContainer extends Component {
 ExportVideoPanelContainer.defaultProps = {
   exportVideoWidth: 540,
   header: true,
-  glContext: undefined
+  glContext: undefined,
+  deckProps: {},
+  staticMapProps: {}
 };

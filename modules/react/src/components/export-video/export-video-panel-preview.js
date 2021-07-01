@@ -101,7 +101,8 @@ export class ExportVideoPanelPreview extends Component {
 
   _renderLayer(overlays, idx) {
     const {
-      mapData: {visState, mapState}
+      mapData: {visState, mapState},
+      viewState
     } = this.props;
 
     const {
@@ -130,7 +131,7 @@ export class ExportVideoPanelPreview extends Component {
       idx,
       interactionConfig,
       layerCallbacks,
-      mapState,
+      mapState: {...mapState, ...viewState},
       animationConfig,
       objectHovered
     });

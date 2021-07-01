@@ -120,13 +120,3 @@ export function estimateFileSize(frameRate, resolution, durationMs, mediaType) {
   }
   return 'Size estimation unavailable';
 }
-
-export function filterCamera(viewState) {
-  const exclude = ['width', 'height', 'altitude'];
-  return Object.keys(viewState)
-    .filter(key => !exclude.includes(key))
-    .reduce((obj, key) => {
-      obj[key] = viewState[key];
-      return obj;
-    }, {});
-}
