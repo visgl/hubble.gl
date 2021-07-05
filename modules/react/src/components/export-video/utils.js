@@ -20,6 +20,20 @@
 
 import {point} from '@turf/helpers';
 import transformTranslate from '@turf/transform-translate';
+import {WebMercatorViewport} from '@deck.gl/core';
+
+export function scaleToVideoExport(viewState, container) {
+  const viewport = new WebMercatorViewport(viewState);
+  const nw = viewport.unproject([0, 0]);
+  const se = viewport.unproject([viewport.width, viewport.height]);
+  const videoViewport = new WebMercatorViewport({
+    ...viewState,
+    width: container.width,
+    height: container.height
+  }).fitBounds([nw, se]);
+  const {height, width, latitude, longitude, pitch, zoom, bearing, altitude} = videoViewport;
+  return {height, width, latitude, longitude, pitch, zoom, bearing, altitude};
+}
 
 /**
  * Parses camera type and creates keyframe for Hubble to use

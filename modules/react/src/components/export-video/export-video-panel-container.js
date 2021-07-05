@@ -31,7 +31,7 @@ import {
 } from '@hubble.gl/core';
 
 import ExportVideoPanel from './export-video-panel';
-import {parseSetCameraType} from './utils';
+import {parseSetCameraType, scaleToVideoExport} from './utils';
 import {DEFAULT_FILENAME, getResolutionSetting} from './constants';
 
 const ENCODERS = {
@@ -69,10 +69,10 @@ export class ExportVideoPanelContainer extends Component {
       fileName: '',
       resolution: '1280x720',
       durationMs: 1000,
-      viewState: mapState,
       rendering: false, // Will set a spinner overlay if true
       ...(initialState || {})
     };
+    this.state.viewState = scaleToVideoExport(mapState, this._getContainer());
     this.state.adapter = new DeckAdapter({glContext});
   }
 
@@ -98,6 +98,13 @@ export class ExportVideoPanelContainer extends Component {
   getCanvasSize() {
     const {resolution} = this.state;
     return getResolutionSetting(resolution);
+  }
+
+  _getContainer() {
+    const {width, height} = this.getCanvasSize();
+    const {exportVideoWidth} = this.props;
+    const aspectRatio = width / height;
+    return {height: exportVideoWidth / aspectRatio, width: exportVideoWidth};
   }
 
   getFormatConfigs() {
