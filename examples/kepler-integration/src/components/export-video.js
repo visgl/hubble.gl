@@ -25,7 +25,7 @@ import styled, {withTheme} from 'styled-components';
 import {InjectKeplerUI, ExportVideoModal, ExportVideoPanelContainer} from '@hubble.gl/react';
 // Redux stores/actions
 import {toggleHubbleExportModal} from '../actions';
-import {setFilter, setLayerAnimationTime, updateMap} from 'kepler.gl/actions';
+import {setFilter, setLayerAnimationTime} from 'kepler.gl/actions';
 
 // Hook up mutual kepler imports
 import {
@@ -63,8 +63,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   toggleHubbleExportModal,
   onFilterFrameUpdate: setFilter,
-  onTripFrameUpdate: setLayerAnimationTime,
-  onCameraFrameUpdate: updateMap
+  onTripFrameUpdate: setLayerAnimationTime
 };
 
 class ExportVideo extends Component {
@@ -82,14 +81,7 @@ class ExportVideo extends Component {
   }
 
   render() {
-    const {
-      mapData,
-      theme,
-      onFilterFrameUpdate,
-      onTripFrameUpdate,
-      onCameraFrameUpdate,
-      isVideoModalOpen
-    } = this.props;
+    const {mapData, theme, onFilterFrameUpdate, onTripFrameUpdate, isVideoModalOpen} = this.props;
     return (
       <InjectKeplerUI keplerUI={KEPLER_UI}>
         <div>
@@ -99,9 +91,6 @@ class ExportVideo extends Component {
               mapData={mapData}
               onFilterFrameUpdate={onFilterFrameUpdate}
               onTripFrameUpdate={onTripFrameUpdate}
-              onCameraFrameUpdate={onCameraFrameUpdate}
-              deckProps={{}}
-              staticMapProps={{}}
               exportVideoWidth={720}
             />
           </ExportVideoModal>

@@ -46,7 +46,6 @@ export class ExportVideoPanelPreview extends Component {
     this._renderLayer = this._renderLayer.bind(this);
     this._onMapLoad = this._onMapLoad.bind(this);
     this._resizeVideo = this._resizeVideo.bind(this);
-    this._getContainerHeight = this._getContainerHeight.bind(this);
     this._resizeVideo();
   }
 
@@ -101,7 +100,8 @@ export class ExportVideoPanelPreview extends Component {
 
   _renderLayer(overlays, idx) {
     const {
-      mapData: {visState, mapState}
+      mapData: {visState, mapState},
+      viewState
     } = this.props;
 
     const {
@@ -130,17 +130,17 @@ export class ExportVideoPanelPreview extends Component {
       idx,
       interactionConfig,
       layerCallbacks,
-      mapState,
+      mapState: {...mapState, ...viewState},
       animationConfig,
       objectHovered
     });
     return overlays.concat(layerOverlay || []);
   }
 
-  _getContainerHeight() {
+  _getContainer() {
     const {exportVideoWidth, resolution} = this.props;
     const aspectRatio = resolution[0] / resolution[1];
-    return exportVideoWidth / aspectRatio;
+    return {height: exportVideoWidth / aspectRatio, width: exportVideoWidth};
   }
 
   createLayers() {
@@ -173,7 +173,6 @@ export class ExportVideoPanelPreview extends Component {
 
   render() {
     const {
-      exportVideoWidth,
       rendering,
       viewState,
       setViewState,
@@ -185,9 +184,11 @@ export class ExportVideoPanelPreview extends Component {
     } = this.props;
     const {glContext, mapStyle} = this.state;
     const deck = this.deckRef.current && this.deckRef.current.deck;
+
+    const {width, height} = this._getContainer();
     const containerStyle = {
-      width: `${exportVideoWidth}px`,
-      height: `${this._getContainerHeight()}px`,
+      width: `${width}px`,
+      height: `${height}px`,
       position: 'relative'
     };
 
@@ -224,8 +225,8 @@ export class ExportVideoPanelPreview extends Component {
         {rendering && (
           <RenderingSpinner
             rendering={rendering}
-            width={exportVideoWidth}
-            height={this._getContainerHeight()}
+            width={width}
+            height={height}
             adapter={adapter}
             durationMs={durationMs}
           />
