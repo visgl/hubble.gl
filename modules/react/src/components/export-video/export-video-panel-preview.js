@@ -130,7 +130,7 @@ export class ExportVideoPanelPreview extends Component {
       idx,
       interactionConfig,
       layerCallbacks,
-      mapState: {...mapState, ...viewState, ...this._getContainer()},
+      mapState: {...mapState, ...viewState},
       animationConfig,
       objectHovered
     });
