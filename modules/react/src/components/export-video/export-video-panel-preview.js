@@ -26,6 +26,7 @@ import isEqual from 'lodash.isequal';
 
 import {deckStyle} from './constants';
 import {RenderingSpinner} from './rendering-spinner';
+import {createKeplerLayers} from '../../kepler-layers';
 
 export class ExportVideoPanelPreview extends Component {
   constructor(props) {
@@ -42,8 +43,6 @@ export class ExportVideoPanelPreview extends Component {
       memoDevicePixelRatio: window.devicePixelRatio // memoize
     };
 
-    this._onLayerSetDomain = this._onLayerSetDomain.bind(this);
-    this._renderLayer = this._renderLayer.bind(this);
     this._onMapLoad = this._onMapLoad.bind(this);
     this._resizeVideo = this._resizeVideo.bind(this);
     this._resizeVideo();
@@ -91,52 +90,6 @@ export class ExportVideoPanelPreview extends Component {
     window.devicePixelRatio = devicePixelRatio;
   }
 
-  _onLayerSetDomain(idx, colorDomain) {
-    // TODO: this isn't dispatched to the redux store yet.
-    // layerConfigChange(this.props.mapData.visState.layers[idx], {
-    //   colorDomain
-    // });
-  }
-
-  _renderLayer(overlays, idx) {
-    const {
-      mapData: {visState, mapState},
-      viewState
-    } = this.props;
-
-    const {
-      datasets,
-      layers,
-      layerData,
-      hoverInfo,
-      clicked,
-      interactionConfig,
-      animationConfig
-    } = visState;
-
-    const layer = layers[idx];
-    const data = layerData[idx];
-    const {gpuFilter} = datasets[layer.config.dataId] || {};
-
-    const objectHovered = clicked || hoverInfo;
-    const layerCallbacks = {
-      onSetLayerDomain: val => this._onLayerSetDomain(idx, val)
-    };
-
-    // Layer is Layer class
-    const layerOverlay = layer.renderLayer({
-      data,
-      gpuFilter,
-      idx,
-      interactionConfig,
-      layerCallbacks,
-      mapState: {...mapState, ...viewState},
-      animationConfig,
-      objectHovered
-    });
-    return overlays.concat(layerOverlay || []);
-  }
-
   _getContainer() {
     const {exportVideoWidth, resolution} = this.props;
     const aspectRatio = resolution[0] / resolution[1];
@@ -144,16 +97,12 @@ export class ExportVideoPanelPreview extends Component {
   }
 
   createLayers() {
+    const {deckProps, mapData, viewState} = this.props;
     // returns an arr of DeckGL layer objects
-    if (this.props.deckProps && this.props.deckProps.layers) {
-      return this.props.deckProps.layers;
+    if (deckProps && deckProps.layers) {
+      return deckProps.layers;
     }
-    const layerOrder = this.props.mapData.visState.layerOrder;
-
-    return layerOrder
-      .slice()
-      .reverse()
-      .reduce(this._renderLayer, []); // Slicing & reversing to create same layer order as Kepler
+    return createKeplerLayers(mapData, viewState);
   }
 
   _onMapLoad() {
