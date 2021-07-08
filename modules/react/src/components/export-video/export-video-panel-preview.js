@@ -145,11 +145,17 @@ export class ExportVideoPanelPreview extends Component {
 
   createLayers() {
     // returns an arr of DeckGL layer objects
-    const layerOrder = this.props.mapData.visState.layerOrder;
-    return layerOrder
-      .slice()
-      .reverse()
-      .reduce(this._renderLayer, []); // Slicing & reversing to create same layer order as Kepler
+    if (this.props.deckProps?.layers) {
+      return this.props.deckProps?.layers;
+  
+    } else {
+      const layerOrder = this.props.mapData.visState.layerOrder;
+
+      return layerOrder
+        .slice()
+        .reverse()
+        .reduce(this._renderLayer, []); // Slicing & reversing to create same layer order as Kepler
+      }
   }
 
   _onMapLoad() {
