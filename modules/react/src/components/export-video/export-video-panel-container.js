@@ -296,7 +296,15 @@ export class ExportVideoPanelContainer extends Component {
   }
 
   render() {
-    const {exportVideoWidth, handleClose, mapData, header, deckProps, staticMapProps} = this.props;
+    const {
+      exportVideoWidth,
+      handleClose,
+      mapData,
+      header,
+      deckProps,
+      staticMapProps,
+      mapboxLayerBeforeId
+    } = this.props;
     const {
       adapter,
       durationMs,
@@ -325,6 +333,7 @@ export class ExportVideoPanelContainer extends Component {
         setViewState={this.setViewState}
         deckProps={deckProps}
         staticMapProps={staticMapProps}
+        mapboxLayerBeforeId={mapboxLayerBeforeId}
         // Settings Props
         settingsData={settingsData}
         setMediaType={this.setMediaType}

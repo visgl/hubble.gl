@@ -72,7 +72,8 @@ const PanelBody = ({
   setDuration,
   rendering,
   deckProps,
-  staticMapProps
+  staticMapProps,
+  mapboxLayerBeforeId
 }) => (
   <PanelBodyInner className="export-video-panel__body" exportVideoWidth={exportVideoWidth}>
     <ExportVideoPanelPreview
@@ -86,6 +87,7 @@ const PanelBody = ({
       durationMs={durationMs}
       deckProps={deckProps}
       staticMapProps={staticMapProps}
+      mapboxLayerBeforeId={mapboxLayerBeforeId}
     />
     <ExportVideoPanelSettings
       setMediaType={setMediaType}
@@ -116,6 +118,7 @@ const ExportVideoPanel = ({
   // Map Props
   mapData,
   setViewState,
+  mapboxLayerBeforeId,
   // Settings Props
   settingsData,
   setMediaType,
@@ -163,6 +166,7 @@ const ExportVideoPanel = ({
         rendering={rendering}
         deckProps={deckProps}
         staticMapProps={staticMapProps}
+        mapboxLayerBeforeId={mapboxLayerBeforeId}
       />
       <ExportVideoPanelFooter
         handleClose={handleClose}
