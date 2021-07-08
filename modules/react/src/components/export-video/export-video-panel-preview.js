@@ -145,8 +145,9 @@ export class ExportVideoPanelPreview extends Component {
 
   createLayers() {
     // returns an arr of DeckGL layer objects
-    if (this.props.deckProps?.layers) {
-      return this.props.deckProps?.layers;
+    if (this.props.deckProps && this.props.deckProps.layers) {
+      return this.props.deckProps.layers;
+  
     } else {
       const layerOrder = this.props.mapData.visState.layerOrder;
 
@@ -155,6 +156,7 @@ export class ExportVideoPanelPreview extends Component {
         .reverse()
         .reduce(this._renderLayer, []); // Slicing & reversing to create same layer order as Kepler
       }
+    }
   }
 
   _onMapLoad() {
