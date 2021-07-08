@@ -165,10 +165,11 @@ export class ExportVideoPanelPreview extends Component {
     const deck = this.deckRef.current.deck;
 
     const keplerLayers = this.createLayers();
+    const beforeId = this.props.mapboxLayerBeforeId;
 
     for (let i = 0; i < keplerLayers.length; i++) {
       // Adds DeckGL layers to Mapbox so Mapbox can be the bottom layer. Removing this clips DeckGL layers
-      map.addLayer(new MapboxLayer({id: keplerLayers[i].id, deck}));
+      map.addLayer(new MapboxLayer({id: keplerLayers[i].id, deck}), beforeId);
     }
 
     map.on('render', () =>
