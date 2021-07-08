@@ -147,7 +147,6 @@ export class ExportVideoPanelPreview extends Component {
     // returns an arr of DeckGL layer objects
     if (this.props.deckProps?.layers) {
       return this.props.deckProps?.layers;
-  
     } else {
       const layerOrder = this.props.mapData.visState.layerOrder;
 
