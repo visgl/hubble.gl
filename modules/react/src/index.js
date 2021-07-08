@@ -31,3 +31,4 @@ export {
   QuickAnimation
 } from './components';
 export {useNextFrame, useDeckAdapter} from './hooks';
+export {createKeplerLayers} from './kepler-layers';
