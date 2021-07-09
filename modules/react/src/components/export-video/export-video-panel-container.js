@@ -316,9 +316,21 @@ export class ExportVideoPanelContainer extends Component {
       rendering
     } = this.state;
 
-    const settingsData = {mediaType, cameraPreset, fileName, resolution};
-
     const timecode = this.getTimecode();
+    const settings = {
+      mediaType,
+      setMediaType: this.setMediaType,
+      cameraPreset,
+      setCameraPreset: this.setCameraPreset,
+      fileName,
+      setFileName: this.setFileName,
+      resolution,
+      setResolution: this.setResolution,
+      durationMs,
+      setDuration: this.setDuration,
+      frameRate: timecode.framerate
+    };
+
     const {width, height} = this.getCanvasSize();
 
     return (
@@ -335,20 +347,12 @@ export class ExportVideoPanelContainer extends Component {
         staticMapProps={staticMapProps}
         mapboxLayerBeforeId={mapboxLayerBeforeId}
         // Settings Props
-        settingsData={settingsData}
-        setMediaType={this.setMediaType}
-        setCameraPreset={this.setCameraPreset}
-        setFileName={this.setFileName}
-        setResolution={this.setResolution}
+        settings={settings}
         // Hubble Props
         adapter={adapter}
         handlePreviewVideo={this.onPreviewVideo}
         handleRenderVideo={this.onRenderVideo}
-        durationMs={durationMs}
-        setDuration={this.setDuration}
-        frameRate={timecode.framerate}
         resolution={[width, height]}
-        mediaType={mediaType}
         rendering={rendering}
       />
     );

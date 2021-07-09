@@ -59,17 +59,9 @@ const PanelBody = ({
   mapData,
   adapter,
   setViewState,
-  setMediaType,
-  setCameraPreset,
-  setFileName,
-  setResolution,
-  settingsData,
-  durationMs,
-  frameRate,
+  settings,
   resolution,
-  mediaType,
   viewState,
-  setDuration,
   rendering,
   deckProps,
   staticMapProps,
@@ -84,23 +76,12 @@ const PanelBody = ({
       resolution={resolution}
       viewState={viewState}
       rendering={rendering}
-      durationMs={durationMs}
+      durationMs={settings.durationMs}
       deckProps={deckProps}
       staticMapProps={staticMapProps}
       mapboxLayerBeforeId={mapboxLayerBeforeId}
     />
-    <ExportVideoPanelSettings
-      setMediaType={setMediaType}
-      setCameraPreset={setCameraPreset}
-      setFileName={setFileName}
-      setResolution={setResolution}
-      settingsData={settingsData}
-      durationMs={durationMs}
-      frameRate={frameRate}
-      resolution={resolution}
-      mediaType={mediaType}
-      setDuration={setDuration}
-    />
+    <ExportVideoPanelSettings settings={settings} resolution={resolution} />
     {/* TODO: inject additional keyframing tools here */}
   </PanelBodyInner>
 );
@@ -120,21 +101,13 @@ const ExportVideoPanel = ({
   setViewState,
   mapboxLayerBeforeId,
   // Settings Props
-  settingsData,
-  setMediaType,
-  setCameraPreset,
-  setFileName,
-  setResolution,
+  settings,
   // Hubble Props
   adapter,
   handlePreviewVideo,
   handleRenderVideo,
-  durationMs,
-  frameRate,
   resolution,
-  mediaType,
   viewState,
-  setDuration,
   rendering,
   deckProps,
   staticMapProps
@@ -151,25 +124,16 @@ const ExportVideoPanel = ({
         exportVideoWidth={exportVideoWidth}
         mapData={mapData}
         adapter={adapter}
-        setMediaType={setMediaType}
-        setCameraPreset={setCameraPreset}
-        setFileName={setFileName}
-        setResolution={setResolution}
-        settingsData={settingsData}
+        settings={settings}
         setViewState={setViewState}
-        durationMs={durationMs}
-        frameRate={frameRate}
         resolution={resolution}
-        mediaType={mediaType}
         viewState={viewState}
-        setDuration={setDuration}
         rendering={rendering}
         deckProps={deckProps}
         staticMapProps={staticMapProps}
         mapboxLayerBeforeId={mapboxLayerBeforeId}
       />
       <ExportVideoPanelFooter
-        handleClose={handleClose}
         handlePreviewVideo={handlePreviewVideo}
         handleRenderVideo={handleRenderVideo}
         rendering={rendering}
