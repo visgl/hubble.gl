@@ -4,7 +4,7 @@ import {msConversion} from './utils';
 import {SliderWrapper, StyledLabelCell, StyledValueCell, InputGrid} from './styled-components';
 import {WithKeplerUI} from '../inject-kepler';
 
-function EditTab({durationMs, setDuration, setCameraPreset, settingsData}) {
+function EditTab({settings}) {
   return (
     <WithKeplerUI>
       {({Slider, ItemSelector}) => (
@@ -29,23 +29,23 @@ function EditTab({durationMs, setDuration, setCameraPreset, settingsData}) {
                   showValues={false}
                   enableBarDrag={true}
                   isRanged={false}
-                  value1={durationMs}
+                  value1={settings.durationMs}
                   step={100}
                   minValue={100}
                   maxValue={10000}
                   style={{width: '70px'}}
                   onSlider1Change={val => {
-                    setDuration(val);
+                    settings.setDuration(val);
                   }}
                 />
                 <div style={{alignSelf: 'center', paddingLeft: '8px', width: '56px'}}>
-                  {msConversion(durationMs)}
+                  {msConversion(settings.durationMs)}
                 </div>
               </SliderWrapper>
             </StyledValueCell>
             <StyledLabelCell>Camera</StyledLabelCell>
             <ItemSelector
-              selectedItems={settingsData.cameraPreset}
+              selectedItems={settings.cameraPreset}
               options={[
                 'None',
                 'Orbit (90º)',
@@ -60,7 +60,7 @@ function EditTab({durationMs, setDuration, setCameraPreset, settingsData}) {
               ]}
               multiSelect={false}
               searchable={false}
-              onChange={setCameraPreset}
+              onChange={settings.setCameraPreset}
             />
           </InputGrid>
         </>

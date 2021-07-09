@@ -27,22 +27,7 @@ import EditTab from './modal-tab-edit';
 import ExportTab from './modal-tab-export';
 import get from 'lodash.get';
 
-const getOptionValue = r => r.value;
-const displayOption = r => r.label;
-const getSelectedItems = (options, value) => options.find(o => o.value === value);
-
-function ExportVideoPanelSettings({
-  setMediaType,
-  setCameraPreset,
-  setFileName,
-  setResolution,
-  settingsData,
-  durationMs,
-  frameRate,
-  resolution,
-  mediaType,
-  setDuration
-}) {
+function ExportVideoPanelSettings({settings, resolution}) {
   const loadingMethods = [
     // Each entry creates new tabs with ModalTabsFactory
     // id: The tab id in state
@@ -76,19 +61,8 @@ function ExportVideoPanelSettings({
             />
             {currentMethod && (
               <ModalTab // Represents all the params needed across all tabs
-                settingsData={settingsData}
-                setFileName={setFileName}
-                getSelectedItems={getSelectedItems}
-                getOptionValue={getOptionValue}
-                displayOption={displayOption}
-                setMediaType={setMediaType}
-                setResolution={setResolution}
-                durationMs={durationMs}
-                setDuration={setDuration}
-                frameRate={frameRate}
+                settings={settings}
                 resolution={resolution}
-                mediaType={mediaType}
-                setCameraPreset={setCameraPreset}
               />
             )}
           </div>

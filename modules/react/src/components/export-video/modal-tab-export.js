@@ -5,19 +5,11 @@ import {StyledLabelCell, StyledValueCell, InputGrid} from './styled-components';
 import {DEFAULT_FILENAME, FORMATS, RESOLUTIONS} from './constants';
 import {WithKeplerUI} from '../inject-kepler';
 
-function ExportTab({
-  settingsData,
-  setFileName,
-  getSelectedItems,
-  getOptionValue,
-  displayOption,
-  setMediaType,
-  setResolution,
-  durationMs,
-  frameRate,
-  resolution,
-  mediaType
-}) {
+const getOptionValue = r => r.value;
+const displayOption = r => r.label;
+const getSelectedItems = (options, value) => options.find(o => o.value === value);
+
+function ExportTab({settings, resolution}) {
   return (
     <WithKeplerUI>
       {({Input, ItemSelector}) => (
@@ -25,33 +17,39 @@ function ExportTab({
           <InputGrid rows={5}>
             <StyledLabelCell>File Name</StyledLabelCell>
             <Input
-              value={settingsData.fileName}
+              value={settings.fileName}
               placeholder={DEFAULT_FILENAME}
-              onChange={e => setFileName(e.target.value)}
+              onChange={e => settings.setFileName(e.target.value)}
             />
             <StyledLabelCell>Media Type</StyledLabelCell>
             <ItemSelector
-              selectedItems={getSelectedItems(FORMATS, settingsData.mediaType)}
+              selectedItems={getSelectedItems(FORMATS, settings.mediaType)}
               options={FORMATS}
               getOptionValue={getOptionValue}
               displayOption={displayOption}
               multiSelect={false}
               searchable={false}
-              onChange={setMediaType}
+              onChange={settings.setMediaType}
             />
             <StyledLabelCell>Resolution</StyledLabelCell>
             <ItemSelector
-              selectedItems={getSelectedItems(RESOLUTIONS, settingsData.resolution)}
+              selectedItems={getSelectedItems(RESOLUTIONS, settings.resolution)}
               options={RESOLUTIONS}
               getOptionValue={getOptionValue}
               displayOption={displayOption}
               multiSelect={false}
               searchable={false}
-              onChange={setResolution}
+              onChange={settings.setResolution}
             />
             <StyledLabelCell>File Size</StyledLabelCell>
             <StyledValueCell>
-              ~{estimateFileSize(frameRate, resolution, durationMs, mediaType)}
+              ~
+              {estimateFileSize(
+                settings.frameRate,
+                resolution,
+                settings.durationMs,
+                settings.mediaType
+              )}
             </StyledValueCell>
           </InputGrid>
         </>
