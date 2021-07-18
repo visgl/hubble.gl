@@ -1,13 +1,15 @@
 # Demo App
 
-This is a lite version of the kepler.gl demo app that includes hubble.gl features. In particular, presets to modify zoom, bearing, pitch, as well as latitude/longitude are demonstrated within a self-contained modal that can be accessed by clicking the "Export" button. Afterwards, animations can be exported in various formats such as GIF, WEBM, JPEG sequence, etc.
+This is a lite version of the kepler.gl demo app that includes hubble.gl features. In particular, presets to modify zoom, bearing, pitch, as well as latitude/longitude are demonstrated within a self-contained modal that can be accessed by clicking the "Share" option at the top left of the side panel and then selecting "Export Video". Afterwards, animations can be exported in various formats such as GIF, WEBM, JPEG sequence, etc.
 
-TODO INSERT FINAL SCREENSHOT of UI
+<img src="https://user-images.githubusercontent.com/33266041/126054524-607641cf-b362-4728-98b7-e8ce8a97cd1a.png">
 
-TODO INSERT FINAL SCREENSHOT of modal
+
+That will take you to a modal where you can create your animation
+<img src="https://user-images.githubusercontent.com/33266041/126054581-a5f38817-5775-4fca-8901-6c25d8194458.png">
 
 A live demo can be viewed here:
-TODO
+https://hubble.gl/examples/kepler-integration/
 
 #### 1. Install
 
@@ -28,3 +30,6 @@ export MapboxAccessToken=<your_mapbox_token>
 ```sh
 yarn start-local
 ```
+
+## Other Features
+### hubble.gl also supports the ability to animate time ranges. First select the desired range before opening the modal.
