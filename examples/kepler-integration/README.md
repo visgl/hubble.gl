@@ -11,6 +11,13 @@ That will take you to a modal where you can create your animation
 A live demo can be viewed here:
 https://hubble.gl/examples/kepler-integration/
 
+## Features - In addition to the description
+- Allows the user to create an animation of their Kepler.gl datasets and export as a GIF, WEBM, or series of photos.
+- Currently supported camera movements include zooming in/out, panning, orbiting a point
+- Supports the ability to animate time ranges. First select the desired range before opening the modal.
+- To make camera movements slower or quicker adjust the duration accordingly.
+- Users are encouraged to bring their exports into video editing software to further refine transitions, stitch animations together, etc.
+
 #### 1. Install
 
 ```sh
@@ -31,5 +38,6 @@ export MapboxAccessToken=<your_mapbox_token>
 yarn start-local
 ```
 
-## Other Features
-### hubble.gl also supports the ability to animate time ranges. First select the desired range before opening the modal.
+## TODO
+- Allow users to select two points instead of a fixed distance
+- Integrate into main Kepler repository
