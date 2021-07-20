@@ -24,7 +24,7 @@ https://hubble.gl/examples/kepler-integration/
 yarn
 ```
 
-
+## For local development
 #### 2. Mapbox Token
 add mapbox access token to node env
 
