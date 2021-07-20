@@ -82,6 +82,7 @@ const PanelBody = ({
       mapboxLayerBeforeId={mapboxLayerBeforeId}
     />
     <ExportVideoPanelSettings settings={settings} resolution={resolution} />
+    {/* TODO put div for play */}
     {/* TODO: inject additional keyframing tools here */}
   </PanelBodyInner>
 );
