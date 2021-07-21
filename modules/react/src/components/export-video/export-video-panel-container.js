@@ -70,9 +70,12 @@ export class ExportVideoPanelContainer extends Component {
       resolution: '1280x720',
       durationMs: 1000,
       rendering: false, // Will set a spinner overlay if true
+      previewing: false,
       ...(initialState || {})
     };
-    this.state.viewState = scaleToVideoExport(mapState, this._getContainer());
+    const viewState = scaleToVideoExport(mapState, this._getContainer());
+    this.state.viewState = viewState;
+    this.state.memo = {viewState};
     this.state.adapter = new DeckAdapter({glContext});
   }
 
@@ -97,7 +100,8 @@ export class ExportVideoPanelContainer extends Component {
 
   getCanvasSize() {
     const {resolution} = this.state;
-    return getResolutionSetting(resolution);
+    const {width, height} = getResolutionSetting(resolution);
+    return {width, height};
   }
 
   _getContainer() {
@@ -249,8 +253,9 @@ export class ExportVideoPanelContainer extends Component {
     const filename = this.getFileName();
     const formatConfigs = this.getFormatConfigs();
     const timecode = this.getTimecode();
+    this.setState({previewing: true, memo: {viewState: {...this.state.viewState}}});
     const onStop = () => {
-      this.forceUpdate();
+      this.setState({previewing: false, viewState: {...this.state.memo.viewState}});
     };
     adapter.animationManager.setKeyframes('kepler', {
       ...this.getFilterKeyframes(),
@@ -273,10 +278,12 @@ export class ExportVideoPanelContainer extends Component {
     const formatConfigs = this.getFormatConfigs();
     const timecode = this.getTimecode();
 
-    this.setState({rendering: true}); // Enables overlay after user clicks "Render"
+    // Enables overlay after user clicks "Render"
+    this.setState({rendering: true, memo: {viewState: {...this.state.viewState}}});
     const onStop = () => {
-      this.setState({rendering: false});
-    }; // Disables overlay once export is done saving (generates file to download)
+      // Disables overlay once export is done saving (generates file to download)
+      this.setState({rendering: false, viewState: {...this.state.memo.viewState}});
+    };
     adapter.animationManager.setKeyframes('kepler', {
       ...this.getFilterKeyframes(),
       ...this.getTripKeyframes(),
@@ -313,7 +320,8 @@ export class ExportVideoPanelContainer extends Component {
       fileName,
       resolution,
       viewState,
-      rendering
+      rendering,
+      previewing
     } = this.state;
 
     const timecode = this.getTimecode();
@@ -331,7 +339,11 @@ export class ExportVideoPanelContainer extends Component {
       frameRate: timecode.framerate
     };
 
-    const {width, height} = this.getCanvasSize();
+    let canvasSize = this.getCanvasSize();
+    if (previewing) {
+      // set resolution to be 1:1 with container when previewing to improve performance.
+      canvasSize = this._getContainer();
+    }
 
     return (
       <ExportVideoPanel
@@ -352,7 +364,7 @@ export class ExportVideoPanelContainer extends Component {
         adapter={adapter}
         handlePreviewVideo={this.onPreviewVideo}
         handleRenderVideo={this.onRenderVideo}
-        resolution={[width, height]}
+        resolution={[canvasSize.width, canvasSize.height]}
         rendering={rendering}
       />
     );
