@@ -100,7 +100,8 @@ export class ExportVideoPanelContainer extends Component {
 
   getCanvasSize() {
     const {resolution} = this.state;
-    return getResolutionSetting(resolution);
+    const {width, height} = getResolutionSetting(resolution);
+    return {width, height};
   }
 
   _getContainer() {
@@ -319,7 +320,8 @@ export class ExportVideoPanelContainer extends Component {
       fileName,
       resolution,
       viewState,
-      rendering
+      rendering,
+      previewing
     } = this.state;
 
     const timecode = this.getTimecode();
@@ -337,7 +339,11 @@ export class ExportVideoPanelContainer extends Component {
       frameRate: timecode.framerate
     };
 
-    const {width, height} = this.getCanvasSize();
+    let canvasSize = this.getCanvasSize();
+    if (previewing) {
+      // set resolution to be 1:1 with container when previewing to improve performance.
+      canvasSize = this._getContainer();
+    }
 
     return (
       <ExportVideoPanel
@@ -358,7 +364,7 @@ export class ExportVideoPanelContainer extends Component {
         adapter={adapter}
         handlePreviewVideo={this.onPreviewVideo}
         handleRenderVideo={this.onRenderVideo}
-        resolution={[width, height]}
+        resolution={[canvasSize.width, canvasSize.height]}
         rendering={rendering}
       />
     );
