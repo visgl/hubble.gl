@@ -70,9 +70,12 @@ export class ExportVideoPanelContainer extends Component {
       resolution: '1280x720',
       durationMs: 1000,
       rendering: false, // Will set a spinner overlay if true
+      previewing: false,
       ...(initialState || {})
     };
-    this.state.viewState = scaleToVideoExport(mapState, this._getContainer());
+    const viewState = scaleToVideoExport(mapState, this._getContainer());
+    this.state.viewState = viewState;
+    this.state.memo = {viewState};
     this.state.adapter = new DeckAdapter({glContext});
   }
 
@@ -249,8 +252,9 @@ export class ExportVideoPanelContainer extends Component {
     const filename = this.getFileName();
     const formatConfigs = this.getFormatConfigs();
     const timecode = this.getTimecode();
+    this.setState({previewing: true, memo: {viewState: {...this.state.viewState}}});
     const onStop = () => {
-      this.forceUpdate();
+      this.setState({previewing: false, viewState: {...this.state.memo.viewState}});
     };
     adapter.animationManager.setKeyframes('kepler', {
       ...this.getFilterKeyframes(),
@@ -273,10 +277,12 @@ export class ExportVideoPanelContainer extends Component {
     const formatConfigs = this.getFormatConfigs();
     const timecode = this.getTimecode();
 
-    this.setState({rendering: true}); // Enables overlay after user clicks "Render"
+    // Enables overlay after user clicks "Render"
+    this.setState({rendering: true, memo: {viewState: {...this.state.viewState}}});
     const onStop = () => {
-      this.setState({rendering: false});
-    }; // Disables overlay once export is done saving (generates file to download)
+      // Disables overlay once export is done saving (generates file to download)
+      this.setState({rendering: false, viewState: {...this.state.memo.viewState}});
+    };
     adapter.animationManager.setKeyframes('kepler', {
       ...this.getFilterKeyframes(),
       ...this.getTripKeyframes(),
