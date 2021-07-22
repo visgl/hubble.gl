@@ -139,7 +139,7 @@ export function estimateFileSize(frameRate, resolution, durationMs, mediaType) {
     return `${Math.ceil((resolution[0] / 1280) * frameRate * seconds * 0.125)} MB`;
   }
   if (mediaType === 'png') {
-    // NOTE frameRate + 1 because Hubble records 1 extra frame when outputting to pictures for some reason ¯\_(ツ)_/¯
+    // Note: Adds one frame to size to account for an extra frame when exporting to pictures.
     return `${Math.floor(
       ((resolution[0] * resolution[1] * BIT_DEPTH) / MB) *
         ((frameRate + 1) * seconds) *
@@ -147,7 +147,7 @@ export function estimateFileSize(frameRate, resolution, durationMs, mediaType) {
     )} MB`;
   }
   if (mediaType === 'jpeg') {
-    // NOTE frameRate + 1 because Hubble records 1 extra frame when outputting to pictures for some reason ¯\_(ツ)_/¯
+    // Note: Adds one frame to size to account for an extra frame when exporting to pictures.
     return `${Math.floor(
       ((resolution[0] * resolution[1] * BIT_DEPTH) / MB) *
         ((frameRate + 1) * seconds) *
