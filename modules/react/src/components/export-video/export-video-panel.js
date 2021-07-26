@@ -20,9 +20,21 @@
 
 import React from 'react';
 import {withTheme} from 'styled-components';
-import {PanelCloseInner, StyledTitle, PanelBodyInner, Panel} from './styled-components';
+import {
+  PanelCloseInner,
+  StyledTitle,
+  PanelBodyInner,
+  Panel,
+  ButtonGroup
+} from './styled-components';
 
-import {DEFAULT_ICON_BUTTON_HEIGHT} from './constants';
+import {
+  DEFAULT_ICON_BUTTON_HEIGHT,
+  DEFAULT_BUTTON_WIDTH,
+  DEFAULT_BUTTON_HEIGHT,
+  timelineControlStyle,
+  timelinePlayButtonStyle
+} from './constants';
 import ExportVideoPanelSettings from './export-video-panel-settings';
 import {ExportVideoPanelPreview} from './export-video-panel-preview'; // Not yet part of standard library. TODO when updated
 
@@ -51,26 +63,46 @@ const PanelBody = ({
   rendering,
   deckProps,
   staticMapProps,
-  mapboxLayerBeforeId
+  mapboxLayerBeforeId,
+  handlePreviewVideo,
+  handleRenderVideo
 }) => (
-  <PanelBodyInner className="export-video-panel__body" exportVideoWidth={exportVideoWidth}>
-    <ExportVideoPanelPreview
-      mapData={mapData}
-      adapter={adapter}
-      setViewState={setViewState}
-      exportVideoWidth={exportVideoWidth}
-      resolution={resolution}
-      viewState={viewState}
-      rendering={rendering}
-      durationMs={settings.durationMs}
-      deckProps={deckProps}
-      staticMapProps={staticMapProps}
-      mapboxLayerBeforeId={mapboxLayerBeforeId}
-    />
-    <ExportVideoPanelSettings settings={settings} resolution={resolution} />
-    {/* TODO put div for play */}
-    {/* TODO: inject additional keyframing tools here */}
-  </PanelBodyInner>
+  <WithKeplerUI>
+    {({Icons, Button}) => (
+      <PanelBodyInner className="export-video-panel__body" exportVideoWidth={exportVideoWidth}>
+        <ExportVideoPanelPreview
+          mapData={mapData}
+          adapter={adapter}
+          setViewState={setViewState}
+          exportVideoWidth={exportVideoWidth}
+          resolution={resolution}
+          viewState={viewState}
+          rendering={rendering}
+          durationMs={settings.durationMs}
+          deckProps={deckProps}
+          staticMapProps={staticMapProps}
+          mapboxLayerBeforeId={mapboxLayerBeforeId}
+        />
+        <ExportVideoPanelSettings settings={settings} resolution={resolution} />
+        <div id="timeline-controls" style={timelineControlStyle}>
+          <Icons.Play style={timelinePlayButtonStyle} onClick={handlePreviewVideo} />
+        </div>
+        <ButtonGroup>
+          <Button
+            width={DEFAULT_BUTTON_WIDTH}
+            height={DEFAULT_BUTTON_HEIGHT}
+            className={'export-video-button'}
+            onClick={handleRenderVideo}
+            disabled={rendering}
+          >
+            Render
+          </Button>
+        </ButtonGroup>
+        {/* TODO put div for play */}
+        {/* TODO: inject additional keyframing tools here */}
+      </PanelBodyInner>
+    )}
+  </WithKeplerUI>
 );
 
 const ExportVideoPanel = ({
@@ -114,6 +146,8 @@ const ExportVideoPanel = ({
         deckProps={deckProps}
         staticMapProps={staticMapProps}
         mapboxLayerBeforeId={mapboxLayerBeforeId}
+        handlePreviewVideo={handlePreviewVideo}
+        handleRenderVideo={handleRenderVideo}
       />
     </Panel>
   );
