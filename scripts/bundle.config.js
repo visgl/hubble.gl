@@ -68,7 +68,9 @@ const config = {
           plugins: [
             '@babel/transform-runtime',
             'inline-webgl-constants',
-            ['remove-glsl-comments', {patterns: ['**/*.glsl.js']}]
+            ['remove-glsl-comments', {patterns: ['**/*.glsl.js']
+              }
+            ]
           ]
         }
       }
