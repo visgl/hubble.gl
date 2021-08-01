@@ -366,6 +366,7 @@ export class ExportVideoPanelContainer extends Component {
         handleRenderVideo={this.onRenderVideo}
         resolution={[canvasSize.width, canvasSize.height]}
         rendering={rendering}
+        previewing={previewing}
       />
     );
   }

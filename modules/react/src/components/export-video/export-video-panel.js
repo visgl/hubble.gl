@@ -109,6 +109,7 @@ const ExportVideoPanel = ({
   resolution,
   viewState,
   rendering,
+  previewing,
   deckProps,
   staticMapProps
 }) => {
@@ -136,7 +137,7 @@ const ExportVideoPanel = ({
       <ExportVideoPanelFooter
         handlePreviewVideo={handlePreviewVideo}
         handleRenderVideo={handleRenderVideo}
-        rendering={rendering}
+        rendering={rendering || previewing}
       />
     </Panel>
   );
