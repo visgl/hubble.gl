@@ -84,7 +84,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .load-data-modal__tab__item.active {
-    color: #fff
+    color: #fff;
     border-bottom: 3px solid #fff;
   }
 
