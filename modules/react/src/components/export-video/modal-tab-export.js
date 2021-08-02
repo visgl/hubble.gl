@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {estimateFileSize} from './utils';
 import {StyledLabelCell, StyledValueCell, InputGrid} from './styled-components';
@@ -10,6 +10,7 @@ const displayOption = r => r.label;
 const getSelectedItems = (options, value) => options.find(o => o.value === value);
 
 function ExportTab({settings, resolution}) {
+  const [aspRatio, setAspRatio] = useState('16:9');
   return (
     <WithKeplerUI>
       {({Input, ItemSelector}) => (
@@ -31,10 +32,26 @@ function ExportTab({settings, resolution}) {
               searchable={false}
               onChange={settings.setMediaType}
             />
-            <StyledLabelCell>Resolution</StyledLabelCell>
+            <StyledLabelCell>Ratio</StyledLabelCell>
+            <ItemSelector
+              selectedItems={aspRatio}
+              options={['4:3', '16:9']}
+              multiSelect={false}
+              searchable={false}
+              onChange={ratio => {
+                setAspRatio(ratio);
+                if (aspRatio === '4:3') {
+                  settings.resolution = '1280x720';
+                } else {
+                  settings.resolution = '1280x960';
+                }
+                settings.setResolution(settings.resolution);
+              }}
+            />
+            <StyledLabelCell>Quality</StyledLabelCell>
             <ItemSelector
               selectedItems={getSelectedItems(RESOLUTIONS, settings.resolution)}
-              options={RESOLUTIONS}
+              options={RESOLUTIONS.filter(o => o.aspectRatio === aspRatio)}
               getOptionValue={getOptionValue}
               displayOption={displayOption}
               multiSelect={false}
