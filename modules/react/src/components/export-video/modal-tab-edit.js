@@ -1,7 +1,13 @@
 import React from 'react';
 
 import {msConversion} from './utils';
-import {SliderWrapper, StyledLabelCell, StyledValueCell, InputGrid} from './styled-components';
+import {
+  SliderWrapper,
+  StyledLabelCell,
+  StyledValueCell,
+  InputGrid,
+  VideoLengthDisplay
+} from './styled-components';
 import {WithKeplerUI} from '../inject-kepler';
 
 function EditTab({settings}) {
@@ -29,9 +35,7 @@ function EditTab({settings}) {
                     settings.setDuration(val);
                   }}
                 />
-                <div style={{alignSelf: 'center', paddingLeft: '8px', width: '56px'}}>
-                  {msConversion(settings.durationMs)}
-                </div>
+                <VideoLengthDisplay>{msConversion(settings.durationMs)}</VideoLengthDisplay>
               </SliderWrapper>
             </StyledValueCell>
             <StyledLabelCell>Camera</StyledLabelCell>

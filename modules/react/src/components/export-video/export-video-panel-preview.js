@@ -24,7 +24,7 @@ import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
 import isEqual from 'lodash.isequal';
 
-import {deckStyle} from './styled-components';
+import {deckStyle, DeckCanvas} from './styled-components';
 import {RenderingSpinner} from './rendering-spinner';
 import {createKeplerLayers} from '../../kepler-layers';
 
@@ -138,17 +138,11 @@ export class ExportVideoPanelPreview extends Component {
     } = this.props;
     const {glContext, mapStyle} = this.state;
     const deck = this.deckRef.current && this.deckRef.current.deck;
-
     const {width, height} = this._getContainer();
-    const containerStyle = {
-      width: `${width}px`,
-      height: `${height}px`,
-      position: 'relative'
-    };
 
     return (
       <>
-        <div id="deck-canvas" style={containerStyle}>
+        <DeckCanvas id="deck-canvas" width={width} height={height}>
           <DeckGL
             ref={this.deckRef}
             viewState={viewState}
@@ -175,7 +169,7 @@ export class ExportVideoPanelPreview extends Component {
               />
             )}
           </DeckGL>
-        </div>
+        </DeckCanvas>
         {rendering && (
           <RenderingSpinner
             rendering={rendering}

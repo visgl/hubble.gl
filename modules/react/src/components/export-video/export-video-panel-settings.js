@@ -53,7 +53,7 @@ function ExportVideoPanelSettings({settings, resolution}) {
       {({ModalTabsFactory}) => {
         const ModalTabs = ModalTabsFactory();
         return (
-          <div>
+          <div className="export-video-modal-tab-container">
             <ModalTabs
               currentMethod={currentMethod.id}
               loadingMethods={loadingMethods}

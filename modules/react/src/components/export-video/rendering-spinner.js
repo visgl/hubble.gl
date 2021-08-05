@@ -1,6 +1,8 @@
 import {WithKeplerUI} from '../inject-kepler';
 import React, {useEffect, useState} from 'react';
 
+import {LoaderWrapper, RenderingFeedbackContainer} from './styled-components';
+
 /**
  * @typedef {Object} RenderingSpinnerProps
  * @property {boolean} rendering whether a video is currently rendering or not
@@ -35,30 +37,21 @@ export function RenderingSpinner({rendering, width, height, adapter, durationMs}
     };
   }, [showSaving]);
 
-  const loaderStyle = {
-    display: rendering === false ? 'none' : 'flex',
-    position: 'absolute',
-    background: 'rgba(0, 0, 0, 0.5)',
-    width: `${width}px`,
-    height: `${height}px`,
-    alignItems: 'center',
-    justifyContent: 'center'
-  };
-
   return (
     <WithKeplerUI>
       {({LoadingSpinner}) => (
-        <div className="loader" style={loaderStyle}>
+        <LoaderWrapper
+          className="loader-wrapper"
+          width={width}
+          height={height}
+          rendering={rendering}
+        >
           <LoadingSpinner />
-          {/* TODO change text styling to match Kepler's */}
-          <div
-            className="rendering-feedback-container"
-            style={{color: 'white', position: 'absolute', top: '175px'}}
-          >
+          <RenderingFeedbackContainer className="rendering-feedback-container" height={height}>
             {showRenderingPercent && <div className="rendering-percent">{percentRendered} %</div>}
             {showSaving && <div className="saving-message">{message}</div>}
-          </div>
-        </div>
+          </RenderingFeedbackContainer>
+        </LoaderWrapper>
       )}
     </WithKeplerUI>
   );

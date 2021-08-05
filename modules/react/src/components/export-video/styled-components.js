@@ -87,3 +87,35 @@ export const timelinePlayButtonStyle = {
   width: '32px',
   fill: '#FFF'
 };
+
+export const LoaderWrapper = styled.div`
+  display: ${props => (props.rendering === false ? 'none' : 'flex')};
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
+  width: ${props => props.width}px;
+  height: ${props => props.height}px;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const RenderingFeedbackContainer = styled.div`
+  color: white;
+  position: absolute;
+  top: ${props => props.height - 180}px;
+`;
+
+export const VideoLengthDisplay = styled.div`
+  align-self: center;
+  padding-left: 8px;
+`;
+
+export const ExportVideoPanelHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const DeckCanvas = styled.div`
+  width: ${props => props.width}px;
+  height: ${props => props.height}px;
+  position: relative;
+`;

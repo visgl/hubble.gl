@@ -27,12 +27,13 @@ import {
   Panel,
   ButtonGroup,
   TimelineControls,
-  timelinePlayButtonStyle
+  timelinePlayButtonStyle,
+  ExportVideoPanelHeader
 } from './styled-components';
 
 import {DEFAULT_ICON_BUTTON_HEIGHT} from './constants';
 import ExportVideoPanelSettings from './export-video-panel-settings';
-import {ExportVideoPanelPreview} from './export-video-panel-preview'; // Not yet part of standard library. TODO when updated
+import {ExportVideoPanelPreview} from './export-video-panel-preview';
 
 import {WithKeplerUI} from '../inject-kepler';
 
@@ -127,13 +128,10 @@ const ExportVideoPanel = ({
   return (
     <Panel exportVideoWidth={exportVideoWidth} className="export-video-panel">
       {header !== false ? (
-        <div
-          className="export-video-panel__header"
-          style={{display: 'flex', justifyContent: 'space-between'}}
-        >
+        <ExportVideoPanelHeader className="export-video-panel__header">
           <StyledTitle className="export-video-panel__title">Export Video</StyledTitle>
           <PanelClose handleClose={handleClose} />
-        </div>
+        </ExportVideoPanelHeader>
       ) : null}
       <PanelBody
         exportVideoWidth={exportVideoWidth}
