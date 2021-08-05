@@ -45,7 +45,6 @@ export const ModalContainer = styled.div`
 export const PanelCloseInner = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding: ${DEFAULT_PADDING}px ${DEFAULT_PADDING}px 0 ${DEFAULT_PADDING}px;
 `;
 
 export const StyledTitle = styled.div`
@@ -53,20 +52,38 @@ export const StyledTitle = styled.div`
   font-size: 20px;
   font-weight: 400;
   line-height: ${props => props.theme.lineHeight};
-  padding: 0 ${DEFAULT_PADDING}px 16px ${DEFAULT_PADDING}px;
+  padding-bottom: 16px;
 `;
 
 export const PanelBodyInner = styled.div`
-  padding: 0 ${DEFAULT_PADDING}px;
-  padding-bottom: ${DEFAULT_PADDING}px;
   display: grid;
   grid-template-columns: ${props => props.exportVideoWidth}px ${DEFAULT_SETTINGS_WIDTH}px;
   grid-template-rows: auto;
   grid-column-gap: ${DEFAULT_ROW_GAP}px;
-  margin-bottom: ${DEFAULT_ROW_GAP}px;
 `;
 
 export const Panel = styled.div`
   width: ${props =>
     props.exportVideoWidth + 2 * DEFAULT_PADDING + DEFAULT_ROW_GAP + DEFAULT_SETTINGS_WIDTH}px;
+  padding: ${DEFAULT_PADDING}px;
 `;
+
+export const deckStyle = {
+  width: '100%',
+  height: '100%',
+  position: 'relative'
+};
+
+export const TimelineControls = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding-top: 16px;
+`;
+
+export const timelinePlayButtonStyle = {
+  cursor: 'pointer',
+  height: '32px',
+  width: '32px',
+  fill: '#FFF'
+};

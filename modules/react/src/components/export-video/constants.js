@@ -22,7 +22,7 @@ export const DEFAULT_ICON_BUTTON_HEIGHT = '16px';
 export const DEFAULT_BUTTON_HEIGHT = '32px';
 export const DEFAULT_BUTTON_WIDTH = '64px';
 export const DEFAULT_PADDING = 32;
-export const DEFAULT_ROW_GAP = 16;
+export const DEFAULT_ROW_GAP = 24;
 export const DEFAULT_SETTINGS_WIDTH = 280;
 
 export const DEFAULT_FILENAME = 'kepler.gl';
@@ -98,22 +98,3 @@ export const isResolution = value => option => option.value === value;
 export function getResolutionSetting(value) {
   return RESOLUTIONS.find(isResolution(value)) || RESOLUTIONS[0];
 }
-
-export const deckStyle = {
-  width: '100%',
-  height: '100%',
-  position: 'relative'
-};
-
-export const timelineControlStyle = {
-  position: 'relative',
-  display: 'flex',
-  justifyContent: 'center'
-};
-
-export const timelinePlayButtonStyle = {
-  cursor: 'pointer',
-  height: '50px',
-  width: '50px',
-  fill: '#FFF'
-};

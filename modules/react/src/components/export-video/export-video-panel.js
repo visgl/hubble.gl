@@ -25,16 +25,12 @@ import {
   StyledTitle,
   PanelBodyInner,
   Panel,
-  ButtonGroup
+  ButtonGroup,
+  TimelineControls,
+  timelinePlayButtonStyle
 } from './styled-components';
 
-import {
-  DEFAULT_ICON_BUTTON_HEIGHT,
-  DEFAULT_BUTTON_WIDTH,
-  DEFAULT_BUTTON_HEIGHT,
-  timelineControlStyle,
-  timelinePlayButtonStyle
-} from './constants';
+import {DEFAULT_ICON_BUTTON_HEIGHT} from './constants';
 import ExportVideoPanelSettings from './export-video-panel-settings';
 import {ExportVideoPanelPreview} from './export-video-panel-preview'; // Not yet part of standard library. TODO when updated
 
@@ -44,7 +40,12 @@ const PanelClose = ({handleClose}) => (
   <WithKeplerUI>
     {({IconButton, Icons}) => (
       <PanelCloseInner className="export-video-panel__close">
-        <IconButton className="export-video-panel__button" link onClick={handleClose}>
+        <IconButton
+          style={{alignItems: 'start'}}
+          className="export-video-panel__button"
+          link
+          onClick={handleClose}
+        >
           <Icons.Delete height={DEFAULT_ICON_BUTTON_HEIGHT} />
         </IconButton>
       </PanelCloseInner>
@@ -84,13 +85,12 @@ const PanelBody = ({
           mapboxLayerBeforeId={mapboxLayerBeforeId}
         />
         <ExportVideoPanelSettings settings={settings} resolution={resolution} />
-        <div id="timeline-controls" style={timelineControlStyle}>
+        <TimelineControls className="timeline-controls">
           <Icons.Play style={timelinePlayButtonStyle} onClick={handlePreviewVideo} />
-        </div>
+        </TimelineControls>
         <ButtonGroup>
           <Button
-            width={DEFAULT_BUTTON_WIDTH}
-            height={DEFAULT_BUTTON_HEIGHT}
+            style={{marginTop: '16px', width: '100%', height: '32px'}}
             className={'export-video-button'}
             onClick={handleRenderVideo}
             disabled={rendering}
@@ -98,8 +98,6 @@ const PanelBody = ({
             Render
           </Button>
         </ButtonGroup>
-        {/* TODO put div for play */}
-        {/* TODO: inject additional keyframing tools here */}
       </PanelBodyInner>
     )}
   </WithKeplerUI>
@@ -129,10 +127,13 @@ const ExportVideoPanel = ({
   return (
     <Panel exportVideoWidth={exportVideoWidth} className="export-video-panel">
       {header !== false ? (
-        <>
-          <PanelClose handleClose={handleClose} />
+        <div
+          className="export-video-panel__header"
+          style={{display: 'flex', justifyContent: 'space-between'}}
+        >
           <StyledTitle className="export-video-panel__title">Export Video</StyledTitle>
-        </>
+          <PanelClose handleClose={handleClose} />
+        </div>
       ) : null}
       <PanelBody
         exportVideoWidth={exportVideoWidth}

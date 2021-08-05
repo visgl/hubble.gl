@@ -24,7 +24,7 @@ import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
 import isEqual from 'lodash.isequal';
 
-import {deckStyle} from './constants';
+import {deckStyle} from './styled-components';
 import {RenderingSpinner} from './rendering-spinner';
 import {createKeplerLayers} from '../../kepler-layers';
 
