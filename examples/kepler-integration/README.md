@@ -17,7 +17,7 @@ https://hubble.gl/examples/kepler-integration/
 ## Basic Usage
 By default Hubble's modal will open up, allowing users to create animations with the sample data. Users can drag around the map in the modal (or in Kepler), zoom in by scrolling, and adjust the camera angle by holding SHIFT and dragging. 
 
-Should you wish to use your own data, feel free to close the modal and use Kepler as you normally would. To access the modal again click on the share button (shown below) to access the modal again.
+Should you wish to use your own data, feel free to close the modal and use Kepler as you normally would. To access the modal again click on the share button (shown below) and click on "Export Video".
 
 <img src="https://user-images.githubusercontent.com/33266041/126054524-607641cf-b362-4728-98b7-e8ce8a97cd1a.png">
 
