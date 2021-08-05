@@ -46,10 +46,6 @@ function EditTab({settings}) {
                 'Orbit (90º)',
                 'Orbit (180º)',
                 'Orbit (360º)',
-                'North to South',
-                'South to North',
-                'East to West',
-                'West to East',
                 'Zoom Out',
                 'Zoom In'
               ]}

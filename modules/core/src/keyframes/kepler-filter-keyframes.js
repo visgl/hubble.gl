@@ -43,7 +43,18 @@ import {hold, linear} from './easings';
  * Current time is a point. An array of sorted time steps need to be provided.
  * animation controller calls next animation at a interval when the point jumps to the next step
  */
-function timeRangeKeyframes({filter, timings}) {
+function getKeyFramesFree(filter) {
+  const delta = filter.value[1] - filter.value[0];
+  return {
+    keyframes: [
+      {value: [filter.domain[0], filter.domain[0] + delta]},
+      {value: [filter.domain[1] - delta, filter.domain[1]]}
+    ],
+    easings: linear
+  };
+}
+
+export function timeRangeKeyframes({filter, timings}) {
   if (filter.type !== 'timeRange') {
     throw new Error("filter type must be 'timeRange'.'");
   }
@@ -53,14 +64,7 @@ function timeRangeKeyframes({filter, timings}) {
   switch (filter.animationWindow) {
     default:
     case 'free': {
-      const delta = filter.value[1] - filter.value[0];
-      return {
-        keyframes: [
-          {value: [filter.domain[0], filter.domain[0] + delta]},
-          {value: [filter.domain[1] - delta, filter.domain[1]]}
-        ],
-        easings: linear
-      };
+      return getKeyFramesFree(filter);
     }
     case 'incremental': {
       return {
@@ -78,13 +82,26 @@ function timeRangeKeyframes({filter, timings}) {
       };
     }
     case 'interval': {
-      const delta = Math.round(duration / filter.steps.length);
+      const {bins, plotType} = filter;
+      const {interval} = plotType;
+      if (
+        !interval ||
+        !bins ||
+        Object.keys(bins).length === 0 ||
+        !Object.values(bins)[0][interval]
+      ) {
+        // shouldn't happen return
+        return getKeyFramesFree(filter);
+      }
+      const intervalBins = Object.values(bins)[0][interval];
+      const delta = Math.round(duration / intervalBins.length);
+
+      // const delta = Math.round(duration / filter.steps.length);
       return {
-        timings: filter.steps.map((_, idx) => timings[0] + delta * idx),
-        keyframes: filter.steps.map((step, idx) => {
-          const nextIdx = idx >= filter.steps.length - 1 ? 0 : idx + 1;
+        timings: intervalBins.map((_, idx) => timings[0] + delta * idx),
+        keyframes: intervalBins.map(bin => {
           return {
-            value: [step, nextIdx]
+            value: [bin.x0, bin.x1]
           };
         }),
         easings: hold

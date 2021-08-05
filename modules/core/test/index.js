@@ -18,4 +18,5 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 import './keyframes/camera-keyframes.spec';
+import './keyframes/kepler-filter-keyframes.spec';
 import './keyframes/utils.spec';

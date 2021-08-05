@@ -122,6 +122,7 @@ const ExportVideoPanel = ({
   resolution,
   viewState,
   rendering,
+  previewing,
   deckProps,
   staticMapProps
 }) => {
@@ -147,6 +148,7 @@ const ExportVideoPanel = ({
         mapboxLayerBeforeId={mapboxLayerBeforeId}
         handlePreviewVideo={handlePreviewVideo}
         handleRenderVideo={handleRenderVideo}
+        rendering={rendering || previewing}
       />
     </Panel>
   );
