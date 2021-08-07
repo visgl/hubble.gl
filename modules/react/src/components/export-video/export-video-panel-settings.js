@@ -23,8 +23,8 @@ import {withTheme} from 'styled-components';
 
 import {WithKeplerUI} from '../inject-kepler';
 
-import EditTab from './modal-tab-edit';
-import ExportTab from './modal-tab-export';
+import AnimationTab from './modal-tab-animation';
+import SettingsTab from './modal-tab-settings';
 import get from 'lodash.get';
 
 function ExportVideoPanelSettings({settings, resolution}) {
@@ -36,12 +36,12 @@ function ExportVideoPanelSettings({settings, resolution}) {
     {
       id: 'export-modal-tab-animation',
       label: 'exportVideoModal.animation',
-      elementType: EditTab
+      elementType: AnimationTab
     },
     {
-      id: 'export-modal-tab-export',
-      label: 'exportVideoModal.export',
-      elementType: ExportTab
+      id: 'export-modal-tab-settings',
+      label: 'exportVideoModal.settings',
+      elementType: SettingsTab
     }
   ];
   const getDefaultMethod = methods => (Array.isArray(methods) ? get(methods, [0]) : null);

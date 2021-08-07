@@ -10,7 +10,7 @@ import {
 } from './styled-components';
 import {WithKeplerUI} from '../inject-kepler';
 
-function EditTab({settings}) {
+function AnimationTab({settings}) {
   return (
     <WithKeplerUI>
       {({Slider, ItemSelector}) => (
@@ -60,4 +60,4 @@ function EditTab({settings}) {
   );
 }
 
-export default EditTab;
+export default AnimationTab;

@@ -108,7 +108,7 @@ const WindowSize = styled.div`
 
 // Custom localizations needed for export video modal
 messages.en['exportVideoModal.animation'] = 'Animation';
-messages.en['exportVideoModal.export'] = 'Settings';
+messages.en['exportVideoModal.settings'] = 'Settings';
 messages.en['toolbar.exportVideoModal'] = 'Export Video';
 
 class App extends Component {

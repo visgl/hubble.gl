@@ -9,7 +9,7 @@ const getOptionValue = r => r.value;
 const displayOption = r => r.label;
 const getSelectedItems = (options, value) => options.find(o => o.value === value);
 
-function ExportTab({settings, resolution}) {
+function SettingsTab({settings, resolution}) {
   const [aspRatio, setAspRatio] = useState('16:9');
   return (
     <WithKeplerUI>
@@ -75,4 +75,4 @@ function ExportTab({settings, resolution}) {
   );
 }
 
-export default ExportTab;
+export default SettingsTab;
