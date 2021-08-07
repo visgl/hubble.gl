@@ -122,7 +122,6 @@ const ExportVideoPanel = ({
   resolution,
   viewState,
   rendering,
-  previewing,
   deckProps,
   staticMapProps
 }) => {

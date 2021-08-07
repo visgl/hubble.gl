@@ -27,6 +27,8 @@ export const DEFAULT_SETTINGS_WIDTH = 280;
 
 export const DEFAULT_FILENAME = 'kepler.gl';
 
+export const DEFAULT_PREVIEW_RESOLUTIONS = {'16:9': '1280x720', '4:3': '1280x960'};
+
 export const SIDEPANEL_WIDTH = 300;
 
 export const FORMATS = [

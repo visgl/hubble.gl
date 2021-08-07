@@ -2,7 +2,13 @@ import React, {useState} from 'react';
 
 import {estimateFileSize} from './utils';
 import {StyledLabelCell, StyledValueCell, InputGrid} from './styled-components';
-import {DEFAULT_FILENAME, FORMATS, RESOLUTIONS, ASPECT_RATIOS} from './constants';
+import {
+  DEFAULT_FILENAME,
+  FORMATS,
+  RESOLUTIONS,
+  ASPECT_RATIOS,
+  DEFAULT_PREVIEW_RESOLUTIONS
+} from './constants';
 import {WithKeplerUI} from '../inject-kepler';
 
 const getOptionValue = r => r.value;
@@ -40,13 +46,7 @@ function SettingsTab({settings, resolution}) {
               searchable={false}
               onChange={ratio => {
                 setAspRatio(ratio);
-                if (aspRatio === ASPECT_RATIOS['4_3']) {
-                  // Changes resolution of preview in modal
-                  settings.resolution = '1280x720';
-                } else {
-                  settings.resolution = '1280x960';
-                }
-                settings.setResolution(settings.resolution);
+                settings.setResolution(DEFAULT_PREVIEW_RESOLUTIONS[ratio]);
               }}
             />
             <StyledLabelCell>Quality</StyledLabelCell>
