@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 import {estimateFileSize} from './utils';
 import {StyledLabelCell, StyledValueCell, InputGrid} from './styled-components';
-import {DEFAULT_FILENAME, FORMATS, RESOLUTIONS} from './constants';
+import {DEFAULT_FILENAME, FORMATS, RESOLUTIONS, ASPECT_RATIOS} from './constants';
 import {WithKeplerUI} from '../inject-kepler';
 
 const getOptionValue = r => r.value;
@@ -10,7 +10,7 @@ const displayOption = r => r.label;
 const getSelectedItems = (options, value) => options.find(o => o.value === value);
 
 function SettingsTab({settings, resolution}) {
-  const [aspRatio, setAspRatio] = useState('16:9');
+  const [aspRatio, setAspRatio] = useState(ASPECT_RATIOS['16_9']);
   return (
     <WithKeplerUI>
       {({Input, ItemSelector}) => (
@@ -35,12 +35,13 @@ function SettingsTab({settings, resolution}) {
             <StyledLabelCell>Ratio</StyledLabelCell>
             <ItemSelector
               selectedItems={aspRatio}
-              options={['4:3', '16:9']}
+              options={[ASPECT_RATIOS['4_3'], ASPECT_RATIOS['16_9']]}
               multiSelect={false}
               searchable={false}
               onChange={ratio => {
                 setAspRatio(ratio);
-                if (aspRatio === '4:3') {
+                if (aspRatio === ASPECT_RATIOS['4_3']) {
+                  // Changes resolution of preview in modal
                   settings.resolution = '1280x720';
                 } else {
                   settings.resolution = '1280x960';

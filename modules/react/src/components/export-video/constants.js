@@ -48,48 +48,50 @@ export const FORMATS = [
   }
 ];
 
+export const ASPECT_RATIOS = {'4_3': '4:3', '16_9': '16:9'};
+
 export const RESOLUTIONS = [
   {
     value: '960x540',
     label: 'Good (540p)',
     width: 960,
     height: 540,
-    aspectRatio: '16:9'
+    aspectRatio: ASPECT_RATIOS['16_9']
   },
   {
     value: '1280x720',
     label: 'High (720p)',
     width: 1280,
     height: 720,
-    aspectRatio: '16:9'
+    aspectRatio: ASPECT_RATIOS['16_9']
   },
   {
     value: '1920x1080',
     label: 'Highest (1080p)',
     width: 1920,
     height: 1080,
-    aspectRatio: '16:9'
+    aspectRatio: ASPECT_RATIOS['16_9']
   },
   {
     value: '640x480',
     label: 'Good (480p)',
     width: 640,
     height: 480,
-    aspectRatio: '4:3'
+    aspectRatio: ASPECT_RATIOS['4_3']
   },
   {
     value: '1280x960',
     label: 'High (960p)',
     width: 1280,
     height: 960,
-    aspectRatio: '4:3'
+    aspectRatio: ASPECT_RATIOS['4_3']
   },
   {
     value: '1920x1440',
     label: 'Highest (1440p)',
     width: 1920,
     height: 1440,
-    aspectRatio: '4:3'
+    aspectRatio: ASPECT_RATIOS['4_3']
   }
 ];
 
