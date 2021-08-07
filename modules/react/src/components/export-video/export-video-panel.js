@@ -148,7 +148,6 @@ const ExportVideoPanel = ({
         mapboxLayerBeforeId={mapboxLayerBeforeId}
         handlePreviewVideo={handlePreviewVideo}
         handleRenderVideo={handleRenderVideo}
-        rendering={rendering || previewing}
       />
     </Panel>
   );
