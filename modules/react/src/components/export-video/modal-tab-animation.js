@@ -1,24 +1,21 @@
 import React from 'react';
 
 import {msConversion} from './utils';
-import {SliderWrapper, StyledLabelCell, StyledValueCell, InputGrid} from './styled-components';
+import {
+  SliderWrapper,
+  StyledLabelCell,
+  StyledValueCell,
+  InputGrid,
+  VideoLengthDisplay
+} from './styled-components';
 import {WithKeplerUI} from '../inject-kepler';
 
-function EditTab({settings}) {
+function AnimationTab({settings}) {
   return (
     <WithKeplerUI>
       {({Slider, ItemSelector}) => (
         <>
           <InputGrid rows={5}>
-            <StyledLabelCell>Ratio</StyledLabelCell>
-            <ItemSelector
-              disabled={true}
-              selectedItems={'16:9'}
-              options={['4:3', '16:9']}
-              multiSelect={false}
-              searchable={false}
-              onChange={() => {}}
-            />
             <StyledLabelCell>Duration</StyledLabelCell>
             <StyledValueCell style={{paddingLeft: '0px', paddingRight: '0px'}}>
               <SliderWrapper
@@ -38,9 +35,7 @@ function EditTab({settings}) {
                     settings.setDuration(val);
                   }}
                 />
-                <div style={{alignSelf: 'center', paddingLeft: '8px', width: '56px'}}>
-                  {msConversion(settings.durationMs)}
-                </div>
+                <VideoLengthDisplay>{msConversion(settings.durationMs)}</VideoLengthDisplay>
               </SliderWrapper>
             </StyledValueCell>
             <StyledLabelCell>Camera</StyledLabelCell>
@@ -65,4 +60,4 @@ function EditTab({settings}) {
   );
 }
 
-export default EditTab;
+export default AnimationTab;

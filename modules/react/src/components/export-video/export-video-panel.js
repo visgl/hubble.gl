@@ -19,18 +19,21 @@
 // THE SOFTWARE.
 
 import React from 'react';
-import styled, {withTheme} from 'styled-components';
-import {PanelCloseInner, StyledTitle} from './styled-components';
-
+import {withTheme} from 'styled-components';
 import {
-  DEFAULT_PADDING,
-  DEFAULT_ICON_BUTTON_HEIGHT,
-  DEFAULT_ROW_GAP,
-  DEFAULT_SETTINGS_WIDTH
-} from './constants';
+  PanelCloseInner,
+  StyledTitle,
+  PanelBodyInner,
+  Panel,
+  ButtonGroup,
+  TimelineControls,
+  timelinePlayButtonStyle,
+  ExportVideoPanelHeader
+} from './styled-components';
+
+import {DEFAULT_ICON_BUTTON_HEIGHT} from './constants';
 import ExportVideoPanelSettings from './export-video-panel-settings';
-import {ExportVideoPanelPreview} from './export-video-panel-preview'; // Not yet part of standard library. TODO when updated
-import ExportVideoPanelFooter from './export-video-panel-footer';
+import {ExportVideoPanelPreview} from './export-video-panel-preview';
 
 import {WithKeplerUI} from '../inject-kepler';
 
@@ -38,21 +41,18 @@ const PanelClose = ({handleClose}) => (
   <WithKeplerUI>
     {({IconButton, Icons}) => (
       <PanelCloseInner className="export-video-panel__close">
-        <IconButton className="export-video-panel__button" link onClick={handleClose}>
+        <IconButton
+          style={{alignItems: 'start'}}
+          className="export-video-panel__button"
+          link
+          onClick={handleClose}
+        >
           <Icons.Delete height={DEFAULT_ICON_BUTTON_HEIGHT} />
         </IconButton>
       </PanelCloseInner>
     )}
   </WithKeplerUI>
 );
-
-const PanelBodyInner = styled.div`
-  padding: 0 ${DEFAULT_PADDING}px;
-  display: grid;
-  grid-template-columns: ${props => props.exportVideoWidth}px ${DEFAULT_SETTINGS_WIDTH}px;
-  grid-template-rows: auto;
-  grid-column-gap: ${DEFAULT_ROW_GAP}px;
-`;
 
 const PanelBody = ({
   exportVideoWidth,
@@ -65,31 +65,44 @@ const PanelBody = ({
   rendering,
   deckProps,
   staticMapProps,
-  mapboxLayerBeforeId
+  mapboxLayerBeforeId,
+  handlePreviewVideo,
+  handleRenderVideo
 }) => (
-  <PanelBodyInner className="export-video-panel__body" exportVideoWidth={exportVideoWidth}>
-    <ExportVideoPanelPreview
-      mapData={mapData}
-      adapter={adapter}
-      setViewState={setViewState}
-      exportVideoWidth={exportVideoWidth}
-      resolution={resolution}
-      viewState={viewState}
-      rendering={rendering}
-      durationMs={settings.durationMs}
-      deckProps={deckProps}
-      staticMapProps={staticMapProps}
-      mapboxLayerBeforeId={mapboxLayerBeforeId}
-    />
-    <ExportVideoPanelSettings settings={settings} resolution={resolution} />
-    {/* TODO: inject additional keyframing tools here */}
-  </PanelBodyInner>
+  <WithKeplerUI>
+    {({Icons, Button}) => (
+      <PanelBodyInner className="export-video-panel__body" exportVideoWidth={exportVideoWidth}>
+        <ExportVideoPanelPreview
+          mapData={mapData}
+          adapter={adapter}
+          setViewState={setViewState}
+          exportVideoWidth={exportVideoWidth}
+          resolution={resolution}
+          viewState={viewState}
+          rendering={rendering}
+          durationMs={settings.durationMs}
+          deckProps={deckProps}
+          staticMapProps={staticMapProps}
+          mapboxLayerBeforeId={mapboxLayerBeforeId}
+        />
+        <ExportVideoPanelSettings settings={settings} resolution={resolution} />
+        <TimelineControls className="timeline-controls">
+          <Icons.Play style={timelinePlayButtonStyle} onClick={handlePreviewVideo} />
+        </TimelineControls>
+        <ButtonGroup>
+          <Button
+            style={{marginTop: '16px', width: '100%', height: '32px'}}
+            className={'export-video-button'}
+            onClick={handleRenderVideo}
+            disabled={rendering}
+          >
+            Render
+          </Button>
+        </ButtonGroup>
+      </PanelBodyInner>
+    )}
+  </WithKeplerUI>
 );
-
-const Panel = styled.div`
-  width: ${props =>
-    props.exportVideoWidth + 2 * DEFAULT_PADDING + DEFAULT_ROW_GAP + DEFAULT_SETTINGS_WIDTH}px;
-`;
 
 const ExportVideoPanel = ({
   // UI Props
@@ -109,17 +122,16 @@ const ExportVideoPanel = ({
   resolution,
   viewState,
   rendering,
-  previewing,
   deckProps,
   staticMapProps
 }) => {
   return (
     <Panel exportVideoWidth={exportVideoWidth} className="export-video-panel">
       {header !== false ? (
-        <>
-          <PanelClose handleClose={handleClose} />
+        <ExportVideoPanelHeader className="export-video-panel__header">
           <StyledTitle className="export-video-panel__title">Export Video</StyledTitle>
-        </>
+          <PanelClose handleClose={handleClose} />
+        </ExportVideoPanelHeader>
       ) : null}
       <PanelBody
         exportVideoWidth={exportVideoWidth}
@@ -133,11 +145,8 @@ const ExportVideoPanel = ({
         deckProps={deckProps}
         staticMapProps={staticMapProps}
         mapboxLayerBeforeId={mapboxLayerBeforeId}
-      />
-      <ExportVideoPanelFooter
         handlePreviewVideo={handlePreviewVideo}
         handleRenderVideo={handleRenderVideo}
-        rendering={rendering || previewing}
       />
     </Panel>
   );
