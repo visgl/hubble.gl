@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {DEFAULT_ROW_GAP, DEFAULT_PADDING} from './constants';
+import {DEFAULT_ROW_GAP, DEFAULT_PADDING, DEFAULT_SETTINGS_WIDTH} from './constants';
 
 export const SliderWrapper = styled.div`
   display: flex;
@@ -34,13 +34,6 @@ export const InputGrid = styled.div`
   grid-row-gap: ${DEFAULT_ROW_GAP}px;
 `;
 
-export const PanelFooterInner = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: ${DEFAULT_ROW_GAP}px;
-  padding: ${DEFAULT_PADDING}px;
-`;
-
 export const ButtonGroup = styled.div`
   display: flex;
 `;
@@ -52,7 +45,6 @@ export const ModalContainer = styled.div`
 export const PanelCloseInner = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding: ${DEFAULT_PADDING}px ${DEFAULT_PADDING}px 0 ${DEFAULT_PADDING}px;
 `;
 
 export const StyledTitle = styled.div`
@@ -60,5 +52,70 @@ export const StyledTitle = styled.div`
   font-size: 20px;
   font-weight: 400;
   line-height: ${props => props.theme.lineHeight};
-  padding: 0 ${DEFAULT_PADDING}px 16px ${DEFAULT_PADDING}px;
+  padding-bottom: 16px;
+`;
+
+export const PanelBodyInner = styled.div`
+  display: grid;
+  grid-template-columns: ${props => props.exportVideoWidth}px ${DEFAULT_SETTINGS_WIDTH}px;
+  grid-template-rows: auto;
+  grid-column-gap: ${DEFAULT_ROW_GAP}px;
+`;
+
+export const Panel = styled.div`
+  width: ${props =>
+    props.exportVideoWidth + 2 * DEFAULT_PADDING + DEFAULT_ROW_GAP + DEFAULT_SETTINGS_WIDTH}px;
+  padding: ${DEFAULT_PADDING}px;
+`;
+
+export const deckStyle = {
+  width: '100%',
+  height: '100%',
+  position: 'relative'
+};
+
+export const TimelineControls = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding-top: 16px;
+`;
+
+export const timelinePlayButtonStyle = {
+  cursor: 'pointer',
+  height: '32px',
+  width: '32px',
+  fill: '#FFF'
+};
+
+export const LoaderWrapper = styled.div`
+  display: ${props => (props.rendering === false ? 'none' : 'flex')};
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
+  width: ${props => props.width}px;
+  height: ${props => props.height}px;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const RenderingFeedbackContainer = styled.div`
+  color: white;
+  position: absolute;
+  top: ${props => props.height - 180}px;
+`;
+
+export const VideoLengthDisplay = styled.div`
+  align-self: center;
+  padding-left: 8px;
+`;
+
+export const ExportVideoPanelHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const DeckCanvas = styled.div`
+  width: ${props => props.width}px;
+  height: ${props => props.height}px;
+  position: relative;
 `;

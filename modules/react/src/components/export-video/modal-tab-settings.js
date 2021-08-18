@@ -1,15 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {estimateFileSize} from './utils';
 import {StyledLabelCell, StyledValueCell, InputGrid} from './styled-components';
-import {DEFAULT_FILENAME, FORMATS, RESOLUTIONS} from './constants';
+import {
+  DEFAULT_FILENAME,
+  FORMATS,
+  RESOLUTIONS,
+  ASPECT_RATIOS,
+  DEFAULT_PREVIEW_RESOLUTIONS
+} from './constants';
 import {WithKeplerUI} from '../inject-kepler';
 
 const getOptionValue = r => r.value;
 const displayOption = r => r.label;
 const getSelectedItems = (options, value) => options.find(o => o.value === value);
 
-function ExportTab({settings, resolution}) {
+function SettingsTab({settings, resolution}) {
+  const [aspRatio, setAspRatio] = useState(ASPECT_RATIOS['16_9']);
   return (
     <WithKeplerUI>
       {({Input, ItemSelector}) => (
@@ -31,10 +38,21 @@ function ExportTab({settings, resolution}) {
               searchable={false}
               onChange={settings.setMediaType}
             />
-            <StyledLabelCell>Resolution</StyledLabelCell>
+            <StyledLabelCell>Ratio</StyledLabelCell>
+            <ItemSelector
+              selectedItems={aspRatio}
+              options={[ASPECT_RATIOS['4_3'], ASPECT_RATIOS['16_9']]}
+              multiSelect={false}
+              searchable={false}
+              onChange={ratio => {
+                setAspRatio(ratio);
+                settings.setResolution(DEFAULT_PREVIEW_RESOLUTIONS[ratio]);
+              }}
+            />
+            <StyledLabelCell>Quality</StyledLabelCell>
             <ItemSelector
               selectedItems={getSelectedItems(RESOLUTIONS, settings.resolution)}
-              options={RESOLUTIONS}
+              options={RESOLUTIONS.filter(o => o.aspectRatio === aspRatio)}
               getOptionValue={getOptionValue}
               displayOption={displayOption}
               multiSelect={false}
@@ -58,4 +76,4 @@ function ExportTab({settings, resolution}) {
   );
 }
 
-export default ExportTab;
+export default SettingsTab;
