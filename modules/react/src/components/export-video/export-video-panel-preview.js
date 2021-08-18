@@ -67,7 +67,6 @@ export class ExportVideoPanelPreview extends Component {
     this._setDevicePixelRatio(resolution[0] / exportVideoWidth);
 
     if (disableStaticMap) {
-      // ! deck resize???? just by device pixels ratio?
       return;
     }
 
@@ -133,7 +132,7 @@ export class ExportVideoPanelPreview extends Component {
       map.addLayer(new MapboxLayer({id: keplerLayers[i].id, deck}), beforeId);
     }
 
-    map.on('render', () => this._onAfterRender());
+    map.on('render', this._onAfterRender);
   }
 
   render() {
