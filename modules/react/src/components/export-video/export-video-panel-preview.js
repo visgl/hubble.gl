@@ -62,8 +62,7 @@ export class ExportVideoPanelPreview extends Component {
   }
 
   _resizeVideo() {
-    const {exportVideoWidth, resolution, staticMapProps} = this.props;
-    const {disableStaticMap} = staticMapProps;
+    const {exportVideoWidth, resolution, disableStaticMap} = this.props;
 
     this._setDevicePixelRatio(resolution[0] / exportVideoWidth);
 
@@ -146,9 +145,9 @@ export class ExportVideoPanelPreview extends Component {
       durationMs,
       resolution,
       deckProps,
-      staticMapProps
+      staticMapProps,
+      disableStaticMap
     } = this.props;
-    const {disableStaticMap} = staticMapProps;
     const {glContext, mapStyle} = this.state;
     const deck = this.deckRef.current && this.deckRef.current.deck;
 
