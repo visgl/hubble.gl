@@ -310,6 +310,7 @@ export class ExportVideoPanelContainer extends Component {
       header,
       deckProps,
       staticMapProps,
+      disableStaticMap,
       mapboxLayerBeforeId
     } = this.props;
     const {
@@ -357,6 +358,7 @@ export class ExportVideoPanelContainer extends Component {
         setViewState={this.setViewState}
         deckProps={deckProps}
         staticMapProps={staticMapProps}
+        disableStaticMap={disableStaticMap}
         mapboxLayerBeforeId={mapboxLayerBeforeId}
         // Settings Props
         settings={settings}
@@ -377,5 +379,6 @@ ExportVideoPanelContainer.defaultProps = {
   header: true,
   glContext: undefined,
   deckProps: {},
-  staticMapProps: {}
+  staticMapProps: {},
+  disableStaticMap: false
 };

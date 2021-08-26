@@ -45,6 +45,8 @@ export class ExportVideoPanelPreview extends Component {
 
     this._onMapLoad = this._onMapLoad.bind(this);
     this._resizeVideo = this._resizeVideo.bind(this);
+    this._onAfterRender = this._onAfterRender.bind(this);
+
     this._resizeVideo();
   }
 
@@ -60,8 +62,14 @@ export class ExportVideoPanelPreview extends Component {
   }
 
   _resizeVideo() {
-    const {exportVideoWidth, resolution} = this.props;
+    const {exportVideoWidth, resolution, disableStaticMap} = this.props;
+
     this._setDevicePixelRatio(resolution[0] / exportVideoWidth);
+
+    if (disableStaticMap) {
+      return;
+    }
+
     if (this.mapRef.current) {
       const map = this.mapRef.current.getMap();
       map.resize();
@@ -105,6 +113,12 @@ export class ExportVideoPanelPreview extends Component {
     return createKeplerLayers(mapData, viewState);
   }
 
+  _onAfterRender() {
+    this.props.adapter.onAfterRender(() => {
+      this.forceUpdate();
+    });
+  }
+
   _onMapLoad() {
     // Adds mapbox layer to modal
     const map = this.mapRef.current.getMap();
@@ -118,11 +132,7 @@ export class ExportVideoPanelPreview extends Component {
       map.addLayer(new MapboxLayer({id: keplerLayers[i].id, deck}), beforeId);
     }
 
-    map.on('render', () =>
-      this.props.adapter.onAfterRender(() => {
-        this.forceUpdate();
-      })
-    );
+    map.on('render', this._onAfterRender);
   }
 
   render() {
@@ -134,7 +144,8 @@ export class ExportVideoPanelPreview extends Component {
       durationMs,
       resolution,
       deckProps,
-      staticMapProps
+      staticMapProps,
+      disableStaticMap
     } = this.props;
     const {glContext, mapStyle} = this.state;
     const deck = this.deckRef.current && this.deckRef.current.deck;
@@ -153,12 +164,13 @@ export class ExportVideoPanelPreview extends Component {
             glOptions={{stencil: true}}
             onWebGLInitialized={gl => this.setState({glContext: gl})}
             onViewStateChange={({viewState: vs}) => setViewState(vs)}
+            {...(disableStaticMap ? {onAfterRender: this._onAfterRender} : {})}
             width={resolution[0]}
             height={resolution[1]}
             // onClick={visStateActions.onLayerClick}
             {...adapter.getProps({deck, extraProps: deckProps})}
           >
-            {glContext && (
+            {disableStaticMap || !glContext ? null : (
               <StaticMap
                 ref={this.mapRef}
                 mapStyle={mapStyle}
