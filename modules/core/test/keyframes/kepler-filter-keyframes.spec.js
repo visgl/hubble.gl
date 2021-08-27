@@ -72,7 +72,7 @@ const TEST_CASES = [
   }
 ];
 
-test('CameraKeyframes#flyToInterpolator', t => {
+test('KeplerFilterKeyframes#timeRangeKeyframes', t => {
   TEST_CASES.forEach(testCase => {
     const result = timeRangeKeyframes(testCase.args);
     t.deepEqual(result.keyframes, testCase.expected.keyframes, testCase.message);

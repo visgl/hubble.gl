@@ -27,6 +27,21 @@ import Animation from './animation';
 
 function noop() {}
 
+export function findLayer({layers, layerKeyframe}) {
+  // Either find layer using id or label.
+  return (
+    layers.find(layer => layer.id === layerKeyframe.id) ||
+    layers.find(layer => layer.config.label === layerKeyframe.label)
+  );
+}
+
+export function findFilterIdx({filters, filterKeyframe}) {
+  // Either find filter using index or id.
+  return Number.isFinite(filterKeyframe.filterIdx)
+    ? filterKeyframe.filterIdx
+    : filters.findIndex(filter => filter.id === filterKeyframe.id);
+}
+
 export default class KeplerAnimation extends Animation {
   cameraKeyframe;
   layerKeyframes = {};
@@ -91,17 +106,15 @@ export default class KeplerAnimation extends Animation {
     }
 
     if (layerKeyframes.length > 0) {
-      this.layerKeyframes = layerKeyframes.reduce((acc, value) => {
+      this.layerKeyframes = layerKeyframes.reduce((acc, layerKeyframe) => {
         // Either find layer using id or label.
-        const matchedLayer =
-          layers.find(layer => layer.id === value.id) ||
-          layers.find(layer => layer.config.label === value.label);
-        if (matchedLayer) {
-          if (acc[matchedLayer.id]) {
-            acc[matchedLayer.id].set({layer: matchedLayer, ...value});
+        const layer = findLayer({layers, layerKeyframe});
+        if (layer) {
+          if (acc[layer.id]) {
+            acc[layer.id].set({layer, ...layerKeyframe});
           } else {
-            acc[matchedLayer.id] = new KeplerLayerKeyframes({layer: matchedLayer, ...value});
-            this.unattachedKeyframes.push(acc[matchedLayer.id]);
+            acc[layer.id] = new KeplerLayerKeyframes({layer, ...layerKeyframe});
+            this.unattachedKeyframes.push(acc[layer.id]);
           }
         }
         return acc;
@@ -109,17 +122,14 @@ export default class KeplerAnimation extends Animation {
     }
 
     if (filterKeyframes.length > 0) {
-      this.filterKeyframes = filterKeyframes.reduce((acc, value) => {
-        // Either find filter using index or id.
-        const filterIdx = Number.isFinite(value.filterIdx)
-          ? value.filterIdx
-          : filters.findIndex(filter => filter.id === value.id);
+      this.filterKeyframes = filterKeyframes.reduce((acc, filterKeyframe) => {
+        const filterIdx = findFilterIdx({filters, filterKeyframe});
         const filter = filters[filterIdx];
         if (filter) {
           if (acc[filter.id]) {
-            acc[filter.id].set({filter, ...value});
+            acc[filter.id].set({filter, ...filterKeyframe});
           } else {
-            acc[filter.id] = new KeplerFilterKeyframes({filter, filterIdx, ...value});
+            acc[filter.id] = new KeplerFilterKeyframes({filter, filterIdx, ...filterKeyframe});
             this.unattachedKeyframes.push(acc[filter.id]);
           }
         }
