@@ -86,13 +86,13 @@ const FIND_FILTER_TEST_CASES = [
       filters,
       filterKeyframe: {filterIdx: 0}
     },
-    expected: {id: 'f_1'},
+    expected: 0,
     message: 'filter found by filter index should be correct'
   },
   {
     args: {
       filters,
-      filterKeyframe: {id: 'f_2'}
+      filterKeyframe: 1
     },
     expected: {filterIdx: undefined, id: 'f_2'},
     message: 'filter found by filter id should be correct'
@@ -102,7 +102,7 @@ const FIND_FILTER_TEST_CASES = [
       filters,
       filterKeyframe: {filterIdx: undefined, id: 'f_unknown'}
     },
-    expected: undefined,
+    expected: -1,
     message: 'unknwon filter should be undefined'
   }
 ];
