@@ -26,6 +26,8 @@ import {
   // eslint-disable-next-line import/no-unresolved
 } from '@hubble.gl/core/animations/kepler-animation';
 
+import {KeplerAnimation} from '@hubble.gl/core';
+
 const layers = [
   {id: '2', config: {label: 'a'}},
   {id: '1', config: {label: 'b'}},
@@ -109,6 +111,42 @@ test('KeplerAnimation#findFilterIdx', t => {
   FIND_FILTER_TEST_CASES.forEach(testCase => {
     const result = findFilterIdx(testCase.args);
     t.deepEqual(result, testCase.expected, testCase.message);
+  });
+
+  t.end();
+});
+
+const ANIMATION_TEST_CASES = [
+  {
+    args: {
+      layers,
+      layerKeyframes: [],
+      filters,
+      filterKeyframes: []
+    },
+    expected: {
+      cameraKeyframe: undefined,
+      layerKeyframes: {},
+      filterKeyframes: {},
+      tripKeyframe: undefined,
+      unattachedKeyframes: []
+    },
+    message: 'no keyframes should make an empty animation'
+  }
+];
+
+test('KeplerAnimation#contruct empty', t => {
+  ANIMATION_TEST_CASES.forEach(testCase => {
+    const result = new KeplerAnimation(testCase.args);
+    t.deepEqual(result.cameraKeyframe, testCase.expected.cameraKeyframe, testCase.message);
+    t.deepEqual(result.layerKeyframes, testCase.expected.layerKeyframes, testCase.message);
+    t.deepEqual(result.filterKeyframes, testCase.expected.filterKeyframes, testCase.message);
+    t.deepEqual(result.tripKeyframe, testCase.expected.tripKeyframe, testCase.message);
+    t.deepEqual(
+      result.unattachedKeyframes,
+      testCase.expected.unattachedKeyframes,
+      testCase.message
+    );
   });
 
   t.end();
