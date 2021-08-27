@@ -111,7 +111,9 @@ export default class KeplerAnimation extends Animation {
     if (filterKeyframes.length > 0) {
       this.filterKeyframes = filterKeyframes.reduce((acc, value) => {
         // Either find filter using index or id.
-        const filterIdx = value.filterIdx || filters.findIndex(filter => filter.id === value.id);
+        const filterIdx = Number.isFinite(value.filterIdx)
+          ? value.filterIdx
+          : filters.findIndex(filter => filter.id === value.id);
         const filter = filters[filterIdx];
         if (filter) {
           if (acc[filter.id]) {
