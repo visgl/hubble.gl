@@ -92,9 +92,9 @@ const FIND_FILTER_TEST_CASES = [
   {
     args: {
       filters,
-      filterKeyframe: 1
+      filterKeyframe: {filterIdx: undefined, id: 'f_2'}
     },
-    expected: {filterIdx: undefined, id: 'f_2'},
+    expected: 1,
     message: 'filter found by filter id should be correct'
   },
   {
