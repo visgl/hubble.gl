@@ -18,18 +18,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import keplerGlReducer, {mapStateUpdaters} from 'kepler.gl/reducers';
-import {updateViewState} from '../map';
-
-export default keplerGlReducer.plugin({
-  [updateViewState]: (state, action) => {
-    return {
-      ...state,
-      mapState: mapStateUpdaters.updateMapUpdater(state.mapState, action)
-    };
-  }
-});
-
 const isKeplerReady = (state, mapId) => {
   if (state.keplerGl[mapId]) return true;
   return false;
