@@ -20,13 +20,13 @@
 
 import {combineReducers, createStore, applyMiddleware, compose} from 'redux';
 import {enhanceReduxMiddleware} from 'kepler.gl/middleware';
+import keplerGlReducer from 'kepler.gl/reducers';
 import thunk from 'redux-thunk';
 import {rendererMiddleware} from './features/renderer';
 // eslint-disable-next-line no-unused-vars
 import window from 'global/window';
 
 import {appReducer} from './app';
-import keplerGlReducer from './features/kepler/keplerSlice';
 
 import rendererReducer from './features/renderer/rendererSlice';
 import {mapReducer} from './features/map';

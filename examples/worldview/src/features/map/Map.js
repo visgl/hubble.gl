@@ -146,7 +146,7 @@ export class Map extends Component {
       <div id="deck-canvas" style={containerStyle}>
         <DeckGL
           ref={this.deckRef}
-          viewState={viewState}
+          viewState={{...viewState, maxPitch: 90}}
           id="hubblegl-overlay"
           style={deckStyle}
           controller={true}
