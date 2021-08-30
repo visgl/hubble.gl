@@ -21,7 +21,7 @@ You can find the Hubble.gl documentation [on the website](https://uber.github.io
 
 ## Examples
 
-We have examples [on the website](https://uber.github.io/hubble.gl/examples).
+We have examples [on the website](https://visgl.github.io/hubble.gl/examples).
 
 ## Contributing
 
