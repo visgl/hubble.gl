@@ -52,16 +52,18 @@ function renderLayer(overlays, idx, map, viewState) {
   };
 
   // Layer is Layer class
-  const layerOverlay = layer.renderLayer({
-    data,
-    gpuFilter,
-    idx,
-    interactionConfig,
-    layerCallbacks,
-    mapState: {...mapState, ...viewState},
-    animationConfig,
-    objectHovered
-  });
+  const layerOverlay = layer
+    .renderLayer({
+      data,
+      gpuFilter,
+      idx,
+      interactionConfig,
+      layerCallbacks,
+      mapState: {...mapState, ...viewState},
+      animationConfig,
+      objectHovered
+    })
+    .map(deckLayer => deckLayer.clone({pickable: false}));
   return overlays.concat(layerOverlay || []);
 }
 
