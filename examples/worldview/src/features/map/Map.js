@@ -25,12 +25,48 @@ import {MapboxLayer} from '@deck.gl/mapbox';
 import {nearestEven} from '../../utils';
 import isEqual from 'lodash.isequal';
 
+function DebugSize({containerRef, deckRef}) {
+  const container = containerRef.current;
+  const deck = deckRef.current;
+  const canvas = deck && deck._canvasRef.current;
+  const canvasRect = canvas && canvas.getBoundingClientRect();
+
+  return (
+    <div style={{position: 'absolute', top: 0, left: 0, color: 'white'}}>
+      {container && (
+        <div>
+          Container CSS size: <b>{container.clientWidth}</b>px x <b>{container.clientHeight}</b>px
+        </div>
+      )}
+      {canvas && (
+        <div>
+          Canvas CSS size: <b>{canvas.clientWidth}</b>px x <b>{canvas.clientHeight}</b>px
+        </div>
+      )}
+      {canvas && (
+        <div>
+          Canvas internal size: <b>{canvas.width}</b>px x <b>{canvas.height}</b>px
+        </div>
+      )}
+      {canvasRect && (
+        <div>
+          Canvas rect size: <b>{canvasRect.width}</b>px x <b>{canvasRect.height}</b>px
+        </div>
+      )}
+      <div>
+        pixel ratio: <b>{window.devicePixelRatio}</b>
+      </div>
+    </div>
+  );
+}
+
 export class Map extends Component {
   constructor(props) {
     super(props);
 
     this.mapRef = React.createRef();
     this.deckRef = React.createRef();
+    this.containerRef = React.createRef();
 
     this.state = {
       glContext: undefined,
@@ -143,7 +179,7 @@ export class Map extends Component {
     };
 
     return (
-      <div id="deck-canvas" style={containerStyle}>
+      <div ref={this.containerRef} id="deck-canvas" style={containerStyle}>
         <DeckGL
           ref={this.deckRef}
           viewState={{...viewState, maxPitch: 90}}
@@ -167,6 +203,7 @@ export class Map extends Component {
             />
           )}
         </DeckGL>
+        <DebugSize deckRef={this.deckRef} containerRef={this.containerRef} />
       </div>
     );
   }
