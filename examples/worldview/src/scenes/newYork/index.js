@@ -16,7 +16,7 @@ import {easing} from 'popmotion';
 
 const KEPLER_MAP_ID = 'map';
 
-export const useNewYorkScene = () => {
+export const useScene = () => {
   const dispatch = useDispatch();
   const viewState = useSelector(viewStateSelector);
   const duration = useSelector(durationSelector);
