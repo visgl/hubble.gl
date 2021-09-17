@@ -127,10 +127,10 @@ export class ExportVideoPanelPreview extends Component {
     const keplerLayers = this.createLayers();
     const beforeId = this.props.mapboxLayerBeforeId;
 
-    // If there aren't any layers, combine map and deck with a fake layer. 
-    if (!keplerLayers.length) { 
-      map.addLayer(new MapboxLayer({id: '%%blank-layer', deck})); 
-    } 
+    // If there aren't any layers, combine map and deck with a fake layer.
+    if (!keplerLayers.length) {
+      map.addLayer(new MapboxLayer({id: '%%blank-layer', deck}));
+    }
 
     for (let i = 0; i < keplerLayers.length; i++) {
       // Adds DeckGL layers to Mapbox so Mapbox can be the bottom layer. Removing this clips DeckGL layers
