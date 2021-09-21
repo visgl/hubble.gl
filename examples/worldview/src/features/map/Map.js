@@ -25,14 +25,22 @@ import {MapboxLayer} from '@deck.gl/mapbox';
 import {nearestEven} from '../../utils';
 import isEqual from 'lodash.isequal';
 
-function DebugSize({containerRef, deckRef}) {
+function DebugOverlay({containerRef, deckRef, dimension, expectedContainer, dpi, onDpiChange}) {
   const container = containerRef.current;
   const deck = deckRef.current;
   const canvas = deck && deck._canvasRef.current;
   const canvasRect = canvas && canvas.getBoundingClientRect();
+  const gl = deck && deck.deck.animationLoop && deck.deck.animationLoop.gl;
 
   return (
     <div style={{position: 'absolute', top: 0, left: 0, color: 'white'}}>
+      <div>
+        Expected Export size: <b>{dimension.width}</b>px x <b>{dimension.height}</b>px
+      </div>
+      <div>
+        Expected Container size: <b>{expectedContainer.width}</b>px x{' '}
+        <b>{expectedContainer.height}</b>px
+      </div>
       {container && (
         <div>
           Container CSS size: <b>{container.clientWidth}</b>px x <b>{container.clientHeight}</b>px
@@ -48,6 +56,11 @@ function DebugSize({containerRef, deckRef}) {
           Canvas internal size: <b>{canvas.width}</b>px x <b>{canvas.height}</b>px
         </div>
       )}
+      {gl && (
+        <div>
+          GL draw buffer size: <b>{gl.drawingBufferWidth}</b>px x <b>{gl.drawingBufferHeight}</b>px
+        </div>
+      )}
       {canvasRect && (
         <div>
           Canvas rect size: <b>{canvasRect.width}</b>px x <b>{canvasRect.height}</b>px
@@ -55,6 +68,16 @@ function DebugSize({containerRef, deckRef}) {
       )}
       <div>
         pixel ratio: <b>{window.devicePixelRatio}</b>
+      </div>
+      <div>
+        <input
+          type="range"
+          min={0.01}
+          max={5.0}
+          step={0.01}
+          value={dpi}
+          onChange={e => onDpiChange(parseFloat(e.target.value))}
+        />
       </div>
     </div>
   );
@@ -70,17 +93,25 @@ export class Map extends Component {
 
     this.state = {
       glContext: undefined,
-      memoDevicePixelRatio: window.devicePixelRatio // memoize
+      memoDevicePixelRatio: window.devicePixelRatio, // memoize
+      dpi: 1
     };
 
     this._onMapLoad = this._onMapLoad.bind(this);
     this._resizeVideo = this._resizeVideo.bind(this);
+    this._resizeMap = this._resizeMap.bind(this);
+    this._changeDpi = this._changeDpi.bind(this);
 
     this._resizeVideo();
   }
 
   componentDidUpdate(prevProps) {
-    if (!isEqual(prevProps.dimension, this.props.dimension)) {
+    const {dimension, width, height} = this.props;
+    if (
+      !isEqual(prevProps.dimension, dimension) ||
+      prevProps.width !== width ||
+      prevProps.height !== height
+    ) {
       this._resizeVideo();
     }
   }
@@ -90,13 +121,22 @@ export class Map extends Component {
     this._setDevicePixelRatio(memoDevicePixelRatio);
   }
 
-  _resizeVideo() {
-    const {width, dimension} = this.props;
-    this._setDevicePixelRatio(nearestEven(dimension.width / width));
+  _resizeMap() {
     if (this.mapRef.current) {
       const map = this.mapRef.current.getMap();
       map.resize();
     }
+  }
+
+  _resizeVideo() {
+    const {width, dimension} = this.props;
+    this._changeDpi(nearestEven(dimension.width / width));
+  }
+
+  _changeDpi(dpi) {
+    this._setDevicePixelRatio(dpi);
+    this._resizeMap();
+    this.setState({dpi});
   }
 
   _setDevicePixelRatio(devicePixelRatio) {
@@ -163,8 +203,10 @@ export class Map extends Component {
       setViewState,
       deckProps,
       staticMapProps,
-      dimension
+      dimension,
+      debug
     } = this.props;
+    const {glContext, dpi} = this.state;
     const deck = this.deckRef.current && this.deckRef.current.deck;
 
     const deckStyle = {
@@ -193,17 +235,26 @@ export class Map extends Component {
           height={dimension.height}
           {...adapter.getProps({deck, extraProps: deckProps})}
         >
-          {this.state.glContext && (
+          {glContext && (
             <StaticMap
               ref={this.mapRef}
               preventStyleDiffing={true}
-              gl={this.state.glContext}
+              gl={glContext}
               onLoad={this._onMapLoad}
               {...staticMapProps}
             />
           )}
         </DeckGL>
-        <DebugSize deckRef={this.deckRef} containerRef={this.containerRef} />
+        {debug && (
+          <DebugOverlay
+            deckRef={this.deckRef}
+            containerRef={this.containerRef}
+            dimension={dimension}
+            expectedContainer={{width, height}}
+            dpi={dpi}
+            onDpiChange={this._changeDpi}
+          />
+        )}
       </div>
     );
   }
