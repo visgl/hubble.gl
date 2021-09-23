@@ -101,8 +101,6 @@ export class Map extends Component {
     this._resizeVideo = this._resizeVideo.bind(this);
     this._resizeMap = this._resizeMap.bind(this);
     this._changeDpi = this._changeDpi.bind(this);
-
-    this._resizeVideo();
   }
 
   componentDidUpdate(prevProps) {
@@ -114,6 +112,10 @@ export class Map extends Component {
     ) {
       this._resizeVideo();
     }
+  }
+
+  componentDidMount() {
+    this._resizeVideo();
   }
 
   componentWillUnmount() {
