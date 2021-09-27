@@ -93,18 +93,31 @@ function makeLocalDevConfig(EXAMPLE_DIR = LIB_DIR, linkToLuma, linkToMath) {
           test: /\.js$/,
           use: ['source-map-loader'],
           enforce: 'pre'
+        },
+        {
+          // Compile source using babel. This is not necessary for src to run in the browser
+          // However class inheritance cannot happen between transpiled/non-transpiled code
+          // Which affects some examples
+          test: /\.js$/,
+          loader: 'babel-loader',
+          options: {
+            plugins: [
+              '@babel/plugin-proposal-class-properties',
+              [
+                '@babel/plugin-transform-runtime',
+                {
+                  absoluteRuntime: false,
+                  corejs: false,
+                  helpers: false,
+                  regenerator: true,
+                  useESModules: false
+                }
+              ]
+            ],
+            presets: [['@babel/preset-env', {targets: '> 1%, not ie 11'}], '@babel/preset-react']
+          },
+          include: [resolve(ROOT_DIR, 'modules'), resolve(ROOT_DIR, '../luma.gl/modules')]
         }
-        // {
-        //   // Compile source using babel. This is not necessary for src to run in the browser
-        //   // However class inheritance cannot happen between transpiled/non-transpiled code
-        //   // Which affects some examples
-        //   test: /\.js$/,
-        //   loader: 'babel-loader',
-        //   options: {
-        //     presets: [['@babel/preset-env', {targets: '> 1%, not ie 11'}], '@babel/preset-react']
-        //   },
-        //   include: [resolve(ROOT_DIR, 'modules'), resolve(ROOT_DIR, '../luma.gl/modules')]
-        // }
       ]
     }
   };
