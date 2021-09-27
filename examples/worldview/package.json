@@ -2,6 +2,7 @@
   "scripts": {
     "start": "webpack-dev-server --progress --hot --open",
     "start-local": "webpack-dev-server --env.local --progress --hot --open",
+    "start-local-luma": "webpack-dev-server --env.local --env.local-luma --progress --hot --open",
     "clean": "rm -rf yarn.lock ./node_modules",
     "bootstrap": "yarn clean && yarn"
   },
