@@ -103,6 +103,10 @@ export class Map extends Component {
     this._changeDpi = this._changeDpi.bind(this);
   }
 
+  componentDidMount() {
+    this._resizeVideo();
+  }
+
   componentDidUpdate(prevProps) {
     const {dimension, width, height} = this.props;
     if (
@@ -112,10 +116,6 @@ export class Map extends Component {
     ) {
       this._resizeVideo();
     }
-  }
-
-  componentDidMount() {
-    this._resizeVideo();
   }
 
   componentWillUnmount() {
