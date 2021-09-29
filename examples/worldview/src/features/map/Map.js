@@ -24,7 +24,6 @@ import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
 import {nearestEven} from '../../utils';
 import isEqual from 'lodash.isequal';
-import {Framebuffer} from '@luma.gl/core';
 
 function DebugOverlay({containerRef, deckRef, dimension, expectedContainer, dpi, onDpiChange}) {
   const container = containerRef.current;
@@ -95,15 +94,13 @@ export class Map extends Component {
     this.state = {
       glContext: undefined,
       memoDevicePixelRatio: window.devicePixelRatio, // memoize
-      dpi: 1,
-      framebuffer: undefined
+      dpi: 1
     };
 
     this._onMapLoad = this._onMapLoad.bind(this);
     this._resizeVideo = this._resizeVideo.bind(this);
     this._resizeMap = this._resizeMap.bind(this);
     this._changeDpi = this._changeDpi.bind(this);
-    this._onDeckInitialize = this._onDeckInitialize.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -199,16 +196,6 @@ export class Map extends Component {
     );
   }
 
-  _onDeckInitialize(gl) {
-    const framebuffer = new Framebuffer(gl, {
-      width: gl.drawingBufferWidth,
-      height: gl.drawingBufferHeight,
-      color: true,
-      depth: true
-    });
-    this.setState({glContext: gl, framebuffer});
-  }
-
   render() {
     const {
       adapter,
@@ -221,7 +208,7 @@ export class Map extends Component {
       dimension,
       debug
     } = this.props;
-    const {glContext, dpi, framebuffer} = this.state;
+    const {glContext, dpi} = this.state;
     const deck = this.deckRef.current && this.deckRef.current.deck;
 
     const deckStyle = {
@@ -248,7 +235,6 @@ export class Map extends Component {
           onViewStateChange={({viewState: vs}) => setViewState(vs)}
           width={dimension.width}
           height={dimension.height}
-          _framebuffer={framebuffer}
           {...adapter.getProps({deck, extraProps: deckProps})}
         >
           {glContext && (
