@@ -36,10 +36,6 @@ const CONFIG = {
     ]
   },
 
-  node: {
-    fs: 'empty'
-  },
-
   plugins: [
     new HtmlWebpackPlugin({title: 'hubble.gl deck quick-start example'}),
     // Optional: Enables reading mapbox token from environment variable

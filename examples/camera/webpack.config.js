@@ -24,10 +24,6 @@ const CONFIG = {
     ]
   },
 
-  node: {
-    fs: 'empty'
-  },
-
   plugins: [
     new HtmlWebpackPlugin({title: 'hubble.gl deck camera example'}),
     // Optional: Enables reading mapbox token from environment variable
