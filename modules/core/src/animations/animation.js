@@ -43,4 +43,8 @@ export default class Animation {
   draw() {
     return this.animator(this);
   }
+
+  isAttached() {
+    return this.unattachedKeyframes.length === 0;
+  }
 }

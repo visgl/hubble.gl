@@ -50,4 +50,8 @@ export default class AnimationManager {
   draw() {
     Object.values(this.animations).forEach(animation => animation.draw());
   }
+
+  isAttached(animationId) {
+    return this.animations[animationId] && this.animations[animationId].isAttached();
+  }
 }
