@@ -17,7 +17,19 @@ const CONFIG = {
         loader: 'babel-loader',
         exclude: [/node_modules/],
         options: {
-          plugins: ['@babel/plugin-proposal-class-properties', '@babel/plugin-transform-runtime'],
+          plugins: [
+            '@babel/plugin-proposal-class-properties',
+            [
+              '@babel/plugin-transform-runtime',
+              {
+                absoluteRuntime: false,
+                corejs: false,
+                helpers: false,
+                regenerator: true,
+                useESModules: false
+              }
+            ]
+          ],
           presets: ['@babel/preset-env', '@babel/preset-react']
         }
       }
