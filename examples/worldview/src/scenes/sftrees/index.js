@@ -6,9 +6,10 @@ import {
   formatChange,
   formatConfigsChange
 } from '../../features/renderer';
-import {useAfterKepler} from '../../app';
 import {useKepler, loadKeplerJson} from '../../features/kepler';
 import {updateViewState} from '../../features/map';
+import {useEffect} from 'react';
+import {easing} from 'popmotion';
 
 // const SF = {"latitude":37.75996553215378,"longitude":-122.43586511157562,"zoom":12.29897059083749,"bearing":0,"pitch":0}
 const SF = {
@@ -29,17 +30,22 @@ export const useScene = () => {
         dispatch(action);
         dispatch(updateViewState(SF));
       });
-    }
+    },
     // filterKeyframes: [],
     // layerKeyframes: [],
-    // tripKeyframe: {}
+    // tripKeyframe: {},
+    cameraKeyframe: {
+      timings: [500, 3500],
+      keyframes: [SF, {...SF, pitch: 0, zoom: SF.zoom - 3}],
+      easings: [easing.easeInOut]
+    }
   });
 
-  const scene = () => {
+  useEffect(() => {
     dispatch(
       timecodeChange({
         start: 0,
-        end: 7500,
+        end: 4000,
         framerate: 60
       })
     );
@@ -55,9 +61,8 @@ export const useScene = () => {
         }
       })
     );
-    dispatch(formatChange('png'));
-  };
+    dispatch(formatChange('webm'));
+  }, []);
 
-  useAfterKepler(scene);
   return [];
 };

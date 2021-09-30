@@ -21,7 +21,14 @@ import {KeplerAnimation} from '@hubble.gl/core';
 import {createKeplerLayers} from '@hubble.gl/react';
 import {viewStateSelector} from '../map/mapSlice';
 
-export const useKepler = ({mapId, fetchMap, filterKeyframes, layerKeyframes, tripKeyframe}) => {
+export const useKepler = ({
+  mapId,
+  fetchMap,
+  filterKeyframes,
+  layerKeyframes,
+  tripKeyframe,
+  cameraKeyframe
+}) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch((_, getState) => {
@@ -53,6 +60,7 @@ export const useKepler = ({mapId, fetchMap, filterKeyframes, layerKeyframes, tri
           filterKeyframes,
           animationConfig,
           tripKeyframe,
+          cameraKeyframe,
           onTripFrameUpdate: time => dispatch(setLayerAnimationTime(time)),
           onFilterFrameUpdate: (idx, prop, value) => dispatch(setFilter(idx, prop, value)),
           onLayerFrameUpdate: (layer, visConfig) =>
