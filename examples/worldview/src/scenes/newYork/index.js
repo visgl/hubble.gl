@@ -1,6 +1,5 @@
 import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {useAfterKepler} from '../../app';
 import {useKeplerMapState, useKepler} from '../../features/kepler/hooks';
 import {loadSampleData} from './data';
 import {
@@ -22,17 +21,7 @@ export const useScene = () => {
   const duration = useSelector(durationSelector);
   const adapter = useSelector(adapterSelector);
 
-  useKepler({
-    mapId: KEPLER_MAP_ID,
-    fetchMap: async () => {
-      const actions = loadSampleData();
-      actions.forEach(a => dispatch(a));
-    }
-  });
-
-  const newYorkScene = () => {
-    // load sample data
-
+  useEffect(() => {
     dispatch(timecodeChange({start: 0, end: 5000, framerate: 30}));
     dispatch(resolutionChange('1920x1080'));
     dispatch(
@@ -46,7 +35,15 @@ export const useScene = () => {
       })
     );
     dispatch(formatChange('gif'));
-  };
+  }, []);
+
+  useKepler({
+    mapId: KEPLER_MAP_ID,
+    fetchMap: async () => {
+      const actions = loadSampleData();
+      actions.forEach(a => dispatch(a));
+    }
+  });
 
   useEffect(() => {
     if (viewState) {
@@ -64,6 +61,5 @@ export const useScene = () => {
     }
   }, [Boolean(viewState), duration]);
 
-  useAfterKepler(newYorkScene);
   useKeplerMapState('map');
 };
