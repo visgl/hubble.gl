@@ -231,7 +231,7 @@ export class Map extends Component {
           style={deckStyle}
           controller={true}
           glOptions={{stencil: true}}
-          onWebGLInitialized={this._onDeckInitialize}
+          onWebGLInitialized={gl => this.setState({glContext: gl})}
           onViewStateChange={({viewState: vs}) => setViewState(vs)}
           width={dimension.width}
           height={dimension.height}
