@@ -23,6 +23,7 @@ import DeckGL from '@deck.gl/react';
 import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
 import {nearestEven} from '../../utils';
+import {scale} from '../../utils';
 import isEqual from 'lodash.isequal';
 
 export class Map extends Component {
@@ -44,7 +45,8 @@ export class Map extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (!isEqual(prevProps.dimension, this.props.dimension)) {
+    const {dimension, previewSize} = this.props;
+    if (!isEqual(prevProps.dimension, dimension) || !isEqual(prevProps.previewSize, previewSize)) {
       this._resizeVideo();
     }
   }
@@ -122,8 +124,7 @@ export class Map extends Component {
     const {
       adapter,
       viewState,
-      width,
-      height,
+      previewSize,
       setViewState,
       deckProps,
       staticMapProps,
@@ -137,8 +138,8 @@ export class Map extends Component {
     };
 
     const containerStyle = {
-      width: `${width}px`,
-      height: `${height}px`,
+      width: `${previewSize.width}px`,
+      height: `${previewSize.height}px`,
       position: 'relative'
     };
 
