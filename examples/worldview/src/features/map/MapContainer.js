@@ -28,7 +28,7 @@ import {dimensionSelector, adapterSelector} from '../renderer';
 import {updateViewState, viewStateSelector} from './mapSlice';
 import {updateTimeCursor} from '../timeline/timelineSlice';
 
-export const MapContainer = ({width = 540, height, deckProps, staticMapProps, debug}) => {
+export const MapContainer = ({previewSize, deckProps, staticMapProps, debug}) => {
   const dispatch = useDispatch();
   const dimension = useSelector(dimensionSelector);
   const viewState = useSelector(viewStateSelector);
@@ -39,8 +39,7 @@ export const MapContainer = ({width = 540, height, deckProps, staticMapProps, de
       deckProps={deckProps}
       staticMapProps={staticMapProps}
       // UI Props
-      width={width}
-      height={height}
+      previewSize={previewSize}
       // Map Props
       viewState={viewState}
       setViewState={vs => dispatch(updateViewState(vs))}

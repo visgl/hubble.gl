@@ -45,7 +45,8 @@ export class Map extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (!isEqual(prevProps.dimension, this.props.dimension)) {
+    const {dimension, previewSize} = this.props;
+    if (!isEqual(prevProps.dimension, dimension) || !isEqual(prevProps.previewSize, previewSize)) {
       this._resizeVideo();
     }
   }
@@ -56,8 +57,8 @@ export class Map extends Component {
   }
 
   _resizeVideo() {
-    const {width, dimension} = this.props;
-    this._setDevicePixelRatio(nearestEven(dimension.width / width));
+    const {previewSize, dimension} = this.props;
+    this._setDevicePixelRatio(nearestEven(dimension.width / previewSize.width));
     if (this.mapRef.current) {
       const map = this.mapRef.current.getMap();
       map.resize();
@@ -123,8 +124,7 @@ export class Map extends Component {
     const {
       adapter,
       viewState,
-      width,
-      height,
+      previewSize,
       setViewState,
       deckProps,
       staticMapProps,
@@ -140,8 +140,8 @@ export class Map extends Component {
     };
 
     const containerStyle = {
-      width: `${width}px`,
-      height: `${height}px`,
+      width: `${previewSize.width}px`,
+      height: `${previewSize.height}px`,
       position: 'relative'
     };
 
@@ -175,7 +175,7 @@ export class Map extends Component {
             deckRef={this.deckRef}
             containerRef={this.containerRef}
             dimension={dimension}
-            previewSize={{width, height}}
+            previewSize={previewSize}
           />
         )}
       </div>
