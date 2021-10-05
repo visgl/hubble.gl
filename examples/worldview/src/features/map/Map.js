@@ -33,11 +33,9 @@ function constrainedSize(dimension) {
   const aspect = dimension.width / dimension.height;
   if (aspect > 1) {
     // horizontal
-    // return {width: 1920, height: Math.round(1920 / aspect)};
     return {width: Math.round(1080 * aspect), height: 1080};
   } else if (aspect < 1) {
     // vertical
-    // return {width: Math.round(1920 * aspect), height: 1920};
     return {width: 1080, height: Math.round(1080 / aspect)};
   }
   // square
