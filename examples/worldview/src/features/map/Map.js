@@ -128,8 +128,10 @@ export class Map extends Component {
       setViewState,
       deckProps,
       staticMapProps,
-      dimension
+      dimension,
+      debug
     } = this.props;
+    const {glContext, dpi} = this.state;
     const deck = this.deckRef.current && this.deckRef.current.deck;
 
     const deckStyle = {
@@ -158,11 +160,11 @@ export class Map extends Component {
           height={dimension.height}
           {...adapter.getProps({deck, extraProps: deckProps})}
         >
-          {this.state.glContext && (
+          {glContext && (
             <StaticMap
               ref={this.mapRef}
               preventStyleDiffing={true}
-              gl={this.state.glContext}
+              gl={glContext}
               onLoad={this._onMapLoad}
               {...staticMapProps}
             />
@@ -173,7 +175,7 @@ export class Map extends Component {
             deckRef={this.deckRef}
             containerRef={this.containerRef}
             dimension={dimension}
-            previewSize={previewSize}
+            previewSize={{width, height}}
             dpi={dpi}
             onDpiChange={this._changeDpi}
           />

@@ -1,7 +1,8 @@
 import React from 'react';
 
+/* eslint-disable complexity */
 export function DebugOverlay({containerRef, deckRef, dimension, previewSize, dpi, onDpiChange}) {
-  const container = containerRef.current;
+  const container = containerRef && containerRef.current;
   const deck = deckRef.current;
   const canvas = deck && deck._canvasRef.current;
   const canvasRect = canvas && canvas.getBoundingClientRect();
@@ -44,7 +45,7 @@ export function DebugOverlay({containerRef, deckRef, dimension, previewSize, dpi
       <div>
         pixel ratio: <b>{window.devicePixelRatio}</b>
       </div>
-      {canvas && (
+      {canvas && isFinite(window.devicePixelRatio) && (
         <div>
           luma size pre-flooring: <b>{window.devicePixelRatio * canvas.clientWidth}</b>px x{' '}
           <b>{window.devicePixelRatio * canvas.clientHeight}</b>px
