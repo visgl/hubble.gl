@@ -23,7 +23,6 @@ import DeckGL from '@deck.gl/react';
 import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
 import {nearestEven} from '../../utils';
-import {scale} from '../../utils';
 import isEqual from 'lodash.isequal';
 import {DebugOverlay} from './DebugOverlay';
 
@@ -176,7 +175,7 @@ export class Map extends Component {
             deckRef={this.deckRef}
             containerRef={this.containerRef}
             dimension={dimension}
-            previewSize={{width, height}}
+            previewSize={previewSize}
           />
         )}
       </div>
