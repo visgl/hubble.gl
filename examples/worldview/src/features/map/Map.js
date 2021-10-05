@@ -24,6 +24,7 @@ import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
 import {scale} from '../../utils';
 import isEqual from 'lodash.isequal';
+import {DebugOverlay} from './DebugOverlay';
 
 // Goal: Render similar viewport boundary regardless of internal canvas size.
 // The viewport bounds change with canvas size, so constain it around
@@ -68,12 +69,8 @@ export class Map extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {dimension, width, height} = this.props;
-    if (
-      !isEqual(prevProps.dimension, dimension) ||
-      prevProps.width !== width ||
-      prevProps.height !== height
-    ) {
+    const {dimension, previewSize} = this.props;
+    if (!isEqual(prevProps.dimension, dimension) || !isEqual(prevProps.previewSize, previewSize)) {
       this._resizeVideo();
     }
   }

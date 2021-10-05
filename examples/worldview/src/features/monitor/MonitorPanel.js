@@ -1,7 +1,6 @@
-import React, {useMemo, useCallback, useEffect} from 'react';
+import React, {useMemo, useEffect} from 'react';
 import {Play, Search, Maximize} from './Icons';
 import {useDispatch, useSelector} from 'react-redux';
-import styled from 'styled-components';
 import {
   busySelector,
   durationSelector,
@@ -10,13 +9,12 @@ import {
   useRenderHandler,
   seekTime
 } from '../renderer';
-import {AutoSizer} from 'react-virtualized';
 import {WithKeplerUI} from '@hubble.gl/react';
 import {Map, viewStateSelector} from '../map';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
-import {nearestEven} from '../../utils';
 import {framestepSelector, timecodeSelector} from '../renderer/rendererSlice';
 import {timeCursorSelector} from '../timeline/timelineSlice';
+import {Pillarbox} from './Pillarbox';
 
 const MonitorBottomToolbar = ({playing, onPreview}) => {
   return (
@@ -50,7 +48,7 @@ function basicViewState(viewState = {}) {
 const PrintViewState = ({viewState}) => {
   const str = JSON.stringify(basicViewState(viewState));
   return (
-    <div style={{position: 'absolute', bottom: 0, left: 0, background: 'black'}}>
+    <div style={{background: 'black'}}>
       <CopyToClipboard text={str}>
         <div style={{color: 'pink'}}>{str}</div>
       </CopyToClipboard>
@@ -58,25 +56,18 @@ const PrintViewState = ({viewState}) => {
   );
 };
 
-const MapOverlay = ({rendererBusy, currentTime, duration, width, height}) => {
-  const loaderStyle = {
-    display: rendererBusy === 'rendering' ? 'flex' : 'none',
-    position: 'absolute',
-    background: 'rgba(0, 0, 0, 0.5)',
-    width: `${width}px`,
-    height: `${height}px`,
-    alignItems: 'center',
-    justifyContent: 'center'
-  };
+const RenderStatus = () => {
+  const duration = useSelector(durationSelector);
+  const timeCursor = useSelector(timeCursorSelector);
 
   const percent = useMemo(() => {
-    return Math.floor((currentTime / duration) * 100).toFixed(0);
-  }, [currentTime, duration]);
+    return Math.floor((timeCursor / duration) * 100).toFixed(0);
+  }, [timeCursor, duration]);
 
   return (
     <WithKeplerUI>
       {({LoadingSpinner}) => (
-        <div className="loader" style={loaderStyle}>
+        <div>
           <LoadingSpinner />
           <div
             className="rendering-percent"
@@ -89,44 +80,6 @@ const MapOverlay = ({rendererBusy, currentTime, duration, width, height}) => {
     </WithKeplerUI>
   );
 };
-
-const AutoSizeMapBox = ({children}) => {
-  const dimension = useSelector(dimensionSelector);
-
-  const getMapDimensions = useCallback(
-    (containerWidth, containerHeight) => {
-      const scale = Math.min(containerWidth / dimension.width, containerHeight / dimension.height);
-
-      return {
-        mapWidth: nearestEven(dimension.width * scale, 0),
-        mapHeight: nearestEven(dimension.height * scale, 0)
-      };
-    },
-    [dimension]
-  );
-
-  return (
-    <AutoSizer>
-      {({width, height}) => {
-        const {mapWidth, mapHeight} = getMapDimensions(width, height);
-        return children({
-          mapHeight,
-          mapWidth,
-          containerHeight: nearestEven(height, 0),
-          containerWidth: nearestEven(width, 0)
-        });
-      }}
-    </AutoSizer>
-  );
-};
-
-const MapBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: ${props => props.width}px;
-  height: ${props => props.height}px;
-`;
 
 const SeekSlider = () => {
   const timecode = useSelector(timecodeSelector);
@@ -149,9 +102,8 @@ const SeekSlider = () => {
 
 export const MonitorPanel = ({deckProps = undefined, staticMapProps = undefined}) => {
   const rendererBusy = useSelector(busySelector);
-  const duration = useSelector(durationSelector);
-  const timeCursor = useSelector(timeCursorSelector);
   const viewState = useSelector(viewStateSelector);
+  const dimension = useSelector(dimensionSelector);
   const onPreview = usePreviewHandler();
   const onRender = useRenderHandler();
 
@@ -168,29 +120,18 @@ export const MonitorPanel = ({deckProps = undefined, staticMapProps = undefined}
       }}
     >
       <div style={{flex: 1, position: 'relative'}}>
-        <AutoSizeMapBox>
-          {({mapHeight, mapWidth, containerHeight, containerWidth}) => (
-            <MapBox width={containerWidth} height={containerHeight}>
-              {/* <div style={{width: mapWidth, height: mapHeight, backgroundColor: 'green'}} /> */}
-              <Map
-                width={mapWidth}
-                height={mapHeight}
-                deckProps={deckProps}
-                staticMapProps={staticMapProps}
-                debug={true}
-              />
-              <PrintViewState viewState={viewState} />
-              <MapOverlay
-                rendererBusy={rendererBusy}
-                duration={duration}
-                width={containerWidth}
-                height={containerHeight}
-                currentTime={timeCursor}
-              />
-            </MapBox>
+        <Pillarbox dimension={dimension} overlay={rendererBusy === 'rendering' && <RenderStatus />}>
+          {previewSize => (
+            <Map
+              previewSize={previewSize}
+              deckProps={deckProps}
+              staticMapProps={staticMapProps}
+              debug={true}
+            />
           )}
-        </AutoSizeMapBox>
+        </Pillarbox>
       </div>
+      <PrintViewState viewState={viewState} />
       <MonitorBottomToolbar playing={Boolean(rendererBusy)} onPreview={onPreview} />
       <button onClick={onRender}>Render</button>
       <SeekSlider />
