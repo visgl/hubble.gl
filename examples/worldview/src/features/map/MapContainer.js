@@ -28,7 +28,7 @@ import {dimensionSelector, adapterSelector} from '../renderer';
 import {updateViewState, viewStateSelector} from './mapSlice';
 import {updateTimeCursor} from '../timeline/timelineSlice';
 
-export const MapContainer = ({width = 540, height, deckProps, staticMapProps}) => {
+export const MapContainer = ({width = 540, height, deckProps, staticMapProps, debug}) => {
   const dispatch = useDispatch();
   const dimension = useSelector(dimensionSelector);
   const viewState = useSelector(viewStateSelector);
@@ -48,6 +48,7 @@ export const MapContainer = ({width = 540, height, deckProps, staticMapProps}) =
       adapter={adapter}
       dimension={dimension}
       updateTimeCursor={timeMs => dispatch(updateTimeCursor(timeMs))}
+      debug={debug}
     />
   );
 };

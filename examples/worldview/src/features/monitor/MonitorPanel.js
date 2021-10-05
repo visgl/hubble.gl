@@ -177,6 +177,7 @@ export const MonitorPanel = ({deckProps = undefined, staticMapProps = undefined}
                 height={mapHeight}
                 deckProps={deckProps}
                 staticMapProps={staticMapProps}
+                debug={true}
               />
               <PrintViewState viewState={viewState} />
               <MapOverlay
