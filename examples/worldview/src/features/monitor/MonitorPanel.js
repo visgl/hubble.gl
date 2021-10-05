@@ -15,7 +15,7 @@ import {WithKeplerUI} from '@hubble.gl/react';
 import {Map, viewStateSelector} from '../map';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {nearestEven} from '../../utils';
-import {framestepSelector, timecodeSelector} from '../renderer/rendererSlice';
+import {framestepSelector, timecodeSelector, resolutionChange} from '../renderer/rendererSlice';
 import {timeCursorSelector} from '../timeline/timelineSlice';
 
 const MonitorBottomToolbar = ({playing, onPreview}) => {
@@ -147,6 +147,28 @@ const SeekSlider = () => {
   );
 };
 
+const DimensionPicker = () => {
+  const dispatch = useDispatch();
+
+  return (
+    <div>
+      <button onClick={() => dispatch(resolutionChange({width: 1920, height: 1080}))}>1080p</button>
+      <button onClick={() => dispatch(resolutionChange({width: 1280, height: 720}))}>720p</button>
+      <button onClick={() => dispatch(resolutionChange({width: 320, height: 180}))}>320x180</button>
+      <button onClick={() => dispatch(resolutionChange({width: 500, height: 500}))}>500x500</button>
+      <button onClick={() => dispatch(resolutionChange({width: 5000, height: 5000}))}>
+        5000x5000
+      </button>
+      <button onClick={() => dispatch(resolutionChange({width: 1000, height: 2000}))}>
+        1000x2000
+      </button>
+      <button onClick={() => dispatch(resolutionChange({width: 2000, height: 1000}))}>
+        2000x1000
+      </button>
+    </div>
+  );
+};
+
 export const MonitorPanel = ({deckProps = undefined, staticMapProps = undefined}) => {
   const rendererBusy = useSelector(busySelector);
   const duration = useSelector(durationSelector);
@@ -192,6 +214,7 @@ export const MonitorPanel = ({deckProps = undefined, staticMapProps = undefined}
         </AutoSizeMapBox>
       </div>
       <MonitorBottomToolbar playing={Boolean(rendererBusy)} onPreview={onPreview} />
+      <DimensionPicker />
       <button onClick={onRender}>Render</button>
       <SeekSlider />
     </div>
