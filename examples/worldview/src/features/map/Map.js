@@ -52,8 +52,7 @@ export class Map extends Component {
 
     this.state = {
       glContext: undefined,
-      memoDevicePixelRatio: window.devicePixelRatio, // memoize
-      dpi: 1
+      memoDevicePixelRatio: window.devicePixelRatio // memoize
     };
 
     this._onMapLoad = this._onMapLoad.bind(this);
@@ -95,7 +94,6 @@ export class Map extends Component {
   _changeDpi(dpi) {
     this._setDevicePixelRatio(dpi);
     this._resizeMap();
-    this.setState({dpi});
   }
 
   _setDevicePixelRatio(devicePixelRatio) {
@@ -164,7 +162,7 @@ export class Map extends Component {
       dimension,
       debug
     } = this.props;
-    const {glContext, dpi} = this.state;
+    const {glContext} = this.state;
     const deck = this.deckRef.current && this.deckRef.current.deck;
 
     const containerStyle = {
@@ -213,8 +211,6 @@ export class Map extends Component {
             containerRef={this.containerRef}
             dimension={dimension}
             previewSize={previewSize}
-            dpi={dpi}
-            onDpiChange={this._changeDpi}
           />
         )}
       </div>
