@@ -131,7 +131,7 @@ export class Map extends Component {
       dimension,
       debug
     } = this.props;
-    const {glContext, dpi} = this.state;
+    const {glContext} = this.state;
     const deck = this.deckRef.current && this.deckRef.current.deck;
 
     const deckStyle = {
@@ -176,8 +176,6 @@ export class Map extends Component {
             containerRef={this.containerRef}
             dimension={dimension}
             previewSize={{width, height}}
-            dpi={dpi}
-            onDpiChange={this._changeDpi}
           />
         )}
       </div>
