@@ -35,7 +35,7 @@ export const useScene = () => {
     // layerKeyframes: [],
     // tripKeyframe: {},
     cameraKeyframe: {
-      timings: [500, 3500],
+      timings: [500, 2500],
       keyframes: [SF, {...SF, pitch: 0, zoom: SF.zoom - 3}],
       easings: [easing.easeInOut]
     }
@@ -49,8 +49,15 @@ export const useScene = () => {
         framerate: 60
       })
     );
-    dispatch(resolutionChange('1920x1080'));
+    // dispatch(resolutionChange('1920x1080'));
     // dispatch(resolutionChange({width: 3840, height: 2160}));
+    // dispatch(resolutionChange({width: 5760, height: 5760}));
+    // dispatch(resolutionChange({width: 7680, height: 4320}));
+    // dispatch(resolutionChange({width: 1920, height: 1920}));
+    // dispatch(resolutionChange({width: 1080, height: 1920}));
+    // dispatch(resolutionChange({width: 1280, height: 720}));
+    dispatch(resolutionChange({width: 320, height: 180}));
+    // The maximum observed pixels supported are 33,177,600
     dispatch(
       formatConfigsChange({
         gif: {

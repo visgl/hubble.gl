@@ -24,6 +24,7 @@ import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
 import {nearestEven} from '../../utils';
 import isEqual from 'lodash.isequal';
+import {DebugOverlay} from './DebugOverlay';
 
 export class Map extends Component {
   constructor(props) {
@@ -167,6 +168,16 @@ export class Map extends Component {
             />
           )}
         </DeckGL>
+        {debug && (
+          <DebugOverlay
+            deckRef={this.deckRef}
+            containerRef={this.containerRef}
+            dimension={dimension}
+            previewSize={previewSize}
+            dpi={dpi}
+            onDpiChange={this._changeDpi}
+          />
+        )}
       </div>
     );
   }
