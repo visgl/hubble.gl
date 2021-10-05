@@ -66,8 +66,8 @@ export class Map extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {dimension, previewSize} = this.props;
-    if (!isEqual(prevProps.dimension, dimension) || !isEqual(prevProps.previewSize, previewSize)) {
+    const {dimension} = this.props;
+    if (!isEqual(prevProps.dimension, dimension)) {
       this._resizeVideo();
     }
   }
