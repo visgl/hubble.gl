@@ -126,6 +126,7 @@ export const MonitorPanel = ({deckProps = undefined, staticMapProps = undefined}
               previewSize={previewSize}
               deckProps={deckProps}
               staticMapProps={staticMapProps}
+              debug={true}
             />
           )}
         </Pillarbox>

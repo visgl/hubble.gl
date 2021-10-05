@@ -25,6 +25,7 @@ import {MapboxLayer} from '@deck.gl/mapbox';
 import {nearestEven} from '../../utils';
 import {scale} from '../../utils';
 import isEqual from 'lodash.isequal';
+import {DebugOverlay} from './DebugOverlay';
 
 export class Map extends Component {
   constructor(props) {
@@ -128,8 +129,10 @@ export class Map extends Component {
       setViewState,
       deckProps,
       staticMapProps,
-      dimension
+      dimension,
+      debug
     } = this.props;
+    const {glContext} = this.state;
     const deck = this.deckRef.current && this.deckRef.current.deck;
 
     const deckStyle = {
@@ -158,16 +161,24 @@ export class Map extends Component {
           height={dimension.height}
           {...adapter.getProps({deck, extraProps: deckProps})}
         >
-          {this.state.glContext && (
+          {glContext && (
             <StaticMap
               ref={this.mapRef}
               preventStyleDiffing={true}
-              gl={this.state.glContext}
+              gl={glContext}
               onLoad={this._onMapLoad}
               {...staticMapProps}
             />
           )}
         </DeckGL>
+        {debug && (
+          <DebugOverlay
+            deckRef={this.deckRef}
+            containerRef={this.containerRef}
+            dimension={dimension}
+            previewSize={{width, height}}
+          />
+        )}
       </div>
     );
   }
