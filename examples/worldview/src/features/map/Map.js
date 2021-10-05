@@ -22,65 +22,25 @@ import React, {Component} from 'react';
 import DeckGL from '@deck.gl/react';
 import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
-import {nearestEven} from '../../utils';
+import {scale} from '../../utils';
 import isEqual from 'lodash.isequal';
 
-function DebugOverlay({containerRef, deckRef, dimension, expectedContainer, dpi, onDpiChange}) {
-  const container = containerRef.current;
-  const deck = deckRef.current;
-  const canvas = deck && deck._canvasRef.current;
-  const canvasRect = canvas && canvas.getBoundingClientRect();
-  const gl = deck && deck.deck.animationLoop && deck.deck.animationLoop.gl;
-
-  return (
-    <div style={{position: 'absolute', top: 0, left: 0, color: 'white'}}>
-      <div>
-        Expected Export size: <b>{dimension.width}</b>px x <b>{dimension.height}</b>px
-      </div>
-      <div>
-        Expected Container size: <b>{expectedContainer.width}</b>px x{' '}
-        <b>{expectedContainer.height}</b>px
-      </div>
-      {container && (
-        <div>
-          Container CSS size: <b>{container.clientWidth}</b>px x <b>{container.clientHeight}</b>px
-        </div>
-      )}
-      {canvas && (
-        <div>
-          Canvas CSS size: <b>{canvas.clientWidth}</b>px x <b>{canvas.clientHeight}</b>px
-        </div>
-      )}
-      {canvas && (
-        <div>
-          Canvas internal size: <b>{canvas.width}</b>px x <b>{canvas.height}</b>px
-        </div>
-      )}
-      {gl && (
-        <div>
-          GL draw buffer size: <b>{gl.drawingBufferWidth}</b>px x <b>{gl.drawingBufferHeight}</b>px
-        </div>
-      )}
-      {canvasRect && (
-        <div>
-          Canvas rect size: <b>{canvasRect.width}</b>px x <b>{canvasRect.height}</b>px
-        </div>
-      )}
-      <div>
-        pixel ratio: <b>{window.devicePixelRatio}</b>
-      </div>
-      <div>
-        <input
-          type="range"
-          min={0.01}
-          max={5.0}
-          step={0.01}
-          value={dpi}
-          onChange={e => onDpiChange(parseFloat(e.target.value))}
-        />
-      </div>
-    </div>
-  );
+// Goal: Render similar viewport boundary regardless of internal canvas size.
+// The viewport bounds change with canvas size, so constain it around
+// a 1080px square. It can be wide, tall, or square.
+function constrainedSize(dimension) {
+  const aspect = dimension.width / dimension.height;
+  if (aspect > 1) {
+    // horizontal
+    // return {width: 1920, height: Math.round(1920 / aspect)};
+    return {width: Math.round(1080 * aspect), height: 1080};
+  } else if (aspect < 1) {
+    // vertical
+    // return {width: Math.round(1920 * aspect), height: 1920};
+    return {width: 1080, height: Math.round(1080 / aspect)};
+  }
+  // square
+  return {width: 1080, height: 1080};
 }
 
 export class Map extends Component {
@@ -131,8 +91,10 @@ export class Map extends Component {
   }
 
   _resizeVideo() {
-    const {width, dimension} = this.props;
-    this._changeDpi(nearestEven(dimension.width / width));
+    const {dimension} = this.props;
+    const constrained = constrainedSize(dimension);
+    const scalar = scale(dimension, constrained);
+    this._changeDpi(scalar);
   }
 
   _changeDpi(dpi) {
@@ -200,8 +162,7 @@ export class Map extends Component {
     const {
       adapter,
       viewState,
-      width,
-      height,
+      previewSize,
       setViewState,
       deckProps,
       staticMapProps,
@@ -211,23 +172,27 @@ export class Map extends Component {
     const {glContext, dpi} = this.state;
     const deck = this.deckRef.current && this.deckRef.current.deck;
 
-    const deckStyle = {
-      width: '100%',
-      height: '100%'
-    };
-
     const containerStyle = {
-      width: `${width}px`,
-      height: `${height}px`,
+      width: `${previewSize.width}px`,
+      height: `${previewSize.height}px`,
       position: 'relative'
     };
 
+    const constrained = constrainedSize(dimension);
+    const scalar = scale(previewSize, constrained);
+    const deckStyle = {
+      width: `${constrained.width}px`,
+      height: `${constrained.height}px`,
+      transform: `scale(${scalar})`,
+      transformOrigin: 'top left'
+    };
+
     return (
-      <div ref={this.containerRef} id="deck-canvas" style={containerStyle}>
+      <div ref={this.containerRef} id="hubble-preview" style={containerStyle}>
         <DeckGL
           ref={this.deckRef}
           viewState={{...viewState, maxPitch: 90}}
-          id="hubblegl-overlay"
+          id="deck-overlay"
           style={deckStyle}
           controller={true}
           glOptions={{stencil: true}}
@@ -252,7 +217,7 @@ export class Map extends Component {
             deckRef={this.deckRef}
             containerRef={this.containerRef}
             dimension={dimension}
-            expectedContainer={{width, height}}
+            previewSize={previewSize}
             dpi={dpi}
             onDpiChange={this._changeDpi}
           />
