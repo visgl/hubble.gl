@@ -44,7 +44,7 @@ export default class DeckAdapter {
     this.animationManager = animationManager || new AnimationManager({});
     this.glContext = glContext;
     this.videoCapture = new VideoCapture();
-    this.shouldAnimate = true;
+    this.shouldAnimate = false;
     this.enabled = false;
     this.getProps = this.getProps.bind(this);
     this.render = this.render.bind(this);
