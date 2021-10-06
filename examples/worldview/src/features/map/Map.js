@@ -27,7 +27,7 @@ import isEqual from 'lodash.isequal';
 import {DebugOverlay} from './DebugOverlay';
 
 // Goal: Render similar viewport boundary regardless of internal canvas size.
-// The viewport bounds change with canvas size, so constain it around
+// The viewport bounds change with canvas size, so constrain it around
 // a 1080px square. It can be wide, tall, or square.
 function constrainedSize(dimension) {
   const aspect = dimension.width / dimension.height;
