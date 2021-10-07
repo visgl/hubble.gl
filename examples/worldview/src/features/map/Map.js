@@ -29,7 +29,7 @@ import {DebugOverlay} from './DebugOverlay';
 // Goal: Render similar viewport boundary regardless of internal canvas size.
 // The viewport bounds change with canvas size, so constrain it around
 // a 1080px square. It can be wide, tall, or square.
-function constrainedSize(dimension) {
+function getCanvasClientSize(dimension) {
   const aspect = dimension.width / dimension.height;
   if (aspect > 1) {
     // horizontal
@@ -86,8 +86,9 @@ export class Map extends Component {
 
   _resizeVideo() {
     const {dimension} = this.props;
-    const constrained = constrainedSize(dimension);
-    const scalar = scale(dimension, constrained);
+    const canvasClientSize = getCanvasClientSize(dimension);
+    // canvasClientSize * scalar = dimension
+    const scalar = scale(dimension, canvasClientSize);
     this._changeDpi(scalar);
   }
 
@@ -171,11 +172,12 @@ export class Map extends Component {
       position: 'relative'
     };
 
-    const constrained = constrainedSize(dimension);
-    const scalar = scale(previewSize, constrained);
+    const canvasClientSize = getCanvasClientSize(dimension);
+    // canvasClientSize * scalar = previewSize
+    const scalar = scale(previewSize, canvasClientSize);
     const deckStyle = {
-      width: `${constrained.width}px`,
-      height: `${constrained.height}px`,
+      width: `${canvasClientSize.width}px`,
+      height: `${canvasClientSize.height}px`,
       transform: `scale(${scalar})`,
       transformOrigin: 'top left'
     };
