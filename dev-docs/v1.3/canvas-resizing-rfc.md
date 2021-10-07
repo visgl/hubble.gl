@@ -10,7 +10,34 @@
 2. The rendering canvas element is scaled to fit in the user interface (and can re-scale when the user resizes the interface).
 3. The map viewport boundaries shouldn't perceptually change when resolution changes or when the user resizes the map.
 
-## Size Variable Definitions
+## Existing Problem
+
+Our existing implementation satisfies `2.`, intermittently satifies `1.`, and always fails `3.`. As shown in this video demo:
+
+https://user-images.githubusercontent.com/2461547/136107416-0cf7e2c2-aad5-4ad8-9531-0261fa87cc07.mov
+
+## Solution Summary
+
+1. Add `resolution` prop on `Map` changes the export resolution.
+  a. window.devicePixelRatio is modified to change the webgl internal size.
+2. Add `previewSize` prop on `Map` changes the UI size.
+  a. CSS `transform: scale` is used to fit the map into the available space.
+3. Keep viewport bounds consistent across resize by fitting canvas client size around a 1080px box.
+
+### Prototype
+
+https://github.com/visgl/hubble.gl/pull/171
+
+#### Requirement 1. demo
+
+https://user-images.githubusercontent.com/2461547/136107744-d706b689-b703-4d05-b331-066d7f141ba9.mov
+
+#### Requirement 2. and 3. demo
+
+https://user-images.githubusercontent.com/2461547/136107906-1dde2c00-32a6-4d97-aac6-12822fae0581.mov
+
+
+## Size Variables Discussion
 
 ### Resolution
 
@@ -69,30 +96,10 @@ The deck.gl canvas element's internal size.
 
 ## Example
 
-![projection system](/dev-docs/v1.3/canvas-resizing-example.png)
-
-## Solution Summary
-
-1. The `resolution` prop on `Map` changes the export resolution.
-  a. window.devicePixelRatio is modified to change the webgl internal size.
-2. The `previewSize` prop on `Map` changes the UI size.
-  a. CSS `transform: scale` is used to fit the map into the available space.
-3. The viewport bounds stays consistent across resize because the canvas client size is fit around a 1080px box.
+![canvas-resizing-example](/dev-docs/v1.3/canvas-resizing-example.png)
 
 ## Discussion
 
 https://github.com/visgl/hubble.gl/issues/159
 
 https://github.com/visgl/luma.gl/issues/1512
-
-## Prototype
-
-https://github.com/visgl/hubble.gl/pull/171
-
-### Requirment #1 passing demo
-
-https://user-images.githubusercontent.com/2461547/136107744-d706b689-b703-4d05-b331-066d7f141ba9.mov
-
-### Requirement #2 and #3 passing demo
-
-https://user-images.githubusercontent.com/2461547/136107906-1dde2c00-32a6-4d97-aac6-12822fae0581.mov
