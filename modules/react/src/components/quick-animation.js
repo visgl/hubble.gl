@@ -8,7 +8,7 @@ export const QuickAnimation = ({
   initialViewState,
   animation,
   timecode,
-  dimension = {width: 640, height: 480},
+  resolution = {width: 640, height: 480},
   formatConfigs = {},
   deckProps = {}
 }) => {
@@ -30,8 +30,8 @@ export const QuickAnimation = ({
     },
     gif: {
       sampleInterval: 1,
-      width: dimension.width,
-      height: dimension.height
+      width: resolution.width,
+      height: resolution.height
     },
     ...formatConfigs
   };
@@ -54,8 +54,8 @@ export const QuickAnimation = ({
           setCameraFrame(vs);
         }}
         controller={true}
-        width={dimension.width}
-        height={dimension.height}
+        width={resolution.width}
+        height={resolution.height}
         layers={layers}
         {...adapter.getProps({deck, onNextFrame, extraProps: deckProps})}
       />

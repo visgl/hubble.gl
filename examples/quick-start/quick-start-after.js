@@ -59,7 +59,7 @@ const TIMECODE = {
   framerate: 30
 };
 
-const DIMENSION = {
+const RESOLUTION = {
   width: 640,
   height: 480
 };
@@ -68,7 +68,7 @@ export default function App() {
   return (
     <QuickAnimation
       initialViewState={INITIAL_VIEW_STATE}
-      dimension={DIMENSION}
+      resolution={RESOLUTION}
       animation={animation}
       deckProps={{
         parameters: {

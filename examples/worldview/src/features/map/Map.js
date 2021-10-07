@@ -60,8 +60,8 @@ export class Map extends Component {
   }
 
   _resizeVideo() {
-    const {previewSize, dimension} = this.props;
-    this._setDevicePixelRatio(nearestEven(dimension.width / previewSize.width));
+    const {previewSize, resolution} = this.props;
+    this._setDevicePixelRatio(nearestEven(resolution.width / previewSize.width));
     if (this.mapRef.current) {
       const map = this.mapRef.current.getMap();
       map.resize();
