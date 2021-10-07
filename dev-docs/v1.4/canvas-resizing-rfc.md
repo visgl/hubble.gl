@@ -61,6 +61,72 @@ https://user-images.githubusercontent.com/2461547/136107744-d706b689-b703-4d05-b
 
 https://user-images.githubusercontent.com/2461547/136107906-1dde2c00-32a6-4d97-aac6-12822fae0581.mov
 
+## Size Variables Discussion
+
+### Resolution
+
+The user defined size of the exported videos and images. e.g. 1920px x 1080px
+
+### UI Preview Size
+
+The size of the HTML element containing the canvas in the UI.
+
+- This is provided by the application.
+- The aspect ratio of this size needs to match resolution.
+
+### Viewport Boundary
+
+The deck.gl / mapbox viewport perspective bounds (see [non-perspective getBounds](https://deck.gl/docs/api-reference/core/viewport#getbounds) for background).
+
+- All map library viewports in use change with canvas client size and viewState.
+- To minimize viewport changes (Req #3) we cannot dramatically change canvas client size.
+- An animation is expected to have complete control of viewState, so we can't impose limits.
+
+### Canvas Client Size
+
+The deck.gl canvas element's CSS size (canvas.clientWidth/Height).
+
+- To satisfy [requirement #3](#Requirements), the viewport shouldn't ever perceptually[0] change because of Canvas Client Size.
+- Only allow the aspect to change.
+- Set the min(width, height) to 1080px.
+- Set the max(width, height) to Resolution Aspect Ratio * 1080px.
+  - Why 1080?
+    - Resolution is usually set close to 1080px in one axis, so this keeps scalars close to 1.
+    - 2px (any tiny number), 500k (any big number) is not a good idea because floating point scalar problems. 
+      - Precision Loss: E.g. 1920/500k = 0.00384. The “0.00” is lost precision. 1920/1080 = 1.777. No zeros, so no lost precision.
+  - What if we change 1080 in the future?
+    - Old animations that assume 1080-based viewport will appear zoomed out if 1080 increases, and zoomed in if 1080 decreases.
+
+[0] there is a viewport change at the edges when the aspect ratio changes, but this solution creates a ["safe-area"](https://en.wikipedia.org/wiki/Safe_area_(television)) for video content since the center square of the viewport is always the same.
+
+### Deck Style Prop
+The CSS prop that sets the Canvas Client Size, and scales it to fit the UI Preview Size.
+
+- To satisfy [requirement #2](#Requirements), the canvas [bounding box](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) needs to fit in Preview Size.
+- Scale to fit Preview Size using a CSS scale transform. 
+  - Important to note CSS transforms have no effect on any other variables.
+  - Preview Scalar = Preview Size / Canvas Client 
+
+### Canvas Internal
+
+The deck.gl canvas element's internal size.
+
+- To satisfy [requirement #1](#Requirements), internal size to match Resolution.
+- Same as WebGL/GPU/default framebuffer width and height.
+- We won’t be able to directly set canvas internal
+  - While we could change this in LumaGL, it wouldn’t set the Mapbox GPU size because it has its own implementation and we won’t be able to change Mapbox’s implementation.
+  - mapbox/luma.gl implement size as a function of Canvas Client Size * [devicePixelRatio](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio). [See Luma.gl Code](https://github.com/visgl/luma.gl/blob/15e7acd33363ffe2add58b28638d19f697651ea6/modules/gltools/src/context/context.ts#L376-L377).
+  - devicePixelRatio = Resolution / Canvas Client Size
+
+## Example
+
+![canvas-resizing-example](https://user-images.githubusercontent.com/2461547/136319821-47f5f5bb-f054-4e2b-8332-d7d897f422d1.png)
+
+## Discussion
+
+https://github.com/visgl/hubble.gl/issues/159
+
+https://github.com/visgl/luma.gl/issues/1512
 
 ## Alternate Solution: Override resize functions in 3rd Party Libraries
 
@@ -99,70 +165,3 @@ Cons: Setting the browser's read-only `window.devicePixelRatio` is not guarentee
 
 Pros: Direct control of libraries is easier to debug compared to indirect control via devicePixelRatio.
 Cons: Will be difficult to maintain. Adding a new library support will need custom override each time, and new versions can break old overrides.
-
-## Size Variables Discussion
-
-### Resolution
-
-The user defined size of the exported videos and images. e.g. 1920px x 1080px
-
-### UI Preview Size
-
-The size of the HTML element containing the canvas in the UI.
-
-- This is provided by the application.
-- The aspect ratio of this size needs to match resolution.
-
-### Viewport Boundary
-
-The deck.gl / mapbox viewport perspective bounds (see [non-perspective getBounds](https://deck.gl/docs/api-reference/core/viewport#getbounds) for background).
-
-- Viewport changes with canvas client size and viewState coordinate.
-- To minimize viewport changes (Req #3) we cannot dramatically change canvas client size.
-- An animation is expected to have complete control of viewState, so we can't impose limits.
-
-### Canvas Client Size
-
-The deck.gl canvas element's CSS size (canvas.clientWidth/Height).
-
-- To satisfy [requirement #3](#Requirements), the viewport shouldn't ever perceptually[0] change because of Canvas Client Size.
-- Only allow the aspect to change.
-- Set the min(width, height) to 1080px.
-- Set the max(width, height) to Resolution Aspect Ratio * 1080px.
-  - Why 1080?
-    - Resolution is usually set close to 1080px in one axis, so this keeps scalars close to 1.
-    - 2px (any tiny number), 500k (any big number) is not a good idea because floating point scalar problems. 
-      - Precision Loss: E.g. 1920/500k = 0.00384. The “0.00” is lost precision. 1920/1080 = 1.777. No zeros, so no lost precision.
-  - What if we change 1080 in the future?
-    - Old animations that assume 1080-based viewport will appear zoomed out if 1080 increases, and zoomed in if 1080 decreases.
-
-[0] there is a slight viewport change when the aspect ratio changes, but this solution creates a ["safe-area"](https://en.wikipedia.org/wiki/Safe_area_(television)) for video content.
-
-### Deck Style Prop
-The CSS prop that sets the Canvas Client Size, and scales it to fit the UI Preview Size.
-
-- To satisfy [requirement #2](#Requirements), the canvas [bounding box](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) needs to fit in Preview Size.
-- Scale to fit Preview Size using a CSS scale transform. 
-  - Important to note CSS transforms have no effect on any other variables.
-  - Preview Scalar = Preview Size / Canvas Client 
-
-### Canvas Internal
-
-The deck.gl canvas element's internal size.
-
-- To satisfy [requirement #1](#Requirements), internal size to match Resolution.
-- Same as WebGL/GPU/default framebuffer width and height.
-- We won’t be able to directly set canvas internal
-  - While we could change this in LumaGL, it wouldn’t set the Mapbox GPU size because it has its own implementation and we won’t be able to change Mapbox’s implementation.
-  - mapbox/luma.gl implement size as a function of Canvas Client Size * [devicePixelRatio](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio). [See Luma.gl Code](https://github.com/visgl/luma.gl/blob/15e7acd33363ffe2add58b28638d19f697651ea6/modules/gltools/src/context/context.ts#L376-L377).
-  - devicePixelRatio = Resolution / Canvas Client Size
-
-## Example
-
-![canvas-resizing-example](https://user-images.githubusercontent.com/2461547/136319821-47f5f5bb-f054-4e2b-8332-d7d897f422d1.png)
-
-## Discussion
-
-https://github.com/visgl/hubble.gl/issues/159
-
-https://github.com/visgl/luma.gl/issues/1512
