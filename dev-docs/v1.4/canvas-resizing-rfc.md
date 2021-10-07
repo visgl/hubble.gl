@@ -140,9 +140,9 @@ The viewport width/height would still need to be set around a 1080px box (e.g. `
 
 ### Decouple WebGL and Canvas Internal
 
-Option 1: with custom Framebuffer supplied to luma.gl and mapbox. [See discussion.](https://github.com/visgl/hubble.gl/pull/176#discussion_r724380715)
+Option 1: Render to custom Framebuffer supplied to luma.gl and mapbox. [See discussion.](https://github.com/visgl/hubble.gl/pull/176#discussion_r724380715). This might not be an entire solution to sizing the rendered graphics because mapbox still references internal variables throughout the library for CPU height/width calculations, such as [painter.resize](https://github.com/mapbox/mapbox-gl-js/blob/cb4778f7cbde092dc11c959696eacfcfeb28ee71/src/render/painter.js#L213-L214).
 
-Option 2: Override functions in mapbox [`Map` class](https://github.com/mapbox/mapbox-gl-js/blob/cb4778f7cbde092dc11c959696eacfcfeb28ee71/src/ui/map.js#L2580-L2590), and luma.gl [resizeGlContext](https://github.com/visgl/luma.gl/blob/15e7acd33363ffe2add58b28638d19f697651ea6/modules/gltools/src/context/context.ts#L363-L377).
+Option 2: Override functions in mapbox and luma.gl, such as [`Map._resizeCanvas`](https://github.com/mapbox/mapbox-gl-js/blob/cb4778f7cbde092dc11c959696eacfcfeb28ee71/src/ui/map.js#L2580-L2590) and [resizeGlContext](https://github.com/visgl/luma.gl/blob/15e7acd33363ffe2add58b28638d19f697651ea6/modules/gltools/src/context/context.ts#L363-L377). 
 
 ### Risks
 
