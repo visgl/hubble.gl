@@ -31,8 +31,17 @@ export function scaleToVideoExport(viewState, container) {
     width: container.width,
     height: container.height
   }).fitBounds([nw, se]);
-  const {height, width, latitude, longitude, pitch, zoom, bearing, altitude} = videoViewport;
-  return {height, width, latitude, longitude, pitch, zoom, bearing, altitude};
+  const {height, width, latitude, longitude, zoom, altitude} = videoViewport;
+  return {
+    height,
+    width,
+    latitude,
+    longitude,
+    pitch: viewState.pitch,
+    zoom,
+    bearing: viewState.bearing,
+    altitude
+  };
 }
 
 /**
