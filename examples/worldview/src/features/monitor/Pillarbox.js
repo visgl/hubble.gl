@@ -3,16 +3,16 @@ import styled from 'styled-components';
 import {AutoSizer} from 'react-virtualized';
 import {nearestEven, scale} from '../../utils';
 
-const AutoSizePillarbox = ({children, dimension}) => {
+const AutoSizePillarbox = ({children, resolution}) => {
   const getPreviewSize = useCallback(
     ({width, height}) => {
-      const scalar = scale({width, height}, dimension);
+      const scalar = scale({width, height}, resolution);
       return {
-        width: nearestEven(dimension.width * scalar, 0),
-        height: nearestEven(dimension.height * scalar, 0)
+        width: nearestEven(resolution.width * scalar, 0),
+        height: nearestEven(resolution.height * scalar, 0)
       };
     },
-    [dimension]
+    [resolution]
   );
 
   return (
@@ -54,9 +54,9 @@ const PillarboxOverlay = ({children, size}) => {
   );
 };
 
-export const Pillarbox = ({children, overlay, dimension}) => {
+export const Pillarbox = ({children, overlay, resolution}) => {
   return (
-    <AutoSizePillarbox dimension={dimension}>
+    <AutoSizePillarbox resolution={resolution}>
       {({previewSize, pillarboxSize}) => (
         <PillarboxBackground size={pillarboxSize}>
           {children ? (

@@ -34,7 +34,7 @@ const timecode = {
   framerate: 30
 }
 
-const dimension = {
+const resolution = {
   width: 1920,
   height: 1080
 }
@@ -80,8 +80,8 @@ export default function App() {
     <div style={{position: 'relative'}}>
       <DeckGL
         ref={deckRef}
-        width={dimension.width}
-        height={dimension.height}
+        width={resolution.width}
+        height={resolution.height}
         {...adapter.getProps({deck, onNextFrame, getLayers})}
       />
       <div style={{position: 'absolute'}}>

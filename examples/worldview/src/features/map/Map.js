@@ -29,8 +29,8 @@ import {DebugOverlay} from './DebugOverlay';
 // Goal: Render similar viewport boundary regardless of internal canvas size.
 // The viewport bounds change with canvas size, so constrain it around
 // a square (default 1080px). It can be wide, tall, or square.
-function getCanvasClientSize(dimension, minAxis = 1080) {
-  const aspect = dimension.width / dimension.height;
+function getCanvasClientSize(resolution, minAxis = 1080) {
+  const aspect = resolution.width / resolution.height;
   if (aspect > 1) {
     // horizontal
     return {width: Math.round(minAxis * aspect), height: minAxis};
@@ -66,8 +66,8 @@ export class Map extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {dimension} = this.props;
-    if (!isEqual(prevProps.dimension, dimension)) {
+    const {resolution} = this.props;
+    if (!isEqual(prevProps.resolution, resolution)) {
       this._resizeVideo();
     }
   }
@@ -85,10 +85,10 @@ export class Map extends Component {
   }
 
   _resizeVideo() {
-    const {dimension, viewportMinAxis} = this.props;
-    const canvasClientSize = getCanvasClientSize(dimension, viewportMinAxis);
-    // canvasClientSize * scalar = dimension
-    const scalar = scale(dimension, canvasClientSize);
+    const {resolution, viewportMinAxis} = this.props;
+    const canvasClientSize = getCanvasClientSize(resolution, viewportMinAxis);
+    // canvasClientSize * scalar = resolution
+    const scalar = scale(resolution, canvasClientSize);
     this._changeDpi(scalar);
   }
 
@@ -160,7 +160,7 @@ export class Map extends Component {
       setViewState,
       deckProps,
       staticMapProps,
-      dimension,
+      resolution,
       debug,
       viewportMinAxis
     } = this.props;
@@ -194,8 +194,8 @@ export class Map extends Component {
           glOptions={{stencil: true}}
           onWebGLInitialized={gl => this.setState({glContext: gl})}
           onViewStateChange={({viewState: vs}) => setViewState(vs)}
-          width={dimension.width}
-          height={dimension.height}
+          width={resolution.width}
+          height={resolution.height}
           {...adapter.getProps({deck, extraProps: deckProps})}
         >
           {glContext && (
@@ -212,7 +212,7 @@ export class Map extends Component {
           <DebugOverlay
             deckRef={this.deckRef}
             containerRef={this.containerRef}
-            dimension={dimension}
+            resolution={resolution}
             previewSize={previewSize}
           />
         )}

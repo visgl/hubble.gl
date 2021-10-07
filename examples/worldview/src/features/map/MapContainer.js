@@ -23,14 +23,14 @@ import React from 'react';
 import {Map} from './Map';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {dimensionSelector, adapterSelector} from '../renderer';
+import {resolutionSelector, adapterSelector} from '../renderer';
 
 import {updateViewState, viewStateSelector} from './mapSlice';
 import {updateTimeCursor} from '../timeline/timelineSlice';
 
 export const MapContainer = ({previewSize, deckProps, staticMapProps, debug, viewportMinAxis}) => {
   const dispatch = useDispatch();
-  const dimension = useSelector(dimensionSelector);
+  const resolution = useSelector(resolutionSelector);
   const viewState = useSelector(viewStateSelector);
   const adapter = useSelector(adapterSelector);
 
@@ -45,7 +45,7 @@ export const MapContainer = ({previewSize, deckProps, staticMapProps, debug, vie
       setViewState={vs => dispatch(updateViewState(vs))}
       // Hubble Props
       adapter={adapter}
-      dimension={dimension}
+      resolution={resolution}
       updateTimeCursor={timeMs => dispatch(updateTimeCursor(timeMs))}
       debug={debug}
       viewportMinAxis={viewportMinAxis}

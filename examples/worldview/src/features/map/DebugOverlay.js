@@ -1,7 +1,7 @@
 import React from 'react';
 
 /* eslint-disable complexity */
-export function DebugOverlay({containerRef, deckRef, dimension, previewSize, dpi, onDpiChange}) {
+export function DebugOverlay({containerRef, deckRef, resolution, previewSize, dpi, onDpiChange}) {
   const container = containerRef && containerRef.current;
   const deck = deckRef.current;
   const canvas = deck && deck._canvasRef.current;
@@ -11,7 +11,7 @@ export function DebugOverlay({containerRef, deckRef, dimension, previewSize, dpi
   return (
     <div style={{position: 'absolute', top: 0, left: 0, color: 'white'}}>
       <div>
-        Expected Export size: <b>{dimension.width}</b>px x <b>{dimension.height}</b>px
+        Expected Export size: <b>{resolution.width}</b>px x <b>{resolution.height}</b>px
       </div>
       <div>
         Expected Container size: <b>{previewSize.width}</b>px x <b>{previewSize.height}</b>px

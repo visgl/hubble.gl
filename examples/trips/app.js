@@ -88,7 +88,7 @@ const timecode = {
   framerate: 30
 };
 
-const dimension = {
+const resolution = {
   width: 1280,
   height: 720
 };
@@ -206,8 +206,8 @@ export default function App({mapStyle = 'mapbox://styles/mapbox/dark-v9'}) {
           // blendEquation: GL.FUNC_ADD,
           blendFunc: [GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA]
         }}
-        width={dimension.width}
-        height={dimension.height}
+        width={resolution.width}
+        height={resolution.height}
         {...adapter.getProps({deck})}
       >
         {glContext && (
