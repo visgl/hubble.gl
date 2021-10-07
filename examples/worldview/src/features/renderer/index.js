@@ -12,7 +12,7 @@ export {
   formatConfigsChange,
   resolutionChange,
   timecodeChange,
-  dimensionSelector,
+  resolutionSelector,
   busySelector,
   durationSelector,
   adapterSelector
