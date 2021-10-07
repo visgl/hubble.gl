@@ -4,6 +4,12 @@
 * Date: Oct, 2021
 * Status: **Implemented**
 
+## Motivation
+
+A video generation component like hubble.gl needs to control canvas sizes because the map visualization libraries (e.g. luma.gl and mapbox-gl-js) couple viewport bounds and WebGL contexts / framebuffers with browser canvas external and internal size attributes, respectivly. If they had support for setting viewport size and a custom framebuffer hubble.gl would directly set these instead.
+
+Adding these features to one library, esspecially in luma.gl which we can easily modify, would be simple enough, however video generation uses multiple map libraries with interleaved gl contexts to utilize features from all of the libaries at once, such as basemaps and visualization layers. 
+
 ## Requirements
 
 1. The rendering canvas internal size matches the user defined resolution (and can be modified by the user during runtime).
@@ -15,6 +21,14 @@
 Our existing implementation satisfies `2.`, intermittently satifies `1.`, and always fails `3.`. As shown in this video demo:
 
 https://user-images.githubusercontent.com/2461547/136107416-0cf7e2c2-aad5-4ad8-9531-0261fa87cc07.mov
+
+### 3rd Libraries Control Canvas Size
+
+Luma.gl and mapbox-gl-js syncronized implementations for setting canvas size attributes, so that they can be visually syncronized with eachother: 
+- `canvas.clientWidth/Height` (in RFC as [Canvas Client Size](#Canvas-Client-Size))
+- `canvas.width/height` (in RFC as [Canvas Internal Size](#Canvas-Internal-Size)). 
+
+Discussed in more detail below, hubble.gl needs to control of both attributes because the [Canvas Client Size](#Canvas-Client-Size) effects the Viewport bounds and [Canvas Internal Size](#Canvas-Internal-Size) effects the export Resolution. The libraries allow setting [Canvas Client Size](#Canvas-Client-Size) with CSS width/height properties, but they control the [Canvas Internal Size](#Canvas-Internal-Size) internally (see [luma.gl](https://github.com/visgl/luma.gl/blob/15e7acd33363ffe2add58b28638d19f697651ea6/modules/gltools/src/context/context.ts#L363-L377) and [mapbox](https://github.com/mapbox/mapbox-gl-js/blob/cb4778f7cbde092dc11c959696eacfcfeb28ee71/src/ui/map.js#L2580-L2590) implementation) - this is a problem for hubble.gl.
 
 ## Solution Summary
 
