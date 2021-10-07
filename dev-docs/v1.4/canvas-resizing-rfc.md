@@ -118,11 +118,11 @@ The deck.gl canvas element's internal size.
   - mapbox/luma.gl implement size as a function of Canvas Client Size * [devicePixelRatio](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio). [See Luma.gl Code](https://github.com/visgl/luma.gl/blob/15e7acd33363ffe2add58b28638d19f697651ea6/modules/gltools/src/context/context.ts#L376-L377).
   - devicePixelRatio = Resolution / Canvas Client Size
 
-## Example
+### Example
 
 ![canvas-resizing-example](https://user-images.githubusercontent.com/2461547/136319821-47f5f5bb-f054-4e2b-8332-d7d897f422d1.png)
 
-## Discussion
+### Discussion
 
 https://github.com/visgl/hubble.gl/issues/159
 
