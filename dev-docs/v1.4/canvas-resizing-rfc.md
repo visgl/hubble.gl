@@ -6,9 +6,9 @@
 
 ## Motivation
 
-A video generation component like hubble.gl needs to control canvas sizes because the map visualization libraries (e.g. luma.gl and mapbox-gl-js) couple viewport bounds and WebGL contexts / framebuffers with browser canvas external and internal size attributes, respectivly. If they had support for setting viewport size and a custom framebuffer hubble.gl would directly set these instead.
+A video generation component like hubble.gl needs to control canvas sizes because the map visualization libraries (e.g. luma.gl and mapbox-gl-js) couple viewport bounds and WebGL contexts / framebuffers with browser canvas external and internal size attributes, respectivly. If they had support for setting viewport size and a custom framebuffer, hubble.gl could directly set these - but they do not all support this.
 
-Adding these features to one library, esspecially in luma.gl which we can easily modify, would be simple enough, however video generation uses multiple map libraries with interleaved gl contexts to utilize features from all of the libaries at once, such as basemaps and visualization layers. 
+Patching the libraries would be considerable effort since Hubble.gl utilize features from multiple map libraries, such as basemaps and visualization layers.
 
 ## Requirements
 
@@ -22,34 +22,83 @@ Our existing implementation satisfies `2.`, intermittently satifies `1.`, and al
 
 https://user-images.githubusercontent.com/2461547/136107416-0cf7e2c2-aad5-4ad8-9531-0261fa87cc07.mov
 
-### 3rd Libraries Control Canvas Size
+### How do 3rd Libraries Control Canvas Size?
 
-Luma.gl and mapbox-gl-js syncronized implementations for setting canvas size attributes, so that they can be visually syncronized with eachother: 
+Luma.gl and mapbox-gl-js syncronize implementations for setting canvas size attributes, so that they can be visually in sync with eachother: 
 - `canvas.clientWidth/Height` (in RFC as [Canvas Client Size](#Canvas-Client-Size))
 - `canvas.width/height` (in RFC as [Canvas Internal Size](#Canvas-Internal-Size)). 
 
 Discussed in more detail below, hubble.gl needs to control of both attributes because the [Canvas Client Size](#Canvas-Client-Size) effects the Viewport bounds and [Canvas Internal Size](#Canvas-Internal-Size) effects the export Resolution. The libraries allow setting [Canvas Client Size](#Canvas-Client-Size) with CSS width/height properties, but they control the [Canvas Internal Size](#Canvas-Internal-Size) internally (see [luma.gl](https://github.com/visgl/luma.gl/blob/15e7acd33363ffe2add58b28638d19f697651ea6/modules/gltools/src/context/context.ts#L363-L377) and [mapbox](https://github.com/mapbox/mapbox-gl-js/blob/cb4778f7cbde092dc11c959696eacfcfeb28ee71/src/ui/map.js#L2580-L2590) implementation) - this is a problem for hubble.gl.
 
-## Solution Summary
+## Solution Proposal: 
 
-1. Add `resolution` prop on `Map` changes the export resolution.
-  a. window.devicePixelRatio is modified to change the webgl internal size.
-2. Add `previewSize` prop on `Map` changes the UI size.
-  a. CSS `transform: scale` is used to fit the map into the available space.
-3. Keep viewport bounds consistent across resize by fitting canvas client size around a 1080px box (configurable with `viewportMinAxis` prop).
+1. Modify `window.devicePixelRatio` to change the webgl internal size.
+  a. Add `resolution` prop on `Map` changes the export resolution.
+2. Use CSS `transform: scale` to fit the map into the available space.
+  a. Add `previewSize` prop on `Map` changes the UI size.
+3. Keep viewport bounds consistent across resize by fitting canvas client size around a 1080px box.
+  a. Configurable with `viewportMinAxis` prop on `Map`.
+
+### Risks
+
+- Setting the browser's read-only `window.devicePixelRatio` is not guarenteed to work in all browsers, and may break without warning.
+
+- We couldn't show two maps in parallel at different resolutions because `window.devicePixelRatio` is global. However, we can show multiple maps if they all have the same resolution (or is we don't care about their resolution). We can also resize each map with `previewSize` without issues.
+
+- Multiple `Map` components will set conflicting `window.devicePixelRatio` values unless we have a flag to disable setting on all but one.
+
+- Other 3rd party libraries that rely on `window.devicePixelRatio` will be effected by this solution.
 
 ### Prototype
 
 https://github.com/visgl/hubble.gl/pull/171
 
-#### Requirement 1. demo
+#### Requirement 1. Demo Video
 
 https://user-images.githubusercontent.com/2461547/136107744-d706b689-b703-4d05-b331-066d7f141ba9.mov
 
-#### Requirement 2. and 3. demo
+#### Requirement 2. and 3. Demo Video
 
 https://user-images.githubusercontent.com/2461547/136107906-1dde2c00-32a6-4d97-aac6-12822fae0581.mov
 
+
+## Alternate Solution: Override resize functions in 3rd Party Libraries
+
+Decouple viewport and WebGL from canvas external and internal sizes, respectivly, by overriding map library functions at runtime, or patching the libraries.
+
+### Decouple Viewport and Canvas External
+
+TODO
+
+The viewport width/height would still need to be set around a 1080px box (e.g. `viewportMinAxis` prop). This solution just directly sets the value, so that client size can be set to `previewSize` prop and eliminates any use of CSS `transform: scale`.
+
+### Decouple WebGL and Canvas Internal
+
+Option 1: with custom Framebuffer supplied to luma.gl and mapbox. [See discussion.](https://github.com/visgl/hubble.gl/pull/176#discussion_r724380715)
+
+Option 2: Override functions in mapbox [`Map` class](https://github.com/mapbox/mapbox-gl-js/blob/cb4778f7cbde092dc11c959696eacfcfeb28ee71/src/ui/map.js#L2580-L2590), and luma.gl [resizeGlContext](https://github.com/visgl/luma.gl/blob/15e7acd33363ffe2add58b28638d19f697651ea6/modules/gltools/src/context/context.ts#L363-L377).
+
+### Risks
+
+- Will be difficult to maintain. Adding a new library support will need custom override each time, and new versions can break old overrides.
+
+### Prototype
+
+TODO
+
+## Solution Comparisons
+
+Consideration: Is it better to override global devicePixelRatio or the mapbox/luma.gl functions at runtime?
+
+### devicePixelRatio 
+
+Pros: Lower effort to integrate an additional map library since most they syncronize resize implementations.
+Cons: Setting the browser's read-only `window.devicePixelRatio` is not guarenteed to work in all browsers, and may break without warning.
+
+### Overriding map library functions
+
+Pros: Direct control of libraries is easier to debug compared to indirect control via devicePixelRatio.
+Cons: Will be difficult to maintain. Adding a new library support will need custom override each time, and new versions can break old overrides.
 
 ## Size Variables Discussion
 
