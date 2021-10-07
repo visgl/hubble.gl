@@ -36,7 +36,7 @@ Discussed in more detail below, hubble.gl needs to control of both attributes be
   a. window.devicePixelRatio is modified to change the webgl internal size.
 2. Add `previewSize` prop on `Map` changes the UI size.
   a. CSS `transform: scale` is used to fit the map into the available space.
-3. Keep viewport bounds consistent across resize by fitting canvas client size around a 1080px box.
+3. Keep viewport bounds consistent across resize by fitting canvas client size around a 1080px box (configurable with `viewportMinAxis` prop).
 
 ### Prototype
 
