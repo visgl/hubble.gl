@@ -158,10 +158,12 @@ Consideration: Is it better to override global devicePixelRatio or the mapbox/lu
 
 ### devicePixelRatio 
 
-Pros: Lower effort to integrate an additional map library since most they syncronize resize implementations.
-Cons: Setting the browser's read-only `window.devicePixelRatio` is not guarenteed to work in all browsers, and may break without warning.
+**Pros:** Lower effort to integrate an additional map library since most they syncronize resize implementations.
+
+**Cons:** Setting the browser's read-only `window.devicePixelRatio` is not guarenteed to work in all browsers, and may break without warning.
 
 ### Overriding map library functions
 
-Pros: Direct control of libraries is easier to debug compared to indirect control via devicePixelRatio.
-Cons: Will be difficult to maintain. Adding a new library support will need custom override each time, and new versions can break old overrides.
+**Pros:** Direct control of libraries is easier to debug compared to indirect control via devicePixelRatio.
+
+**Cons:** Will be difficult to maintain. Adding a new library support will need custom override each time, and new versions can break old overrides.
