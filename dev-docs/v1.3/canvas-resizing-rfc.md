@@ -96,7 +96,7 @@ The deck.gl canvas element's internal size.
 
 ## Example
 
-![canvas-resizing-example](/dev-docs/v1.3/canvas-resizing-example.png)
+![canvas-resizing-example](https://user-images.githubusercontent.com/2461547/136319821-47f5f5bb-f054-4e2b-8332-d7d897f422d1.png)
 
 ## Discussion
 
