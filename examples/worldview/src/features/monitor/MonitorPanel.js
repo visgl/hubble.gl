@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   busySelector,
   durationSelector,
-  dimensionSelector,
+  resolutionSelector,
   usePreviewHandler,
   useRenderHandler,
   seekTime
@@ -100,7 +100,7 @@ const SeekSlider = () => {
   );
 };
 
-const DimensionPicker = () => {
+const ResolutionPicker = () => {
   const dispatch = useDispatch();
 
   return (
@@ -125,7 +125,7 @@ const DimensionPicker = () => {
 export const MonitorPanel = ({deckProps = undefined, staticMapProps = undefined}) => {
   const rendererBusy = useSelector(busySelector);
   const viewState = useSelector(viewStateSelector);
-  const dimension = useSelector(dimensionSelector);
+  const resolution = useSelector(resolutionSelector);
   const onPreview = usePreviewHandler();
   const onRender = useRenderHandler();
 
@@ -142,7 +142,10 @@ export const MonitorPanel = ({deckProps = undefined, staticMapProps = undefined}
       }}
     >
       <div style={{flex: 1, position: 'relative'}}>
-        <Pillarbox dimension={dimension} overlay={rendererBusy === 'rendering' && <RenderStatus />}>
+        <Pillarbox
+          resolution={resolution}
+          overlay={rendererBusy === 'rendering' && <RenderStatus />}
+        >
           {previewSize => (
             <Map
               previewSize={previewSize}
@@ -155,7 +158,7 @@ export const MonitorPanel = ({deckProps = undefined, staticMapProps = undefined}
       </div>
       <PrintViewState viewState={viewState} />
       <MonitorBottomToolbar playing={Boolean(rendererBusy)} onPreview={onPreview} />
-      <DimensionPicker />
+      <ResolutionPicker />
       <button onClick={onRender}>Render</button>
       <SeekSlider />
     </div>

@@ -45,8 +45,11 @@ export class Map extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {dimension, previewSize} = this.props;
-    if (!isEqual(prevProps.dimension, dimension) || !isEqual(prevProps.previewSize, previewSize)) {
+    const {resolution, previewSize} = this.props;
+    if (
+      !isEqual(prevProps.resolution, resolution) ||
+      !isEqual(prevProps.previewSize, previewSize)
+    ) {
       this._resizeVideo();
     }
   }
@@ -128,7 +131,7 @@ export class Map extends Component {
       setViewState,
       deckProps,
       staticMapProps,
-      dimension,
+      resolution,
       debug
     } = this.props;
     const {glContext} = this.state;
@@ -156,8 +159,8 @@ export class Map extends Component {
           glOptions={{stencil: true}}
           onWebGLInitialized={gl => this.setState({glContext: gl})}
           onViewStateChange={({viewState: vs}) => setViewState(vs)}
-          width={dimension.width}
-          height={dimension.height}
+          width={resolution.width}
+          height={resolution.height}
           {...adapter.getProps({deck, extraProps: deckProps})}
         >
           {glContext && (
@@ -174,7 +177,7 @@ export class Map extends Component {
           <DebugOverlay
             deckRef={this.deckRef}
             containerRef={this.containerRef}
-            dimension={dimension}
+            resolution={resolution}
             previewSize={previewSize}
           />
         )}
