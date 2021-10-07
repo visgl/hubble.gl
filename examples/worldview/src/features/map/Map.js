@@ -173,7 +173,7 @@ export class Map extends Component {
       position: 'relative'
     };
 
-    const canvasClientSize = getCanvasClientSize(dimension, viewportMinAxis);
+    const canvasClientSize = getCanvasClientSize(resolution, viewportMinAxis);
     // canvasClientSize * scalar = previewSize
     const scalar = scale(previewSize, canvasClientSize);
     const deckStyle = {
