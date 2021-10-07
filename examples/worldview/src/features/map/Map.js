@@ -28,18 +28,18 @@ import {DebugOverlay} from './DebugOverlay';
 
 // Goal: Render similar viewport boundary regardless of internal canvas size.
 // The viewport bounds change with canvas size, so constrain it around
-// a 1080px square. It can be wide, tall, or square.
-function getCanvasClientSize(dimension) {
+// a square (default 1080px). It can be wide, tall, or square.
+function getCanvasClientSize(dimension, minAxis = 1080) {
   const aspect = dimension.width / dimension.height;
   if (aspect > 1) {
     // horizontal
-    return {width: Math.round(1080 * aspect), height: 1080};
+    return {width: Math.round(minAxis * aspect), height: minAxis};
   } else if (aspect < 1) {
     // vertical
-    return {width: 1080, height: Math.round(1080 / aspect)};
+    return {width: minAxis, height: Math.round(minAxis / aspect)};
   }
   // square
-  return {width: 1080, height: 1080};
+  return {width: minAxis, height: minAxis};
 }
 
 export class Map extends Component {
@@ -85,8 +85,8 @@ export class Map extends Component {
   }
 
   _resizeVideo() {
-    const {dimension} = this.props;
-    const canvasClientSize = getCanvasClientSize(dimension);
+    const {dimension, viewportMinAxis} = this.props;
+    const canvasClientSize = getCanvasClientSize(dimension, viewportMinAxis);
     // canvasClientSize * scalar = dimension
     const scalar = scale(dimension, canvasClientSize);
     this._changeDpi(scalar);
@@ -161,7 +161,8 @@ export class Map extends Component {
       deckProps,
       staticMapProps,
       dimension,
-      debug
+      debug,
+      viewportMinAxis
     } = this.props;
     const {glContext} = this.state;
     const deck = this.deckRef.current && this.deckRef.current.deck;
@@ -172,7 +173,7 @@ export class Map extends Component {
       position: 'relative'
     };
 
-    const canvasClientSize = getCanvasClientSize(dimension);
+    const canvasClientSize = getCanvasClientSize(dimension, viewportMinAxis);
     // canvasClientSize * scalar = previewSize
     const scalar = scale(previewSize, canvasClientSize);
     const deckStyle = {
