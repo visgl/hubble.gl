@@ -16,7 +16,7 @@ npm install hubble.gl
 
 ## Basic Scene
 
-To create an animation and render it you will need to first create a [deck.gl](https://deck.gl/docs/get-started/getting-started) project. Then create a `DeckAdapter`, a `timecode` object, and define some keyframes (e.g. `CameraKeyframes`)
+To create an animation and render it you will need to first create a [deck.gl](https://deck.gl/docs/get-started/getting-started) project. Then create a `DeckAnimation`, a `timecode` object, and define some keyframes (e.g. `cameraKeyframes`)
 
 Hubble.gl provide a `useNextFrame` hook for React.js to trigger a render when necessary, and provides the `<BasicControls/>` component for convenience to get your animation started.
 
@@ -25,25 +25,18 @@ import React, {useState, useRef, useMemo} from 'react';
 import DeckGL from '@deck.gl/react';
 import {useNextFrame, BasicControls} from '@hubble.gl/react';
 import {LineLayer} from '@deck.gl/layers';
-import {DeckAdapter, CameraKeyframes} from 'hubble.gl';
+import {DeckAnimation} from 'hubble.gl';
 import {easing} from 'popmotion';
 
-const timecode = {
-  start: 0,      // ms
-  end: 5000,     // ms
-  framerate: 30
-}
-
-const resolution = {
-  width: 1920,
-  height: 1080
-}
-
-const adapter = new DeckAdapter({});
-
-function getCameraKeyframes() {
-  return new CameraKeyframes({
-    timings: [0, 5000],
+const deckAnimation = new DeckAnimation({
+  layers: [
+    new LineLayer({id: 'line-layer', data: [{sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}]})
+  ],
+  layerKeyframes: [
+    { id: 'line-layer',  timings: [0, 1000], keyframes: [{opacity: 0}, {opacity: 1}] }
+  ],
+  cameraKeyframe: {
+    timings: [0, 5000], // ms
     keyframes: [
       {
         latitude: 37.7853,
@@ -60,32 +53,47 @@ function getCameraKeyframes() {
         pitch: 30
       }
     ],
-    easings: [easing.easeInOut]
-  });
+    easings: easing.easeInOut // any easing number => number function is supported
+  }
+});
+
+const timecode = {
+  start: 0,      // ms
+  end: 5000,     // ms
+  framerate: 30
 }
 
-function getLayers(scene) {
-  return [
-    new LineLayer({id: 'line-layer', data: [{sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}]})
-  ]
+const resolution = {
+  width: 1920,  // px
+  height: 1080  // px
 }
 
 export default function App() {
   const deckRef = useRef(null);
   const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
   const [busy, setBusy] = useState(false);
-  const onNextFrame = useNextFrame();
+  const nextFrame = useNextFrame();
+
+  const {adapter, layers, cameraFrame, setCameraFrame} = useDeckAdapter(deckAnimation);
   
   return (
     <div style={{position: 'relative'}}>
       <DeckGL
         ref={deckRef}
+        viewState={cameraFrame}
+        onViewStateChange={({viewState}) => setCameraFrame(viewState)}
         width={resolution.width}
         height={resolution.height}
-        {...adapter.getProps({deck, onNextFrame, getLayers})}
+        {...adapter.getProps({deck, nextFrame})}
       />
       <div style={{position: 'absolute'}}>
-        <BasicControls adapter={adapter} busy={busy} setBusy={setBusy} timecode={timecode} getCameraKeyframes={getCameraKeyframes}/>
+        <BasicControls 
+          adapter={adapter}
+          busy={busy}
+          setBusy={setBusy}
+          formatConfigs={formatConfigs}
+          timecode={timecode}
+        />
       </div>
     </div>
   );

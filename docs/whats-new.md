@@ -67,3 +67,58 @@ Initial release.
 ### Deprecations
 - Frame definition pattern in [frame.js](https://github.com/uber/hubble.gl/blob/a821066de6aa24ed747609b3c0b71dfcc17d27b3/modules/core/src/keyframes/frame.js) should no longer be used. Will be removed in next release.
 - `Keyframes.setActiveKeyframes` is now private `Keyframes._setActiveKeyframes`, and should not be used.
+
+## 1.3.0
+
+This release introduces a new decoupled animation manager, and refactors Please review API reference and examples before upgrading.
+
+### Fixed
+
+- [#113](https://github.com/visgl/hubble.gl/pull/113) encoders - gif options can be read-only
+- [#147](https://github.com/visgl/hubble.gl/pull/147) kepler - fixed rendering while preview exception
+- [#163](https://github.com/visgl/hubble.gl/pull/163) kepler - blank layer when no deck layers
+- [#177](https://github.com/visgl/hubble.gl/pull/177) kepler - match 3d perspective in video export
+- [#95](https://github.com/visgl/hubble.gl/pull/95) worldview - odd dimensions cause encoder issues
+
+### Added
+
+- [#98](https://github.com/visgl/hubble.gl/pull/98) Add `seek` method to DeckAdapter.
+- [#125](https://github.com/visgl/hubble.gl/pull/125) Added new Keyframe classes.
+  - `Keyframes.set` to update keyframe values without reconstructing and re-attaching to timeline.
+  - `DeckLayerKeyframes`
+  - `KeplerLayerKeyframes`
+  - `KeplerFilterKeyframes`
+  - `KeplerTripKeyframes`
+- [#127](https://github.com/visgl/hubble.gl/pull/127) Added `Animation` to manage keyframes and drawing a frame.
+  - `DeckAnimation`
+  - `KeplerAnimation`
+- [#130](https://github.com/visgl/hubble.gl/pull/130) Added `AnimationManager` to replace `DeckScene`
+  - Manages a `Timeline` and attaching animations.
+
+#### React
+
+- [#130](https://github.com/visgl/hubble.gl/pull/130) `useDeckAdapter` hook for better react integration.
+- Numerous improvements to kepler.gl support.
+  - [#144](https://github.com/visgl/hubble.gl/pull/144) UI Modal Refinements. Thank you @RaymondDashWu!
+  - [#146](https://github.com/visgl/hubble.gl/pull/146) support kepler.gl filter animate by interval keyframes
+
+
+### Changed
+
+- [#161](https://github.com/visgl/hubble.gl/pull/161) `DeckAdapter` now waits for async deck.gl layers to finish loading before rendering a frame.
+  - Check out the terrain example to see this in action!
+- `DeckAdapter` has breaking changes for existing applications.
+  - [#112](https://github.com/visgl/hubble.gl/pull/112)
+  - [#119](https://github.com/visgl/hubble.gl/pull/119)
+- [#106](https://github.com/visgl/hubble.gl/pull/106) renamed `encoderSettings` to `formatConfigs`
+- [#175](https://github.com/visgl/hubble.gl/pull/175) renamed `dimension` to `resolution`
+
+### Removed
+
+- Removed `DeskScene` (replaced by `AnimationManager` and `Animation` classes).
+- Removed Keyframe classes.
+  - `LayerKeyframes` (replaced by `DeckLayerKeyframes`)
+  - `FilterValueKeyframes`
+  - `GridLayerKeyframes`
+  - `ScatterPlotLayerKeyframes`
+

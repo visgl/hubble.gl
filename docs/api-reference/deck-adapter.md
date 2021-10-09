@@ -28,17 +28,11 @@ Parameters:
 
 * `extraProps` (`DeckGlProps`, Optional) - Apply extra props to deckgl. Note: Hubble will override props as needed.
 
-##### `render({getCameraKeyframes, Encoder, formatConfigs, onStop, getLayerKeyframes})`
+##### `render({Encoder, formatConfigs, onStop})`
 
 Start rendering.
 
 Parameters:
-
-* **`getCameraKeyframes` (`() => CameraKeyframes`, Optional) - Default: `undefined`.**
-
-This function is used to access the camera's keyframes, and is called just prior to rendering.
-
-* **`getLayerKeyframes` (`() => Object<string, Keyframes>`, Optional) - Default: `undefined`.**
 
 * **`Encoder` (`typeof FrameEncoder`, Optional) - Default: `PreviewEncoder`.**
 
@@ -66,19 +60,13 @@ Parameters:
 
 This function is called after the last frame is rendered and a file is created for download. It does not get called when a render is interrupted with `stop()`.
 
-##### `seek({timeMs, getCameraKeyframes, getLayerKeyframes})`
+##### `seek({timeMs})`
 
 Move time to set a new position. Useful for peeking at different times in an animation without rendering.
 
 Parameters:
 
 * **`timeMs` (`number`)**
-
-* **`getCameraKeyframes` (`() => CameraKeyframes`, Optional) - Default: `undefined`.**
-
-This function is used to access the camera's keyframes, and is called just prior to rendering.
-
-* **`getLayerKeyframes` (`() => Object<string, Keyframes>`, Optional) - Default: `undefined`.**
 
 ## Source
 
