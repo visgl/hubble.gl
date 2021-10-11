@@ -35,10 +35,10 @@
           ]
         },
         {
-          "title": "Scenes",
+          "title": "Animations",
           "entries": [
             {
-              "entry": "docs/api-reference/scene/deck-scene"
+              "entry": "docs/api-reference/animations/animation-manager"
             }
           ]
         },
