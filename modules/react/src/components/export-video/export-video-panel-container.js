@@ -93,8 +93,9 @@ export class ExportVideoPanelContainer extends Component {
   }
 
   getFileName() {
+    const {defaultFileName} = this.props;
     const {fileName} = this.state;
-    if (fileName === '') return DEFAULT_FILENAME;
+    if (fileName === '') return defaultFileName;
     return fileName;
   }
 
@@ -311,7 +312,8 @@ export class ExportVideoPanelContainer extends Component {
       deckProps,
       staticMapProps,
       disableStaticMap,
-      mapboxLayerBeforeId
+      mapboxLayerBeforeId,
+      defaultFileName
     } = this.props;
     const {
       adapter,
@@ -333,6 +335,7 @@ export class ExportVideoPanelContainer extends Component {
       setCameraPreset: this.setCameraPreset,
       fileName,
       setFileName: this.setFileName,
+      fileNamePlaceholder: defaultFileName,
       resolution,
       setResolution: this.setResolution,
       durationMs,
@@ -380,5 +383,6 @@ ExportVideoPanelContainer.defaultProps = {
   glContext: undefined,
   deckProps: {},
   staticMapProps: {},
-  disableStaticMap: false
+  disableStaticMap: false,
+  defaultFileName: DEFAULT_FILENAME
 };
