@@ -94,6 +94,7 @@ const PanelBody = ({
         <ExportVideoPanelSettings
           settings={settings}
           resolution={resolution}
+          disabled={rendering || previewing}
         />
         <TimelineControls className="timeline-controls">
           {rendering || previewing ? (
@@ -107,7 +108,7 @@ const PanelBody = ({
             style={{marginTop: '16px', width: '100%', height: '32px'}}
             className={'export-video-button'}
             onClick={handleRenderVideo}
-            disabled={rendering}
+            disabled={rendering || previewing}
           >
             Render
           </Button>
