@@ -2,13 +2,7 @@ import React, {useState} from 'react';
 
 import {estimateFileSize} from './utils';
 import {StyledLabelCell, StyledValueCell, InputGrid} from './styled-components';
-import {
-  DEFAULT_FILENAME,
-  FORMATS,
-  RESOLUTIONS,
-  ASPECT_RATIOS,
-  DEFAULT_PREVIEW_RESOLUTIONS
-} from './constants';
+import {FORMATS, RESOLUTIONS, ASPECT_RATIOS, DEFAULT_PREVIEW_RESOLUTIONS} from './constants';
 import {WithKeplerUI} from '../inject-kepler';
 
 const getOptionValue = r => r.value;
@@ -25,7 +19,7 @@ function SettingsTab({settings, resolution}) {
             <StyledLabelCell>File Name</StyledLabelCell>
             <Input
               value={settings.fileName}
-              placeholder={DEFAULT_FILENAME}
+              placeholder={settings.fileNamePlaceholder}
               onChange={e => settings.setFileName(e.target.value)}
             />
             <StyledLabelCell>Media Type</StyledLabelCell>

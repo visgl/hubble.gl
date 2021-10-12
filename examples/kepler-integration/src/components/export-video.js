@@ -94,6 +94,7 @@ class ExportVideo extends Component {
               onFilterFrameUpdate={onFilterFrameUpdate}
               onTripFrameUpdate={onTripFrameUpdate}
               exportVideoWidth={720}
+              defaultFileName={'hubble.gl'}
             />
           </ExportVideoModal>
         </div>
