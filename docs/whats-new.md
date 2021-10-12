@@ -101,6 +101,8 @@ This release introduces a new decoupled animation manager, and refactors Please 
 - Numerous improvements to kepler.gl support.
   - [#144](https://github.com/visgl/hubble.gl/pull/144) UI Modal Refinements. Thank you @RaymondDashWu!
   - [#146](https://github.com/visgl/hubble.gl/pull/146) support kepler.gl filter animate by interval keyframes
+  - [#182](https://github.com/visgl/hubble.gl/pull/182) default filename prop
+  - [#183](https://github.com/visgl/hubble.gl/pull/183) stop button and disable settings when previewing or rendering
 
 
 ### Changed
