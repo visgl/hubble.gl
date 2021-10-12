@@ -1,10 +1,10 @@
 # Introduction
 
-Hubble.gl is a JavaScript library for animating data visualizations.
+Hubble.gl is a JavaScript library for animating and video encoding WebGL data visualizations.
 
-- **High Quality Video:** Guaranteed smooth framerates, high resolutions, and a variety of formats. Render the quality you want at the speed you need it. Fine tune timing and look with keyframe markers and render everything in the same app.
+- **High Quality Video:** 60+fps framerates, up to 8k resolution, and a variety of formats. Render a quick draft or with loseless encoding. Fine tune timing and look with keyframe markers and render everything in the same app.
 
-- **Easy Integration:** Stand up scenes within deck.gl or kepler.gl, then animate any aspect of it. Empower users to animate without code with UI components included in this library.
+- **Easy Integration:** Define animations for deck.gl or kepler.gl features, then render videos. Integrate with React UI components to interact with animation and rendering settings.
 
 - **Client Side Library:** Videos render and encode directly in the web browser. User data never leaves their machine. Since nothing runs on a server, sites can scale without computation costs.
 
@@ -14,7 +14,7 @@ Hubble.gl is a JavaScript library for animating data visualizations.
 npm install hubble.gl
 ```
 
-## Basic Scene
+## Basic Animation
 
 To create an animation and render it you will need to first create a [deck.gl](https://deck.gl/docs/get-started/getting-started) project. Then create a `DeckAnimation`, a `timecode` object, and define some keyframes (e.g. `cameraKeyframes`)
 
@@ -30,10 +30,17 @@ import {easing} from 'popmotion';
 
 const deckAnimation = new DeckAnimation({
   layers: [
-    new LineLayer({id: 'line-layer', data: [{sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}]})
+    new LineLayer({
+      id: 'line-layer', 
+      data: [{sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}]
+    })
   ],
   layerKeyframes: [
-    { id: 'line-layer',  timings: [0, 1000], keyframes: [{opacity: 0}, {opacity: 1}] }
+    { 
+      id: 'line-layer',  
+      timings: [0, 1000], 
+      keyframes: [{opacity: 0}, {opacity: 1}] 
+    }
   ],
   cameraKeyframe: {
     timings: [0, 5000], // ms

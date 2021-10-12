@@ -3,12 +3,12 @@
 ## Constructor
 
 ```js
-new DeckAdapter({scene, glContext});
+new DeckAdapter({animationManager, glContext});
 ```
 
 ## Parameters
 
-##### `scene` (`AnimationManager`, Optional)
+##### `animationManager` (`AnimationManager`, Optional)
 
 See [AnimationManager](/docs/api-reference/animations/animation-manager) for more information.
 
@@ -16,7 +16,7 @@ See [AnimationManager](/docs/api-reference/animations/animation-manager) for mor
 
 ## Methods
 
-##### `getProps({deck, onNextFrame, getLayers, extraProps}): props`
+##### `getProps({deck, onNextFrame, extraProps}): props`
 
 Supplies deck.gl properties from hubble.gl.
 
@@ -28,7 +28,7 @@ Parameters:
 
 * `extraProps` (`DeckGlProps`, Optional) - Apply extra props to deckgl. Note: Hubble will override props as needed.
 
-##### `render({Encoder, formatConfigs, onStop})`
+##### `render({Encoder, formatConfigs, filename, timecode, onStop})`
 
 Start rendering.
 
@@ -48,7 +48,11 @@ The start and end time in milliseconds to render, as well as a framerate.
           
 * **`filename` (`string`, Optional) - Default: UUID.**
 
+The video filename.
+
 * **`onStop` (`() => void`, Optional) - Default: `undefined`.**
+
+Called when rendering and saving is finished.
 
 ##### `stop(callback)`
 

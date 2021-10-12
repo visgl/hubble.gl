@@ -25,13 +25,13 @@ Override the lumagl `timeline` object used in animationManager.
 
 ##### `animations` (`Animation[]`, Optional)
 
-An initial set of animations. If they are static, supply them here. If the ever need to update, call `animationManager.setKeyframes`.
+An initial set of animations. They can also be attached later with `attachAnimation`. Or just update animation keyframes, see `setKeyframes`.
 
 ## Methods
 
 ##### `attachAnimation(animation)`
 
-Attaches an animation's keyframe objects to the timeline.
+Attaches an animation to the timeline and draw cycle.
 
 Parameters:
 
@@ -43,9 +43,9 @@ Updates keyframe values for an attached animation.
 
 Parameters:
 
-* **`animationId` (`string`)**
+* **`animationId` (`string`)** - same as `animation.id`
 
-* **`params` (`object`)** 
+* **`params` (`object`)** - same type as provided during animation construction.
 
 
 ##### `draw()`
