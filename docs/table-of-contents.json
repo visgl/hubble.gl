@@ -55,7 +55,7 @@
               "entry": "docs/api-reference/keyframe/camera-keyframes"
             },
             {
-              "entry": "docs/api-reference/keyframe/layer-keyframes"
+              "entry": "docs/api-reference/keyframe/deck-layer-keyframes"
             }
           ]
         },
