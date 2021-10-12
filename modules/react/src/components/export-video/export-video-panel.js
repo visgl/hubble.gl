@@ -35,6 +35,8 @@ import {DEFAULT_ICON_BUTTON_HEIGHT} from './constants';
 import ExportVideoPanelSettings from './export-video-panel-settings';
 import {ExportVideoPanelPreview} from './export-video-panel-preview';
 
+import {Play, Stop} from './icons';
+
 import {WithKeplerUI} from '../inject-kepler';
 
 const PanelClose = ({handleClose}) => (
@@ -62,16 +64,18 @@ const PanelBody = ({
   settings,
   resolution,
   viewState,
-  rendering,
   deckProps,
   staticMapProps,
   disableStaticMap,
   mapboxLayerBeforeId,
   handlePreviewVideo,
-  handleRenderVideo
+  handleRenderVideo,
+  handleStop,
+  rendering,
+  previewing
 }) => (
   <WithKeplerUI>
-    {({Icons, Button}) => (
+    {({Button}) => (
       <PanelBodyInner className="export-video-panel__body" exportVideoWidth={exportVideoWidth}>
         <ExportVideoPanelPreview
           mapData={mapData}
@@ -87,9 +91,16 @@ const PanelBody = ({
           disableStaticMap={disableStaticMap}
           mapboxLayerBeforeId={mapboxLayerBeforeId}
         />
-        <ExportVideoPanelSettings settings={settings} resolution={resolution} />
+        <ExportVideoPanelSettings
+          settings={settings}
+          resolution={resolution}
+        />
         <TimelineControls className="timeline-controls">
-          <Icons.Play style={timelinePlayButtonStyle} onClick={handlePreviewVideo} />
+          {rendering || previewing ? (
+            <Stop style={timelinePlayButtonStyle} onClick={handleStop} />
+          ) : (
+            <Play style={timelinePlayButtonStyle} onClick={handlePreviewVideo} />
+          )}
         </TimelineControls>
         <ButtonGroup>
           <Button
@@ -121,9 +132,11 @@ const ExportVideoPanel = ({
   adapter,
   handlePreviewVideo,
   handleRenderVideo,
+  handleStop,
+  rendering,
+  previewing,
   resolution,
   viewState,
-  rendering,
   deckProps,
   staticMapProps,
   disableStaticMap
@@ -144,13 +157,15 @@ const ExportVideoPanel = ({
         setViewState={setViewState}
         resolution={resolution}
         viewState={viewState}
-        rendering={rendering}
         deckProps={deckProps}
         staticMapProps={staticMapProps}
         disableStaticMap={disableStaticMap}
         mapboxLayerBeforeId={mapboxLayerBeforeId}
         handlePreviewVideo={handlePreviewVideo}
         handleRenderVideo={handleRenderVideo}
+        handleStop={handleStop}
+        rendering={rendering}
+        previewing={previewing}
       />
     </Panel>
   );
