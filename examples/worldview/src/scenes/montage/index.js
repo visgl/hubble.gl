@@ -5,15 +5,24 @@ import {useKepler, loadKeplerJson} from '../../features/kepler';
 import {updateViewState} from '../../features/map';
 import {useEffect} from 'react';
 import {WebMercatorViewport} from '@deck.gl/core';
+import {TextLayer} from '@deck.gl/layers';
 import {hold} from 'hubble.gl';
 
 const CENTER = {
-  latitude: 40.76150677393161,
-  longitude: -73.97924658159985,
-  zoom: 17.531339846811306,
+  latitude: 40.76944617081325,
+  longitude: -73.98095085938715,
+  zoom: 17.88047290176511,
   bearing: 0,
   pitch: 0
 };
+
+// const CENTER = {
+//   latitude: 40.76150677393161,
+//   longitude: -73.97924658159985,
+//   zoom: 17.531339846811306,
+//   bearing: 0,
+//   pitch: 0
+// };
 
 function ajacentTile({centerViewState, canvasWidth, canvasHeight, xOffsetScalar, yOffsetScalar}) {
   const viewport = new WebMercatorViewport({
@@ -41,7 +50,8 @@ function ajacentTile({centerViewState, canvasWidth, canvasHeight, xOffsetScalar,
   const ajacentViewState = {
     ...CENTER,
     longitude: ajacent[0],
-    latitude: ajacent[1]
+    latitude: ajacent[1],
+    label: `${xOffsetScalar}_${yOffsetScalar}`
   };
   return ajacentViewState;
 }
@@ -165,5 +175,26 @@ export const useScene = () => {
     dispatch(formatChange('png'));
   }, []);
 
-  return [];
+  return [
+    new TextLayer({
+      id: 'montage',
+      data: [
+        TOP_LEFT,
+        TOP_MIDDLE,
+        TOP_RIGHT,
+        CENTER_LEFT,
+        CENTER_MIDDLE,
+        CENTER_RIGHT,
+        BOTTOM_LEFT,
+        BOTTOM_MIDDLE,
+        BOTTOM_RIGHT
+      ],
+      getPosition: d => [d.longitude, d.latitude],
+      getText: d => d.label,
+      getColor: d => [255, 255, 255, 255],
+      getSize: 32,
+      getTextAnchor: 'middle',
+      getAlignmentBaseline: 'center'
+    })
+  ];
 };
