@@ -22,9 +22,25 @@ import React, {Component} from 'react';
 import DeckGL from '@deck.gl/react';
 import {StaticMap} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox';
-import {nearestEven} from '../../utils';
+import {scale} from '../../utils';
 import isEqual from 'lodash.isequal';
 import {DebugOverlay} from './DebugOverlay';
+
+// Goal: Render similar viewport boundary regardless of internal canvas size.
+// The viewport bounds change with canvas size, so constrain it around
+// a square (default 1080px). It can be wide, tall, or square.
+function getCanvasClientSize(resolution, minAxis = 1080) {
+  const aspect = resolution.width / resolution.height;
+  if (aspect > 1) {
+    // horizontal
+    return {width: Math.round(minAxis * aspect), height: minAxis};
+  } else if (aspect < 1) {
+    // vertical
+    return {width: minAxis, height: Math.round(minAxis / aspect)};
+  }
+  // square
+  return {width: minAxis, height: minAxis};
+}
 
 export class Map extends Component {
   constructor(props) {
@@ -32,6 +48,7 @@ export class Map extends Component {
 
     this.mapRef = React.createRef();
     this.deckRef = React.createRef();
+    this.containerRef = React.createRef();
 
     this.state = {
       glContext: undefined,
@@ -40,16 +57,17 @@ export class Map extends Component {
 
     this._onMapLoad = this._onMapLoad.bind(this);
     this._resizeVideo = this._resizeVideo.bind(this);
+    this._resizeMap = this._resizeMap.bind(this);
+    this._changeDpi = this._changeDpi.bind(this);
+  }
 
+  componentDidMount() {
     this._resizeVideo();
   }
 
   componentDidUpdate(prevProps) {
-    const {resolution, previewSize} = this.props;
-    if (
-      !isEqual(prevProps.resolution, resolution) ||
-      !isEqual(prevProps.previewSize, previewSize)
-    ) {
+    const {resolution} = this.props;
+    if (!isEqual(prevProps.resolution, resolution)) {
       this._resizeVideo();
     }
   }
@@ -59,13 +77,24 @@ export class Map extends Component {
     this._setDevicePixelRatio(memoDevicePixelRatio);
   }
 
-  _resizeVideo() {
-    const {previewSize, resolution} = this.props;
-    this._setDevicePixelRatio(nearestEven(resolution.width / previewSize.width));
+  _resizeMap() {
     if (this.mapRef.current) {
       const map = this.mapRef.current.getMap();
       map.resize();
     }
+  }
+
+  _resizeVideo() {
+    const {resolution, viewportMinAxis} = this.props;
+    const canvasClientSize = getCanvasClientSize(resolution, viewportMinAxis);
+    // canvasClientSize * scalar = resolution
+    const scalar = scale(resolution, canvasClientSize);
+    this._changeDpi(scalar);
+  }
+
+  _changeDpi(dpi) {
+    this._setDevicePixelRatio(dpi);
+    this._resizeMap();
   }
 
   _setDevicePixelRatio(devicePixelRatio) {
@@ -132,15 +161,11 @@ export class Map extends Component {
       deckProps,
       staticMapProps,
       resolution,
-      debug
+      debug,
+      viewportMinAxis
     } = this.props;
     const {glContext} = this.state;
     const deck = this.deckRef.current && this.deckRef.current.deck;
-
-    const deckStyle = {
-      width: '100%',
-      height: '100%'
-    };
 
     const containerStyle = {
       width: `${previewSize.width}px`,
@@ -148,12 +173,22 @@ export class Map extends Component {
       position: 'relative'
     };
 
+    const canvasClientSize = getCanvasClientSize(resolution, viewportMinAxis);
+    // canvasClientSize * scalar = previewSize
+    const scalar = scale(previewSize, canvasClientSize);
+    const deckStyle = {
+      width: `${canvasClientSize.width}px`,
+      height: `${canvasClientSize.height}px`,
+      transform: `scale(${scalar})`,
+      transformOrigin: 'top left'
+    };
+
     return (
-      <div id="deck-canvas" style={containerStyle}>
+      <div ref={this.containerRef} id="hubble-preview" style={containerStyle}>
         <DeckGL
           ref={this.deckRef}
           viewState={{...viewState, maxPitch: 90}}
-          id="hubblegl-overlay"
+          id="deck-overlay"
           style={deckStyle}
           controller={true}
           glOptions={{stencil: true}}
