@@ -24,6 +24,13 @@ const CENTER = {
 //   pitch: 0
 // };
 
+const RESOLUTION = {
+  width: 1920,
+  height: 1080
+};
+
+const RINGS = 2;
+
 function ajacentTile({centerViewState, canvasWidth, canvasHeight, xOffsetScalar, yOffsetScalar}) {
   const viewport = new WebMercatorViewport({
     ...centerViewState,
@@ -56,69 +63,20 @@ function ajacentTile({centerViewState, canvasWidth, canvasHeight, xOffsetScalar,
   return ajacentViewState;
 }
 
-const TOP_LEFT = ajacentTile({
-  centerViewState: CENTER,
-  canvasWidth: 1920,
-  canvasHeight: 1080,
-  xOffsetScalar: -1,
-  yOffsetScalar: 1
-});
-const TOP_MIDDLE = ajacentTile({
-  centerViewState: CENTER,
-  canvasWidth: 1920,
-  canvasHeight: 1080,
-  xOffsetScalar: 0,
-  yOffsetScalar: 1
-});
-const TOP_RIGHT = ajacentTile({
-  centerViewState: CENTER,
-  canvasWidth: 1920,
-  canvasHeight: 1080,
-  xOffsetScalar: 1,
-  yOffsetScalar: 1
-});
-const CENTER_LEFT = ajacentTile({
-  centerViewState: CENTER,
-  canvasWidth: 1920,
-  canvasHeight: 1080,
-  xOffsetScalar: -1,
-  yOffsetScalar: 0
-});
-const CENTER_MIDDLE = ajacentTile({
-  centerViewState: CENTER,
-  canvasWidth: 1920,
-  canvasHeight: 1080,
-  xOffsetScalar: 0,
-  yOffsetScalar: 0
-});
-const CENTER_RIGHT = ajacentTile({
-  centerViewState: CENTER,
-  canvasWidth: 1920,
-  canvasHeight: 1080,
-  xOffsetScalar: 1,
-  yOffsetScalar: 0
-});
-const BOTTOM_LEFT = ajacentTile({
-  centerViewState: CENTER,
-  canvasWidth: 1920,
-  canvasHeight: 1080,
-  xOffsetScalar: -1,
-  yOffsetScalar: -1
-});
-const BOTTOM_MIDDLE = ajacentTile({
-  centerViewState: CENTER,
-  canvasWidth: 1920,
-  canvasHeight: 1080,
-  xOffsetScalar: 0,
-  yOffsetScalar: -1
-});
-const BOTTOM_RIGHT = ajacentTile({
-  centerViewState: CENTER,
-  canvasWidth: 1920,
-  canvasHeight: 1080,
-  xOffsetScalar: 1,
-  yOffsetScalar: -1
-});
+const keyframes = [];
+for (let y = RINGS * 1; y >= RINGS * -1; y--) {
+  for (let x = RINGS * -1; x <= RINGS * 1; x++) {
+    keyframes.push(
+      ajacentTile({
+        centerViewState: CENTER,
+        canvasWidth: RESOLUTION.width,
+        canvasHeight: RESOLUTION.height,
+        xOffsetScalar: x,
+        yOffsetScalar: y
+      })
+    );
+  }
+}
 
 const KEPLER_MAP_ID = 'map';
 export const useScene = () => {
@@ -136,20 +94,12 @@ export const useScene = () => {
     // layerKeyframes: [],
     // tripKeyframe: {},
     cameraKeyframe: {
-      width: 1920,
-      height: 1080,
-      timings: [0, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000],
-      keyframes: [
-        TOP_LEFT,
-        TOP_MIDDLE,
-        TOP_RIGHT,
-        CENTER_LEFT,
-        CENTER_MIDDLE,
-        CENTER_RIGHT,
-        BOTTOM_LEFT,
-        BOTTOM_MIDDLE,
-        BOTTOM_RIGHT
-      ],
+      width: RESOLUTION.width,
+      height: RESOLUTION.height,
+      timings: Array(keyframes.length)
+        .fill()
+        .map((x, i) => i * 1000), // fill array with [0,1000,2000,...]
+      keyframes,
       easings: hold,
       interpolators: 'flyTo'
     }
@@ -159,18 +109,13 @@ export const useScene = () => {
     dispatch(
       timecodeChange({
         start: 0,
-        end: 10000,
+        end: keyframes.length * 1000,
         framerate: 1
       })
     );
-    dispatch(resolutionChange('1920x1080'));
+    // dispatch(resolutionChange('1920x1080'));
     // dispatch(resolutionChange({width: 3840, height: 2160}));
-    // dispatch(resolutionChange({width: 5760, height: 5760}));
-    // dispatch(resolutionChange({width: 7680, height: 4320}));
-    // dispatch(resolutionChange({width: 1920, height: 1920}));
-    // dispatch(resolutionChange({width: 1080, height: 1920}));
-    // dispatch(resolutionChange({width: 1280, height: 720}));
-    // dispatch(resolutionChange({width: 320, height: 180}));
+    dispatch(resolutionChange({width: resolution.width, height: resolution.height}));
     // The maximum observed pixels supported are 33,177,600
     dispatch(formatChange('png'));
   }, []);
@@ -178,17 +123,7 @@ export const useScene = () => {
   return [
     new TextLayer({
       id: 'montage',
-      data: [
-        TOP_LEFT,
-        TOP_MIDDLE,
-        TOP_RIGHT,
-        CENTER_LEFT,
-        CENTER_MIDDLE,
-        CENTER_RIGHT,
-        BOTTOM_LEFT,
-        BOTTOM_MIDDLE,
-        BOTTOM_RIGHT
-      ],
+      data: keyframes,
       getPosition: d => [d.longitude, d.latitude],
       getText: d => d.label,
       getColor: d => [255, 255, 255, 255],
