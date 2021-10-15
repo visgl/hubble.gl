@@ -1,13 +1,7 @@
 /* global document */
 import {Deck} from '@deck.gl/core';
 import {GeoJsonLayer, ArcLayer} from '@deck.gl/layers';
-import {
-  DeckAdapter,
-  DeckAnimation,
-  AnimationManager,
-  // PreviewEncoder,
-  WebMEncoder
-} from '@hubble.gl/core';
+import {DeckAdapter, DeckAnimation, AnimationManager, WebMEncoder} from '@hubble.gl/core';
 import {easing} from 'popmotion';
 
 // source: Natural Earth http://www.naturalearthdata.com/ via geojson.xyz
@@ -69,16 +63,6 @@ export const deck = new Deck({
   height: resolution.height,
   viewState: INITIAL_VIEW_STATE,
   controller: true,
-  // onLoad,
-  // onAfterRender: () => adapter.onAfterRender(setProps),
-  // onAfterRender: () => {
-  //   console.log('onAfterRender')
-  //   adapter.onAfterRender((timeMs) => {
-  //     console.log('adapter.onAfterRender')
-  //     console.log(timeMs)
-  //     setProps();
-  //   });
-  // },
   layers: [
     new GeoJsonLayer({
       id: 'base-map',
@@ -129,7 +113,6 @@ const setProps = () => {
 deck.setProps({
   ...adapter.getProps({onNextFrame: setProps}),
   onLoad: () => {
-    // setProps();
     adapter.render({
       Encoder: WebMEncoder,
       formatConfigs,
@@ -148,7 +131,6 @@ deck.setProps({
         });
       }
     });
-    // deck.redraw(true)
   }
 });
 
