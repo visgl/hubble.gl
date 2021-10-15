@@ -25,9 +25,9 @@ import {FrameEncoder} from '../encoders';
 import {guid} from './utils';
 
 export class VideoCapture {
-  /** @type {boolean} */
+  /** @type {boolean} - True if recording new canvas frames, false when saving, idle, etc. */
   recording;
-  /** @type {boolean} */
+  /** @type {boolean} - True when working on a image frame capture. */
   capturing;
   /** @type {number} */
   timeMs;
@@ -42,7 +42,9 @@ export class VideoCapture {
     this.recording = false;
     this.capturing = false;
     this.timeMs = 0;
+    this.timecode = null;
     this.encoder = null;
+    this.filename = null;
 
     this._getNextTimeMs = this._getNextTimeMs.bind(this);
     this._step = this._step.bind(this);
@@ -54,7 +56,6 @@ export class VideoCapture {
     this._save = this._save.bind(this);
   }
 
-  // True if recording, false otherwise.
   isRecording() {
     return this.recording;
   }
