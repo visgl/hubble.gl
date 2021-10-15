@@ -1,12 +1,13 @@
 # Keyframes
 
-The Keyframes class extends the luma.gl [Keyframes](https://luma.gl/docs/api-reference/engine/animation/key-frames) class and offers many additional features on top of luma's. In your application, extend from hubble.gl's Keyframes as shown in the `CameraKeyFrames` example. Add `features` to animate, such as `latitude`. When designing your scene, keyframe values are required for each feature you define.
+The Keyframes class extends the luma.gl [Keyframes](https://luma.gl/docs/api-reference/engine/animation/key-frames) class and adds additional features. In your application, extend from hubble.gl's Keyframes as shown in the `CameraKeyFrames` example. Add `features` to animate, such as `latitude`. When designing your animation, keyframe values are required for each feature you define.
 
 ## Usage
 
 ```js
 import {Keyframes} from '@hubble.gl/core';
 
+// Keyframes is typically extended, and not directly used in animations. 
 class CameraKeyFrames extends Keyframes {
   constructor(props) {
     super({
@@ -15,6 +16,9 @@ class CameraKeyFrames extends Keyframes {
     });
   }
 }
+
+// It can be used directly too.
+new Keyframes({features, timings, keyframes, easings = linear, interpolators = 'linear'})
 ```
 
 ## Constructor
@@ -29,9 +33,16 @@ Parameters:
 
   * Each `feature` is a key in this object. The value defines the animation.
 
-* `easings` (`Array<() => void`) - "N-1" easing functions between keyframes.
+* `easings` (`Array<() => void`, Optional) - "N-1" easing functions between keyframes. Default: `t => t` (linear)
+
+* `interpolators` (`Array<string>`, Optional) - "N-1" position curve function between keyframes. Default: `'linear'`
+
 
 ## Methods
+
+##### `set({timings, keyframes, easings = linear, interpolators = 'linear'})`
+
+Update keyframe values without re-registering a timeline. Same parameters as keyframe constructor.
 
 ##### `getFrame`
 
