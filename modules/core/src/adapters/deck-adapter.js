@@ -82,20 +82,20 @@ export default class DeckAdapter {
    * @param {Object} params
    * @param {typeof import('../encoders').FrameEncoder} params.Encoder
    * @param {Partial<import('types').FormatConfigs>} params.formatConfigs
+   * @param {string} params.filename
+   * @param {{start: number, end: number, framerate: number}} params.timecode
    * @param {() => void} params.onStopped
    * @param {(blob: Blob) => void} params.onSave
    * @param {() => void} params.onComplete
-   * @param {string} params.filename
-   * @param {{start: number, end: number, framerate: number}} params.timecode
    */
   render({
     Encoder = PreviewEncoder,
     formatConfigs = {},
+    filename = undefined,
+    timecode = {start: 0, end: 0, framerate: 30},
     onStopped = undefined,
     onSave = undefined,
-    onComplete = undefined,
-    filename = undefined,
-    timecode = {start: 0, end: 0, framerate: 30}
+    onComplete = undefined
   }) {
     this.shouldAnimate = true;
     this.videoCapture.render({
