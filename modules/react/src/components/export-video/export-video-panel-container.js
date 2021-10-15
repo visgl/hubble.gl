@@ -71,6 +71,7 @@ export class ExportVideoPanelContainer extends Component {
       durationMs: 1000,
       rendering: false, // Will set a spinner overlay if true
       previewing: false,
+      saving: false,
       ...(initialState || {})
     };
     const viewState = scaleToVideoExport(mapState, this._getContainer());
@@ -255,7 +256,7 @@ export class ExportVideoPanelContainer extends Component {
     const formatConfigs = this.getFormatConfigs();
     const timecode = this.getTimecode();
     this.setState({previewing: true, memo: {viewState: {...this.state.viewState}}});
-    const onStop = () => {
+    const onComplete = () => {
       this.setState({previewing: false, viewState: {...this.state.memo.viewState}});
     };
     adapter.animationManager.setKeyframes('kepler', {
@@ -268,7 +269,7 @@ export class ExportVideoPanelContainer extends Component {
       formatConfigs,
       timecode,
       filename,
-      onStop
+      onComplete
     });
   }
 
@@ -280,10 +281,10 @@ export class ExportVideoPanelContainer extends Component {
     const timecode = this.getTimecode();
 
     // Enables overlay after user clicks "Render"
-    this.setState({rendering: true, memo: {viewState: {...this.state.viewState}}});
-    const onStop = () => {
+    this.setState({rendering: true, saving: false, memo: {viewState: {...this.state.viewState}}});
+    const onComplete = () => {
       // Disables overlay once export is done saving (generates file to download)
-      this.setState({rendering: false, viewState: {...this.state.memo.viewState}});
+      this.setState({rendering: false, saving: false, viewState: {...this.state.memo.viewState}});
     };
     adapter.animationManager.setKeyframes('kepler', {
       ...this.getFilterKeyframes(),
@@ -295,7 +296,8 @@ export class ExportVideoPanelContainer extends Component {
       formatConfigs,
       timecode,
       filename,
-      onStop
+      onStopped: () => this.setState({saving: true}),
+      onComplete
     });
   }
 
@@ -324,7 +326,8 @@ export class ExportVideoPanelContainer extends Component {
       resolution,
       viewState,
       rendering,
-      previewing
+      previewing,
+      saving
     } = this.state;
 
     const timecode = this.getTimecode();
@@ -372,6 +375,7 @@ export class ExportVideoPanelContainer extends Component {
         resolution={[canvasSize.width, canvasSize.height]}
         rendering={rendering}
         previewing={previewing}
+        saving={saving}
       />
     );
   }

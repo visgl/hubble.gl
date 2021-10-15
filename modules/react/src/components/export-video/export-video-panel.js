@@ -63,6 +63,7 @@ const PanelBody = ({
   resolution,
   viewState,
   rendering,
+  saving,
   deckProps,
   staticMapProps,
   disableStaticMap,
@@ -81,6 +82,7 @@ const PanelBody = ({
           resolution={resolution}
           viewState={viewState}
           rendering={rendering}
+          saving={saving}
           durationMs={settings.durationMs}
           deckProps={deckProps}
           staticMapProps={staticMapProps}
@@ -124,6 +126,7 @@ const ExportVideoPanel = ({
   resolution,
   viewState,
   rendering,
+  saving,
   deckProps,
   staticMapProps,
   disableStaticMap
@@ -145,6 +148,7 @@ const ExportVideoPanel = ({
         resolution={resolution}
         viewState={viewState}
         rendering={rendering}
+        saving={saving}
         deckProps={deckProps}
         staticMapProps={staticMapProps}
         disableStaticMap={disableStaticMap}
