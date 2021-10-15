@@ -10,7 +10,7 @@ import {
 } from './styled-components';
 import {WithKeplerUI} from '../inject-kepler';
 
-function AnimationTab({settings}) {
+function AnimationTab({settings, disabled}) {
   return (
     <WithKeplerUI>
       {({Slider, ItemSelector}) => (
@@ -24,7 +24,7 @@ function AnimationTab({settings}) {
               >
                 <Slider
                   showValues={false}
-                  enableBarDrag={true}
+                  enableBarDrag={!disabled}
                   isRanged={false}
                   value1={settings.durationMs}
                   step={100}
@@ -52,6 +52,7 @@ function AnimationTab({settings}) {
               multiSelect={false}
               searchable={false}
               onChange={settings.setCameraPreset}
+              disabled={disabled}
             />
           </InputGrid>
         </>

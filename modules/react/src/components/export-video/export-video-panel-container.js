@@ -52,6 +52,7 @@ export class ExportVideoPanelContainer extends Component {
     this.setViewState = this.setViewState.bind(this);
     this.onPreviewVideo = this.onPreviewVideo.bind(this);
     this.onRenderVideo = this.onRenderVideo.bind(this);
+    this.onStop = this.onStop.bind(this);
     this.setDuration = this.setDuration.bind(this);
     this.getCameraKeyframes = this.getCameraKeyframes.bind(this);
     this.getFilterKeyframes = this.getFilterKeyframes.bind(this);
@@ -301,6 +302,20 @@ export class ExportVideoPanelContainer extends Component {
     });
   }
 
+  onStop() {
+    const {adapter} = this.state;
+    adapter.stop({
+      onStopped: () => this.setState({saving: true}),
+      onComplete: () => {
+        this.setState({
+          previewing: false,
+          rendering: false,
+          viewState: {...this.state.memo.viewState}
+        });
+      }
+    });
+  }
+
   setDuration(durationMs) {
     this.setStateAndNotify({durationMs});
   }
@@ -370,9 +385,10 @@ export class ExportVideoPanelContainer extends Component {
         settings={settings}
         // Hubble Props
         adapter={adapter}
+        resolution={[canvasSize.width, canvasSize.height]}
         handlePreviewVideo={this.onPreviewVideo}
         handleRenderVideo={this.onRenderVideo}
-        resolution={[canvasSize.width, canvasSize.height]}
+        handleStop={this.onStop}
         rendering={rendering}
         previewing={previewing}
         saving={saving}
