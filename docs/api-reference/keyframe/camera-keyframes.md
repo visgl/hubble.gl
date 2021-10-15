@@ -5,11 +5,9 @@ Keyframes to control camera. Inherits from `Keyframes`.
 ## Usage
 
 ```js
-const keyframes = {
-  camera: new CameraKeyframes({timings, keyframes, easings});
-}
+const camera = new CameraKeyframes({timings, keyframes, easings, interpolators, width, height});
 // Attach each keyframe object to timeline.
-timeline.attachAnimation(keyframes.camera);
+timeline.attachAnimation(camera);
 ```
 
 ## Constructor
@@ -30,7 +28,9 @@ Parameters:
 
   * `bearing` (Number)
 
-* `easings` (`Array<() => void`) - "N-1" easing functions between keyframes.
+* `easings` (`Array<() => void`, Optional) - "N-1" easing functions between keyframes. Default: `t => t` (linear)
+
+* `interpolators` (`Array<'flyTo' | 'linear'>`, Optional) - "N-1" position curve function between keyframes. Default: `'linear'`
 
 ## More Info
 

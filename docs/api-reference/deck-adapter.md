@@ -3,12 +3,12 @@
 ## Constructor
 
 ```js
-new DeckAdapter({scene, glContext});
+new DeckAdapter({animationManager, glContext});
 ```
 
 ## Parameters
 
-##### `scene` (`AnimationManager`, Optional)
+##### `animationManager` (`AnimationManager`, Optional)
 
 See [AnimationManager](/docs/api-reference/animations/animation-manager) for more information.
 
@@ -16,7 +16,7 @@ See [AnimationManager](/docs/api-reference/animations/animation-manager) for mor
 
 ## Methods
 
-##### `getProps({deck, onNextFrame, getLayers, extraProps}): props`
+##### `getProps({deck, onNextFrame, extraProps}): props`
 
 Supplies deck.gl properties from hubble.gl.
 
@@ -28,17 +28,11 @@ Parameters:
 
 * `extraProps` (`DeckGlProps`, Optional) - Apply extra props to deckgl. Note: Hubble will override props as needed.
 
-##### `render({getCameraKeyframes, Encoder, formatConfigs, onStop, getLayerKeyframes})`
+##### `render({Encoder, formatConfigs, filename, timecode, onStop})`
 
 Start rendering.
 
 Parameters:
-
-* **`getCameraKeyframes` (`() => CameraKeyframes`, Optional) - Default: `undefined`.**
-
-This function is used to access the camera's keyframes, and is called just prior to rendering.
-
-* **`getLayerKeyframes` (`() => Object<string, Keyframes>`, Optional) - Default: `undefined`.**
 
 * **`Encoder` (`typeof FrameEncoder`, Optional) - Default: `PreviewEncoder`.**
 
@@ -54,7 +48,11 @@ The start and end time in milliseconds to render, as well as a framerate.
           
 * **`filename` (`string`, Optional) - Default: UUID.**
 
+The video filename.
+
 * **`onStop` (`() => void`, Optional) - Default: `undefined`.**
+
+Called when rendering and saving is finished.
 
 ##### `stop(callback)`
 
@@ -66,19 +64,13 @@ Parameters:
 
 This function is called after the last frame is rendered and a file is created for download. It does not get called when a render is interrupted with `stop()`.
 
-##### `seek({timeMs, getCameraKeyframes, getLayerKeyframes})`
+##### `seek({timeMs})`
 
 Move time to set a new position. Useful for peeking at different times in an animation without rendering.
 
 Parameters:
 
 * **`timeMs` (`number`)**
-
-* **`getCameraKeyframes` (`() => CameraKeyframes`, Optional) - Default: `undefined`.**
-
-This function is used to access the camera's keyframes, and is called just prior to rendering.
-
-* **`getLayerKeyframes` (`() => Object<string, Keyframes>`, Optional) - Default: `undefined`.**
 
 ## Source
 
