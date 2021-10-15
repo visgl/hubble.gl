@@ -56,7 +56,7 @@ Called when recording has stopped, and before saving is complete. This does not 
 
 * **`onSave` (`(blob: Blob) => void`, Optional) - Default: `undefined`.**
 
-Override the save function. By defualt a file will be downloaded using the given `filename`, and encoder's extension. This does not get called when a render is interrupted with `stop()`.
+Override the save function. By default a file will be downloaded using the given `filename`, and encoder's extension. This does not get called when a render is interrupted with `stop()`.
 
 You may also access the download function with `adapter.videoCapture.download(blob)`.
 
@@ -76,7 +76,7 @@ Called when recording has stopped, and before saving is complete.
 
 * **`onSave` (`(blob: Blob) => void`, Optional) - Default: `undefined`.**
 
-Override the save function. By defualt a file will be downloaded using the given `filename`, and encoder's extension.
+Override the save function. By default a file will be downloaded using the given `filename`, and encoder's extension.
 
 You may also access the download function with `adapter.videoCapture.download(blob)`.
 
