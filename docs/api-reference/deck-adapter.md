@@ -3,12 +3,12 @@
 ## Constructor
 
 ```js
-new DeckAdapter({scene, glContext});
+new DeckAdapter({animationManager, glContext});
 ```
 
 ## Parameters
 
-##### `scene` (`AnimationManager`, Optional)
+##### `animationManager` (`AnimationManager`, Optional)
 
 See [AnimationManager](/docs/api-reference/animations/animation-manager) for more information.
 
@@ -16,7 +16,7 @@ See [AnimationManager](/docs/api-reference/animations/animation-manager) for mor
 
 ## Methods
 
-##### `getProps({deck, onNextFrame, getLayers, extraProps}): props`
+##### `getProps({deck, onNextFrame, extraProps}): props`
 
 Supplies deck.gl properties from hubble.gl.
 
@@ -28,17 +28,11 @@ Parameters:
 
 * `extraProps` (`DeckGlProps`, Optional) - Apply extra props to deckgl. Note: Hubble will override props as needed.
 
-##### `render({getCameraKeyframes, Encoder, formatConfigs, onStop, getLayerKeyframes})`
+##### `render({Encoder, formatConfigs, filename, timecode, onStopped, onSave, onComplete})`
 
 Start rendering.
 
 Parameters:
-
-* **`getCameraKeyframes` (`() => CameraKeyframes`, Optional) - Default: `undefined`.**
-
-This function is used to access the camera's keyframes, and is called just prior to rendering.
-
-* **`getLayerKeyframes` (`() => Object<string, Keyframes>`, Optional) - Default: `undefined`.**
 
 * **`Encoder` (`typeof FrameEncoder`, Optional) - Default: `PreviewEncoder`.**
 
@@ -54,31 +48,49 @@ The start and end time in milliseconds to render, as well as a framerate.
           
 * **`filename` (`string`, Optional) - Default: UUID.**
 
-* **`onStop` (`() => void`, Optional) - Default: `undefined`.**
+The video filename.
 
-##### `stop(callback)`
+* **`onStopped` (`() => void`, Optional) - Default: `undefined`.**
+
+Called when recording has stopped, and before saving is complete. This does not get called when a render is interrupted with `stop()`.
+
+* **`onSave` (`(blob: Blob) => void`, Optional) - Default: `undefined`.**
+
+Override the save function. By default a file will be downloaded using the given `filename`, and encoder's extension. This does not get called when a render is interrupted with `stop()`.
+
+You may also access the download function with `adapter.videoCapture.download(blob)`.
+
+* **`onComplete` (`() => void`, Optional) - Default: `undefined`.**
+
+Called when rendering and saving is finished. This does not get called when a render is interrupted with `stop()`.
+
+##### `stop({onStopped, onSave, onComplete}})`
 
 Interrupt rendering and saves partial result. This is useful for handling user interruptions.
 
 Parameters:
 
-* `callback` (`() => void`, Optional) - Callback indicating the rendering is finished.
+* **`onStopped` (`() => void`, Optional) - Default: `undefined`.**
 
-This function is called after the last frame is rendered and a file is created for download. It does not get called when a render is interrupted with `stop()`.
+Called when recording has stopped, and before saving is complete.
 
-##### `seek({timeMs, getCameraKeyframes, getLayerKeyframes})`
+* **`onSave` (`(blob: Blob) => void`, Optional) - Default: `undefined`.**
+
+Override the save function. By default a file will be downloaded using the given `filename`, and encoder's extension.
+
+You may also access the download function with `adapter.videoCapture.download(blob)`.
+
+* **`onComplete` (`() => void`, Optional) - Default: `undefined`.**
+
+Called when rendering and saving is finished.
+
+##### `seek({timeMs})`
 
 Move time to set a new position. Useful for peeking at different times in an animation without rendering.
 
 Parameters:
 
 * **`timeMs` (`number`)**
-
-* **`getCameraKeyframes` (`() => CameraKeyframes`, Optional) - Default: `undefined`.**
-
-This function is used to access the camera's keyframes, and is called just prior to rendering.
-
-* **`getLayerKeyframes` (`() => Object<string, Keyframes>`, Optional) - Default: `undefined`.**
 
 ## Source
 

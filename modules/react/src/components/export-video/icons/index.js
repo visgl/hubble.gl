@@ -18,49 +18,5 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import React, {useState} from 'react';
-import {
-  WebMEncoder,
-  JPEGSequenceEncoder,
-  PNGSequenceEncoder,
-  PreviewEncoder,
-  GifEncoder
-} from '@hubble.gl/core';
-import EncoderDropdown from './encoder-dropdown';
-
-const ENCODERS = {
-  preview: PreviewEncoder,
-  gif: GifEncoder,
-  webm: WebMEncoder,
-  jpeg: JPEGSequenceEncoder,
-  png: PNGSequenceEncoder
-};
-
-export default function BasicControls({adapter, busy, setBusy, formatConfigs, timecode}) {
-  const [encoder, setEncoder] = useState('gif');
-
-  const onRender = () => {
-    adapter.render({
-      Encoder: ENCODERS[encoder],
-      formatConfigs,
-      timecode,
-      onComplete: () => setBusy(false)
-    });
-
-    setBusy(true);
-  };
-
-  const onStop = () => {
-    adapter.stop({onComplete: () => setBusy(false)});
-  };
-
-  return (
-    <div>
-      <EncoderDropdown disabled={busy} encoder={encoder} setEncoder={setEncoder} />
-      <button disabled={busy} onClick={onRender}>
-        Render
-      </button>
-      <button onClick={onStop}>Stop</button>
-    </div>
-  );
-}
+export {default as Play} from './play';
+export {default as Stop} from './stop';

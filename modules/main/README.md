@@ -1,13 +1,13 @@
 This project is experimental and the APIs may change. [![Build Status](https://travis-ci.com/uber/hubble.gl.svg?token=PtHeXeSzaZyx3BjJ7DmZ&branch=master)](https://travis-ci.com/uber/hubble.gl)
 # Hubble.gl
 
-Hubble.gl is a JavaScript library for animating data visualizations.
+Hubble.gl is a JavaScript library for animating and video encoding WebGL data visualizations.
 
-- **High Quality Video:** Ensured framerates, high resolutions, and a variety of formats. Fine tune animations with keyframe markers and easings.
+- **High Quality Video:** 60+fps framerates, up to 8k resolution, and a variety of formats. Render a quick draft or with loseless encoding. Fine tune timing and look with keyframe markers and render everything in the same app.
 
-- **Easy Integration:** Stand up scenes within deck.gl or kepler.gl, then animate any aspect of it. Empower users to animate without code with UI components powered by this library.
+- **Easy Integration:** Define animations for deck.gl or kepler.gl features, then render videos. Integrate with React UI components to interact with animation and rendering settings.
 
-- **Client Side Library:** Render within the browser without a backend. User data never leaves their machine. Since nothing runs on a server sites can scale without backend encoders.
+- **Client Side Library:** Videos render and encode directly in the web browser. User data never leaves their machine. Since nothing runs on a server, sites can scale without computation costs.
 
 ## Installation
 
@@ -17,11 +17,11 @@ npm install hubble.gl
 
 ## Documentation
 
-You can find the Hubble.gl documentation [on the website](https://uber.github.io/hubble.gl/docs).
+You can find the Hubble.gl documentation [on the website](https://visgl.github.io/hubble.gl/docs).
 
 ## Examples
 
-We have examples [on the website](https://uber.github.io/hubble.gl/examples).
+We have examples [on the website](https://visgl.github.io/hubble.gl/examples).
 
 ## Contributing
 

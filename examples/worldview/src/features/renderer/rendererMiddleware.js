@@ -36,12 +36,12 @@ const encoderSelector = state => ENCODERS[formatSelector(state)] || ENCODERS.web
 export const rendererMiddleware = store => next => action => {
   switch (action.type) {
     case previewVideo.type: {
-      const {onStop} = action.payload;
+      const {onComplete} = action.payload;
       const state = store.getState();
       store.dispatch(signalPreviewing(true));
-      const innerOnStop = () => {
+      const innerOnComplete = () => {
         store.dispatch(signalPreviewing(false));
-        if (onStop) onStop();
+        if (onComplete) onComplete();
       };
       const adapter = adapterSelector(state);
       adapter.render({
@@ -49,20 +49,20 @@ export const rendererMiddleware = store => next => action => {
         formatConfigs: formatConfigsSelector(state),
         timecode: timecodeSelector(state),
         filename: filenameSelector(state),
-        onStop: innerOnStop
+        onComplete: innerOnComplete
       });
       break;
     }
     case renderVideo.type: {
-      const {onStop} = action.payload;
+      const {onComplete} = action.payload;
       const state = store.getState();
       const Encoder = encoderSelector(state);
 
       store.dispatch(signalRendering(true));
 
-      const innerOnStop = () => {
+      const innerOnComplete = () => {
         store.dispatch(signalRendering(false));
-        if (onStop) onStop();
+        if (onComplete) onComplete();
       };
       const adapter = adapterSelector(state);
       adapter.render({
@@ -70,7 +70,7 @@ export const rendererMiddleware = store => next => action => {
         formatConfigs: formatConfigsSelector(state),
         timecode: timecodeSelector(state),
         filename: filenameSelector(state),
-        onStop: innerOnStop
+        onComplete: innerOnComplete
       });
 
       break;
@@ -79,8 +79,10 @@ export const rendererMiddleware = store => next => action => {
       const state = store.getState();
       if (busySelector(state)) {
         const adapter = adapterSelector(state);
-        adapter.stop(() => {
-          store.dispatch(signalRendering(false)); // equivalent to signalPreviewing(false)
+        adapter.stop({
+          onComplete: () => {
+            store.dispatch(signalRendering(false)); // equivalent to signalPreviewing(false)
+          }
         });
       }
       break;
