@@ -28,7 +28,7 @@ Parameters:
 
 * `extraProps` (`DeckGlProps`, Optional) - Apply extra props to deckgl. Note: Hubble will override props as needed.
 
-##### `render({Encoder, formatConfigs, filename, timecode, onStop})`
+##### `render({Encoder, formatConfigs, filename, timecode, onStopped, onSave, onComplete})`
 
 Start rendering.
 
@@ -50,19 +50,39 @@ The start and end time in milliseconds to render, as well as a framerate.
 
 The video filename.
 
-* **`onStop` (`() => void`, Optional) - Default: `undefined`.**
+* **`onStopped` (`() => void`, Optional) - Default: `undefined`.**
 
-Called when rendering and saving is finished.
+Called when recording has stopped, and before saving is complete. This does not get called when a render is interrupted with `stop()`.
 
-##### `stop(callback)`
+* **`onSave` (`(blob: Blob) => void`, Optional) - Default: `undefined`.**
+
+Override the save function. By default a file will be downloaded using the given `filename`, and encoder's extension. This does not get called when a render is interrupted with `stop()`.
+
+You may also access the download function with `adapter.videoCapture.download(blob)`.
+
+* **`onComplete` (`() => void`, Optional) - Default: `undefined`.**
+
+Called when rendering and saving is finished. This does not get called when a render is interrupted with `stop()`.
+
+##### `stop({onStopped, onSave, onComplete}})`
 
 Interrupt rendering and saves partial result. This is useful for handling user interruptions.
 
 Parameters:
 
-* `callback` (`() => void`, Optional) - Callback indicating the rendering is finished.
+* **`onStopped` (`() => void`, Optional) - Default: `undefined`.**
 
-This function is called after the last frame is rendered and a file is created for download. It does not get called when a render is interrupted with `stop()`.
+Called when recording has stopped, and before saving is complete.
+
+* **`onSave` (`(blob: Blob) => void`, Optional) - Default: `undefined`.**
+
+Override the save function. By default a file will be downloaded using the given `filename`, and encoder's extension.
+
+You may also access the download function with `adapter.videoCapture.download(blob)`.
+
+* **`onComplete` (`() => void`, Optional) - Default: `undefined`.**
+
+Called when rendering and saving is finished.
 
 ##### `seek({timeMs})`
 

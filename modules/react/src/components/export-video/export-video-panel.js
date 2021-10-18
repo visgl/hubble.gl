@@ -72,7 +72,8 @@ const PanelBody = ({
   handleRenderVideo,
   handleStop,
   rendering,
-  previewing
+  previewing,
+  saving
 }) => (
   <WithKeplerUI>
     {({Button}) => (
@@ -85,6 +86,7 @@ const PanelBody = ({
           resolution={resolution}
           viewState={viewState}
           rendering={rendering}
+          saving={saving}
           durationMs={settings.durationMs}
           deckProps={deckProps}
           staticMapProps={staticMapProps}
@@ -136,6 +138,7 @@ const ExportVideoPanel = ({
   handleStop,
   rendering,
   previewing,
+  saving,
   resolution,
   viewState,
   deckProps,
@@ -167,6 +170,7 @@ const ExportVideoPanel = ({
         handleStop={handleStop}
         rendering={rendering}
         previewing={previewing}
+        saving={saving}
       />
     </Panel>
   );
