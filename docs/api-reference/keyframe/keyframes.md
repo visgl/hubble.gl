@@ -44,7 +44,13 @@ Parameters:
 
 Update keyframe values without re-registering a timeline. Same parameters as keyframe constructor.
 
-##### `getFrame`
+##### `get()`
+
+Returns:
+
+`Object` - `{ timings, keyframes, easings, interpolators }`.
+
+##### `getFrame()`
 
 Returns:
 
