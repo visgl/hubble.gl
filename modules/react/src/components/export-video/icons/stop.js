@@ -18,49 +18,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import React, {useState} from 'react';
-import {
-  WebMEncoder,
-  JPEGSequenceEncoder,
-  PNGSequenceEncoder,
-  PreviewEncoder,
-  GifEncoder
-} from '@hubble.gl/core';
-import EncoderDropdown from './encoder-dropdown';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import Base from './base';
 
-const ENCODERS = {
-  preview: PreviewEncoder,
-  gif: GifEncoder,
-  webm: WebMEncoder,
-  jpeg: JPEGSequenceEncoder,
-  png: PNGSequenceEncoder
-};
-
-export default function BasicControls({adapter, busy, setBusy, formatConfigs, timecode}) {
-  const [encoder, setEncoder] = useState('gif');
-
-  const onRender = () => {
-    adapter.render({
-      Encoder: ENCODERS[encoder],
-      formatConfigs,
-      timecode,
-      onComplete: () => setBusy(false)
-    });
-
-    setBusy(true);
+export default class Stop extends Component {
+  static propTypes = {
+    /** Set the height of the icon, ex. '16px' */
+    height: PropTypes.string
   };
 
-  const onStop = () => {
-    adapter.stop({onComplete: () => setBusy(false)});
+  static defaultProps = {
+    height: '16px',
+    predefinedClassName: 'data-ex-icons-stop',
+    viewBox: '0 0 24 24'
   };
 
-  return (
-    <div>
-      <EncoderDropdown disabled={busy} encoder={encoder} setEncoder={setEncoder} />
-      <button disabled={busy} onClick={onRender}>
-        Render
-      </button>
-      <button onClick={onStop}>Stop</button>
-    </div>
-  );
+  render() {
+    return (
+      <Base {...this.props}>
+        <path fill="none" d="M0 0h24v24H0z" />
+        <path d="M6 5h12a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" />
+      </Base>
+    );
+  }
 }

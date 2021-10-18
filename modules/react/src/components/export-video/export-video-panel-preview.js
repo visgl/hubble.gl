@@ -143,6 +143,7 @@ export class ExportVideoPanelPreview extends Component {
   render() {
     const {
       rendering,
+      saving,
       viewState,
       setViewState,
       adapter,
@@ -190,6 +191,7 @@ export class ExportVideoPanelPreview extends Component {
         {rendering && (
           <RenderingSpinner
             rendering={rendering}
+            saving={saving}
             width={width}
             height={height}
             adapter={adapter}
