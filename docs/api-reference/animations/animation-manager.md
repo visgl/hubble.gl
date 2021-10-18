@@ -3,18 +3,18 @@
 ## Usage
 
 ```js
-// Camera is optional unless animating the deck.gl viewState
-const cameraKeyframes = new CameraKeyframes({...})
+const deckAnimation = new DeckAnimation({...})
+const keplerAnimation = new KeplerAnimation({...})
 
 const animationManager = new AnimationManager({
-  cameraKeyframes // optional
+  animations: [deckAnimation, keplerAnimation]
 });
 ```
 
 ## Constructor
 
 ```js
-new AnimationManager({timeline, layerKeyframes, cameraKeyframes});
+new AnimationManager({timeline, animations});
 ```
 
 Parameters:
@@ -25,7 +25,41 @@ Override the lumagl `timeline` object used in animationManager.
 
 ##### `animations` (`Animation[]`, Optional)
 
-An initial set of animations. If they are static, supply them here. If the ever need to update, call `animationManager.setKeyframes`.
+An initial set of animations. They can also be attached later with `attachAnimation`. Or just update animation keyframes, see `setKeyframes`.
+
+## Methods
+
+##### `attachAnimation(animation)`
+
+Attaches an animation to the timeline and draw cycle.
+
+Parameters:
+
+* **`animation` (`Animation`)**
+
+##### `setKeyframes(animationId, params)`
+
+Updates keyframe values for an attached animation.
+
+Parameters:
+
+* **`animationId` (`string`)** - same as `animation.id`
+
+* **`params` (`object`)** - same type as provided during animation construction.
+
+##### `getKeyframes(animationId)`
+
+Parameters:
+
+* **`animationId` (`string`)** - same as `animation.id`
+
+Returns:
+
+`Object` - same type as provided during animation construction.
+
+##### `draw()`
+
+Draws the current frame for all attached animations.
 
 ## Source
 

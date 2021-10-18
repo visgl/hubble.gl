@@ -3,10 +3,10 @@ import {createAction, createSelector, nanoid, createSlice} from '@reduxjs/toolki
 import {DeckAdapter} from '@hubble.gl/core';
 import {DEFAULT_FILENAME, getResolutionSetting} from './constants';
 
-/** @param payload: onStop */
+/** @param payload: onComplete */
 export const previewVideo = createAction('renderer/previewVideo');
 
-/** @param payload: onStop */
+/** @param payload: onComplete */
 export const renderVideo = createAction('renderer/renderVideo');
 
 /** @param payload: timeMs */

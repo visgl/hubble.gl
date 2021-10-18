@@ -25,9 +25,9 @@ import {FrameEncoder} from '../encoders';
 import {guid} from './utils';
 
 export class VideoCapture {
-  /** @type {boolean} */
+  /** @type {boolean} - True if recording new canvas frames, false when saving, idle, etc. */
   recording;
-  /** @type {boolean} */
+  /** @type {boolean} - True when working on a image frame capture. */
   capturing;
   /** @type {number} */
   timeMs;
@@ -42,30 +42,33 @@ export class VideoCapture {
     this.recording = false;
     this.capturing = false;
     this.timeMs = 0;
+    this.timecode = null;
     this.encoder = null;
+    this.filename = null;
 
     this._getNextTimeMs = this._getNextTimeMs.bind(this);
     this._step = this._step.bind(this);
     this._capture = this._capture.bind(this);
     this.capture = this.capture.bind(this);
     this.render = this.render.bind(this);
+    this.download = this.download.bind(this);
     this.stop = this.stop.bind(this);
-    this.save = this.save.bind(this);
+    this._save = this._save.bind(this);
   }
 
-  // True if recording, false otherwise.
   isRecording() {
     return this.recording;
   }
 
   /**
    * Start recording.
-   * @param {typeof FrameEncoder} Encoder
-   * @param {import('types').FormatConfigs} formatConfigs
-   * @param {{start: number, end: number, framerate: number, duration?: number}} timecode
-   * @param {() => void} onStop
+   * @param {Object} params
+   * @param {typeof FrameEncoder} params.Encoder
+   * @param {import('types').FormatConfigs} params.formatConfigs
+   * @param {{start: number, end: number, framerate: number, duration?: number}} params.timecode
+   * @param {() => void} params.onStop
    */
-  render(Encoder, formatConfigs, timecode, filename = undefined, onStop = undefined) {
+  render({Encoder, formatConfigs, timecode, filename = undefined, onStop = undefined}) {
     if (!this.isRecording()) {
       console.time('render');
       this.filename = this._sanitizeFilename(filename);
@@ -83,23 +86,15 @@ export class VideoCapture {
    * @param {(nextTimeMs: number) => void} proceedToNextFrame
    */
   capture(canvas, proceedToNextFrame) {
-    // console.log(`outside-hubble-capture ${this.capturing} ${this.isRecording()}`);
-
     if (!this.capturing && this.isRecording()) {
-      // console.log('hubble-capture');
-
       this.capturing = true;
-      // capture current canvas, i.e.
-      // const can = document.getElementsByClassName('mapboxgl-canvas')[0];
-      // const can = document.getElementById('default-deckgl-overlay');
+      // capture canvas
       this._capture(canvas).then(data => {
         this.capturing = false;
-        if (data.kind === 'step') {
-          // console.log(`data.nextTimeMs: ${data.nextTimeMs}`);
+        if (data.kind === 'next-frame') {
           proceedToNextFrame(data.nextTimeMs);
-        } else if (data.error === 'STOP') {
-          console.log('data.error: STOP');
-          this.stop(this.onStop);
+        } else if (data.kind === 'stop') {
+          this.onStop();
         } else {
           console.log(data);
         }
@@ -108,43 +103,55 @@ export class VideoCapture {
   }
 
   /**
-   * Stop and save recording. Execute callback if provided.
-   * @param {() => void} callback
+   * Stop and save recording. Execute onComplete when finished.
+   * @param {Object} params
+   * @param {() => void} params.onStopped
+   * @param {(blob: Blob) => void} params.onSave
+   * @param {() => void} params.onComplete
    */
-  stop(callback = undefined) {
+  stop({onComplete = undefined, onSave = undefined, onStopped = undefined}) {
     if (this.isRecording()) {
-      console.log(`Stopping recording.  Recorded for ${this.timecode.duration}ms.`);
+      console.log(`Stopped recording. Recorded for ${this.timeMs}ms.`);
       this.recording = false;
-      this.capturing = false; // Added to fix an intermittent bug
-      this.save().then(() => {
-        if (callback) {
+      this.capturing = false;
+      if (onStopped) {
+        onStopped();
+      }
+      this._save(onSave).then(() => {
+        if (onComplete) {
           // eslint-disable-next-line callback-return
-          callback();
-          this.timecode = null;
+          onComplete();
         }
+        this.timecode = null;
+        this.onStop = undefined;
       });
     }
   }
 
   /**
+   * @param {Blob} blob
+   */
+
+  download(blob) {
+    if (blob) {
+      download(blob, this.filename + this.encoder.extension, this.encoder.mimeType);
+    }
+    return false;
+  }
+
+  /**
    * @param {{ (blob: Blob): boolean }} [callback]
    */
-  async save(callback) {
+  async _save(callback) {
     console.timeEnd('render');
     if (!callback) {
-      /**
-       * @param {Blob} blob
-       */
-      callback = blob => {
-        console.timeEnd('save');
-        if (blob) {
-          download(blob, this.filename + this.encoder.extension, this.encoder.mimeType);
-        }
-        return false;
-      };
+      callback = this.download;
     }
     console.time('save');
-    await this.encoder.save().then(callback);
+    await this.encoder
+      .save()
+      .then(callback)
+      .then(() => console.timeEnd('save'));
   }
 
   /**
@@ -205,11 +212,12 @@ export class VideoCapture {
    */
   _step() {
     // generating next frame timestamp
-    this.timeMs = this._getNextTimeMs();
-    if (this.timeMs > this.timecode.end) {
-      return {kind: 'error', error: 'STOP'};
+    const nextTimeMs = this._getNextTimeMs();
+    if (nextTimeMs > this.timecode.end) {
+      return {kind: 'stop'};
     }
-    return {kind: 'step', nextTimeMs: this.timeMs};
+    this.timeMs = nextTimeMs;
+    return {kind: 'next-frame', nextTimeMs};
   }
 
   // Get next time MS based on current time MS and framerate
