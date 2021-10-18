@@ -76,6 +76,8 @@ export default class DeckAdapter {
 
     if (this.enabled) {
       props.controller = false;
+    } else {
+      props.controller = true;
     }
 
     if (this.glContext) {

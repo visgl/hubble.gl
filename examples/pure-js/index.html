@@ -31,8 +31,13 @@
       min-width: 300px;
     }
     .render-result h3 { font-size: 16px; margin: 8px 0; }
+    .render-result h4 { font-size: 14px; margin: 8px 0; }
+    .render-result p { font-size: 14px; margin: 8px 0; }
     .render-result .video { display: flex; align-items: center; margin-top: 8px;}
-    #video-render {
+    .render-result .keyframes { display: flex; gap: 8px; }
+    .render-result .instruction { margin-top: 8px; }
+    #re-render { margin-top: 8px; }
+    #result {
       display: none;
     }
     </style>
@@ -43,9 +48,25 @@
     </div>
     <div class="render-result">
      <h3 id="render-status">Rendering video...</h3>
-     <div class="video">
-       <video id="video-render"></video>
-     </div>
+     <div id="result">
+      <div class="video">
+        <video id="video-render"></video>
+      </div>
+      <p class="instruction">Interact with the map, update camera keyframes, then re-render.</p>
+      <div class="keyframes">
+        <div>
+          <h4>1st Camera Position</h4>
+          <pre id="camera-1"></pre>
+          <button id="update-1">Update</button>
+        </div>
+        <div>
+          <h4>2nd Camera Position</h4>
+          <pre id="camera-2"></pre>
+          <button id="update-2">Update</button>
+        </div>
+      </div>
+      <button id="re-render">Re-Render</button>
+    </div> 
    </div>
     <script src='app.js'></script>
   </body>
