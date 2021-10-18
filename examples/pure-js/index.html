@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset='UTF-8' />
+    <title>hubble.gl example</title>
+    <style>
+    body {margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif;}
+    #container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+    #container > * {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .render-result {
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      right: 0;
+      background-color: #FFF;
+      margin: 24px;
+      padding: 10px 24px;
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+      min-width: 300px;
+    }
+    .render-result h3 { font-size: 16px; margin: 8px 0; }
+    .render-result h4 { font-size: 14px; margin: 8px 0; }
+    .render-result p { font-size: 14px; margin: 8px 0; }
+    .render-result .video { display: flex; align-items: center; margin-top: 8px;}
+    .render-result .keyframes { display: flex; gap: 8px; }
+    .render-result .instruction { margin-top: 8px; }
+    #re-render { margin-top: 8px; }
+    #result {
+      display: none;
+    }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <canvas id="deck-canvas"></canvas>
+    </div>
+    <div class="render-result">
+     <h3 id="render-status">Rendering video...</h3>
+     <div id="result">
+      <div class="video">
+        <video id="video-render"></video>
+      </div>
+      <p class="instruction">Interact with the map, update camera keyframes, then re-render.</p>
+      <div class="keyframes">
+        <div>
+          <h4>1st Camera Position</h4>
+          <pre id="camera-1"></pre>
+          <button id="update-1">Update</button>
+        </div>
+        <div>
+          <h4>2nd Camera Position</h4>
+          <pre id="camera-2"></pre>
+          <button id="update-2">Update</button>
+        </div>
+      </div>
+      <button id="re-render">Re-Render</button>
+    </div> 
+   </div>
+    <script src='app.js'></script>
+  </body>
+</html>

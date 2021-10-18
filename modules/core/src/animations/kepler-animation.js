@@ -142,6 +142,15 @@ export default class KeplerAnimation extends Animation {
     }
   }
 
+  getKeyframes() {
+    return {
+      cameraKeyframe: this.cameraKeyframe,
+      layerKeyframes: this.layerKeyframes,
+      filterKeyframes: this.filterKeyframes,
+      tripKeyframe: this.tripKeyframe
+    };
+  }
+
   animator(animation) {
     if (animation.cameraKeyframe) {
       animation.onCameraFrameUpdate(animation.cameraKeyframe.getFrame());

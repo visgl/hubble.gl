@@ -52,6 +52,10 @@ export default class DeckAdapter {
     this.seek = this.seek.bind(this);
   }
 
+  setDeck(deck) {
+    this.deck = deck;
+  }
+
   /**
    * @param {Object} params
    * @param {any} params.deck
@@ -59,7 +63,9 @@ export default class DeckAdapter {
    * @param {Object} params.extraProps
    */
   getProps({deck, onNextFrame = undefined, extraProps = undefined}) {
-    this.deck = deck;
+    if (deck) {
+      this.deck = deck;
+    }
     const props = {
       _animate: this.shouldAnimate
     };
@@ -70,6 +76,8 @@ export default class DeckAdapter {
 
     if (this.enabled) {
       props.controller = false;
+    } else {
+      props.controller = true;
     }
 
     if (this.glContext) {

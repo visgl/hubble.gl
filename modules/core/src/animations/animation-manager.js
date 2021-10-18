@@ -47,6 +47,10 @@ export default class AnimationManager {
     });
   }
 
+  getKeyframes(animationId) {
+    return this.animations[animationId].getKeyframes();
+  }
+
   draw() {
     Object.values(this.animations).forEach(animation => animation.draw());
   }

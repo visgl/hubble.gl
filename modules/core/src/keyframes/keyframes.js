@@ -30,6 +30,11 @@ import {
 class Keyframes extends LumaKeyFrames {
   activeFeatures = {};
   animationHandle;
+  timings;
+  keyframes;
+  easings;
+  interpolators;
+
   constructor({features, timings, keyframes, easings = linear, interpolators = 'linear'}) {
     super([]);
     this._setActiveFeatures = this._setActiveFeatures.bind(this);
@@ -57,6 +62,10 @@ class Keyframes extends LumaKeyFrames {
 
     this._setActiveFeatures(keyframes);
     const _keyframes = merge(_timings, keyframes, _easings, _interpolators);
+    this.keyframes = keyframes;
+    this.timings = timings;
+    this.easings = easings;
+    this.interpolators = interpolators;
     this.setKeyFrames(_keyframes);
   }
 

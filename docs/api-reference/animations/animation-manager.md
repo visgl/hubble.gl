@@ -47,6 +47,15 @@ Parameters:
 
 * **`params` (`object`)** - same type as provided during animation construction.
 
+##### `getKeyframes(animationId)`
+
+Parameters:
+
+* **`animationId` (`string`)** - same as `animation.id`
+
+Returns:
+
+`Object` - same type as provided during animation construction.
 
 ##### `draw()`
 
