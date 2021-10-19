@@ -118,15 +118,31 @@ export const deck = new Deck({
       getWidth: 1
     })
   ],
+  // most video formats don't fully support transparency
   parameters: {
     clearColor: [255, 255, 255, 1]
-  }
+  },
+  // retina displays will double resolution
+  useDevicePixels: false
 });
 
 adapter.setDeck(deck);
 
 const setProps = () => {
   deck.setProps(adapter.getProps({onNextFrame: setProps}));
+};
+
+const embedVideo = blob => {
+  document.getElementById('render-status').innerText = 'Render complete!';
+  const resultElement = document.getElementById('result');
+  resultElement.style.display = 'block';
+  const videoElement = document.getElementById('video-render');
+  videoElement.setAttribute('controls', true);
+  videoElement.setAttribute('autoplay', true);
+  videoElement.src = URL.createObjectURL(blob);
+  videoElement.addEventListener('canplaythrough', () => {
+    videoElement.play();
+  });
 };
 
 const render = () => {
@@ -136,18 +152,7 @@ const render = () => {
     timecode,
     filename,
     onComplete: setProps,
-    onSave: blob => {
-      document.getElementById('render-status').innerText = 'Render complete!';
-      const resultElement = document.getElementById('result');
-      resultElement.style.display = 'block';
-      const videoElement = document.getElementById('video-render');
-      videoElement.setAttribute('controls', true);
-      videoElement.setAttribute('autoplay', true);
-      videoElement.src = URL.createObjectURL(blob);
-      videoElement.addEventListener('canplaythrough', () => {
-        videoElement.play();
-      });
-    }
+    onSave: embedVideo
   });
   deck.redraw(true);
 };
