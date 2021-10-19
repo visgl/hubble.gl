@@ -21,7 +21,8 @@
     "test-browser": "ocular-test browser",
     "bench": "ocular-test bench",
     "bench-browser": "ocular-test bench-browser",
-    "metrics": "ocular-metrics"
+    "metrics": "ocular-metrics",
+    "build-bundle": "npx lerna run build-bundle"
   },
   "workspaces": [
     "modules/*"
