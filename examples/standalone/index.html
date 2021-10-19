@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/deck.gl@8.2.0/dist.min.js"></script>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+      body {margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif;}
+      #geo, #non-geo {position: absolute; width: 50vw; height: 50vh;}
+      /* #non-geo {left: 50vw; top: 0;} */
+      .render-result {
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        right: 0;
+        background-color: #FFF;
+        margin: 24px;
+        padding: 10px 24px;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        min-width: 300px;
+      }
+      .render-result h3 { font-size: 16px; margin: 8px 0; }
+      #re-render { margin-top: 8px; }
+      #result {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="non-geo" ></div>
+    <div class="render-result">
+      <h3 id="render-status">Rendering video...</h3>
+      <div id="result">
+        <div class="video">
+          <video id="video-render"></video>
+        </div>
+        <button id="re-render">Re-Render</button>
+      </div>
+    </div>
+  </body>
+  <script src='main.js'></script>
+</html>

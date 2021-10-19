@@ -2467,7 +2467,7 @@
     "@loaders.gl/loader-utils" "2.3.6"
     gifshot "^0.4.5"
 
-"@luma.gl/constants@8.2.0", "@luma.gl/constants@^8.2.0":
+"@luma.gl/constants@8.2.0", "@luma.gl/constants@^8.0.0", "@luma.gl/constants@^8.2.0":
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/@luma.gl/constants/-/constants-8.2.0.tgz#0789c629edbb8b69b7f810ae10c91501b97c634b"
   integrity sha512-ah2PbzTlSGjRIq0YQQcTDAbGdgiRhtE41tvVQGF3BDtARrBuS+ElsPsJbB7sm+wvfjm1mkoLawozrF89pgyY9A==
@@ -2859,6 +2859,13 @@
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/@probe.gl/stats/-/stats-3.2.1.tgz#4e95c75513229ebb01384045e89524a466c022eb"
   integrity sha512-tXe5krgbodxtVdUVWG4oIicMoCHNGp7QYkaHSDrUeTfJVqYuZz99T6r7qmn0bCo4wQlzn936jJ+QiAltHxatig==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+
+"@probe.gl/stats@3.4.1":
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/@probe.gl/stats/-/stats-3.4.1.tgz#5bc0ec5f87ae3195c22a98363e9c15031fbfe8e8"
+  integrity sha512-1Ol5cH8MQqIrGNgU4NCBj2cw1qiXYfHP1QCFX+u/xyrvgwLkPrOGkdSYMzw4VKTjJzNae4i7urOTf2m2hduZzQ==
   dependencies:
     "@babel/runtime" "^7.0.0"
 
@@ -3701,6 +3708,13 @@ babel-plugin-dynamic-import-node@^2.3.3:
   dependencies:
     object.assign "^4.1.0"
 
+babel-plugin-inline-webgl-constants@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/babel-plugin-inline-webgl-constants/-/babel-plugin-inline-webgl-constants-1.0.2.tgz#d09f3e91aa5a9af2be6ac8a8059e00d80aae5f4b"
+  integrity sha512-KxFA99OpXruR9KuZ8Yz3BbR5fADd+oN/ifocrNjehZ1pSsy6V4rPYyZr/rHDfX0IOoOfwR/5Qp87/9qPNnOWAg==
+  dependencies:
+    "@luma.gl/constants" "^8.0.0"
+
 babel-plugin-istanbul@^5.0.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-istanbul/-/babel-plugin-istanbul-5.2.0.tgz#df4ade83d897a92df069c4d9a25cf2671293c854"
@@ -3710,6 +3724,13 @@ babel-plugin-istanbul@^5.0.0:
     find-up "^3.0.0"
     istanbul-lib-instrument "^3.3.0"
     test-exclude "^5.2.3"
+
+babel-plugin-remove-glsl-comments@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-remove-glsl-comments/-/babel-plugin-remove-glsl-comments-0.1.0.tgz#97ab1d99a18f1a5943454ad6c57b67cde3e6df8e"
+  integrity sha512-+yuLcUG65OE2i/Pr5uwyV1f4yM1xo9l5MxZcxemhuhPsVuFWyPtEJ/hlHTTSsc+fS6gSTqXbPW+1J0Izx1HTRw==
+  dependencies:
+    minimatch "^3.0.0"
 
 "babel-plugin-styled-components@>= 1":
   version "1.11.1"
@@ -10648,6 +10669,14 @@ probe.gl@3.2.1, probe.gl@^3.2.1:
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@probe.gl/stats" "3.2.1"
+
+probe.gl@^3.4.0:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/probe.gl/-/probe.gl-3.4.1.tgz#88d8629fbac5a627049d6fdc6b8c364d56f00815"
+  integrity sha512-k/6YoZr6cBwnFpQLs/s4yZ8cCxapQzRrxl16EQg1b2wYXLlerDJ4PkNoQ3YDN9yu3Jcipipr+Avy1GRpyBF6ZA==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    "@probe.gl/stats" "3.4.1"
 
 process-nextick-args@~1.0.6:
   version "1.0.7"
