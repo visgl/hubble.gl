@@ -52,6 +52,7 @@ export class ExportVideoPanelContainer extends Component {
     this.setViewState = this.setViewState.bind(this);
     this.onPreviewVideo = this.onPreviewVideo.bind(this);
     this.onRenderVideo = this.onRenderVideo.bind(this);
+    this.onStop = this.onStop.bind(this);
     this.setDuration = this.setDuration.bind(this);
     this.getCameraKeyframes = this.getCameraKeyframes.bind(this);
     this.getFilterKeyframes = this.getFilterKeyframes.bind(this);
@@ -71,6 +72,7 @@ export class ExportVideoPanelContainer extends Component {
       durationMs: 1000,
       rendering: false, // Will set a spinner overlay if true
       previewing: false,
+      saving: false,
       ...(initialState || {})
     };
     const viewState = scaleToVideoExport(mapState, this._getContainer());
@@ -93,8 +95,9 @@ export class ExportVideoPanelContainer extends Component {
   }
 
   getFileName() {
+    const {defaultFileName} = this.props;
     const {fileName} = this.state;
-    if (fileName === '') return DEFAULT_FILENAME;
+    if (fileName === '') return defaultFileName;
     return fileName;
   }
 
@@ -254,7 +257,7 @@ export class ExportVideoPanelContainer extends Component {
     const formatConfigs = this.getFormatConfigs();
     const timecode = this.getTimecode();
     this.setState({previewing: true, memo: {viewState: {...this.state.viewState}}});
-    const onStop = () => {
+    const onComplete = () => {
       this.setState({previewing: false, viewState: {...this.state.memo.viewState}});
     };
     adapter.animationManager.setKeyframes('kepler', {
@@ -267,7 +270,7 @@ export class ExportVideoPanelContainer extends Component {
       formatConfigs,
       timecode,
       filename,
-      onStop
+      onComplete
     });
   }
 
@@ -279,10 +282,10 @@ export class ExportVideoPanelContainer extends Component {
     const timecode = this.getTimecode();
 
     // Enables overlay after user clicks "Render"
-    this.setState({rendering: true, memo: {viewState: {...this.state.viewState}}});
-    const onStop = () => {
+    this.setState({rendering: true, saving: false, memo: {viewState: {...this.state.viewState}}});
+    const onComplete = () => {
       // Disables overlay once export is done saving (generates file to download)
-      this.setState({rendering: false, viewState: {...this.state.memo.viewState}});
+      this.setState({rendering: false, saving: false, viewState: {...this.state.memo.viewState}});
     };
     adapter.animationManager.setKeyframes('kepler', {
       ...this.getFilterKeyframes(),
@@ -294,7 +297,22 @@ export class ExportVideoPanelContainer extends Component {
       formatConfigs,
       timecode,
       filename,
-      onStop
+      onStopped: () => this.setState({saving: true}),
+      onComplete
+    });
+  }
+
+  onStop() {
+    const {adapter} = this.state;
+    adapter.stop({
+      onStopped: () => this.setState({saving: true}),
+      onComplete: () => {
+        this.setState({
+          previewing: false,
+          rendering: false,
+          viewState: {...this.state.memo.viewState}
+        });
+      }
     });
   }
 
@@ -311,7 +329,8 @@ export class ExportVideoPanelContainer extends Component {
       deckProps,
       staticMapProps,
       disableStaticMap,
-      mapboxLayerBeforeId
+      mapboxLayerBeforeId,
+      defaultFileName
     } = this.props;
     const {
       adapter,
@@ -322,7 +341,8 @@ export class ExportVideoPanelContainer extends Component {
       resolution,
       viewState,
       rendering,
-      previewing
+      previewing,
+      saving
     } = this.state;
 
     const timecode = this.getTimecode();
@@ -333,6 +353,7 @@ export class ExportVideoPanelContainer extends Component {
       setCameraPreset: this.setCameraPreset,
       fileName,
       setFileName: this.setFileName,
+      fileNamePlaceholder: defaultFileName,
       resolution,
       setResolution: this.setResolution,
       durationMs,
@@ -364,11 +385,13 @@ export class ExportVideoPanelContainer extends Component {
         settings={settings}
         // Hubble Props
         adapter={adapter}
+        resolution={[canvasSize.width, canvasSize.height]}
         handlePreviewVideo={this.onPreviewVideo}
         handleRenderVideo={this.onRenderVideo}
-        resolution={[canvasSize.width, canvasSize.height]}
+        handleStop={this.onStop}
         rendering={rendering}
         previewing={previewing}
+        saving={saving}
       />
     );
   }
@@ -380,5 +403,6 @@ ExportVideoPanelContainer.defaultProps = {
   glContext: undefined,
   deckProps: {},
   staticMapProps: {},
-  disableStaticMap: false
+  disableStaticMap: false,
+  defaultFileName: DEFAULT_FILENAME
 };

@@ -1,8 +1,10 @@
 // @ts-nocheck
-/* global window, global */
 const moduleExports = require('./src');
 
+/* global window, global */
 const _global = typeof window === 'undefined' ? global : window;
-// const hubble = _global.hubble || {};
+_global.hubble = _global.hubble || {};
 
-module.exports = Object.assign(_global.hubble, moduleExports);
+Object.assign(_global.hubble, moduleExports);
+
+module.exports = _global.hubble;

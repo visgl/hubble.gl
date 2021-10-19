@@ -35,10 +35,10 @@
           ]
         },
         {
-          "title": "Scenes",
+          "title": "Animations",
           "entries": [
             {
-              "entry": "docs/api-reference/scene/deck-scene"
+              "entry": "docs/api-reference/animations/animation-manager"
             }
           ]
         },
@@ -55,7 +55,7 @@
               "entry": "docs/api-reference/keyframe/camera-keyframes"
             },
             {
-              "entry": "docs/api-reference/keyframe/layer-keyframes"
+              "entry": "docs/api-reference/keyframe/deck-layer-keyframes"
             }
           ]
         },

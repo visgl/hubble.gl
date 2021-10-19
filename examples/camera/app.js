@@ -35,7 +35,7 @@ const timecode = {
   framerate: 30
 };
 
-const dimension = {
+const resolution = {
   width: 640,
   height: 480
 };
@@ -73,8 +73,8 @@ export default function App() {
   useEffect(() => {
     adapter.animationManager.setKeyframes('deck', {
       cameraKeyframe: {
-        width: dimension.width,
-        height: dimension.height,
+        width: resolution.width,
+        height: resolution.height,
         timings: [0, timecode.end - 250],
         keyframes: [viewStateA, viewStateB],
         easings: easing.easeInOut
@@ -103,8 +103,8 @@ export default function App() {
         }}
         controller={true}
         effects={[vignetteEffect, aaEffect]}
-        width={dimension.width}
-        height={dimension.height}
+        width={resolution.width}
+        height={resolution.height}
         layers={layers}
         {...adapter.getProps({deck, onNextFrame})}
       />

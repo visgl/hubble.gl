@@ -40,14 +40,14 @@ const config = {
   mode: 'production',
 
   entry: {
-    main: resolve('./bundle')
+    main: resolve('./bundle.js')
   },
 
   output: {
     libraryTarget: 'umd',
     path: PACKAGE_ROOT,
     filename: 'dist.min.js',
-    // library: 'hubble'
+    library: 'hubble'
   },
 
   resolve: {
@@ -60,13 +60,16 @@ const config = {
         // Compile ES2015 using babel
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [/src/, /bundle/],
+        include: [/src/, /bundle/, /esm/],
         options: {
-          presets: [['@babel/preset-env', {forceAllTransforms: true}]],
+          presets: [['@babel/preset-env', {
+            targets: ["supports webgl", "not dead"]
+          }]],
           // all of the helpers will reference the module @babel/runtime to avoid duplication
           // across the compiled output.
           plugins: [
             '@babel/transform-runtime',
+            '@babel/plugin-proposal-class-properties',
             'inline-webgl-constants',
             ['remove-glsl-comments', {patterns: ['**/*.glsl.js']}]
           ]
@@ -89,8 +92,10 @@ const config = {
     // ,new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)()
   ],
 
-  node: false,
-
+  node: {
+    fs: 'empty'
+  },
+  
   devtool: false
 };
 

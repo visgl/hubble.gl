@@ -89,6 +89,13 @@ export default class DeckAnimation extends Animation {
     }
   }
 
+  getKeyframes() {
+    return {
+      cameraKeyframe: this.cameraKeyframe,
+      layerKeyframes: this.layerKeyframes
+    };
+  }
+
   animator(animation) {
     if (animation.cameraKeyframe) {
       animation.onCameraUpdate(animation.cameraKeyframe.getFrame());

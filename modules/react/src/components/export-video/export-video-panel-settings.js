@@ -27,7 +27,7 @@ import AnimationTab from './modal-tab-animation';
 import SettingsTab from './modal-tab-settings';
 import get from 'lodash.get';
 
-function ExportVideoPanelSettings({settings, resolution}) {
+function ExportVideoPanelSettings({settings, resolution, disabled}) {
   const loadingMethods = [
     // Each entry creates new tabs with ModalTabsFactory
     // id: The tab id in state
@@ -63,6 +63,7 @@ function ExportVideoPanelSettings({settings, resolution}) {
               <ModalTab // Represents all the params needed across all tabs
                 settings={settings}
                 resolution={resolution}
+                disabled={disabled}
               />
             )}
           </div>

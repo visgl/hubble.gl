@@ -44,14 +44,14 @@ export default function BasicControls({adapter, busy, setBusy, formatConfigs, ti
       Encoder: ENCODERS[encoder],
       formatConfigs,
       timecode,
-      onStop: () => setBusy(false)
+      onComplete: () => setBusy(false)
     });
 
     setBusy(true);
   };
 
   const onStop = () => {
-    adapter.stop(() => setBusy(false));
+    adapter.stop({onComplete: () => setBusy(false)});
   };
 
   return (

@@ -3,10 +3,10 @@ import {createAction, createSelector, nanoid, createSlice} from '@reduxjs/toolki
 import {DeckAdapter} from '@hubble.gl/core';
 import {DEFAULT_FILENAME, getResolutionSetting} from './constants';
 
-/** @param payload: onStop */
+/** @param payload: onComplete */
 export const previewVideo = createAction('renderer/previewVideo');
 
-/** @param payload: onStop */
+/** @param payload: onComplete */
 export const renderVideo = createAction('renderer/renderVideo');
 
 /** @param payload: timeMs */
@@ -37,7 +37,7 @@ const defaultResolution = getResolutionSetting();
 const initialState = {
   adapter: new DeckAdapter({}),
   busy: false, // 'rendering' | 'previewing'
-  dimensionState: defaultResolution,
+  resolution: defaultResolution,
   filename: DEFAULT_FILENAME,
   format: 'webm',
   formatConfigs: {
@@ -75,7 +75,7 @@ const filenameChangeSlice = {
 };
 
 const resolutionChangeSlice = {
-  reducer: (state, action) => void (state.dimensionState = action.payload),
+  reducer: (state, action) => void (state.resolution = action.payload),
   // @param resolution: <Preset | {width, height}>
   prepare: resolution => {
     // resolution is preset string
@@ -155,7 +155,7 @@ export const durationSelector = createSelector(timecodeSelector, timecode => {
 export const formatConfigsSelector = state => state.hubbleGl.renderer.formatConfigs;
 export const filenameSelector = state => state.hubbleGl.renderer.filename;
 
-export const dimensionSelector = state => state.hubbleGl.renderer.dimensionState;
+export const resolutionSelector = state => state.hubbleGl.renderer.resolution;
 
 /**
  * Returns a truthy string if busy, otherwise false.

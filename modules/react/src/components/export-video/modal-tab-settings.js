@@ -2,20 +2,14 @@ import React, {useState} from 'react';
 
 import {estimateFileSize} from './utils';
 import {StyledLabelCell, StyledValueCell, InputGrid} from './styled-components';
-import {
-  DEFAULT_FILENAME,
-  FORMATS,
-  RESOLUTIONS,
-  ASPECT_RATIOS,
-  DEFAULT_PREVIEW_RESOLUTIONS
-} from './constants';
+import {FORMATS, RESOLUTIONS, ASPECT_RATIOS, DEFAULT_PREVIEW_RESOLUTIONS} from './constants';
 import {WithKeplerUI} from '../inject-kepler';
 
 const getOptionValue = r => r.value;
 const displayOption = r => r.label;
 const getSelectedItems = (options, value) => options.find(o => o.value === value);
 
-function SettingsTab({settings, resolution}) {
+function SettingsTab({settings, resolution, disabled}) {
   const [aspRatio, setAspRatio] = useState(ASPECT_RATIOS['16_9']);
   return (
     <WithKeplerUI>
@@ -25,8 +19,9 @@ function SettingsTab({settings, resolution}) {
             <StyledLabelCell>File Name</StyledLabelCell>
             <Input
               value={settings.fileName}
-              placeholder={DEFAULT_FILENAME}
+              placeholder={settings.fileNamePlaceholder}
               onChange={e => settings.setFileName(e.target.value)}
+              disabled={disabled}
             />
             <StyledLabelCell>Media Type</StyledLabelCell>
             <ItemSelector
@@ -37,6 +32,7 @@ function SettingsTab({settings, resolution}) {
               multiSelect={false}
               searchable={false}
               onChange={settings.setMediaType}
+              disabled={disabled}
             />
             <StyledLabelCell>Ratio</StyledLabelCell>
             <ItemSelector
@@ -48,6 +44,7 @@ function SettingsTab({settings, resolution}) {
                 setAspRatio(ratio);
                 settings.setResolution(DEFAULT_PREVIEW_RESOLUTIONS[ratio]);
               }}
+              disabled={disabled}
             />
             <StyledLabelCell>Quality</StyledLabelCell>
             <ItemSelector
@@ -58,6 +55,7 @@ function SettingsTab({settings, resolution}) {
               multiSelect={false}
               searchable={false}
               onChange={settings.setResolution}
+              disabled={disabled}
             />
             <StyledLabelCell>File Size</StyledLabelCell>
             <StyledValueCell>

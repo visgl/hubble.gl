@@ -2,6 +2,37 @@
 
 A base class for encoders. Custom frame encoders may be implemented and used by Hubble as new capture technologies advance, or uncommon use cases need to be implemented.
 
+## Usage 
+
+```js
+import {FrameEncoder} from '@hubble.gl/core';
+
+// FrameEncoder needs to be extended, and not directly used as an encoder. 
+class CustomEncoder extends FrameEncoder {
+  constructor(settings) {
+    super(settings);
+    ...
+  }
+
+  start() {
+    ...
+  }
+
+  async add(canvas) {
+    ...
+  }
+
+  async save() {
+    ...
+  }
+}
+
+// Then CustomEncoder can be used to render.
+const adapter = DeckAdapter({});
+adapter.render({Encoder: CustomEncoder, ...});
+```
+
+
 ## Constructor
 
 Parameters:
