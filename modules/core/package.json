@@ -39,7 +39,7 @@
     "@math.gl/web-mercator": "^3.4.2",
     "downloadjs": "^1.4.7",
     "popmotion": "^8.6.10",
-    "webm-writer": "^0.2.2",
+    "webm-writer": "^1.0.0",
     "probe.gl": "^3.4.0"
   }
 }

@@ -6,10 +6,6 @@ const CONFIG = {
 
   entry: {
     app: './app.js'
-  },
-
-  node: {
-    fs: 'empty'
   }
 };
 
