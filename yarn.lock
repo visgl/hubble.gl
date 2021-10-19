@@ -13586,10 +13586,10 @@ webidl-conversions@^4.0.2:
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-4.0.2.tgz#a855980b1f0b6b359ba1d5d9fb39ae941faa63ad"
   integrity sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==
 
-webm-writer@^0.2.2:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/webm-writer/-/webm-writer-0.2.4.tgz#82478e9e0e1afd0d362dcdba2d9af46c36c39e7b"
-  integrity sha512-3qKVGTcbpKibczZpK/t24ULi3f+gSUjHhVPILF3yURy/j0TBiECsTLa3ar/HB6WT3seX2TKnI7HpZGUNs4013g==
+webm-writer@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/webm-writer/-/webm-writer-1.0.0.tgz#78367e435dddf9bed633dd98c7ca9b36438d9943"
+  integrity sha512-xafP4mzUqht03HBXP0Ov2YGsxfD08uncad9fQeshYwQXrcP6Z/4uxd1IUaGKqKigFPAgaD9xb6JEKA8SXLQMLA==
 
 webpack-bundle-analyzer@^3.0.3:
   version "3.7.0"

@@ -92,10 +92,7 @@ const config = {
     // ,new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)()
   ],
 
-  node: {
-    fs: 'empty'
-  },
-  
+  node: false,
   devtool: false
 };
 

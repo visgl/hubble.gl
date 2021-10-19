@@ -8,10 +8,6 @@ const CONFIG = {
 
   mode: 'development',
 
-  node: {
-    fs: 'empty'
-  },
-
   plugins: [
     new webpack.DefinePlugin({
       __MAPBOX_TOKEN__: JSON.stringify(process.env.MapboxAccessToken) // eslint-disable-line
