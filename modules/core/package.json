@@ -33,8 +33,9 @@
     "@luma.gl/engine": "^8.2.0"
   },
   "dependencies": {
-    "@loaders.gl/core": "^2.1.6",
-    "@loaders.gl/video": "2.2.0-alpha.1",
+    "@loaders.gl/core": "^3.0.12",
+    "@loaders.gl/video": "^3.0.12",
+    "@loaders.gl/zip": "^3.0.12",
     "@math.gl/core": "^3.4.2",
     "@math.gl/web-mercator": "^3.4.2",
     "downloadjs": "^1.4.7",
