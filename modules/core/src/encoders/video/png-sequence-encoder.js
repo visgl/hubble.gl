@@ -94,12 +94,19 @@ class PNGSequenceEncoder extends FrameEncoder {
    * @return {Promise<Blob>}
    */
   async save() {
-    if (this.options.archive === TAR) {
-      const arrayBuffer = await this.tarBuilder.build();
-      return new Blob([arrayBuffer], {type: TARBuilder.properties.mimeType});
+    switch (this.options.archive) {
+      case TAR: {
+        const arrayBuffer = await this.tarBuilder.build();
+        return new Blob([arrayBuffer], {type: TARBuilder.properties.mimeType});
+      }
+      case ZIP: {
+        const arrayBuffer = await encode(this.filemap, ZipWriter);
+        return new Blob([arrayBuffer], {type: ZipWriter.mimeTypes[0]});
+      }
+      default: {
+        throw new Error(`Unsupported archive type [zip, tar]: ${this.options.archive}`);
+      }
     }
-    const arrayBuffer = await encode(this.filemap, ZipWriter);
-    return new Blob([arrayBuffer], {type: ZipWriter.mimeTypes[0]});
   }
 }
 
