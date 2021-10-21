@@ -116,7 +116,7 @@ export class ExportVideoPanelPreview extends Component {
   _onAfterRender() {
     this.props.adapter.onAfterRender(() => {
       this.forceUpdate();
-    });
+    }, this.mapRef.current.getMap().areTilesLoaded());
   }
 
   _onMapLoad() {

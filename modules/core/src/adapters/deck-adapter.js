@@ -141,9 +141,9 @@ export default class DeckAdapter {
   /**
    * @param {(nextTimeMs: number) => void} proceedToNextFrame
    */
-  onAfterRender(proceedToNextFrame) {
+  onAfterRender(proceedToNextFrame, readyToCapture = true) {
     const areAllLayersLoaded = this.deck && this.deck.props.layers.every(layer => layer.isLoaded);
-    if (this.videoCapture.isRecording() && areAllLayersLoaded) {
+    if (this.videoCapture.isRecording() && areAllLayersLoaded && readyToCapture) {
       this.videoCapture.capture(this.deck.canvas, nextTimeMs => {
         this.seek({timeMs: nextTimeMs});
         proceedToNextFrame(nextTimeMs);
