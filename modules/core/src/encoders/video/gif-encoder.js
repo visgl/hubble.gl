@@ -49,7 +49,10 @@ export default class GifEncoder extends FrameEncoder {
     }
   }
 
+  /**
+   * @return {Promise<Blob>}
+   */
   async save() {
-    return this.gifBuilder.build();
+    return fetch(await this.gifBuilder.build()).then(res => res.blob());
   }
 }

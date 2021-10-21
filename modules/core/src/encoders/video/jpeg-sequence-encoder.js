@@ -20,37 +20,87 @@
 import FrameEncoder from '../frame-encoder';
 import TARBuilder from '../tar/tar-builder';
 import {pad, canvasToArrayBuffer} from '../utils';
+import {encode} from '@loaders.gl/core';
+import {ZipWriter} from '@loaders.gl/zip';
+
+const TAR = 'tar';
+const ZIP = 'zip';
+
 class JPEGSequenceEncoder extends FrameEncoder {
   /** @type {TARBuilder} */
   tarBuilder;
 
+  /** @type {{filename: ArrayBuffer}} */
+  filemap;
+
   /** @param {import('types').FrameEncoderSettings} settings */
   constructor(settings) {
     super(settings);
-    this.mimeType = TARBuilder.properties.mimeType;
-    this.extension = `.${TARBuilder.properties.extensions[0]}`;
-    this.quality = 0.8;
-    if (settings.jpeg && settings.jpeg.quality) {
-      this.quality = settings.jpeg.quality;
-    }
     this.tarBuilder = null;
+    this.filemap = {};
+    this.options = {};
+
+    if (settings.jpeg) {
+      this.options = {...settings.jpeg};
+    }
+
+    this.options.quality = this.options.quality || 1.0;
+    this.options.archive = this.options.archive || TAR;
+
+    switch (this.options.archive) {
+      case TAR: {
+        this.mimeType = TARBuilder.properties.mimeType;
+        this.extension = `.${TARBuilder.properties.extensions[0]}`;
+        break;
+      }
+      case ZIP: {
+        this.mimeType = ZipWriter.mimeTypes[0];
+        this.extension = `.${ZipWriter.extensions[0]}`;
+        break;
+      }
+      default: {
+        throw new Error(`Unsupported archive type [zip, tar]: ${this.options.archive}`);
+      }
+    }
   }
 
   start() {
     this.tarBuilder = new TARBuilder({});
+    this.filemap = {};
   }
 
   /** @param {HTMLCanvasElement} canvas */
   async add(canvas) {
     const mimeType = 'image/jpeg';
     const extension = '.jpg';
-    const buffer = await canvasToArrayBuffer(canvas, mimeType);
-    const filename = pad(this.tarBuilder.count) + extension;
-    this.tarBuilder.addFile(buffer, filename);
+    const buffer = await canvasToArrayBuffer(canvas, mimeType, this.options.quality);
+    switch (this.options.archive) {
+      case TAR: {
+        const filename = pad(this.tarBuilder.count) + extension;
+        this.tarBuilder.addFile(buffer, filename);
+        break;
+      }
+      case ZIP: {
+        const filename = pad(Object.keys(this.filemap).length) + extension;
+        this.filemap[filename] = buffer;
+        break;
+      }
+      default: {
+        throw new Error(`Unsupported archive type [zip, tar]: ${this.options.archive}`);
+      }
+    }
   }
 
+  /**
+   * @return {Promise<Blob>}
+   */
   async save() {
-    return this.tarBuilder.build();
+    if (this.options.archive === TAR) {
+      const arrayBuffer = await this.tarBuilder.build();
+      return new Blob([arrayBuffer], {type: TARBuilder.properties.mimeType});
+    }
+    const arrayBuffer = await encode(this.filemap, ZipWriter);
+    return new Blob([arrayBuffer], {type: ZipWriter.mimeTypes[0]});
   }
 }
 
