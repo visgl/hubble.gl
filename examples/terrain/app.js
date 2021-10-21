@@ -90,16 +90,27 @@ const deckAnimation = new DeckAnimation({
   ]
 });
 
+const resolution = {
+  width: 640,
+  height: 480
+};
+
 /** @type {import('@hubble.gl/core/src/types').FormatConfigs} */
 const formatConfigs = {
   webm: {
     quality: 0.8
   },
+  png: {
+    archive: 'zip'
+  },
   jpeg: {
+    archive: 'zip',
     quality: 0.8
   },
   gif: {
-    sampleInterval: 1000
+    sampleInterval: 1000,
+    width: resolution.width,
+    height: resolution.height
   }
 };
 
@@ -107,11 +118,6 @@ const timecode = {
   start: 0,
   end: 15000,
   framerate: 30
-};
-
-const resolution = {
-  width: 640,
-  height: 480
 };
 
 export default function App() {
@@ -161,21 +167,20 @@ export default function App() {
         layers={layers}
         {...adapter.getProps({deck, onNextFrame})}
       />
-      <div style={{position: 'absolute'}}>
-        <BasicControls
-          adapter={adapter}
-          busy={busy}
-          setBusy={setBusy}
-          formatConfigs={formatConfigs}
-          timecode={timecode}
-        />
-        <div style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}}>
-          <label style={{fontFamily: 'sans-serif'}}>
-            <input type="checkbox" checked={rainbow} onChange={() => setRainbow(!rainbow)} />
-            Rainbow Animation
+      <BasicControls
+        adapter={adapter}
+        busy={busy}
+        setBusy={setBusy}
+        formatConfigs={formatConfigs}
+        timecode={timecode}
+      >
+        <div style={{width: '100%'}}>
+          <label style={{fontFamily: 'sans-serif', width: '40%', marginRight: '10%'}}>
+            Rainbow Texture
           </label>
+          <input type="checkbox" checked={rainbow} onChange={() => setRainbow(!rainbow)} />
         </div>
-      </div>
+      </BasicControls>
     </div>
   );
 }

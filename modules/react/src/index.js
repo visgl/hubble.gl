@@ -28,7 +28,8 @@ export {
   InjectKeplerUI,
   WithKeplerUI,
   KeplerUIContext,
-  QuickAnimation
+  QuickAnimation,
+  RenderPlayer
 } from './components';
 export {useNextFrame, useDeckAdapter} from './hooks';
 export {createKeplerLayers} from './kepler-layers';

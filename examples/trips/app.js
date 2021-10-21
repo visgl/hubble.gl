@@ -69,16 +69,27 @@ const landCover = [
   ]
 ];
 
+const resolution = {
+  width: 1280,
+  height: 720
+};
+
 /** @type {import('@hubble.gl/core/src/types').FormatConfigs} */
 const formatConfigs = {
   webm: {
     quality: 0.8
   },
+  png: {
+    archive: 'zip'
+  },
   jpeg: {
+    archive: 'zip',
     quality: 0.8
   },
   gif: {
-    sampleInterval: 1000
+    sampleInterval: 1000,
+    width: resolution.width,
+    height: resolution.height
   }
 };
 
@@ -86,11 +97,6 @@ const timecode = {
   start: 0,
   end: 5000,
   framerate: 30
-};
-
-const resolution = {
-  width: 1280,
-  height: 720
 };
 
 const animation = new DeckAnimation({
@@ -221,16 +227,13 @@ export default function App({mapStyle = 'mapbox://styles/mapbox/dark-v9'}) {
           />
         )}
       </DeckGL>
-
-      <div style={{position: 'absolute'}}>
-        <BasicControls
-          adapter={adapter}
-          busy={busy}
-          setBusy={setBusy}
-          formatConfigs={formatConfigs}
-          timecode={timecode}
-        />
-      </div>
+      <BasicControls
+        adapter={adapter}
+        busy={busy}
+        setBusy={setBusy}
+        formatConfigs={formatConfigs}
+        timecode={timecode}
+      />
     </div>
   );
 }

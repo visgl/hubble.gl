@@ -25,7 +25,11 @@ export const QuickAnimation = ({
     webm: {
       quality: 0.8
     },
+    png: {
+      archive: 'zip'
+    },
     jpeg: {
+      archive: 'zip',
       quality: 0.8
     },
     gif: {
@@ -59,15 +63,13 @@ export const QuickAnimation = ({
         layers={layers}
         {...adapter.getProps({deck, onNextFrame, extraProps: deckProps})}
       />
-      <div style={{position: 'absolute'}}>
-        <BasicControls
-          adapter={adapter}
-          busy={busy}
-          setBusy={setBusy}
-          formatConfigs={mergedFormatConfigs}
-          timecode={mergedTimecode}
-        />
-      </div>
+      <BasicControls
+        adapter={adapter}
+        busy={busy}
+        setBusy={setBusy}
+        formatConfigs={mergedFormatConfigs}
+        timecode={mergedTimecode}
+      />
     </div>
   );
 };

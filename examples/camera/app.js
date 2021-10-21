@@ -16,16 +16,27 @@ const INITIAL_VIEW_STATE = {
   maxPitch: 90
 };
 
+const resolution = {
+  width: 640,
+  height: 480
+};
+
 /** @type {import('@hubble.gl/core/src/types').FormatConfigs} */
 const formatConfigs = {
   webm: {
     quality: 0.8
   },
+  png: {
+    archive: 'zip'
+  },
   jpeg: {
-    quality: 0.8
+    quality: 0.8,
+    archive: 'zip'
   },
   gif: {
-    sampleInterval: 1000
+    sampleInterval: 1000,
+    width: resolution.width,
+    height: resolution.height
   }
 };
 
@@ -33,11 +44,6 @@ const timecode = {
   start: 0,
   end: 5000,
   framerate: 30
-};
-
-const resolution = {
-  width: 640,
-  height: 480
 };
 
 const aaEffect = new PostProcessEffect(fxaa, {});
@@ -108,17 +114,20 @@ export default function App() {
         layers={layers}
         {...adapter.getProps({deck, onNextFrame})}
       />
-      <div style={{position: 'absolute'}}>
-        <BasicControls
-          adapter={adapter}
-          busy={busy}
-          setBusy={setBusy}
-          formatConfigs={formatConfigs}
-          timecode={timecode}
-        />
-        <button onClick={() => setViewStateA(filterCamera(cameraFrame))}>Set Camera Start</button>
-        <button onClick={() => setViewStateB(filterCamera(cameraFrame))}>Set Camera End</button>
-      </div>
+      <BasicControls
+        adapter={adapter}
+        busy={busy}
+        setBusy={setBusy}
+        formatConfigs={formatConfigs}
+        timecode={timecode}
+      >
+        <button disabled={busy} onClick={() => setViewStateA(filterCamera(cameraFrame))}>
+          Set Camera Start
+        </button>
+        <button disabled={busy} onClick={() => setViewStateB(filterCamera(cameraFrame))}>
+          Set Camera End
+        </button>
+      </BasicControls>
     </div>
   );
 }
