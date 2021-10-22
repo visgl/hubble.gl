@@ -49,12 +49,13 @@ import {DeckAnimation} from 'hubble.gl';
 import {easing} from 'popmotion';
 
 const deckAnimation = new DeckAnimation({
-  layers: [
+  // Use applyLayerKeyframes to spread keyframe values onto layers by id.
+  getLayers: (a) => a.applyLayerKeyframes([
     new LineLayer({
       id: 'line-layer', 
       data: [{sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781]}]
     })
-  ],
+  ]),
   layerKeyframes: [
     { 
       id: 'line-layer',  

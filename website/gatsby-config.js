@@ -88,6 +88,12 @@ module.exports = {
             path: 'examples/hello-world/',
             image: 'images/demo-thumb-hello-world.png',
             componentUrl: resolve('../examples/quick-start/app.js')
+          },
+          {
+            title: 'NYC Trips',
+            path: 'examples/nyc-trips/',
+            image: 'images/demo-thumb-nyc-trips.png',
+            componentUrl: resolve('../examples/trips/app.js')
           }
         ],
       }

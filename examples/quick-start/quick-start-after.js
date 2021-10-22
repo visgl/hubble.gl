@@ -10,22 +10,23 @@ const INITIAL_VIEW_STATE = {
 };
 
 const animation = new DeckAnimation({
-  layers: [
-    new ScatterplotLayer({
-      id: 'circle',
-      data: [{position: [-122.402, 37.79], color: [255, 0, 0], radius: 1000}],
-      getFillColor: d => d.color,
-      getRadius: d => d.radius,
-      opacity: 0,
-      radiusScale: 0.01
-    }),
-    new TextLayer({
-      id: 'text',
-      data: [{position: [-122.402, 37.79], text: 'Hello World'}],
-      opacity: 0,
-      getAngle: -90
-    })
-  ],
+  getLayers: a =>
+    a.applyLayerKeyframes([
+      new ScatterplotLayer({
+        id: 'circle',
+        data: [{position: [-122.402, 37.79], color: [255, 0, 0], radius: 1000}],
+        getFillColor: d => d.color,
+        getRadius: d => d.radius,
+        opacity: 0,
+        radiusScale: 0.01
+      }),
+      new TextLayer({
+        id: 'text',
+        data: [{position: [-122.402, 37.79], text: 'Hello World'}],
+        opacity: 0,
+        getAngle: -90
+      })
+    ]),
   layerKeyframes: [
     {
       id: 'circle',

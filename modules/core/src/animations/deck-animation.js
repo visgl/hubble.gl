@@ -25,20 +25,17 @@ function noop() {}
 export default class DeckAnimation extends Animation {
   cameraKeyframe;
   layerKeyframes = {};
-  layers = [];
 
   constructor({
     id = 'deck',
     cameraKeyframe = undefined,
-    layers = [],
-    getLayers = undefined,
+    getLayers = _ => [],
     layerKeyframes = [],
     onLayersUpdate = noop,
     onCameraUpdate = noop
   }) {
     super({id});
     this.layerKeyframes = {};
-    this.layers = layers;
     this.onLayersUpdate = onLayersUpdate;
     this.onCameraUpdate = onCameraUpdate;
     this.getLayers = getLayers;
@@ -52,11 +49,6 @@ export default class DeckAnimation extends Animation {
 
   setOnCameraUpdate(onCameraUpdate) {
     this.onCameraUpdate = onCameraUpdate;
-  }
-
-  setLayers(layers) {
-    this.layers = layers;
-    this.draw();
   }
 
   setGetLayers(getLayers) {
@@ -102,21 +94,20 @@ export default class DeckAnimation extends Animation {
     }
 
     if (Object.values(animation.layerKeyframes).length > 0) {
-      if (this.getLayers) {
-        animation.onLayersUpdate(this.getLayers(animation));
-      } else {
-        const layers = animation.layers.map(layer => {
-          if (animation.layerKeyframes[layer.id]) {
-            const frame = animation.layerKeyframes[layer.id].getFrame();
-            return layer.clone({
-              ...frame,
-              updateTriggers: frame
-            });
-          }
-          return layer;
-        });
-        animation.onLayersUpdate(layers);
-      }
+      animation.onLayersUpdate(this.getLayers(animation));
     }
+  }
+
+  applyLayerKeyframes(layers) {
+    return layers.map(layer => {
+      if (this.layerKeyframes[layer.id]) {
+        const frame = this.layerKeyframes[layer.id].getFrame();
+        return layer.clone({
+          ...frame,
+          updateTriggers: frame
+        });
+      }
+      return layer;
+    });
   }
 }
