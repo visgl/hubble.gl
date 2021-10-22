@@ -8,24 +8,24 @@ const INITIAL_VIEW_STATE = {
   zoom: 11
 };
 
-const layers = [
-  new ScatterplotLayer({
-    id: 'circle',
-    data: [{position: [-122.402, 37.79], color: [255, 0, 0], radius: 1000}],
-    getFillColor: d => d.color,
-    getRadius: d => d.radius,
-    opacity: 1,
-    radiusScale: 1
-  }),
-  new TextLayer({
-    id: 'text',
-    data: [{position: [-122.402, 37.79], text: 'Hello World'}],
-    opacity: 1,
-    getAngle: 0
-  })
-];
-
 export default function App() {
+  const layers = [
+    new ScatterplotLayer({
+      id: 'circle',
+      data: [{position: [-122.402, 37.79], color: [255, 0, 0], radius: 1000}],
+      getFillColor: d => d.color,
+      getRadius: d => d.radius,
+      opacity: 1,
+      radiusScale: 1
+    }),
+    new TextLayer({
+      id: 'text',
+      data: [{position: [-122.402, 37.79], text: 'Hello World'}],
+      opacity: 1,
+      getAngle: 0
+    })
+  ];
+
   return (
     <DeckGL
       initialViewState={INITIAL_VIEW_STATE}
