@@ -143,8 +143,14 @@ export default function App() {
   const [rainbow, setRainbow] = useState(false);
 
   const onNextFrame = useNextFrame();
+
+  const {adapter, layers, cameraFrame, setCameraFrame} = useDeckAdapter(
+    deckAnimation,
+    INITIAL_VIEW_STATE
+  );
+
   useEffect(() => {
-    deckAnimation.setGetLayers(animation => {
+    adapter.animationManager.getAnimation('deck').setGetLayers(animation => {
       const terrain = animation.layerKeyframes.terrain.getFrame();
       return [
         new TerrainLayer({
@@ -161,10 +167,6 @@ export default function App() {
       ];
     });
   }, [rainbow]);
-  const {adapter, layers, cameraFrame, setCameraFrame} = useDeckAdapter(
-    deckAnimation,
-    INITIAL_VIEW_STATE
-  );
 
   return (
     <Container>

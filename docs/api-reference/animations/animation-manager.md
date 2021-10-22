@@ -37,6 +37,10 @@ Parameters:
 
 * **`animation` (`Animation`)**
 
+##### `getAnimation(animationId)`
+
+Return attached animation by id.
+
 ##### `setKeyframes(animationId, params)`
 
 Updates keyframe values for an attached animation.
