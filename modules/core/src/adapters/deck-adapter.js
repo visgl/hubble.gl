@@ -140,6 +140,7 @@ export default class DeckAdapter {
 
   /**
    * @param {(nextTimeMs: number) => void} proceedToNextFrame
+   * @param {boolean} readyToCapture
    */
   onAfterRender(proceedToNextFrame, readyToCapture = true) {
     const areAllLayersLoaded = this.deck && this.deck.props.layers.every(layer => layer.isLoaded);
