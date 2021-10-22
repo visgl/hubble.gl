@@ -1,6 +1,5 @@
 import React, {useState, useRef, useMemo} from 'react';
 import DeckGL from '@deck.gl/react';
-import ResolutionGuide from './resolution-guide';
 import BasicControls from './basic-controls';
 import {useDeckAdapter, useNextFrame} from '../hooks';
 
@@ -47,22 +46,22 @@ export const QuickAnimation = ({
   };
 
   return (
-    <div style={{position: 'relative'}}>
-      <div style={{position: 'absolute'}}>
-        <ResolutionGuide />
+    <>
+      <div style={{position: 'relative'}}>
+        <DeckGL
+          ref={deckRef}
+          style={{position: 'unset'}}
+          viewState={cameraFrame}
+          onViewStateChange={({viewState: vs}) => {
+            setCameraFrame(vs);
+          }}
+          controller={true}
+          width={resolution.width}
+          height={resolution.height}
+          layers={layers}
+          {...adapter.getProps({deck, onNextFrame, extraProps: deckProps})}
+        />
       </div>
-      <DeckGL
-        ref={deckRef}
-        viewState={cameraFrame}
-        onViewStateChange={({viewState: vs}) => {
-          setCameraFrame(vs);
-        }}
-        controller={true}
-        width={resolution.width}
-        height={resolution.height}
-        layers={layers}
-        {...adapter.getProps({deck, onNextFrame, extraProps: deckProps})}
-      />
       <BasicControls
         adapter={adapter}
         busy={busy}
@@ -70,6 +69,6 @@ export const QuickAnimation = ({
         formatConfigs={mergedFormatConfigs}
         timecode={mergedTimecode}
       />
-    </div>
+    </>
   );
 };

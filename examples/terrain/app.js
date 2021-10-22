@@ -1,7 +1,7 @@
 import React, {useState, useRef, useMemo, useEffect} from 'react';
 import DeckGL from '@deck.gl/react';
 import {TerrainLayer} from '@deck.gl/geo-layers';
-import {useNextFrame, BasicControls, ResolutionGuide, useDeckAdapter} from '@hubble.gl/react';
+import {useNextFrame, BasicControls, useDeckAdapter} from '@hubble.gl/react';
 import {hold, DeckAnimation} from '@hubble.gl/core';
 import {easing} from 'popmotion';
 
@@ -120,6 +120,22 @@ const timecode = {
   framerate: 30
 };
 
+const Container = ({children}) => (
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: '100%',
+      position: 'relative',
+      backgroundColor: '#11183c'
+    }}
+  >
+    {children}
+  </div>
+);
+
 export default function App() {
   const deckRef = useRef(null);
   const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
@@ -151,22 +167,22 @@ export default function App() {
   );
 
   return (
-    <div style={{position: 'relative'}}>
-      <div style={{position: 'absolute'}}>
-        <ResolutionGuide />
+    <Container>
+      <div style={{position: 'relative'}}>
+        <DeckGL
+          ref={deckRef}
+          style={{position: 'unset'}}
+          viewState={cameraFrame}
+          onViewStateChange={({viewState: vs}) => {
+            setCameraFrame(vs);
+          }}
+          controller={false}
+          width={resolution.width}
+          height={resolution.height}
+          layers={layers}
+          {...adapter.getProps({deck, onNextFrame})}
+        />
       </div>
-      <DeckGL
-        ref={deckRef}
-        viewState={cameraFrame}
-        onViewStateChange={({viewState: vs}) => {
-          setCameraFrame(vs);
-        }}
-        controller={true}
-        width={resolution.width}
-        height={resolution.height}
-        layers={layers}
-        {...adapter.getProps({deck, onNextFrame})}
-      />
       <BasicControls
         adapter={adapter}
         busy={busy}
@@ -181,6 +197,6 @@ export default function App() {
           <input type="checkbox" checked={rainbow} onChange={() => setRainbow(!rainbow)} />
         </div>
       </BasicControls>
-    </div>
+    </Container>
   );
 }

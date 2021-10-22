@@ -141,6 +141,22 @@ const animation = new DeckAnimation({
   ]
 });
 
+const Container = ({children}) => (
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: '100%',
+      position: 'relative',
+      backgroundColor: '#11183c'
+    }}
+  >
+    {children}
+  </div>
+);
+
 export default function App({mapStyle = 'mapbox://styles/mapbox/dark-v9'}) {
   const [glContext, setGLContext] = useState();
 
@@ -196,37 +212,40 @@ export default function App({mapStyle = 'mapbox://styles/mapbox/dark-v9'}) {
   }, [Boolean(deck)]);
 
   return (
-    <div style={{position: 'relative'}}>
-      <DeckGL
-        ref={deckRef}
-        layers={layers}
-        effects={DEFAULT_THEME.effects}
-        controller={true}
-        viewState={cameraFrame}
-        onViewStateChange={onViewStateChange}
-        onWebGLInitialized={setGLContext}
-        parameters={{
-          depthTest: true,
-          // clearColor: [61 / 255, 20 / 255, 76 / 255, 1]
-          blend: true,
-          // blendEquation: GL.FUNC_ADD,
-          blendFunc: [GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA]
-        }}
-        width={resolution.width}
-        height={resolution.height}
-        {...adapter.getProps({deck})}
-      >
-        {glContext && (
-          <StaticMap
-            ref={mapRef}
-            reuseMaps
-            mapStyle={mapStyle}
-            preventStyleDiffing={true}
-            gl={glContext}
-            onLoad={onMapLoad}
-          />
-        )}
-      </DeckGL>
+    <Container>
+      <div style={{position: 'relative'}}>
+        <DeckGL
+          ref={deckRef}
+          style={{position: 'unset'}}
+          layers={layers}
+          effects={DEFAULT_THEME.effects}
+          controller={true}
+          viewState={cameraFrame}
+          onViewStateChange={onViewStateChange}
+          onWebGLInitialized={setGLContext}
+          parameters={{
+            depthTest: true,
+            // clearColor: [61 / 255, 20 / 255, 76 / 255, 1]
+            blend: true,
+            // blendEquation: GL.FUNC_ADD,
+            blendFunc: [GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA]
+          }}
+          width={resolution.width}
+          height={resolution.height}
+          {...adapter.getProps({deck})}
+        >
+          {glContext && (
+            <StaticMap
+              ref={mapRef}
+              reuseMaps
+              mapStyle={mapStyle}
+              preventStyleDiffing={true}
+              gl={glContext}
+              onLoad={onMapLoad}
+            />
+          )}
+        </DeckGL>
+      </div>
       <BasicControls
         adapter={adapter}
         busy={busy}
@@ -234,6 +253,6 @@ export default function App({mapStyle = 'mapbox://styles/mapbox/dark-v9'}) {
         formatConfigs={formatConfigs}
         timecode={timecode}
       />
-    </div>
+    </Container>
   );
 }

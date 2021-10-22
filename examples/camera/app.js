@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect, useMemo} from 'react';
 import DeckGL from '@deck.gl/react';
-import {useNextFrame, BasicControls, ResolutionGuide, useDeckAdapter} from '@hubble.gl/react';
+import {useNextFrame, BasicControls, useDeckAdapter} from '@hubble.gl/react';
 import {animation} from './layers';
 import {vignette, fxaa} from '@luma.gl/shadertools';
 import {PostProcessEffect, MapView} from '@deck.gl/core';
@@ -59,6 +59,22 @@ function filterCamera(viewState) {
     }, {});
 }
 
+const Container = ({children}) => (
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: '100%',
+      position: 'relative',
+      backgroundColor: '#11183c'
+    }}
+  >
+    {children}
+  </div>
+);
+
 export default function App() {
   const deckRef = useRef(null);
   const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
@@ -89,31 +105,31 @@ export default function App() {
   }, [viewStateA, viewStateB]);
 
   return (
-    <div style={{position: 'relative'}}>
-      <div style={{position: 'absolute'}}>
-        <ResolutionGuide />
+    <Container>
+      <div style={{position: 'relative'}}>
+        <DeckGL
+          ref={deckRef}
+          style={{position: 'unset'}}
+          views={new MapView({farZMultiplier: 3})}
+          parameters={{
+            depthTest: false,
+            clearColor: [61 / 255, 20 / 255, 76 / 255, 1]
+            // blend: true,
+            // blendEquation: GL.FUNC_ADD,
+            // blendFunc: [GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA]
+          }}
+          viewState={cameraFrame}
+          onViewStateChange={({viewState: vs}) => {
+            setCameraFrame(vs);
+          }}
+          controller={true}
+          effects={[vignetteEffect, aaEffect]}
+          width={resolution.width}
+          height={resolution.height}
+          layers={layers}
+          {...adapter.getProps({deck, onNextFrame})}
+        />
       </div>
-      <DeckGL
-        ref={deckRef}
-        views={new MapView({farZMultiplier: 3})}
-        parameters={{
-          depthTest: false,
-          clearColor: [61 / 255, 20 / 255, 76 / 255, 1]
-          // blend: true,
-          // blendEquation: GL.FUNC_ADD,
-          // blendFunc: [GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA]
-        }}
-        viewState={cameraFrame}
-        onViewStateChange={({viewState: vs}) => {
-          setCameraFrame(vs);
-        }}
-        controller={true}
-        effects={[vignetteEffect, aaEffect]}
-        width={resolution.width}
-        height={resolution.height}
-        layers={layers}
-        {...adapter.getProps({deck, onNextFrame})}
-      />
       <BasicControls
         adapter={adapter}
         busy={busy}
@@ -128,6 +144,6 @@ export default function App() {
           Set Camera End
         </button>
       </BasicControls>
-    </div>
+    </Container>
   );
 }

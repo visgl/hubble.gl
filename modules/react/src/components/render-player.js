@@ -24,15 +24,22 @@ const GifPlayer = styled.img`
   width: 100%;
 `;
 
-const Thumbnail = styled.img`
-  width: 64px;
+const ScrollBox = styled.div`
+  width: 500px;
+  height: 400px;
+  position: relative;
+  overflow: auto;
+  margin: 8px 0;
 `;
 
 const ImageGallery = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 8px 0;
+`;
+
+const Thumbnail = styled.img`
+  width: 64px;
 `;
 
 export default function RenderPlayer({encoder, blob}) {
@@ -78,11 +85,15 @@ export default function RenderPlayer({encoder, blob}) {
     case PNG:
     case JPEG: {
       return (
-        <ImageGallery>
-          {Object.entries(gallery).map(([name, value]) => {
-            return <Thumbnail key={name} src={value} title={name} />;
-          })}
-        </ImageGallery>
+        <ScrollBox>
+          <div style={{position: 'absolute'}}>
+            <ImageGallery>
+              {Object.entries(gallery).map(([name, value]) => {
+                return <Thumbnail key={name} src={value} title={name} />;
+              })}
+            </ImageGallery>
+          </div>
+        </ScrollBox>
       );
     }
     default: {

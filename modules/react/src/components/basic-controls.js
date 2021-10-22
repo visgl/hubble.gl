@@ -24,7 +24,7 @@ import EncoderDropdown from './encoder-dropdown';
 import styled from 'styled-components';
 import {DownloadVideo} from './icons';
 import RenderPlayer from './render-player';
-import {ENCODERS, GIF} from './encoders';
+import {ENCODERS, WEBM} from './encoders';
 
 const RenderResult = styled.div`
   position: absolute;
@@ -36,16 +36,17 @@ const RenderResult = styled.div`
   padding: 10px 24px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   min-width: 300px;
+  max-height: calc(100% - 48px);
 `;
 
-const RenderControls = styled.div`
-  max-width: 300px;
-`;
+const RenderControls = styled.div``;
 
 const ButtonGroup = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  margin-top: 8px;
+  justify-content: flex-end;
 `;
 
 const Result = styled.div`
@@ -71,6 +72,18 @@ const Download = styled.div`
   display: ${props => (props.show ? 'flex' : 'none')};
 `;
 
+const TogglePlayer = styled.div`
+  font-family: Helvetica, Arial, sans-serif;
+  display: inline-block;
+  user-select: none;
+  margin: 8px 0;
+  text-decoration: underline;
+  float: right;
+  &:hover {
+    color: blue;
+  }
+`;
+
 export default function BasicControls({
   children,
   adapter,
@@ -80,16 +93,17 @@ export default function BasicControls({
   timecode,
   embed = true
 }) {
-  const [encoder, setEncoder] = useState(GIF);
+  const [encoder, setEncoder] = useState(WEBM);
   const [blob, setBlob] = useState(undefined);
   const [renderStatus, setRenderStatus] = useState(undefined);
+  const [showPlayer, setShowPlayer] = useState(true);
 
   const renderText = useMemo(() => {
     switch (renderStatus) {
       case 'in-progress':
         return 'Rendering animation...';
       case 'saving':
-        return 'Saving render...';
+        return 'Processing render...';
       case 'rendered':
         return 'Render complete!';
       default:
@@ -131,33 +145,38 @@ export default function BasicControls({
 
   return (
     <RenderResult>
-      <Status>
-        <H3>{renderText}</H3>
-        <Download
-          show={blob}
-          title="Download"
-          onClick={() => {
-            adapter.videoCapture.download(blob);
-          }}
-        >
-          <DownloadVideo height="18px" />
-        </Download>
-      </Status>
-      <RenderControls>
-        <EncoderDropdown disabled={busy} encoder={encoder} setEncoder={setEncoder} />
-        <ButtonGroup>
-          <button disabled={busy} onClick={onRender}>
-            Render
-          </button>
-          <button disabled={!busy} onClick={onStop}>
-            Stop
-          </button>
-        </ButtonGroup>
-      </RenderControls>
-      <Result show={blob}>
-        <RenderPlayer encoder={encoder} blob={blob} />
-      </Result>
-      <div style={{marginTop: '8px'}}>{children}</div>
+      <div>
+        <Status>
+          <H3>{renderText}</H3>
+          <Download
+            show={blob}
+            title="Download"
+            onClick={() => {
+              adapter.videoCapture.download(blob);
+            }}
+          >
+            <DownloadVideo height="18px" />
+          </Download>
+        </Status>
+        <RenderControls>
+          <EncoderDropdown disabled={busy} encoder={encoder} setEncoder={setEncoder} />
+          <ButtonGroup>
+            <button disabled={busy} onClick={onRender}>
+              Render
+            </button>
+            <button disabled={!busy || renderStatus === 'saving'} onClick={onStop}>
+              Interrupt
+            </button>
+          </ButtonGroup>
+        </RenderControls>
+        <Result show={blob}>
+          <TogglePlayer onClick={() => setShowPlayer(!showPlayer)}>
+            {showPlayer ? 'Hide Player' : 'Show Player'}
+          </TogglePlayer>
+          {showPlayer && <RenderPlayer encoder={encoder} blob={blob} />}
+        </Result>
+        <div style={{marginTop: '8px'}}>{children}</div>
+      </div>
     </RenderResult>
   );
 }

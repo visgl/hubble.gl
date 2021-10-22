@@ -64,18 +64,36 @@ const RESOLUTION = {
   height: 480
 };
 
+const Container = ({children}) => (
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: '100%',
+      position: 'relative',
+      backgroundColor: '#11183c'
+    }}
+  >
+    {children}
+  </div>
+);
+
 export default function App() {
   return (
-    <QuickAnimation
-      initialViewState={INITIAL_VIEW_STATE}
-      resolution={RESOLUTION}
-      animation={animation}
-      deckProps={{
-        parameters: {
-          clearColor: [255, 255, 255, 1]
-        }
-      }}
-      timecode={TIMECODE}
-    />
+    <Container>
+      <QuickAnimation
+        initialViewState={INITIAL_VIEW_STATE}
+        resolution={RESOLUTION}
+        animation={animation}
+        deckProps={{
+          parameters: {
+            clearColor: [255, 255, 255, 1]
+          }
+        }}
+        timecode={TIMECODE}
+      />
+    </Container>
   );
 }
