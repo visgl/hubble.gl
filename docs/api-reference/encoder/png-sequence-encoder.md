@@ -6,6 +6,12 @@ A photo sequence encoder that inherits [FrameEncoder](/docs/api-reference/encode
 
 Construction of the encoder class is not required. Refer to [DeckAdapter.render](/docs/api-reference/deck-adapter#render) for usage. The constructor accepts a `FrameEncoderSettings` object.
 
+## FrameEncoderSettings
+
+In addition to the [FrameEncoder](/docs/api-reference/encoder/frame-encoder) settings, these settings are available under the `png` namespace.
+
+* `archive` - `zip` or `tar`. Defaults to `tar`.
+
 **Notes:**
 
 PNG supports alpha channel and will produce the highest quality encoding.

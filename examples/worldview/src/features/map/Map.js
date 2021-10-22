@@ -148,7 +148,7 @@ export class Map extends Component {
     map.on('render', () =>
       adapter.onAfterRender(timeMs => {
         updateTimeCursor(timeMs);
-      })
+      }, map.areTilesLoaded())
     );
   }
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Uber Technologies, Inc.
+// Copyright (c) 2015 - 2017 Uber Technologies, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,31 +18,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// Intialize globals, check version
-import './lib/init';
+import {global} from 'probe.gl/env';
+import log from '../utils/log';
 
-export {DeckAdapter} from './adapters';
+// Version detection using babel plugin
+// Fallback for tests and SSR since global variable is defined by Webpack.
+/* global __VERSION__ */
+const version =
+  typeof __VERSION__ !== 'undefined' ? __VERSION__ : global.HUBBLE_VERSION || 'untranspiled source';
 
-export {
-  PNGSequenceEncoder,
-  JPEGSequenceEncoder,
-  JPEGEncoder,
-  PNGEncoder,
-  WebMEncoder,
-  FrameEncoder,
-  PreviewEncoder,
-  GifEncoder
-} from './encoders';
+// Note: a `hubble` object not created by hubble.gl may exist in the global scope
+const existingVersion = global.hubble && global.hubble.VERSION;
 
-export {
-  Keyframes,
-  CameraKeyframes,
-  hold,
-  linear,
-  DeckLayerKeyframes,
-  KeplerFilterKeyframes,
-  KeplerLayerKeyframes,
-  KeplerTripKeyframes
-} from './keyframes';
+if (existingVersion && existingVersion !== version) {
+  throw new Error(`hubble.gl - multiple versions detected: ${existingVersion} vs ${version}`);
+}
 
-export {AnimationManager, Animation, DeckAnimation, KeplerAnimation} from './animations';
+if (!existingVersion) {
+  log.log(1, `hubble.gl ${version}`)();
+
+  global.hubble = Object.assign(global.hubble || {}, {
+    VERSION: version,
+    version,
+    log
+  });
+}
+
+export default global.hubble;

@@ -3,16 +3,20 @@ import { FrameEncoder } from "./encoders";
 
 
 type CaptureStepSuccess = {
-  kind: 'step'
+  kind: 'next-frame'
   nextTimeMs: number
+}
+
+type CaptureStepStop = {
+  kind: 'stop'
 }
 
 type CaptureStepError = {
   kind: 'error'
-  error: 'NOT_RECORDING' | 'STOP' | string
+  error: 'NOT_RECORDING' | string
 }
 
-type CaptureStep = CaptureStepSuccess | CaptureStepError
+type CaptureStep = CaptureStepSuccess | CaptureStepError | CaptureStepStop
 
 type DeckGl = {
   animationLoop: {
@@ -29,7 +33,11 @@ interface EncoderSettings extends FormatConfigs {
 }
 
 interface FormatConfigs {
+  png: {
+    archive: 'tar' | 'zip'
+  }
   jpeg: {
+    archive: 'tar' | 'zip'
     quality: number
   },
   webm: {
@@ -43,60 +51,3 @@ interface FormatConfigs {
     jpegQuality: number
   }
 }
-
-interface DeckSceneParams {
-  timeline: any
-  layerKeyframes: Object<string, Keyframes>
-  cameraKeyframes: CameraKeyframes
-}
-
-interface KeplerSceneParams {
-  timeline: any
-  lengthMs: number
-  width: number
-  height: number
-  keyframes: any[]
-  filters: any[]
-  getFrame: (keplerGl: any, keyframes: any[], filters: any[]) => any
-}
-
-
-// declare module 'src/hubble.gl' {
-//   interface IFrameEncoder extends Encoder {
-//     extension: string;
-//     filename: string;
-//     mimeType: string;
-//     settings: Settings;
-//     constructor(settings: Settings);
-//   }
-
-//   export interface FrameEncoder implements IFrameEncoder {}
-// }
-
-// export module 'hubble.gl/src/encoders/FrameEncoder' {
-//   interface IFrameEncoder extends Encoder {
-//     extension: string;
-//     filename: string;
-//     mimeType: string;
-//     settings: Settings;
-//     constructor(settings: Settings);
-//   }
-
-//   interface FrameEncoder implements IFrameEncoder {}
-
-//   // declare var FrameEncoder: {
-//   //   prototype: FrameEncoder;
-//   //   new(): FrameEncoder;
-//   // }
-// }
-
-// /**
-//  * @typedef {Object} Settings
-//  * @property {string} name
-//  * @property {number} workers
-//  * @property {number} quality
-//  * @property {string} workersPath
-//  * @property {number} step
-//  * @property {number} framerate
-//  * @property {(progress: number) => void} onProgress
-//  */

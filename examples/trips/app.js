@@ -185,7 +185,7 @@ export default function App({mapStyle = 'mapbox://styles/mapbox/dark-v9'}) {
       map.addLayer(new MapboxLayer({id: 'trips', deck}));
       map.addLayer(new MapboxLayer({id: 'buildings', deck}));
       map.addLayer(new MapboxLayer({id: 'ground', deck}));
-      map.on('render', () => adapter.onAfterRender(nextFrame));
+      map.on('render', () => adapter.onAfterRender(nextFrame, map.areTilesLoaded()));
     }
   }, [Boolean(deck)]);
 

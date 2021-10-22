@@ -32,10 +32,6 @@ const CONFIG = {
     ]
   },
 
-  node: {
-    fs: 'empty'
-  },
-
   plugins: [
     new HtmlWebpackPlugin({title: 'hubble.gl kepler export example'}),
     // Optional: Enables reading mapbox token from environment variable

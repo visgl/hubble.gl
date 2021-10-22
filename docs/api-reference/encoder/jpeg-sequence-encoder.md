@@ -8,9 +8,11 @@ Construction of the encoder class is not required. Refer to [DeckAdapter.render]
 
 ## FrameEncoderSettings
 
-In addition to the top level [FrameEncoder](/docs/api-reference/encoder/frame-encoder) settings, these settings are available under the `jpeg` namespace.
+In addition to the [FrameEncoder](/docs/api-reference/encoder/frame-encoder) settings, these settings are available under the `jpeg` namespace.
 
-* `quality` - See member note. Defaults to 0.8.
+* `quality` - See member note. Defaults to 1.0.
+
+* `archive` - `zip` or `tar`. Defaults to `tar`.
 
 ## Members
 

@@ -92,6 +92,23 @@ Parameters:
 
 * **`timeMs` (`number`)**
 
+##### `onAfterRender(proceedToNextFrame, readyToCapture)`
+
+Call this every time a render/draw cycle has completed. This will trigger a frame capture once all flags are `true`, and the callback `proceedToNextFrame` when the next frame should be drawn. 
+
+| Flags | Description |
+| --- | --- |
+| readyToCapture | Wait for external loading or interaction to complete. |
+| isRecording | Internal. Only capture when recording frames. |
+| areAllLayersLoaded | Internal. Wait for all deck.gl async layers (e.g. tiles) to be loaded. |
+| isNotCapturing | Internal. Don't capture while already encoding a frame. |
+
+Parameters:
+
+* **`proceedToNextFrame` (`(nextTimeMs: number) => void`)** - Callback when next frame should draw.
+
+* **`readyToCapture` (`boolean`, Optional) - Default: `true`.** - Delay capturing for any reason (e.g. async operations). Note: The application must call `onAfterRender` after `readyToCapture` is `true`, or else the render will not progress to the next frame.
+
 ## Source
 
 [modules/main/src/adapters/deck-adapter.js](https://github.com/uber/hubble.gl/blob/master/modules/main/src/adapters/deck-adapter.js)
