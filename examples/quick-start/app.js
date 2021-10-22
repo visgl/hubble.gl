@@ -16,13 +16,13 @@ const animation = new DeckAnimation({
       data: [{position: [-122.402, 37.79], color: [255, 0, 0], radius: 1000}],
       getFillColor: d => d.color,
       getRadius: d => d.radius,
-      opacity: 0,
+      opacity: 0.1,
       radiusScale: 0.01
     }),
     new TextLayer({
       id: 'text',
       data: [{position: [-122.402, 37.79], text: 'Hello World'}],
-      opacity: 0,
+      opacity: 0.1,
       getAngle: -90
     })
   ],
@@ -30,7 +30,7 @@ const animation = new DeckAnimation({
     {
       id: 'circle',
       keyframes: [
-        {opacity: 0, radiusScale: 0.01},
+        {opacity: 0.1, radiusScale: 0.01},
         {opacity: 1, radiusScale: 1},
         {opacity: 1, radiusScale: 1},
         {opacity: 1, radiusScale: 20}
@@ -64,18 +64,36 @@ const RESOLUTION = {
   height: 480
 };
 
+const Container = ({children}) => (
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: '100%',
+      position: 'relative',
+      backgroundColor: '#11183c'
+    }}
+  >
+    {children}
+  </div>
+);
+
 export default function App() {
   return (
-    <QuickAnimation
-      initialViewState={INITIAL_VIEW_STATE}
-      resolution={RESOLUTION}
-      animation={animation}
-      deckProps={{
-        parameters: {
-          clearColor: [255, 255, 255, 1]
-        }
-      }}
-      timecode={TIMECODE}
-    />
+    <Container>
+      <QuickAnimation
+        initialViewState={INITIAL_VIEW_STATE}
+        resolution={RESOLUTION}
+        animation={animation}
+        deckProps={{
+          parameters: {
+            clearColor: [255, 255, 255, 1]
+          }
+        }}
+        timecode={TIMECODE}
+      />
+    </Container>
   );
 }

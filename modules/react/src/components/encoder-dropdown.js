@@ -19,16 +19,19 @@
 // THE SOFTWARE.
 
 import React from 'react';
+import Input from './input';
+import {ENCODER_LIST} from './encoders';
 
 export default function EncoderDropdown({disabled, encoder, setEncoder}) {
   return (
     // eslint-disable-next-line jsx-a11y/no-onchange
-    <select disabled={disabled} value={encoder} onChange={e => setEncoder(e.currentTarget.value)}>
-      <option value="preview">Preview</option>
-      <option value="webm">WebM</option>
-      <option value="jpeg">JPEG Sequence</option>
-      <option value="png">PNG Sequence</option>
-      <option value="gif">GIF</option>
-    </select>
+    <Input
+      type="select"
+      disabled={disabled}
+      displayName="Encoder"
+      displayValue={encoder}
+      onChange={(_, newValue) => setEncoder(newValue)}
+      options={ENCODER_LIST}
+    />
   );
 }

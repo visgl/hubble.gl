@@ -1,7 +1,7 @@
 import React, {useState, useRef, useMemo, useEffect} from 'react';
 import DeckGL from '@deck.gl/react';
 import {TerrainLayer} from '@deck.gl/geo-layers';
-import {useNextFrame, BasicControls, ResolutionGuide, useDeckAdapter} from '@hubble.gl/react';
+import {useNextFrame, BasicControls, useDeckAdapter} from '@hubble.gl/react';
 import {hold, DeckAnimation} from '@hubble.gl/core';
 import {easing} from 'popmotion';
 
@@ -90,16 +90,27 @@ const deckAnimation = new DeckAnimation({
   ]
 });
 
+const resolution = {
+  width: 640,
+  height: 480
+};
+
 /** @type {import('@hubble.gl/core/src/types').FormatConfigs} */
 const formatConfigs = {
   webm: {
     quality: 0.8
   },
+  png: {
+    archive: 'zip'
+  },
   jpeg: {
+    archive: 'zip',
     quality: 0.8
   },
   gif: {
-    sampleInterval: 1000
+    sampleInterval: 1000,
+    width: resolution.width,
+    height: resolution.height
   }
 };
 
@@ -109,10 +120,21 @@ const timecode = {
   framerate: 30
 };
 
-const resolution = {
-  width: 640,
-  height: 480
-};
+const Container = ({children}) => (
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: '100%',
+      position: 'relative',
+      backgroundColor: '#11183c'
+    }}
+  >
+    {children}
+  </div>
+);
 
 export default function App() {
   const deckRef = useRef(null);
@@ -145,37 +167,36 @@ export default function App() {
   );
 
   return (
-    <div style={{position: 'relative'}}>
-      <div style={{position: 'absolute'}}>
-        <ResolutionGuide />
-      </div>
-      <DeckGL
-        ref={deckRef}
-        viewState={cameraFrame}
-        onViewStateChange={({viewState: vs}) => {
-          setCameraFrame(vs);
-        }}
-        controller={true}
-        width={resolution.width}
-        height={resolution.height}
-        layers={layers}
-        {...adapter.getProps({deck, onNextFrame})}
-      />
-      <div style={{position: 'absolute'}}>
-        <BasicControls
-          adapter={adapter}
-          busy={busy}
-          setBusy={setBusy}
-          formatConfigs={formatConfigs}
-          timecode={timecode}
+    <Container>
+      <div style={{position: 'relative'}}>
+        <DeckGL
+          ref={deckRef}
+          style={{position: 'unset'}}
+          viewState={cameraFrame}
+          onViewStateChange={({viewState: vs}) => {
+            setCameraFrame(vs);
+          }}
+          controller={false}
+          width={resolution.width}
+          height={resolution.height}
+          layers={layers}
+          {...adapter.getProps({deck, onNextFrame})}
         />
-        <div style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}}>
-          <label style={{fontFamily: 'sans-serif'}}>
-            <input type="checkbox" checked={rainbow} onChange={() => setRainbow(!rainbow)} />
-            Rainbow Animation
-          </label>
-        </div>
       </div>
-    </div>
+      <BasicControls
+        adapter={adapter}
+        busy={busy}
+        setBusy={setBusy}
+        formatConfigs={formatConfigs}
+        timecode={timecode}
+      >
+        <div style={{width: '100%'}}>
+          <label style={{fontFamily: 'sans-serif', width: '40%', marginRight: '10%'}}>
+            Rainbow Texture
+          </label>
+          <input type="checkbox" checked={rainbow} onChange={() => setRainbow(!rainbow)} />
+        </div>
+      </BasicControls>
+    </Container>
   );
 }

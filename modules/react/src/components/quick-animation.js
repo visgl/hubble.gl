@@ -1,6 +1,5 @@
 import React, {useState, useRef, useMemo} from 'react';
 import DeckGL from '@deck.gl/react';
-import ResolutionGuide from './resolution-guide';
 import BasicControls from './basic-controls';
 import {useDeckAdapter, useNextFrame} from '../hooks';
 
@@ -25,7 +24,11 @@ export const QuickAnimation = ({
     webm: {
       quality: 0.8
     },
+    png: {
+      archive: 'zip'
+    },
     jpeg: {
+      archive: 'zip',
       quality: 0.8
     },
     gif: {
@@ -43,31 +46,29 @@ export const QuickAnimation = ({
   };
 
   return (
-    <div style={{position: 'relative'}}>
-      <div style={{position: 'absolute'}}>
-        <ResolutionGuide />
-      </div>
-      <DeckGL
-        ref={deckRef}
-        viewState={cameraFrame}
-        onViewStateChange={({viewState: vs}) => {
-          setCameraFrame(vs);
-        }}
-        controller={true}
-        width={resolution.width}
-        height={resolution.height}
-        layers={layers}
-        {...adapter.getProps({deck, onNextFrame, extraProps: deckProps})}
-      />
-      <div style={{position: 'absolute'}}>
-        <BasicControls
-          adapter={adapter}
-          busy={busy}
-          setBusy={setBusy}
-          formatConfigs={mergedFormatConfigs}
-          timecode={mergedTimecode}
+    <>
+      <div style={{position: 'relative'}}>
+        <DeckGL
+          ref={deckRef}
+          style={{position: 'unset'}}
+          viewState={cameraFrame}
+          onViewStateChange={({viewState: vs}) => {
+            setCameraFrame(vs);
+          }}
+          controller={true}
+          width={resolution.width}
+          height={resolution.height}
+          layers={layers}
+          {...adapter.getProps({deck, onNextFrame, extraProps: deckProps})}
         />
       </div>
-    </div>
+      <BasicControls
+        adapter={adapter}
+        busy={busy}
+        setBusy={setBusy}
+        formatConfigs={mergedFormatConfigs}
+        timecode={mergedTimecode}
+      />
+    </>
   );
 };
