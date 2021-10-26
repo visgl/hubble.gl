@@ -140,9 +140,10 @@ export class Map extends Component {
     for (let i = 0; i < layers.length; i++) {
       // TODO: layer mapbox and deck layers in order according to kepler config.
       // map.addLayer(new MapboxLayer({id: layers[i].id, deck}), "tunnel-simple");
-
-      // Adds DeckGL layers to Mapbox so Mapbox can be the bottom layer. Removing this clips DeckGL layers
-      map.addLayer(new MapboxLayer({id: layers[i].id, deck}));
+      if (!layers[i].id.includes('%%hud')) {
+        // Adds DeckGL layers to Mapbox so Mapbox can be the bottom layer. Removing this clips DeckGL layers
+        map.addLayer(new MapboxLayer({id: layers[i].id, deck}));
+      }
     }
 
     map.on('render', () =>
@@ -187,16 +188,19 @@ export class Map extends Component {
       <div ref={this.containerRef} id="hubble-preview" style={containerStyle}>
         <DeckGL
           ref={this.deckRef}
-          viewState={{...viewState, maxPitch: 90}}
           id="deck-overlay"
           style={deckStyle}
           controller={true}
           glOptions={{stencil: true}}
           onWebGLInitialized={gl => this.setState({glContext: gl})}
-          onViewStateChange={({viewState: vs}) => setViewState(vs)}
           width={resolution.width}
           height={resolution.height}
-          {...adapter.getProps({deck, extraProps: deckProps})}
+          {...adapter.getProps({
+            deck,
+            extraProps: deckProps,
+            mapViewState: viewState,
+            onMapViewStateChange: setViewState
+          })}
         >
           {glContext && (
             <StaticMap

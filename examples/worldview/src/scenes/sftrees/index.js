@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   timecodeChange,
   resolutionChange,
@@ -7,9 +7,10 @@ import {
   formatConfigsChange
 } from '../../features/renderer';
 import {useKepler, loadKeplerJson} from '../../features/kepler';
-import {updateViewState} from '../../features/map';
+import {updateViewState, viewStateSelector} from '../../features/map';
 import {useEffect} from 'react';
 import {easing} from 'popmotion';
+import {TextLayer} from '@deck.gl/layers';
 
 // const SF = {"latitude":37.75996553215378,"longitude":-122.43586511157562,"zoom":12.29897059083749,"bearing":0,"pitch":0}
 const SF = {
@@ -49,14 +50,14 @@ export const useScene = () => {
         framerate: 60
       })
     );
-    // dispatch(resolutionChange('1920x1080'));
+    dispatch(resolutionChange('1920x1080'));
     // dispatch(resolutionChange({width: 3840, height: 2160}));
     // dispatch(resolutionChange({width: 5760, height: 5760}));
     // dispatch(resolutionChange({width: 7680, height: 4320}));
     // dispatch(resolutionChange({width: 1920, height: 1920}));
     // dispatch(resolutionChange({width: 1080, height: 1920}));
     // dispatch(resolutionChange({width: 1280, height: 720}));
-    dispatch(resolutionChange({width: 320, height: 180}));
+    // dispatch(resolutionChange({width: 320, height: 180}));
     // The maximum observed pixels supported are 33,177,600
     dispatch(
       formatConfigsChange({
@@ -71,5 +72,19 @@ export const useScene = () => {
     dispatch(formatChange('webm'));
   }, []);
 
-  return [];
+  const viewState = useSelector(viewStateSelector);
+
+  return [
+    new TextLayer({
+      id: '%%hud-map-view-state',
+      data: [{name: JSON.stringify(viewState, undefined, 2)}],
+      getText: d => d.name,
+      getSize: 64,
+      getPosition: [-1000, 300, 0],
+      background: false,
+      getColor: [255, 255, 255, 255],
+      getBackgroundColor: [255, 255, 0, 255],
+      getTextAnchor: 'start'
+    })
+  ];
 };

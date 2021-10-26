@@ -35,7 +35,7 @@ function msToSec(ms) {
 const defaultResolution = getResolutionSetting();
 
 const initialState = {
-  adapter: new DeckAdapter({}),
+  adapter: new DeckAdapter({headsUpDisplay: true}),
   busy: false, // 'rendering' | 'previewing'
   resolution: defaultResolution,
   filename: DEFAULT_FILENAME,
