@@ -19,7 +19,8 @@
 // THE SOFTWARE.
 
 import {useState, useCallback, useMemo} from 'react';
-import {DeckAdapter} from '@hubble.gl/core';
+import {DeckAdapter, DeckAnimation} from '@hubble.gl/core';
+import {MapboxLayer} from '@deck.gl/mapbox';
 
 export function useNextFrame() {
   const [, updateState] = useState();
@@ -32,7 +33,7 @@ export function useDeckAdapter(deckAnimation, initialViewState = undefined) {
   const adapter = useMemo(() => {
     const a = new DeckAdapter({});
     deckAnimation.setOnLayersUpdate(setLayers);
-    if (cameraFrame) {
+    if (initialViewState) {
       deckAnimation.setOnCameraUpdate(setCameraFrame);
     }
     a.animationManager.attachAnimation(deckAnimation);
@@ -40,4 +41,73 @@ export function useDeckAdapter(deckAnimation, initialViewState = undefined) {
     return a;
   }, []);
   return {adapter, layers, cameraFrame, setCameraFrame};
+}
+
+export function useDeckAnimation(params) {
+  return useMemo(() => new DeckAnimation(params), []);
+}
+
+export function useHubbleGl({
+  deckRef,
+  staticMapRef = undefined,
+  deckAnimation,
+  initialViewState = undefined
+}) {
+  const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
+  const nextFrame = useNextFrame();
+  const {adapter, layers, cameraFrame, setCameraFrame} = useDeckAdapter(
+    deckAnimation,
+    initialViewState
+  );
+
+  const onStaticMapLoad = useCallback(() => {
+    if (staticMapRef) {
+      const map = staticMapRef.current.getMap();
+      // If there aren't any layers, combine map and deck with a fake layer.
+      if (!layers.length) {
+        map.addLayer(new MapboxLayer({id: '%%blank-layer', deck}));
+      }
+      for (let i = 0; i < layers.length; i++) {
+        // Adds DeckGL layers to Mapbox so Mapbox can be the bottom layer. Removing this clips DeckGL layers
+        map.addLayer(new MapboxLayer({id: layers[i].id, deck}));
+      }
+      map.on('render', () => adapter.onAfterRender(nextFrame, map.areTilesLoaded()));
+    }
+  }, [deck]);
+
+  const [glContext, setGLContext] = useState();
+
+  if (!staticMapRef) {
+    return {
+      adapter,
+      cameraFrame,
+      setCameraFrame,
+      staticMapProps: {},
+      deckProps: adapter.getProps({
+        deck,
+        onNextFrame: nextFrame,
+        extraProps: {
+          layers
+        }
+      })
+    };
+  }
+
+  return {
+    adapter,
+    cameraFrame,
+    setCameraFrame,
+    onStaticMapLoad,
+    staticMapProps: {
+      gl: glContext,
+      onLoad: onStaticMapLoad
+    },
+    deckProps: adapter.getProps({
+      deck,
+      extraProps: {
+        onWebGLInitialized: setGLContext,
+        layers
+      }
+    })
+  };
 }
