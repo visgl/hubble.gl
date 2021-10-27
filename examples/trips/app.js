@@ -214,7 +214,6 @@ export default function App({mapStyle = 'mapbox://styles/mapbox/dark-v9'}) {
             <StaticMap
               ref={staticMapRef}
               mapStyle={mapStyle}
-              preventStyleDiffing={true}
               {...staticMapProps}
               // Note: 'reuseMap' prop with gatsby and mapbox extension causes stale reference error.
             />

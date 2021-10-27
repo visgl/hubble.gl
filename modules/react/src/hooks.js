@@ -100,7 +100,8 @@ export function useHubbleGl({
     onStaticMapLoad,
     staticMapProps: {
       gl: glContext,
-      onLoad: onStaticMapLoad
+      onLoad: onStaticMapLoad,
+      preventStyleDiffing: true
     },
     deckProps: adapter.getProps({
       deck,
