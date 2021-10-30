@@ -1,7 +1,7 @@
-import React, {useState, useRef, useMemo, useEffect} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import DeckGL from '@deck.gl/react';
 import {TerrainLayer} from '@deck.gl/geo-layers';
-import {useNextFrame, BasicControls, useDeckAdapter} from '@hubble.gl/react';
+import {BasicControls, useHubbleGl} from '@hubble.gl/react';
 import {hold, DeckAnimation} from '@hubble.gl/core';
 import {easing} from 'popmotion';
 
@@ -29,6 +29,7 @@ const ELEVATION_DECODER = {
 };
 
 const deckAnimation = new DeckAnimation({
+  // layers are dynamically defined with setGetLayers below.
   cameraKeyframe: {
     timings: [0, 6000, 7000, 8000, 14000],
     keyframes: [
@@ -138,16 +139,14 @@ const Container = ({children}) => (
 
 export default function App() {
   const deckRef = useRef(null);
-  const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
   const [busy, setBusy] = useState(false);
   const [rainbow, setRainbow] = useState(false);
 
-  const onNextFrame = useNextFrame();
-
-  const {adapter, layers, cameraFrame, setCameraFrame} = useDeckAdapter(
+  const {deckProps, adapter, cameraFrame, setCameraFrame} = useHubbleGl({
+    deckRef,
     deckAnimation,
-    INITIAL_VIEW_STATE
-  );
+    initialViewState: INITIAL_VIEW_STATE
+  });
 
   useEffect(() => {
     adapter.animationManager.getAnimation('deck').setGetLayers(animation => {
@@ -181,8 +180,7 @@ export default function App() {
           controller={false}
           width={resolution.width}
           height={resolution.height}
-          layers={layers}
-          {...adapter.getProps({deck, onNextFrame})}
+          {...deckProps}
         />
       </div>
       <BasicControls

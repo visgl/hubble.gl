@@ -3,19 +3,15 @@
  * Source code: https://github.com/visgl/deck.gl/tree/master/examples/website/trips
  */
 
-import React, {useState, useRef, useEffect, useCallback, useMemo} from 'react';
+import React, {useState, useRef, useEffect, useCallback} from 'react';
 import DeckGL from '@deck.gl/react';
-import {DeckAnimation} from '@hubble.gl/core';
-import {useNextFrame, BasicControls, useDeckAdapter} from '@hubble.gl/react';
+import {BasicControls, useHubbleGl, useDeckAnimation} from '@hubble.gl/react';
 import {AmbientLight, PointLight, LightingEffect} from '@deck.gl/core';
 import {StaticMap} from 'react-map-gl';
 import {PolygonLayer} from '@deck.gl/layers';
 import {TripsLayer} from '@deck.gl/geo-layers';
 
 import {easing} from 'popmotion';
-
-import {MapboxLayer} from '@deck.gl/mapbox';
-import GL from '@luma.gl/constants';
 
 // Source data CSV
 const DATA_URL = {
@@ -116,67 +112,60 @@ const Container = ({children}) => (
 );
 
 export default function App({mapStyle = 'mapbox://styles/mapbox/dark-v9'}) {
-  const [glContext, setGLContext] = useState();
-
   const deckRef = useRef(null);
-  const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
-  const mapRef = useRef(null);
-
+  const staticMapRef = useRef(null);
   const [busy, setBusy] = useState(false);
-  const nextFrame = useNextFrame();
 
-  const animation = useMemo(
-    () =>
-      new DeckAnimation({
-        getLayers: a =>
-          a.applyLayerKeyframes([
-            new TripsLayer({
-              id: 'trips',
-              data: DATA_URL.TRIPS,
-              getPath: d => d.path,
-              getTimestamps: d => d.timestamps,
-              getColor: d =>
-                d.vendor === 0 ? DEFAULT_THEME.trailColor0 : DEFAULT_THEME.trailColor1,
-              opacity: 1,
-              widthMinPixels: 2,
-              rounded: true,
-              trailLength: 180,
-              shadowEnabled: false
-            }),
-            new PolygonLayer({
-              id: 'buildings',
-              data: DATA_URL.BUILDINGS,
-              extruded: true,
-              wireframe: false,
-              opacity: 0.5,
-              getPolygon: f => f.polygon,
-              getElevation: f => f.height,
-              getFillColor: DEFAULT_THEME.buildingColor,
-              material: DEFAULT_THEME.material
-            }),
-            new PolygonLayer({
-              id: 'ground',
-              data: landCover,
-              getPolygon: f => f,
-              stroked: false,
-              getFillColor: [0, 0, 0, 0]
-            })
-          ]),
-        layerKeyframes: [
-          {
-            id: 'trips',
-            timings: [0, timecode.end],
-            keyframes: [{currentTime: 0}, {currentTime: 1800}]
-          }
-        ]
-      }),
-    []
-  );
+  const deckAnimation = useDeckAnimation({
+    getLayers: a =>
+      a.applyLayerKeyframes([
+        new TripsLayer({
+          id: 'trips',
+          data: DATA_URL.TRIPS,
+          getPath: d => d.path,
+          getTimestamps: d => d.timestamps,
+          getColor: d => (d.vendor === 0 ? DEFAULT_THEME.trailColor0 : DEFAULT_THEME.trailColor1),
+          opacity: 1,
+          widthMinPixels: 2,
+          rounded: true,
+          trailLength: 180,
+          shadowEnabled: false
+        }),
+        new PolygonLayer({
+          id: 'buildings',
+          data: DATA_URL.BUILDINGS,
+          extruded: true,
+          wireframe: false,
+          opacity: 0.5,
+          getPolygon: f => f.polygon,
+          getElevation: f => f.height,
+          getFillColor: DEFAULT_THEME.buildingColor,
+          material: DEFAULT_THEME.material
+        }),
+        new PolygonLayer({
+          id: 'ground',
+          data: landCover,
+          getPolygon: f => f,
+          stroked: false,
+          getFillColor: [0, 0, 0, 0]
+        })
+      ]),
+    layerKeyframes: [
+      {
+        id: 'trips',
+        timings: [0, timecode.end],
+        keyframes: [{currentTime: 0}, {currentTime: 1800}]
+      }
+    ]
+  });
 
-  const {adapter, layers, cameraFrame, setCameraFrame} = useDeckAdapter(
-    animation,
-    INITIAL_VIEW_STATE
-  );
+  const {deckProps, staticMapProps, adapter, cameraFrame, setCameraFrame} = useHubbleGl({
+    deckRef,
+    staticMapRef,
+    deckAnimation,
+    initialViewState: INITIAL_VIEW_STATE
+  });
+
   const onViewStateChange = useCallback(
     ({viewState: vs}) => {
       adapter.animationManager.setKeyframes('deck', {
@@ -207,50 +196,25 @@ export default function App({mapStyle = 'mapbox://styles/mapbox/dark-v9'}) {
   );
   useEffect(() => onViewStateChange({viewState: cameraFrame}), []);
 
-  const onMapLoad = () => {
-    // const deck = deckRef.current.deck;
-    const map = mapRef.current.getMap();
-    // If there aren't any layers, combine map and deck with a fake layer.
-    if (!layers.length) {
-      map.addLayer(new MapboxLayer({id: '%%blank-layer', deck}));
-    }
-    for (let i = 0; i < layers.length; i++) {
-      // Adds DeckGL layers to Mapbox so Mapbox can be the bottom layer. Removing this clips DeckGL layers
-      map.addLayer(new MapboxLayer({id: layers[i].id, deck}));
-    }
-    map.on('render', () => adapter.onAfterRender(nextFrame));
-  };
-
   return (
     <Container>
       <div style={{position: 'relative'}}>
         <DeckGL
           ref={deckRef}
           style={{position: 'unset'}}
-          layers={layers}
           effects={DEFAULT_THEME.effects}
           controller={true}
           viewState={cameraFrame}
           onViewStateChange={onViewStateChange}
-          onWebGLInitialized={setGLContext}
-          parameters={{
-            depthTest: true,
-            // clearColor: [61 / 255, 20 / 255, 76 / 255, 1]
-            blend: true,
-            // blendEquation: GL.FUNC_ADD,
-            blendFunc: [GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA]
-          }}
           width={resolution.width}
           height={resolution.height}
-          {...adapter.getProps({deck})}
+          {...deckProps}
         >
-          {glContext && (
+          {staticMapProps.gl && (
             <StaticMap
-              ref={mapRef}
+              ref={staticMapRef}
               mapStyle={mapStyle}
-              preventStyleDiffing={true}
-              gl={glContext}
-              onLoad={onMapLoad}
+              {...staticMapProps}
               // Note: 'reuseMap' prop with gatsby and mapbox extension causes stale reference error.
             />
           )}

@@ -49,6 +49,8 @@ export {
 export {
   useNextFrame,
   useDeckAdapter,
+  useDeckAnimation,
+  useHubbleGl,
   BasicControls,
   EncoderDropdown,
   QuickAnimation

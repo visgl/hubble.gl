@@ -81,7 +81,7 @@ function getLayers(animation) {
   ];
 }
 
-export const animation = new DeckAnimation({
+export const deckAnimation = new DeckAnimation({
   getLayers,
   layerKeyframes: [
     {

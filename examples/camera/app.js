@@ -1,9 +1,9 @@
-import React, {useState, useRef, useEffect, useMemo} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import DeckGL from '@deck.gl/react';
-import {useNextFrame, BasicControls, useDeckAdapter} from '@hubble.gl/react';
-import {animation} from './layers';
+import {useHubbleGl, BasicControls} from '@hubble.gl/react';
 import {vignette, fxaa} from '@luma.gl/shadertools';
 import {PostProcessEffect, MapView} from '@deck.gl/core';
+import {deckAnimation} from './layers';
 import {easing} from 'popmotion';
 
 const INITIAL_VIEW_STATE = {
@@ -77,20 +77,20 @@ const Container = ({children}) => (
 
 export default function App() {
   const deckRef = useRef(null);
-  const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
   const [busy, setBusy] = useState(false);
-  const {adapter, layers, cameraFrame, setCameraFrame} = useDeckAdapter(
-    animation,
-    INITIAL_VIEW_STATE
-  );
+
+  const {deckProps, adapter, cameraFrame, setCameraFrame} = useHubbleGl({
+    deckRef,
+    deckAnimation,
+    initialViewState: INITIAL_VIEW_STATE
+  });
+
   const [viewStateA, setViewStateA] = useState(cameraFrame);
   const [viewStateB, setViewStateB] = useState({
     ...cameraFrame,
     zoom: cameraFrame.zoom + 1,
     pitch: cameraFrame.pitch + 37
   });
-
-  const onNextFrame = useNextFrame();
 
   useEffect(() => {
     adapter.animationManager.setKeyframes('deck', {
@@ -126,8 +126,7 @@ export default function App() {
           effects={[vignetteEffect, aaEffect]}
           width={resolution.width}
           height={resolution.height}
-          layers={layers}
-          {...adapter.getProps({deck, onNextFrame})}
+          {...deckProps}
         />
       </div>
       <BasicControls
