@@ -1,11 +1,4 @@
-This is a video export-enabled version of the [TripsLayer example](https://deck.gl/examples/trips-layer/)
-on [deck.gl](http://deck.gl) website.
-
-### Purpose
-
-Users can drag, zoom in and zoom out, change pitch and bearing from within the deckgl canvas. The camera will start at the last position (viewState) the user was at, improving the experience of exporting the camera movements.
-
-![](https://user-images.githubusercontent.com/26909101/92542712-25c01d00-f20f-11ea-9aee-1bc2806685dc.gif)
+This is a basic basemap + deck.gl data animation utilizing [react-map-gl](https://visgl.github.io/react-map-gl/) and `PolygonLayer`.
 
 ### Usage
 
@@ -19,7 +12,7 @@ export MapboxAccessToken=<mapbox_access_token>
 
 Or set `MAPBOX_TOKEN` directly in `app.js`.
 
-Other options can be found at [using with Mapbox GL](https://deck.gl/docs/get-started/using-with-map).
+Other options can be found at [using with Mapbox GL](../../../docs/get-started/using-with-mapbox-gl.md).
 
 ### Installation
 
@@ -27,7 +20,7 @@ Other options can be found at [using with Mapbox GL](https://deck.gl/docs/get-st
 # install dependencies within hubble.gl root
 yarn bootstrap
 # To install example go to the folder 
-cd examples/trips
+cd examples/basic-basemap
 # do this once per example
 yarn 
 # To run the example
@@ -36,7 +29,7 @@ yarn start-local
 
 ### Data format
 Sample data is stored in [deck.gl Example Data](https://github.com/visgl/deck.gl-data/tree/master/examples/trips). To use your own data, check out
-the [documentation of TripsLayer](https://deck.gl/docs/api-reference/geo-layers/trips-layer).
+the [documentation of PolygonLayer](https://deck.gl/docs/api-reference/layers/polygon-layer).
 
 ### How to add this feature to a hubble.gl example
 

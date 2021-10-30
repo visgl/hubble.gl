@@ -66,6 +66,12 @@ module.exports = {
         STYLESHEETS: [''],
         EXAMPLES: [
           {
+            title: 'Basemap',
+            path: 'examples/basic-basemap/',
+            image: 'images/demo-thumb-basic-basemap.png',
+            componentUrl: resolve('../examples/basic-basemap/app.js')
+          },
+          {
             title: 'Animate Camera',
             path: 'examples/camera/',
             image: 'images/demo-thumb-animate-camera.png',
