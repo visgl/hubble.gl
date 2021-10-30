@@ -66,10 +66,16 @@ module.exports = {
         STYLESHEETS: [''],
         EXAMPLES: [
           {
-            title: 'Basemap',
+            title: 'Getting Started: Basemap',
             path: 'examples/basic-basemap/',
             image: 'images/demo-thumb-basic-basemap.png',
             componentUrl: resolve('../examples/basic-basemap/app.js')
+          },
+          {
+            title: 'Getting Started: Hello World',
+            path: 'examples/hello-world/',
+            image: 'images/demo-thumb-hello-world.png',
+            componentUrl: resolve('../examples/quick-start/app.js')
           },
           {
             title: 'Animate Camera',
@@ -88,12 +94,6 @@ module.exports = {
             path: 'examples/kepler-integration/',
             image: 'images/demo-thumb-kepler-example.jpg',
             componentUrl: resolve('./src/pages/kepler-example.jsx')
-          },
-          {
-            title: 'Hello World',
-            path: 'examples/hello-world/',
-            image: 'images/demo-thumb-hello-world.png',
-            componentUrl: resolve('../examples/quick-start/app.js')
           },
           {
             title: 'NYC Trips',
