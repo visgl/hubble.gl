@@ -175,7 +175,7 @@ export class Map extends Component {
 
     const canvasClientSize = getCanvasClientSize(resolution, viewportMinAxis);
     // canvasClientSize * scalar = previewSize
-    const scalar = scale(previewSize, canvasClientSize);
+    // const scalar = scale(previewSize, canvasClientSize);
     const deckStyle = {
       width: `${canvasClientSize.width}px`,
       height: `${canvasClientSize.height}px`,

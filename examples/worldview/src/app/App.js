@@ -33,7 +33,7 @@ import {MonitorPanel} from '../features/monitor/MonitorPanel';
 import {useKeplerDeckLayers, createSelectMapStyle} from '../features/kepler';
 
 // import {useScene} from '../scenes/newYork';
-import {useScene} from '../scenes/montage2';
+import {useScene} from '../scenes/sftrees';
 
 const GlobalStyle = styled.div`
   font-family: ff-clan-web-pro, 'Helvetica Neue', Helvetica, sans-serif;
