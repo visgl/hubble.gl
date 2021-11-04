@@ -179,7 +179,7 @@ export class Map extends Component {
     const deckStyle = {
       width: `${canvasClientSize.width}px`,
       height: `${canvasClientSize.height}px`,
-      transform: `scale(${scalar})`,
+      //   transform: `scale(${scalar})`,
       transformOrigin: 'top left'
     };
 

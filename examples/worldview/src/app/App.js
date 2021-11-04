@@ -33,7 +33,7 @@ import {MonitorPanel} from '../features/monitor/MonitorPanel';
 import {useKeplerDeckLayers, createSelectMapStyle} from '../features/kepler';
 
 // import {useScene} from '../scenes/newYork';
-import {useScene} from '../scenes/sftrees';
+import {useScene} from '../scenes/montage2';
 
 const GlobalStyle = styled.div`
   font-family: ff-clan-web-pro, 'Helvetica Neue', Helvetica, sans-serif;
@@ -77,14 +77,14 @@ const WindowSize = styled.div`
 
 const KEPLER_MAP_ID = 'map';
 const selectMapStyle = createSelectMapStyle(KEPLER_MAP_ID);
-const sceneLayers = [];
+let sceneLayers = [];
 const App = ({}) => {
-  useScene();
+  sceneLayers = useScene();
   const keplerDeckLayers = useKeplerDeckLayers(KEPLER_MAP_ID);
   const deckProps = useMemo(() => {
     return {
-      // layers: [...keplerDeckLayers, ...sceneLayers]
-      layers: [...sceneLayers, ...keplerDeckLayers]
+      layers: [...keplerDeckLayers, ...sceneLayers]
+      // layers: [...sceneLayers, ...keplerDeckLayers]
       // layers: []
       // layers: keplerDeckLayers
     };

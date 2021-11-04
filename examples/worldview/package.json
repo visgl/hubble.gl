@@ -39,6 +39,6 @@
     "webpack-hot-middleware": "^2.24.3"
   },
   "resolutions": {
-    "mapbox-gl": "2.4.1"
+    "mapbox-gl": "2.5.1"
   }
 }
