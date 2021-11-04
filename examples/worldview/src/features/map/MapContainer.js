@@ -48,7 +48,7 @@ export const MapContainer = ({previewSize, deckProps, staticMapProps, debug, vie
       resolution={resolution}
       updateTimeCursor={timeMs => dispatch(updateTimeCursor(timeMs))}
       debug={debug}
-      viewportMinAxis={viewportMinAxis}
+      viewportMinAxis={Math.min(resolution.width, resolution.height)}
     />
   );
 };

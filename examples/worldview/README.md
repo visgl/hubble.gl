@@ -9,6 +9,7 @@ yarn
 ```
 
 #### 2. Mapbox Token
+
 Add mapbox access token to env.
 
 ```sh
