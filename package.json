@@ -69,7 +69,7 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-react": "^7.10",
     "gl": "^4.9.0",
-    "kepler.gl": "^2.5.1",
+    "kepler.gl": "2.5.5",
     "lerna": "^3.16.4",
     "lodash": "4.17.21",
     "ocular-dev-tools": "^0.3.0",
