@@ -114,8 +114,8 @@ export default class DeckAdapter {
       };
 
       props.layerFilter = function layerFilter({layer, viewport}) {
-        if (viewport.id === '%%hud') {
-          if (layer.id.includes('%%hud')) {
+        if (layer.id.includes('%%hud')) {
+          if (viewport.id === '%%hud') {
             // console.log(layer)
             return true;
           }

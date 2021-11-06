@@ -82,8 +82,8 @@ const App = ({}) => {
   const keplerDeckLayers = useKeplerDeckLayers(KEPLER_MAP_ID);
   const deckProps = useMemo(() => {
     return {
-      // layers: [...keplerDeckLayers, ...sceneLayers]
-      layers: [...sceneLayers, ...keplerDeckLayers]
+      layers: [...keplerDeckLayers, ...sceneLayers]
+      // layers: [...sceneLayers, ...keplerDeckLayers]
       // layers: []
       // layers: keplerDeckLayers
     };
