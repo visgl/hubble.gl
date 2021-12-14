@@ -26,6 +26,7 @@ function AnimationTab({settings, disabled}) {
                   showValues={false}
                   enableBarDrag={!disabled}
                   isRanged={false}
+                  value0={100}
                   value1={settings.durationMs}
                   step={100}
                   minValue={100}
