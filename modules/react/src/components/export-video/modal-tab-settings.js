@@ -59,7 +59,7 @@ function SettingsTab({settings, resolution, disabled}) {
             />
             <StyledLabelCell>File Size</StyledLabelCell>
             <StyledValueCell>
-              ~
+              Approx.{' '}
               {estimateFileSize(
                 settings.frameRate,
                 resolution,
