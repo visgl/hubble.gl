@@ -59,6 +59,11 @@ export class ExportVideoPanelPreview extends Component {
   componentWillUnmount() {
     const {memoDevicePixelRatio} = this.state;
     this._setDevicePixelRatio(memoDevicePixelRatio);
+
+    if (this.mapRef.current) {
+      const map = this.mapRef.current.getMap();
+      map.off('render', this._onAfterRender);
+    }
   }
 
   _resizeVideo() {
