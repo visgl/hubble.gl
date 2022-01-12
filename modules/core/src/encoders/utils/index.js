@@ -19,7 +19,6 @@
 // THE SOFTWARE.
 
 /* eslint-disable no-console */
-/* global console */
 
 /**
  * @param {number} n

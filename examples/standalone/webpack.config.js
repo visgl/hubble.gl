@@ -1,4 +1,3 @@
-/* global process */
 const webpack = require('webpack');
 
 const CONFIG = {
