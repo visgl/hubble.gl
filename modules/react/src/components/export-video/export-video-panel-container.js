@@ -170,15 +170,18 @@ export class ExportVideoPanelContainer extends Component {
     const {
       mapData: {
         visState: {filters}
-      }
+      },
+      animatableFilters
     } = this.props;
-    // only animate an enlarged time filter.
-    const filterKeyframes = filters
-      .filter(f => f.type === 'timeRange' && f.enlarged)
-      .map(f => ({
-        id: f.id,
-        timings: [0, this.state.durationMs]
-      }));
+
+    const filterKeyframes = (Array.isArray(animatableFilters) && animatableFilters.length
+      ? animatableFilters
+      : // only animate an enlarged time filter if animatable filters aren't specified.
+        filters.filter(f => f.type === 'timeRange' && f.enlarged)
+    ).map(f => ({
+      id: f.id,
+      timings: [0, this.state.durationMs]
+    }));
 
     if (filterKeyframes.length) {
       return {
