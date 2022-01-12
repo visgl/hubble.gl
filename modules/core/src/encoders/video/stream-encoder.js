@@ -18,7 +18,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-/* global MediaRecorder, Blob */
 import FrameEncoder from '../frame-encoder';
 
 /*

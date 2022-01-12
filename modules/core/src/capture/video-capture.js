@@ -18,7 +18,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 /* eslint-disable no-console */
-/* global console */
 import download from 'downloadjs';
 // eslint-disable-next-line no-unused-vars
 import {FrameEncoder} from '../encoders';

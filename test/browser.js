@@ -1,4 +1,3 @@
-/* global window */
 const test = require('tape');
 const {_enableDOMLogging: enableDOMLogging} = require('@probe.gl/test-utils');
 

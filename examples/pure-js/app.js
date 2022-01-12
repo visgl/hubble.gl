@@ -1,4 +1,3 @@
-/* global document */
 import {Deck} from '@deck.gl/core';
 import {GeoJsonLayer, ArcLayer} from '@deck.gl/layers';
 import {DeckAdapter, DeckAnimation, AnimationManager, WebMEncoder} from '@hubble.gl/core';

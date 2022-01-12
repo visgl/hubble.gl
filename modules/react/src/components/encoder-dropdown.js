@@ -24,7 +24,6 @@ import {ENCODER_LIST} from './encoders';
 
 export default function EncoderDropdown({disabled, encoder, setEncoder}) {
   return (
-    // eslint-disable-next-line jsx-a11y/no-onchange
     <Input
       type="select"
       disabled={disabled}

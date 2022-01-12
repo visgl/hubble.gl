@@ -16,7 +16,8 @@ module.exports = {
     'react/forbid-prop-types': 0,
     'react/no-deprecated': 0,
     'import/no-unresolved': ['error', {ignore: ['test']}],
-    'import/no-extraneous-dependencies': ['error', {devDependencies: false, peerDependencies: true}]
+    'import/no-extraneous-dependencies': ['error', {devDependencies: false, peerDependencies: true}],
+    'accessor-pairs': ['error', {getWithoutSet: false, setWithoutGet: false}],
     // 'callback-return': 'off',
     // complexity: 'off',
     // 'max-statements': 'off',

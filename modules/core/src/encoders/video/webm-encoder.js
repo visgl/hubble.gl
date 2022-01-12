@@ -19,7 +19,6 @@
 // THE SOFTWARE.
 
 /* eslint-disable no-console */
-/* global console, document */
 import WebMWriter from 'webm-writer';
 import FrameEncoder from '../frame-encoder';
 
