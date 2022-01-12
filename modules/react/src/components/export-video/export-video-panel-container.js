@@ -302,9 +302,10 @@ export class ExportVideoPanelContainer extends Component {
     });
   }
 
-  onStop() {
+  onStop({abort = false}) {
     const {adapter} = this.state;
     adapter.stop({
+      abort,
       onStopped: () => this.setState({saving: true}),
       onComplete: () => {
         this.setState({
@@ -371,7 +372,10 @@ export class ExportVideoPanelContainer extends Component {
       <ExportVideoPanel
         // UI Props
         exportVideoWidth={exportVideoWidth}
-        handleClose={handleClose}
+        handleClose={() => {
+          this.onStop({abort: true});
+          handleClose();
+        }}
         header={header}
         // Map Props
         mapData={mapData}

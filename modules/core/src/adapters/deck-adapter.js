@@ -122,11 +122,12 @@ export default class DeckAdapter {
    * @param {() => void} params.onStopped
    * @param {(blob: Blob) => void} params.onSave
    * @param {() => void} params.onComplete
+   * @param {boolean} [params.abort]
    */
-  stop({onStopped, onSave, onComplete}) {
+  stop({onStopped, onSave, onComplete, abort}) {
     this.enabled = false;
     this.shouldAnimate = false;
-    this.videoCapture.stop({onStopped, onSave, onComplete});
+    this.videoCapture.stop({onStopped, onSave, onComplete, abort});
   }
 
   /**

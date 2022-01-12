@@ -107,8 +107,9 @@ export class VideoCapture {
    * @param {() => void} params.onStopped
    * @param {(blob: Blob) => void} params.onSave
    * @param {() => void} params.onComplete
+   * @param {boolean} [params.abort]
    */
-  stop({onComplete = undefined, onSave = undefined, onStopped = undefined}) {
+  stop({onComplete = undefined, onSave = undefined, onStopped = undefined, abort = false}) {
     if (this.isRecording()) {
       console.log(`Stopped recording. Recorded for ${this.timeMs}ms.`);
       this.recording = false;
@@ -116,14 +117,19 @@ export class VideoCapture {
       if (onStopped) {
         onStopped();
       }
-      this._save(onSave).then(() => {
+      console.timeEnd('render');
+      const finish = () => {
         if (onComplete) {
           // eslint-disable-next-line callback-return
           onComplete();
         }
         this.timecode = null;
         this.onStop = undefined;
-      });
+      };
+      if (!abort) {
+        this._save(onSave).then(finish);
+      }
+      finish();
     }
   }
 
@@ -139,10 +145,9 @@ export class VideoCapture {
   }
 
   /**
-   * @param {{ (blob: Blob): boolean }} [callback]
+   * @param { (blob: Blob) => void } callback
    */
   async _save(callback) {
-    console.timeEnd('render');
     if (!callback) {
       callback = this.download;
     }
