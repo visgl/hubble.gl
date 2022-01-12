@@ -1,6 +1,6 @@
 {
   "name": "hubble.gl",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "hubble.gl is an animation and video capture library for vis.gl in the browser",
   "license": "MIT",
   "repository": {
@@ -30,7 +30,7 @@
     "build-bundle": "webpack --config ../../scripts/bundle.config.js"
   },
   "dependencies": {
-    "@hubble.gl/core": "1.3.3",
-    "@hubble.gl/react": "1.3.3"
+    "@hubble.gl/core": "1.3.4",
+    "@hubble.gl/react": "1.3.4"
   }
 }
