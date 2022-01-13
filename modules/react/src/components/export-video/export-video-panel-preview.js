@@ -62,7 +62,7 @@ export class ExportVideoPanelPreview extends Component {
 
     if (this.mapRef.current) {
       const map = this.mapRef.current.getMap();
-      map.off('render', this._onAfterRender);
+      map.remove();
     }
   }
 

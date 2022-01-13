@@ -94,6 +94,10 @@ export class ExportVideoPanelContainer extends Component {
     this.state.adapter.animationManager.attachAnimation(animation);
   }
 
+  componentWillUnmount() {
+    this.onStop({abort: true});
+  }
+
   getFileName() {
     const {defaultFileName} = this.props;
     const {fileName} = this.state;
@@ -375,10 +379,7 @@ export class ExportVideoPanelContainer extends Component {
       <ExportVideoPanel
         // UI Props
         exportVideoWidth={exportVideoWidth}
-        handleClose={() => {
-          this.onStop({abort: true});
-          handleClose();
-        }}
+        handleClose={handleClose}
         header={header}
         // Map Props
         mapData={mapData}
