@@ -62,7 +62,16 @@ export class ExportVideoPanelPreview extends Component {
 
     if (this.mapRef.current) {
       const map = this.mapRef.current.getMap();
-      map.remove();
+
+      // remove all rendering related handlers to prevent rendering after unmount
+      const listeners = [...map._listeners.render];
+      listeners.forEach(listener => {
+        map.off('render', listener);
+      });
+
+      this.state.mapboxLayerIds?.forEach(id => {
+        map.removeLayer(id);
+      });
     }
   }
 
@@ -132,15 +141,21 @@ export class ExportVideoPanelPreview extends Component {
     const keplerLayers = this.createLayers();
     const beforeId = this.props.mapboxLayerBeforeId;
 
+    const mapboxLayerIds = [];
+
     // If there aren't any layers, combine map and deck with a fake layer.
     if (!keplerLayers.length) {
       map.addLayer(new MapboxLayer({id: '%%blank-layer', deck}));
+      mapboxLayerIds.push('%%blank-layer');
     }
 
     for (let i = 0; i < keplerLayers.length; i++) {
       // Adds DeckGL layers to Mapbox so Mapbox can be the bottom layer. Removing this clips DeckGL layers
       map.addLayer(new MapboxLayer({id: keplerLayers[i].id, deck}), beforeId);
+      mapboxLayerIds.push(keplerLayers[i].id);
     }
+
+    this.setState({mapboxLayerIds});
 
     map.on('render', this._onAfterRender);
   }
