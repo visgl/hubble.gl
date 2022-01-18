@@ -54,6 +54,7 @@ export default class KeplerAnimation extends Animation {
     layerKeyframes = [],
     filters = [],
     filterKeyframes = [],
+    getTimeRangeFilterKeyframes = undefined,
     animationConfig = undefined,
     tripKeyframe = undefined,
     cameraKeyframe = undefined,
@@ -76,7 +77,8 @@ export default class KeplerAnimation extends Animation {
       filterKeyframes,
       cameraKeyframe,
       animationConfig,
-      tripKeyframe
+      tripKeyframe,
+      getTimeRangeFilterKeyframes
     });
     this.draw();
   }
@@ -86,6 +88,7 @@ export default class KeplerAnimation extends Animation {
     layerKeyframes = [],
     filters = [],
     filterKeyframes = [],
+    getTimeRangeFilterKeyframes = undefined,
     animationConfig = undefined,
     tripKeyframe = undefined,
     cameraKeyframe = undefined,
@@ -127,9 +130,14 @@ export default class KeplerAnimation extends Animation {
         const filter = filters[filterIdx];
         if (filter) {
           if (acc[filter.id]) {
-            acc[filter.id].set({filter, ...filterKeyframe});
+            acc[filter.id].set({filter, getTimeRangeFilterKeyframes, ...filterKeyframe});
           } else {
-            acc[filter.id] = new KeplerFilterKeyframes({filter, filterIdx, ...filterKeyframe});
+            acc[filter.id] = new KeplerFilterKeyframes({
+              filter,
+              filterIdx,
+              getTimeRangeFilterKeyframes,
+              ...filterKeyframe
+            });
             this.unattachedKeyframes.push(acc[filter.id]);
           }
         }

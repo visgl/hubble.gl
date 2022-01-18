@@ -115,12 +115,27 @@ class KeplerFilterKeyframes extends Keyframes {
   type;
   filterIdx;
 
-  constructor({filter, filterIdx, timings, keyframes, easings, interpolators}) {
+  constructor({
+    filter,
+    filterIdx,
+    timings,
+    keyframes,
+    easings,
+    interpolators,
+    getTimeRangeFilterKeyframes
+  }) {
     if (filter.type === 'input') {
       throw new Error("filter type 'input' is not supported.");
     }
     super(
-      KeplerFilterKeyframes._processParams({filter, timings, keyframes, easings, interpolators})
+      KeplerFilterKeyframes._processParams({
+        filter,
+        timings,
+        keyframes,
+        easings,
+        interpolators,
+        getTimeRangeFilterKeyframes
+      })
     );
     this.id = filter.id;
     this.type = filter.type;
@@ -128,7 +143,15 @@ class KeplerFilterKeyframes extends Keyframes {
     this.filterIdx = filterIdx;
   }
 
-  set({filter = undefined, filterIdx = undefined, timings, keyframes, easings, interpolators}) {
+  set({
+    filter = undefined,
+    filterIdx = undefined,
+    timings,
+    keyframes,
+    easings,
+    interpolators,
+    getTimeRangeFilterKeyframes
+  }) {
     if (filter && filterIdx) {
       this.id = filter.id;
       this.type = filter.type;
@@ -136,7 +159,14 @@ class KeplerFilterKeyframes extends Keyframes {
       this.filterIdx = filterIdx;
     }
     super.set(
-      KeplerFilterKeyframes._processParams({filter, timings, keyframes, easings, interpolators})
+      KeplerFilterKeyframes._processParams({
+        filter,
+        timings,
+        keyframes,
+        easings,
+        interpolators,
+        getTimeRangeFilterKeyframes
+      })
     );
   }
 
@@ -178,13 +208,22 @@ class KeplerFilterKeyframes extends Keyframes {
     return super.getFrame();
   }
 
-  static _processParams({filter = undefined, timings, keyframes, easings, interpolators}) {
+  static _processParams({
+    filter = undefined,
+    timings,
+    keyframes,
+    easings,
+    interpolators,
+    getTimeRangeFilterKeyframes
+  }) {
     let params = {features: ['value'], timings, keyframes, easings, interpolators};
     if (filter && filter.type === 'timeRange' && keyframes === undefined) {
       if (timings.length !== 2) throw new Error('[start, end] timings required.');
       params = {
         ...params,
-        ...timeRangeKeyframes({filter, timings})
+        ...(getTimeRangeFilterKeyframes
+          ? getTimeRangeFilterKeyframes({filter, timings})
+          : timeRangeKeyframes({filter, timings}))
       };
     }
     return params;
