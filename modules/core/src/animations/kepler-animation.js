@@ -130,7 +130,7 @@ export default class KeplerAnimation extends Animation {
         const filter = filters[filterIdx];
         if (filter) {
           if (acc[filter.id]) {
-            acc[filter.id].set({filter, getTimeRangeFilterKeyframes, ...filterKeyframe});
+            acc[filter.id].set({filter, ...filterKeyframe});
           } else {
             acc[filter.id] = new KeplerFilterKeyframes({
               filter,

@@ -261,7 +261,6 @@ export class ExportVideoPanelContainer extends Component {
 
   onPreviewVideo() {
     const {adapter} = this.state;
-    const {getTimeRangeFilterKeyframes} = this.props;
     const filename = this.getFileName();
     const formatConfigs = this.getFormatConfigs();
     const timecode = this.getTimecode();
@@ -272,8 +271,7 @@ export class ExportVideoPanelContainer extends Component {
     adapter.animationManager.setKeyframes('kepler', {
       ...this.getFilterKeyframes(),
       ...this.getTripKeyframes(),
-      cameraKeyframe: this.getCameraKeyframes(),
-      getTimeRangeFilterKeyframes
+      cameraKeyframe: this.getCameraKeyframes()
     });
     adapter.render({
       Encoder: PreviewEncoder,
@@ -286,7 +284,6 @@ export class ExportVideoPanelContainer extends Component {
 
   onRenderVideo() {
     const {adapter} = this.state;
-    const {getTimeRangeFilterKeyframes} = this.props;
     const filename = this.getFileName();
     const Encoder = this.getEncoder();
     const formatConfigs = this.getFormatConfigs();
@@ -301,8 +298,7 @@ export class ExportVideoPanelContainer extends Component {
     adapter.animationManager.setKeyframes('kepler', {
       ...this.getFilterKeyframes(),
       ...this.getTripKeyframes(),
-      cameraKeyframe: this.getCameraKeyframes(),
-      getTimeRangeFilterKeyframes
+      cameraKeyframe: this.getCameraKeyframes()
     });
     adapter.render({
       Encoder,

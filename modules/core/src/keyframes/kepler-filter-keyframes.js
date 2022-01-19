@@ -114,6 +114,7 @@ class KeplerFilterKeyframes extends Keyframes {
   id;
   type;
   filterIdx;
+  getTimeRangeFilterKeyframes;
 
   constructor({
     filter,
@@ -122,7 +123,7 @@ class KeplerFilterKeyframes extends Keyframes {
     keyframes,
     easings,
     interpolators,
-    getTimeRangeFilterKeyframes
+    getTimeRangeFilterKeyframes = undefined
   }) {
     if (filter.type === 'input') {
       throw new Error("filter type 'input' is not supported.");
@@ -141,17 +142,10 @@ class KeplerFilterKeyframes extends Keyframes {
     this.type = filter.type;
     this.animationWindow = filter.animationWindow;
     this.filterIdx = filterIdx;
+    this.getTimeRangeFilterKeyframes = getTimeRangeFilterKeyframes;
   }
 
-  set({
-    filter = undefined,
-    filterIdx = undefined,
-    timings,
-    keyframes,
-    easings,
-    interpolators,
-    getTimeRangeFilterKeyframes
-  }) {
+  set({filter = undefined, filterIdx = undefined, timings, keyframes, easings, interpolators}) {
     if (filter && filterIdx) {
       this.id = filter.id;
       this.type = filter.type;
@@ -165,7 +159,7 @@ class KeplerFilterKeyframes extends Keyframes {
         keyframes,
         easings,
         interpolators,
-        getTimeRangeFilterKeyframes
+        getTimeRangeFilterKeyframes: this.getTimeRangeFilterKeyframes
       })
     );
   }
@@ -214,7 +208,7 @@ class KeplerFilterKeyframes extends Keyframes {
     keyframes,
     easings,
     interpolators,
-    getTimeRangeFilterKeyframes
+    getTimeRangeFilterKeyframes = undefined
   }) {
     let params = {features: ['value'], timings, keyframes, easings, interpolators};
     if (filter && filter.type === 'timeRange' && keyframes === undefined) {
