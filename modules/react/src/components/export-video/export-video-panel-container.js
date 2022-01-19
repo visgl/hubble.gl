@@ -82,14 +82,15 @@ export class ExportVideoPanelContainer extends Component {
   }
 
   componentDidMount() {
-    const {onTripFrameUpdate, onFilterFrameUpdate} = this.props;
+    const {onTripFrameUpdate, onFilterFrameUpdate, getTimeRangeFilterKeyframes} = this.props;
     const animation = new KeplerAnimation({
       ...this.getFilterKeyframes(),
       ...this.getTripKeyframes(),
       cameraKeyframe: this.getCameraKeyframes(),
       onCameraFrameUpdate: this.setViewState,
       onTripFrameUpdate,
-      onFilterFrameUpdate
+      onFilterFrameUpdate,
+      getTimeRangeFilterKeyframes
     });
     this.state.adapter.animationManager.attachAnimation(animation);
   }
