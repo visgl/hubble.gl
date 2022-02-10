@@ -14,7 +14,7 @@ const CONFIG = {
     publicPath: '/'
   },
 
-  devtool: 'source-map',
+  devtool: 'eval',
 
   module: {
     rules: [

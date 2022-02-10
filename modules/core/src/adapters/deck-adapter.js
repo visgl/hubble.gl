@@ -22,6 +22,7 @@ import {PreviewEncoder} from '../encoders';
 // eslint-disable-next-line no-unused-vars
 import {AnimationManager} from '../animations';
 import {VideoCapture} from '../capture/video-capture';
+import {MapView, OrthographicView} from '@deck.gl/core';
 
 export default class DeckAdapter {
   /** @type {any} */
@@ -34,18 +35,22 @@ export default class DeckAdapter {
   enabled;
   /** @type {WebGL2RenderingContext} */
   glContext;
+  /** @type {boolean} */
+  othrographicView;
 
   /**
    * @param {Object} params
    * @param {AnimationManager} params.animationManager
    * @param {WebGL2RenderingContext} params.glContext
+   * @param {boolean} params.headsUpDisplay
    */
-  constructor({animationManager = undefined, glContext = undefined}) {
+  constructor({animationManager = undefined, glContext = undefined, headsUpDisplay = false}) {
     this.animationManager = animationManager || new AnimationManager({});
     this.glContext = glContext;
     this.videoCapture = new VideoCapture();
     this.shouldAnimate = false;
     this.enabled = false;
+    this.headsUpDisplay = headsUpDisplay;
     this.getProps = this.getProps.bind(this);
     this.render = this.render.bind(this);
     this.stop = this.stop.bind(this);
@@ -61,8 +66,16 @@ export default class DeckAdapter {
    * @param {any} params.deck
    * @param {(nextTimeMs: number) => void} params.onNextFrame
    * @param {Object} params.extraProps
+   * @param {Object} params.mapViewState
+   * @param {(Object) => void} params.onMapViewStateChange
    */
-  getProps({deck, onNextFrame = undefined, extraProps = undefined}) {
+  getProps({
+    deck,
+    onNextFrame = undefined,
+    extraProps = undefined,
+    mapViewState = undefined,
+    onMapViewStateChange = undefined
+  }) {
     if (deck) {
       this.deck = deck;
     }
@@ -83,6 +96,46 @@ export default class DeckAdapter {
     if (this.glContext) {
       props.gl = this.glContext;
     }
+
+    if (this.headsUpDisplay) {
+      props.viewState = {
+        '%%map': {...mapViewState, maxPitch: 90},
+        '%%hud': {
+          target: [0, 0, 0],
+          zoom: 0
+        }
+      };
+
+      props.onViewStateChange = function onViewStateChange({viewId, viewState: vs}) {
+        // console.log(viewId, viewState);
+        if (viewId === '%%map') {
+          onMapViewStateChange(vs);
+        }
+      };
+
+      props.layerFilter = function layerFilter({layer, viewport}) {
+        if (layer.id.includes('%%hud')) {
+          if (viewport.id === '%%hud') {
+            // console.log(layer)
+            return true;
+          }
+          return false;
+        }
+        return true;
+      };
+
+      props.views = [
+        new MapView({
+          id: '%%map',
+          controller: true
+        }),
+        new OrthographicView({
+          id: '%%hud',
+          controller: false
+        })
+      ];
+    }
+
     return {...extraProps, ...props};
   }
 
