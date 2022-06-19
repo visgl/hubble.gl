@@ -23,7 +23,7 @@ module.exports = {
         PROJECT_TYPE: 'github',
 
         PROJECT_NAME: 'hubble.gl',
-        PROJECT_ORG: 'uber',
+        PROJECT_ORG: 'visgl',
         PROJECT_ORG_LOGO: 'images/visgl-logo.png',
         PROJECT_URL: 'https://hubble.gl',
         PROJECT_DESC: 'High quality client-side 3d animation and video rendering',
