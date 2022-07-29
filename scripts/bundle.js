@@ -21,7 +21,7 @@ function getExternals(packageInfo) {
 
   for (const depName in peerDependencies) {
     if (depName.startsWith('@hubble.gl')) {
-      // Instead of bundling the dependency, import from the global `deck` object
+      // Instead of bundling the dependency, import from the global `hubble` object
       externals[depName] = 'globalThis.hubble';
     }
   }
