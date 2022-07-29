@@ -66,7 +66,7 @@ export default function App() {
         ],
         timings: [0, 1000, 1500, 3000],
         // https://popmotion.io/api/easing/
-        easings: [easing.anticipate, hold, easing.anticipate]
+        easings: [anticipate, hold, anticipate]
       },
       {
         id: 'text',
