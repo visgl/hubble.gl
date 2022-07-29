@@ -99,22 +99,23 @@ export function parseSetCameraType(strCameraType, viewState) {
 }
 
 /**
- * Used to convert durationMs (inherited from ExportVideoPanelContainer) to hh:mm:ss.ms
+ * Used to convert durationMs to [hh:]mm:ss[.ms]
  * @param {number} durationMs duration of animation in milliseconds
- * @property {number} minutes test
+ * @param {boolean} showMs optionally show milliseconds
  * @returns {string} time in format hh:mm:ss.ms
  */
-export function msConversion(durationMs) {
-  const milliseconds = Math.floor(durationMs % 1000);
-  let seconds = Math.floor(durationMs / 1000) % 60;
-  let minutes = Math.floor(durationMs / (1000 * 60)) % 60;
-  // let hours = Math.floor(durationMs / (1000 * 60 * 60)) % 24, 10); // Hours can be used if needed in future
+export function printDuration(durationMs, showMs = false) {
+  const millisecondsInt = Math.floor(durationMs % 1000);
+  const secondsInt = Math.floor(durationMs / 1000) % 60;
+  const minutesInt = Math.floor(durationMs / (1000 * 60)) % 60;
+  const hoursInt = Math.floor(durationMs / (1000 * 60 * 60)) % 24;
 
-  // hours = hours < 10 ? `0${hours}` : hours;
-  minutes = minutes < 10 ? `0${minutes}` : minutes;
-  seconds = seconds < 10 ? `0${seconds}` : seconds;
+  const hours = hoursInt === 0 ? '' : hoursInt < 10 ? `0${hoursInt}:` : `${hoursInt}:`;
+  const minutes = minutesInt < 10 ? `0${minutesInt}` : minutesInt;
+  const seconds = secondsInt < 10 ? `0${secondsInt}` : secondsInt;
+  const milliseconds = showMs ? `.${millisecondsInt.toString()[0]}` : '';
 
-  return `${minutes}:${seconds}.${milliseconds.toString()[0]}`;
+  return `${hours}${minutes}:${seconds}${milliseconds}`;
 }
 
 const MB = 8 * 1024 * 1024;
