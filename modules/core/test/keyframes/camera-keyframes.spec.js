@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 import test from 'tape-catch';
 import {CameraKeyframes, hold} from '@hubble.gl/core';
-import {easing} from 'popmotion';
+import {easeInOut} from 'popmotion';
 import {toLowPrecision} from '@deck.gl/test-utils';
 import {
   flyToInterpolator
@@ -132,7 +132,7 @@ test('Keyframes#CameraKeyframes', t => {
         bearing: 0
       }
     ],
-    easings: [hold, easing.easeInOut, easing.easeInOut, hold, easing.easeInOut]
+    easings: [hold, easeInOut, easeInOut, hold, easeInOut]
   });
 
   // Prototype API

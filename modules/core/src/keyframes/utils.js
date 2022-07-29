@@ -17,7 +17,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-import {transform} from 'popmotion';
+import {interpolate, linear} from 'popmotion';
 
 export function sanitizeInterpolators(keyframes, interpolators) {
   let _interpolators = interpolators;
@@ -79,6 +79,6 @@ export function merge(timings, keyframes, easings, interpolators) {
   return _keyframes;
 }
 
-export function factorInterpolator(start, end, ease) {
-  return transform.interpolate([0, 1], [start, end], {ease});
+export function factorInterpolator(start, end, ease = linear) {
+  return interpolate([0, 1], [start, end], {ease});
 }

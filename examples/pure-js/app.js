@@ -1,7 +1,7 @@
 import {Deck} from '@deck.gl/core';
 import {GeoJsonLayer, ArcLayer} from '@deck.gl/layers';
 import {DeckAdapter, DeckAnimation, AnimationManager, WebMEncoder} from '@hubble.gl/core';
-import {easing} from 'popmotion';
+import {easeInOut} from 'popmotion';
 
 // source: Natural Earth http://www.naturalearthdata.com/ via geojson.xyz
 const COUNTRIES =
@@ -52,7 +52,7 @@ const animation = new DeckAnimation({
     height: resolution.height,
     timings: [0, timecode.end - 250],
     keyframes: [POSITION_1, POSITION_2],
-    easings: easing.easeInOut
+    easings: easeInOut
   }
 });
 

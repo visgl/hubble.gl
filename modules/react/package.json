@@ -37,7 +37,7 @@
     "lodash.get": "^4.4.2",
     "lodash.isequal": "^4.5.0",
     "lodash.uniqby": "^4.7.0",
-    "popmotion": "^8.6.10",
+    "popmotion": "^11.0.3",
     "prop-types": "^15.7.2",
     "react-lifecycles-compat": "^3.0.4",
     "react-map-gl": "^5.2.10",

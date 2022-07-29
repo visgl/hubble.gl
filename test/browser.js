@@ -20,4 +20,8 @@ enableDOMLogging({
   })
 });
 
-require('./modules');
+test('hubble.gl', t => {
+  require('./modules');
+
+  t.end();
+});
