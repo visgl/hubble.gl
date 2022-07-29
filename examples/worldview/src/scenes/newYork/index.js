@@ -11,7 +11,7 @@ import {
   adapterSelector
 } from '../../features/renderer';
 import {viewStateSelector} from '../../features/map';
-import {easing} from 'popmotion';
+import {easeInOut} from 'popmotion';
 
 const KEPLER_MAP_ID = 'map';
 
@@ -55,7 +55,7 @@ export const useScene = () => {
             {longitude, latitude, zoom, pitch, bearing},
             {longitude, latitude, zoom, pitch, bearing: bearing + 90}
           ],
-          easings: [easing.easeInOut]
+          easings: [easeInOut]
         }
       });
     }

@@ -3,7 +3,7 @@ import DeckGL from '@deck.gl/react';
 import {TerrainLayer} from '@deck.gl/geo-layers';
 import {BasicControls, useHubbleGl} from '@hubble.gl/react';
 import {hold, DeckAnimation} from '@hubble.gl/core';
-import {easing} from 'popmotion';
+import {easeInOut, linear} from 'popmotion';
 
 const INITIAL_VIEW_STATE = {
   latitude: 46.24,
@@ -69,7 +69,7 @@ const deckAnimation = new DeckAnimation({
         bearing: 180
       }
     ],
-    easings: [easing.easeInOut, hold, easing.easeInOut, easing.easeInOut]
+    easings: [easeInOut, hold, easeInOut, easeInOut]
   },
   layerKeyframes: [
     {
@@ -86,7 +86,7 @@ const deckAnimation = new DeckAnimation({
         {r: 255, g: 255, b: 255}
       ],
       timings: [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000],
-      easings: easing.linear
+      easings: linear
     }
   ]
 });

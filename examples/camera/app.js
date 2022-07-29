@@ -4,7 +4,7 @@ import {useHubbleGl, BasicControls} from '@hubble.gl/react';
 import {vignette, fxaa} from '@luma.gl/shadertools';
 import {PostProcessEffect, MapView} from '@deck.gl/core';
 import {deckAnimation} from './layers';
-import {easing} from 'popmotion';
+import {easeInOut} from 'popmotion';
 
 const INITIAL_VIEW_STATE = {
   longitude: -122.435,
@@ -99,7 +99,7 @@ export default function App() {
         height: resolution.height,
         timings: [0, timecode.end - 250],
         keyframes: [viewStateA, viewStateB],
-        easings: easing.easeInOut
+        easings: easeInOut
       }
     });
   }, [viewStateA, viewStateB]);

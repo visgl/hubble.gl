@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 
 import React, {Component} from 'react';
-import {easing} from 'popmotion';
+import {easeInOut} from 'popmotion';
 import {
   DeckAdapter,
   KeplerAnimation,
@@ -167,7 +167,7 @@ export class ExportVideoPanelContainer extends Component {
         },
         parseSetCameraType(cameraPreset, viewState)
       ],
-      easings: [easing.easeInOut]
+      easings: [easeInOut]
     };
   }
 

@@ -12,7 +12,7 @@ import {StaticMap} from 'react-map-gl';
 import {PolygonLayer} from '@deck.gl/layers';
 import {TripsLayer} from '@deck.gl/geo-layers';
 
-import {easing} from 'popmotion';
+import {easeInOut} from 'popmotion';
 
 // Source data CSV
 const DATA_URL = {
@@ -188,7 +188,7 @@ export default function App({mapStyle = 'mapbox://styles/mapbox/dark-v9'}) {
               pitch: vs.pitch
             }
           ],
-          easings: [easing.easeInOut]
+          easings: [easeInOut]
         }
       });
       setCameraFrame(vs);

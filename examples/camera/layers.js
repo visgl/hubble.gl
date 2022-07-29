@@ -1,6 +1,6 @@
 import {PathLayer, ScatterplotLayer, TextLayer, PolygonLayer} from '@deck.gl/layers';
 import {DeckAnimation} from '@hubble.gl/core';
-import {easing} from 'popmotion';
+import {anticipate, easeOut} from 'popmotion';
 
 const pathData =
   'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/bart-lines.json';
@@ -89,7 +89,7 @@ export const deckAnimation = new DeckAnimation({
       features: ['radiusScale'],
       keyframes: [{radiusScale: 0}, {radiusScale: 6}],
       timings: [0, 2000],
-      easings: [easing.anticipate]
+      easings: [anticipate]
     },
     {
       id: 'text-layer',
@@ -99,7 +99,7 @@ export const deckAnimation = new DeckAnimation({
         {opacity: 1, pixelOffsetX: 32}
       ],
       timings: [500, 2000],
-      easings: [easing.easeOut]
+      easings: [easeOut]
     }
   ]
 });

@@ -51,11 +51,17 @@ const config = {
   },
 
   resolve: {
+    extensions: ['*', '.mjs', '.js', '.json'],
     alias: ALIASES
   },
 
   module: {
     rules: [
+      {
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: 'javascript/auto'
+      },
       {
         // Compile ES2015 using babel
         test: /\.js$/,

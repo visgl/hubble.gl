@@ -46,7 +46,7 @@ import DeckGL from '@deck.gl/react';
 import {useNextFrame, BasicControls} from '@hubble.gl/react';
 import {LineLayer} from '@deck.gl/layers';
 import {DeckAnimation} from 'hubble.gl';
-import {easing} from 'popmotion';
+import {easeInOut} from 'popmotion';
 
 const deckAnimation = new DeckAnimation({
   // Use applyLayerKeyframes to spread keyframe values onto layers by id.
@@ -81,7 +81,7 @@ const deckAnimation = new DeckAnimation({
         pitch: 30
       }
     ],
-    easings: easing.easeInOut // any easing number => number function is supported
+    easings: easeInOut // any easing number => number function is supported
   }
 });
 

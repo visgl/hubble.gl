@@ -9,7 +9,7 @@ import DeckGL from '@deck.gl/react';
 import {BasicControls, useHubbleGl, useDeckAnimation} from '@hubble.gl/react';
 import {StaticMap} from 'react-map-gl';
 import {PolygonLayer} from '@deck.gl/layers';
-import {easing} from 'popmotion';
+import {easeInOut} from 'popmotion';
 
 // Source data CSV
 const BUILDINGS =
@@ -101,7 +101,7 @@ export default function App({mapStyle = 'mapbox://styles/mapbox/streets-v11'}) {
     cameraKeyframe: {
       timings: [0, timecode.end],
       keyframes: [START, END],
-      easings: [easing.easeInOut],
+      easings: [easeInOut],
       interpolators: 'flyTo',
       width: resolution.width,
       height: resolution.height
@@ -126,7 +126,7 @@ export default function App({mapStyle = 'mapbox://styles/mapbox/streets-v11'}) {
         id: 'buildings',
         timings: [0, timecode.end],
         keyframes: [{elevationScale: 0.1}, {elevationScale: 1}],
-        easings: [easing.easeInOut]
+        easings: [easeInOut]
       }
     ]
   });
