@@ -61,6 +61,8 @@
     "babel-plugin-inline-webgl-constants": "1.0.2",
     "babel-plugin-remove-glsl-comments": "^0.1.0",
     "coveralls": "^3.0.0",
+    "esbuild": "^0.14.50",
+    "esbuild-plugin-external-global": "^1.0.1",
     "eslint": "^7.28.0",
     "eslint-config-prettier": "^6.3.0",
     "eslint-config-uber-es2015": "^3.1.2",

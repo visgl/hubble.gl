@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
     "baseUrl": "./src",
+    "paths": {
+      "@hubble.gl/core/*": ["../../core/src/*"],
+      "@hubble.gl/react/*": ["./*"]
+    },
     "checkJs": true,
     "jsx": "react"
   },
