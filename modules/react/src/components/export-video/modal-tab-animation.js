@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {msConversion} from './utils';
+import {printDuration} from './utils';
 import {
   SliderWrapper,
   StyledLabelCell,
@@ -36,7 +36,7 @@ function AnimationTab({settings, disabled}) {
                     settings.setDuration(val);
                   }}
                 />
-                <VideoLengthDisplay>{msConversion(settings.durationMs)}</VideoLengthDisplay>
+                <VideoLengthDisplay>{printDuration(settings.durationMs, true)}</VideoLengthDisplay>
               </SliderWrapper>
             </StyledValueCell>
             <StyledLabelCell>Camera</StyledLabelCell>
