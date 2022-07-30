@@ -1,65 +1,73 @@
-// prettier-ignore
-module.exports = {
-  parser: "babel-eslint",
-  extends: ['uber-jsx', 'uber-es2015', 'prettier', 'prettier/react', 'plugin:import/errors'],
-  plugins: ['react', 'import', 'babel'],
-  overrides: [{
-    files: ['*.spec.js', 'webpack.config.js', '**/bundle/*.js'],
-    rules: {
-      'import/no-extraneous-dependencies': 0
-    }
-  }],
-  rules: {
-    'guard-for-in': 0,
-    'no-inline-comments': 0,
-    camelcase: 0,
-    'react/forbid-prop-types': 0,
-    'react/no-deprecated': 0,
-    'import/no-unresolved': ['error', {ignore: ['test']}],
-    'import/no-extraneous-dependencies': ['error', {devDependencies: false, peerDependencies: true}],
-    'accessor-pairs': ['error', {getWithoutSet: false, setWithoutGet: false}],
-    // 'callback-return': 'off',
-    // complexity: 'off',
-    // 'max-statements': 'off',
-    // 'no-return-assign': 'off',
-    // 'func-style': 'error',
-    // 'prettier/prettier': 'error',
-    // 'react/no-multi-comp': 'off',
-    // 'react/sort-comp': 'error',
-    // 'react/jsx-no-duplicate-props': 'error',
-    // 'sort-imports': 'off',
+const {getESLintConfig, deepMerge} = require('ocular-dev-tools');
 
-    // /* This is needed for class property function declarations */
-    // 'no-invalid-this': 'off',
-    // 'babel/no-invalid-this': 'error',
+const defaultConfig = getESLintConfig({react: '16.13.1'});
 
-    // /* Style guide */
-    // 'import/first': 'error',
-    // 'import/no-duplicates': 'error',
-    // 'import/extensions': 'error',
-    // 'import/order': 'error',
-    // 'import/newline-after-import': 'error',
-    // 'import/extensions': 'off',
-
-    // /* Ignore rules conflicting with prettier */
-    // 'react/jsx-wrap-multilines': 'off',
-    // 'react/jsx-indent': 'off',
-    // 'func-style': 'off',
-
-    // /* Use the 'query-string' module instead */
-    // 'no-restricted-imports': ['error', 'querystring']
+// Make any changes to default config here
+const config = deepMerge(defaultConfig, {
+  parserOptions: {
+    project: ['./jsconfig.json'],
+    ecmaVersion: 2020
   },
+  extends: ['prettier'],
   env: {
     es6: true,
-    browser: true,
-    node: true
+    browser: true
+    // node: true
   },
-  settings: {
-    react: {
-      version: 'detect'
+
+  rules: {
+    camelcase: 0,
+    indent: 0,
+    'import/no-unresolved': 0,
+    'import/no-extraneous-dependencies': 0, // ['warn'],
+    'no-console': 1,
+    'no-continue': ['warn'],
+    'callback-return': 0,
+    'max-depth': ['warn', 4],
+    complexity: ['warn'],
+    'max-statements': ['warn'],
+    'default-case': ['warn'],
+    'no-eq-null': ['warn'],
+    eqeqeq: ['warn'],
+    radix: 0
+    // 'accessor-pairs': ['error', {getWithoutSet: false, setWithoutGet: false}]
+  },
+
+  overrides: [
+    {
+      files: ['*.spec.js', 'webpack.config.js', '**/bundle/*.js'],
+      rules: {
+        'import/no-extraneous-dependencies': 0
+      }
     }
-  },
-  parserOptions: {
-    ecmaVersion: 2020
+  ],
+
+  settings: {
+    // Ensure eslint finds typescript files
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.mjs', '.ts', '.tsx']
+      }
+    }
   }
-};
+});
+
+// config.overrides[1].parserOptions = {
+//   project: ['./tsconfig.json']
+// };
+
+// Uncomment to log the eslint config
+// console.debug(config);
+
+module.exports = config;
+
+// rules: {
+//   'guard-for-in': 0,
+//   'no-inline-comments': 0,
+//   camelcase: 0,
+//   'react/forbid-prop-types': 0,
+//   'react/no-deprecated': 0,
+//   'import/no-unresolved': ['error', {ignore: ['test']}],
+//   'import/no-extraneous-dependencies': ['error', {devDependencies: false, peerDependencies: true}],
+//   // 'accessor-pairs': ['error', {getWithoutSet: false, setWithoutGet: false}],
+// },

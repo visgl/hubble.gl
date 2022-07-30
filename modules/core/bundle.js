@@ -1,6 +1,7 @@
 // @ts-nocheck
 const moduleExports = require('./src');
 
+/* global global */
 const _global = typeof window === 'undefined' ? global : window;
 _global.hubble = _global.hubble || {};
 

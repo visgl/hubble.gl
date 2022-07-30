@@ -17,7 +17,6 @@ const CONFIG = {
         loader: 'babel-loader',
         exclude: [/node_modules/],
         options: {
-          plugins: ['@babel/plugin-proposal-class-properties'],
           presets: ['@babel/preset-env', '@babel/preset-react']
         }
       }

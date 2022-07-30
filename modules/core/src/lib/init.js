@@ -18,17 +18,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import {global} from 'probe.gl/env';
 import log from '../utils/log';
 
 // Version detection using babel plugin
 // Fallback for tests and SSR since global variable is defined by Webpack.
-/* global __VERSION__ */
 const version =
-  typeof __VERSION__ !== 'undefined' ? __VERSION__ : global.HUBBLE_VERSION || 'untranspiled source';
+  typeof __VERSION__ !== 'undefined'
+    ? __VERSION__
+    : globalThis.HUBBLE_VERSION || 'untranspiled source';
 
 // Note: a `hubble` object not created by hubble.gl may exist in the global scope
-const existingVersion = global.hubble && global.hubble.VERSION;
+const existingVersion = globalThis.hubble && globalThis.hubble.VERSION;
 
 if (existingVersion && existingVersion !== version) {
   throw new Error(`hubble.gl - multiple versions detected: ${existingVersion} vs ${version}`);
@@ -37,11 +37,12 @@ if (existingVersion && existingVersion !== version) {
 if (!existingVersion) {
   log.log(1, `hubble.gl ${version}`)();
 
-  global.hubble = Object.assign(global.hubble || {}, {
+  globalThis.hubble = {
+    ...globalThis.hubble,
     VERSION: version,
     version,
     log
-  });
+  };
 }
 
-export default global.hubble;
+export default globalThis.hubble;
