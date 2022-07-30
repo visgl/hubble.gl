@@ -49,8 +49,9 @@ export const InjectKeplerUI = ({children, keplerUI}) => (
   <KeplerUIContext.Provider value={keplerUI}>{children}</KeplerUIContext.Provider>
 );
 
-export const injectKeplerUI = (Component, keplerUI) => props => (
-  <KeplerUIContext.Provider value={keplerUI}>
-    <Component {...props} />
-  </KeplerUIContext.Provider>
-);
+export const injectKeplerUI = (Component, keplerUI) => props =>
+  (
+    <KeplerUIContext.Provider value={keplerUI}>
+      <Component {...props} />
+    </KeplerUIContext.Provider>
+  );

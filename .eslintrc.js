@@ -29,7 +29,8 @@ const config = deepMerge(defaultConfig, {
     'default-case': ['warn'],
     'no-eq-null': ['warn'],
     eqeqeq: ['warn'],
-    radix: 0
+    radix: 0,
+    'arrow-parens': ['error', 'as-needed'] // TODO: Remove later
     // 'accessor-pairs': ['error', {getWithoutSet: false, setWithoutGet: false}]
   },
 
