@@ -17,6 +17,7 @@ const CONFIG = {
         loader: 'babel-loader',
         exclude: [/node_modules/],
         options: {
+          plugins: ['@babel/plugin-proposal-class-properties'],
           presets: ['@babel/preset-env', '@babel/preset-react']
         }
       }
@@ -24,11 +25,11 @@ const CONFIG = {
   },
 
   plugins: [
-    new HtmlWebpackPlugin({title: 'hubble.gl deck camera example'}),
+    new HtmlWebpackPlugin({title: 'hubble.gl terrain example'}),
     // Optional: Enables reading mapbox token from environment variable
     new webpack.EnvironmentPlugin(['MapboxAccessToken'])
   ]
 };
 
 // This line enables bundling against src in this repo rather than installed module
-module.exports = env => (env ? require('../webpack.config.local')(CONFIG)(env) : CONFIG);
+module.exports = env => (env ? require('../../webpack.config.local')(CONFIG)(env) : CONFIG);
