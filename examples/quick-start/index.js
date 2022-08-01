@@ -1,10 +1,8 @@
 import React from 'react';
-import {render} from 'react-dom';
+import {createRoot} from 'react-dom/client';
 import App from './app';
 
-document.body.style.height = '100vh';
-document.body.style.margin = '0';
-const root = document.body.appendChild(document.createElement('div'));
-root.style.height = '100%';
+const container = document.getElementById('app');
 
-render(<App />, root);
+const root = createRoot(container);
+root.render(<App />);
