@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {ScatterplotLayer, TextLayer} from '@deck.gl/layers';
 import {QuickAnimation, hold, DeckAnimation} from 'hubble.gl';
-import {easing} from 'popmotion';
+import {anticipate, reversed, easeIn} from 'popmotion';
 
 const INITIAL_VIEW_STATE = {
   longitude: -122.402,
@@ -52,7 +52,7 @@ export default function App() {
             ],
             timings: [0, 1000, 1500, 3000],
             // https://popmotion.io/api/easing/
-            easings: [easing.anticipate, hold, easing.anticipate]
+            easings: [anticipate, hold, anticipate]
           },
           {
             id: 'text',
@@ -63,7 +63,7 @@ export default function App() {
               {opacity: 0, getAngle: 0}
             ],
             timings: [0, 1000, 1500, 2000],
-            easings: [easing.reversed(easing.anticipate), hold, easing.easeIn]
+            easings: [reversed(anticipate), hold, easeIn]
           }
         ]
       }),

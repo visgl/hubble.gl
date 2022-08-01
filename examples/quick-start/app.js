@@ -1,6 +1,7 @@
 import React from 'react';
 import {ScatterplotLayer, TextLayer} from '@deck.gl/layers';
-import {QuickAnimation, hold, useDeckAnimation} from 'hubble.gl';
+import {hold} from '@hubble.gl/core';
+import {QuickAnimation, useDeckAnimation} from '@hubble.gl/react';
 import {anticipate, easeIn, reverseEasing} from 'popmotion';
 
 const INITIAL_VIEW_STATE = {
