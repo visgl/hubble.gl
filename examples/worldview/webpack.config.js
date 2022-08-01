@@ -26,7 +26,6 @@ const CONFIG = {
         exclude: [/node_modules/],
         options: {
           plugins: [
-            '@babel/plugin-proposal-class-properties',
             [
               '@babel/plugin-transform-runtime',
               {

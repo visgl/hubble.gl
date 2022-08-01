@@ -3,9 +3,10 @@
 // of building against their installed version of the modules.
 
 const {resolve} = require('path');
+const {getOcularConfig} = require('ocular-dev-tools');
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-const ALIASES = require('ocular-dev-tools/config/ocular.config')({
+const ALIASES = getOcularConfig({
   root: resolve(__dirname, '..')
 }).aliases;
 const ROOT_DIR = resolve(__dirname, '..');

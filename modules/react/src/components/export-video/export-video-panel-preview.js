@@ -69,9 +69,11 @@ export class ExportVideoPanelPreview extends Component {
         map.off('render', listener);
       });
 
-      this.state.mapboxLayerIds?.forEach(id => {
-        map.removeLayer(id);
-      });
+      if (this.state.mapboxLayerIds) {
+        this.state.mapboxLayerIds.forEach(id => {
+          map.removeLayer(id);
+        });
+      }
     }
   }
 

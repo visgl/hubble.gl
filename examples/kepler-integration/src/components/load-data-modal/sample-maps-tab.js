@@ -28,7 +28,7 @@ import {ASSETS_URL} from '../../constants/default-settings';
 import {messages} from '../../constants/localization';
 
 const StyledMapIcon = styled.div`
-  background-image: url("${ASSETS_URL}icon-demo-map.jpg");
+  background-image: url('${ASSETS_URL}icon-demo-map.jpg');
   background-repeat: no-repeat;
   background-size: 64px 48px;
   width: 64px;

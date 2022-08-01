@@ -2,7 +2,7 @@ const resolve = require('path').resolve;
 // eslint-disable-next-line import/no-extraneous-dependencies
 const webpack = require('webpack');
 // eslint-disable-next-line import/no-extraneous-dependencies
-const getOcularConfig = require('ocular-dev-tools/config/ocular.config');
+const {getOcularConfig} = require('ocular-dev-tools');
 
 module.exports.onCreateWebpackConfig = function onCreateWebpackConfigOverride(opts) {
   const {
@@ -31,15 +31,23 @@ module.exports.onCreateWebpackConfig = function onCreateWebpackConfigOverride(op
   }
 
   const config = getConfig();
+  config.module.rules.push(
+    {
+      test: /\.mjs$/,
+      include: /node_modules/,
+      type: 'javascript/auto'
+    }
+  );
   config.resolve = config.resolve || {};
   config.resolve.alias = Object.assign({
     react: resolve('node_modules/react'),
     'react-dom': resolve('node_modules/react-dom')
   }, config.resolve.alias, ALIASES, dependencyAliases);
 
-  config.plugins = config.plugins.concat([
+  config.plugins = config.plugins || [];
+  config.plugins.push(
     new webpack.EnvironmentPlugin(['MapboxAccessToken'])
-  ])
+  );
 
   // Completely replace the webpack config for the current stage.
   // This can be dangerous and break Gatsby if certain configuration options are changed.
