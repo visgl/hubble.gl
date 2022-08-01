@@ -14,4 +14,4 @@ const CONFIG = {
   ]
 };
 
-module.exports = env => (env ? require('../webpack.config.local')(CONFIG)(env) : CONFIG);
+module.exports = env => (env ? require('../../webpack.config.local')(CONFIG)(env) : CONFIG);

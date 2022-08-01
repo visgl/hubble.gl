@@ -24,11 +24,11 @@ const CONFIG = {
   },
 
   plugins: [
-    new HtmlWebpackPlugin({title: 'hubble.gl basemap example'}),
+    new HtmlWebpackPlugin({title: 'hubble.gl deck trips example'}),
     // Optional: Enables reading mapbox token from environment variable
     new webpack.EnvironmentPlugin(['MapboxAccessToken'])
   ]
 };
 
 // This line enables bundling against src in this repo rather than installed module
-module.exports = env => (env ? require('../webpack.config.local')(CONFIG)(env) : CONFIG);
+module.exports = env => (env ? require('../../webpack.config.local')(CONFIG)(env) : CONFIG);
