@@ -121,8 +121,6 @@ test('Keyframes#factorInterpolator', t => {
   const end = 200;
   const ease1 = undefined;
   const int1 = factorInterpolator(start, end, ease1);
-  // eslint-disable-next-line no-console
-  console.log(int1);
 
   t.is(int1(0), start, 'factor 0 is start');
   t.is(int1(1), end, 'factor 1 is end');

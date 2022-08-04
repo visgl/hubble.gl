@@ -8,7 +8,7 @@ const config = deepMerge(defaultConfig, {
     project: ['./jsconfig.json'],
     ecmaVersion: 2020
   },
-  extends: ['prettier'],
+  extends: ['plugin:react-hooks/recommended', 'prettier'],
   env: {
     es6: true,
     browser: true
