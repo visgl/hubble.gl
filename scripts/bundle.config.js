@@ -29,7 +29,7 @@ function getExternals(packageInfo) {
     }
   }
 
-  // if (externals['@deck.gl/core']) {
+  // if (externals['@hubble.gl/core']) {
   //   // Do not bundle luma.gl if `core` is peer dependency
   //   externals['@luma.gl/core'] = 'luma';
   // }
@@ -52,17 +52,12 @@ const config = {
   },
 
   resolve: {
-    extensions: ['.mjs', '.js', '.json'],
+    extensions: ['.js', '.json'],
     alias: ALIASES
   },
 
   module: {
     rules: [
-      {
-        test: /\.mjs$/,
-        include: /node_modules/,
-        type: 'javascript/auto'
-      },
       {
         // Compile ES2015 using babel
         test: /\.js$/,
