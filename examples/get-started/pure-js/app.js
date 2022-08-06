@@ -177,7 +177,8 @@ printCamera();
 
 // update camera keyframes using buttons
 function filterCamera(viewState) {
-  const exclude = ['width', 'height', 'altitude'];
+  // TODO: we shouldn't need to exclude in application
+  const exclude = ['width', 'height', 'altitude', 'position', 'normalize'];
   return Object.keys(viewState)
     .filter(key => !exclude.includes(key))
     .reduce((obj, key) => {

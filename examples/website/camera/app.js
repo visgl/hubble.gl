@@ -50,7 +50,8 @@ const aaEffect = new PostProcessEffect(fxaa, {});
 const vignetteEffect = new PostProcessEffect(vignette, {});
 
 function filterCamera(viewState) {
-  const exclude = ['width', 'height', 'altitude'];
+  // TODO: we shouldn't need to exclude in application
+  const exclude = ['width', 'height', 'altitude', 'position', 'normalize'];
   return Object.keys(viewState)
     .filter(key => !exclude.includes(key))
     .reduce((obj, key) => {
@@ -68,7 +69,8 @@ const Container = ({children}) => (
       width: '100%',
       height: '100%',
       position: 'relative',
-      backgroundColor: '#11183c'
+      backgroundColor: '#11183c',
+      overflow: 'hidden'
     }}
   >
     {children}

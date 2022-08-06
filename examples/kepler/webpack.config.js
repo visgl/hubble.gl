@@ -1,4 +1,3 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const resolve = require('path').resolve;
 
@@ -8,10 +7,9 @@ const CONFIG = {
   entry: {
     app: resolve('./src/main.js')
   },
+
   output: {
-    path: resolve(__dirname, 'build'),
-    filename: 'bundle.js',
-    publicPath: '/'
+    library: 'Root'
   },
 
   devtool: 'source-map',
@@ -32,7 +30,6 @@ const CONFIG = {
   },
 
   plugins: [
-    new HtmlWebpackPlugin({title: 'hubble.gl kepler export example'}),
     // Optional: Enables reading mapbox token from environment variable
     new webpack.EnvironmentPlugin(['MapboxAccessToken'])
   ]
