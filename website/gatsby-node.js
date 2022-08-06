@@ -31,17 +31,26 @@ module.exports.onCreateWebpackConfig = function onCreateWebpackConfigOverride(op
   }
 
   const config = getConfig();
-  config.module.rules.push(
-    {
-      test: /\.mjs$/,
-      include: /node_modules/,
-      type: 'javascript/auto'
-    }
-  );
+  // config.module.rules.push(
+  //   {
+  //     // Transpile ES6 to ES5 with babel
+  //     // Remove if your app does not use JSX or you don't need to support old browsers
+  //     test: /\.js$/,
+  //     loader: 'babel-loader',
+  //     exclude: [/node_modules/],
+  //     options: {
+  //       plugins: ['@babel/plugin-proposal-class-properties'],
+  //       presets: ['@babel/preset-env', '@babel/preset-react']
+  //     }
+  //   }
+  // );
   config.resolve = config.resolve || {};
   config.resolve.alias = Object.assign({
+    'website-examples': resolve('../examples/website'),
     react: resolve('node_modules/react'),
-    'react-dom': resolve('node_modules/react-dom')
+    'react-dom': resolve('node_modules/react-dom'),
+    '@luma.gl': resolve('../node_modules/@luma.gl'),
+    '@loaders.gl/core': resolve('../node_modules/@loaders.gl/core'),
   }, config.resolve.alias, ALIASES, dependencyAliases);
 
   config.plugins = config.plugins || [];
