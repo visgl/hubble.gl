@@ -79,7 +79,8 @@ const Container = ({children}) => (
       width: '100%',
       height: '100%',
       position: 'relative',
-      backgroundColor: '#11183c'
+      backgroundColor: '#11183c',
+      overflow: 'hidden'
     }}
   >
     {children}

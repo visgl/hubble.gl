@@ -17,7 +17,9 @@
   },
   "main": "dist/hubblegl.min.js",
   "scripts": {
-    "start-local": "webpack-dev-server --env.local --progress --open"
+    "start-local": "webpack-dev-server --env.local --progress --open",
+    "clean": "rm -rf yarn.lock ./node_modules",
+    "bootstrap": "yarn clean && yarn"
   },
   "devDependencies": {
     "buble": "^0.19.3",

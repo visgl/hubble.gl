@@ -19,18 +19,17 @@
 // THE SOFTWARE.
 
 import React from 'react';
-import document from 'global/document';
 import {Provider} from 'react-redux';
 import {render} from 'react-dom';
 import store from './store';
 import App from './app';
 
-const Root = () => (
+export const Root = () => (
   <Provider store={store}>
-    <div style={{height: '100vh', width: '100vw'}}>
-      <App />
-    </div>
+    <App />
   </Provider>
 );
 
-render(<Root />, document.body.appendChild(document.createElement('div')));
+export function renderToDOM(container) {
+  render(<Root />, container);
+}
