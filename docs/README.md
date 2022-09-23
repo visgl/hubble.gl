@@ -26,13 +26,13 @@ npm install hubble.gl
 
 #### Pure JS
 
-- [Pure JS example](https://github.com/visgl/hubble.gl/tree/master/examples/pure-js)
+- [Pure JS example](https://github.com/visgl/hubble.gl/tree/master/examples/get-started/pure-js)
 
 #### React
 
-- [Get started](https://github.com/visgl/hubble.gl/tree/master/examples/camera)
+- [Get started](https://github.com/visgl/hubble.gl/tree/master/examples/website/camera)
 
-- [With basemap](https://github.com/visgl/hubble.gl/tree/master/examples/trips)
+- [With basemap](https://github.com/visgl/hubble.gl/tree/master/examples/website/trips)
 
 ## Basic Animation
 
