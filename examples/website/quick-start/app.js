@@ -6,7 +6,7 @@ import {anticipate, easeIn, reverseEasing} from 'popmotion';
 const INITIAL_VIEW_STATE = {
   longitude: -122.402,
   latitude: 37.79,
-  zoom: 11
+  zoom: 14
 };
 
 const TIMECODE = {
@@ -16,9 +16,22 @@ const TIMECODE = {
 };
 
 const RESOLUTION = {
-  width: 640,
-  height: 480
+  width: 1920,
+  height: 1080
 };
+
+const FORMAT_CONFIGS = {
+  webm: {
+    quality: 0.99
+  },
+  gif: {
+    width: 480,
+    height: 270
+  }
+};
+
+const BACKGROUND = [30 / 255, 30 / 255, 30 / 255, 1];
+const BLUE = [37, 80, 129];
 
 const Container = ({children}) => (
   <div
@@ -43,17 +56,18 @@ export default function App() {
       a.applyLayerKeyframes([
         new ScatterplotLayer({
           id: 'circle',
-          data: [{position: [-122.402, 37.79], color: [255, 0, 0], radius: 1000}],
+          data: [{position: [-122.402, 37.79], color: BLUE, radius: 1000}],
           getFillColor: d => d.color,
           getRadius: d => d.radius,
-          opacity: 0.1,
-          radiusScale: 0.01
+          opacity: 1,
+          radiusScale: 1
         }),
         new TextLayer({
           id: 'text',
           data: [{position: [-122.402, 37.79], text: 'Hello World'}],
-          opacity: 0.1,
-          getAngle: -90
+          opacity: 1,
+          getPixelOffset: [0, -64],
+          getSize: 64
         })
       ]),
     layerKeyframes: [
@@ -88,10 +102,14 @@ export default function App() {
       <QuickAnimation
         initialViewState={INITIAL_VIEW_STATE}
         resolution={RESOLUTION}
+        formatConfigs={FORMAT_CONFIGS}
         animation={animation}
         deckProps={{
+          useDevicePixels: 1, // Otherwise retina displays will double resolution.
+          // Visualization Props
           parameters: {
-            clearColor: [255, 255, 255, 1]
+            // Background color. Most video formats don't fully support transparency
+            clearColor: BACKGROUND
           }
         }}
         timecode={TIMECODE}
