@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 
 import {useState, useCallback, useMemo} from 'react';
-import {DeckAdapter, DeckAnimation} from '@hubble.gl/core';
+import {DeckAnimator, DeckAnimation} from '@hubble.gl/core';
 import {MapboxLayer} from '@deck.gl/mapbox';
 
 export function useNextFrame() {
@@ -27,11 +27,11 @@ export function useNextFrame() {
   return useCallback(() => updateState({}), []);
 }
 
-export function useDeckAdapter(deckAnimation, initialViewState = undefined) {
+export function useDeckAnimator(deckAnimation, initialViewState = undefined) {
   const [layers, setLayers] = useState([]);
   const [cameraFrame, setCameraFrame] = useState(initialViewState);
   const adapter = useMemo(() => {
-    const a = new DeckAdapter({});
+    const a = new DeckAnimator({});
     deckAnimation.setOnLayersUpdate(setLayers);
     if (initialViewState) {
       deckAnimation.setOnCameraUpdate(setCameraFrame);
@@ -55,7 +55,7 @@ export function useHubbleGl({
 }) {
   const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
   const nextFrame = useNextFrame();
-  const {adapter, layers, cameraFrame, setCameraFrame} = useDeckAdapter(
+  const {adapter, layers, cameraFrame, setCameraFrame} = useDeckAnimator(
     deckAnimation,
     initialViewState
   );

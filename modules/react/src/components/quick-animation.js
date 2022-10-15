@@ -1,7 +1,7 @@
 import React, {useState, useRef, useMemo} from 'react';
 import DeckGL from '@deck.gl/react';
 import BasicControls from './basic-controls';
-import {useDeckAdapter, useNextFrame} from '../hooks';
+import {useDeckAnimator, useNextFrame} from '../hooks';
 
 export const QuickAnimation = ({
   initialViewState,
@@ -15,7 +15,7 @@ export const QuickAnimation = ({
   const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
   const [busy, setBusy] = useState(false);
   const onNextFrame = useNextFrame();
-  const {adapter, layers, cameraFrame, setCameraFrame} = useDeckAdapter(
+  const {adapter, layers, cameraFrame, setCameraFrame} = useDeckAnimator(
     animation,
     initialViewState
   );

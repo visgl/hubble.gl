@@ -1,4 +1,4 @@
-import { Keyframes, CameraKeyframes } from "./keyframes";
+import { Keyframes, MapViewKeyframes } from "./keyframes";
 import { FrameEncoder } from "./encoders";
 
 
@@ -26,28 +26,31 @@ type DeckGl = {
   }; canvas: any;
 }
 
-type FrameEncoderSettings = Partial<EncoderSettings>
-
-interface EncoderSettings extends FormatConfigs {
+interface EncoderSettings {
   framerate: number
 }
 
-interface FormatConfigs {
-  png: {
-    archive: 'tar' | 'zip'
-  }
-  jpeg: {
-    archive: 'tar' | 'zip'
-    quality: number
-  },
-  webm: {
-    quality: number
-  }
-  gif: {
-    numWorkers: number,
-    sampleInterval: number,
-    width: number,
-    height: number
-    jpegQuality: number
-  }
+interface GIFSettings extends EncoderSettings {
+  numWorkers: number
+  sampleInterval: number
+  width: number
+  height: number
+  jpegQuality: number
+}
+
+interface WEBMSettings extends EncoderSettings {
+  quality: number
+}
+
+interface PNGSettings extends EncoderSettings {
+  archive: 'tar' | 'zip'
+}
+
+interface JPEGSettings extends EncoderSettings {
+  archive: 'tar' | 'zip'
+  quality: number
+}
+
+interface RealtimeSettings extends EncoderSettings {
+  video: 'webm' | 'mp4'
 }

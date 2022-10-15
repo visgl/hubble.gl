@@ -33,21 +33,21 @@ class JPEGSequenceEncoder extends FrameEncoder {
   /** @type {{filename: ArrayBuffer}} */
   filemap;
 
-  /** @param {import('types').FrameEncoderSettings} settings */
+  /** @param {import('types').JPEGSettings} settings */
   constructor(settings) {
     super(settings);
     this.tarBuilder = null;
     this.filemap = {};
-    this.options = {};
+    this.settings = {};
 
-    if (settings.jpeg) {
-      this.options = {...settings.jpeg};
+    if (settings) {
+      this.settings = {...settings};
     }
 
-    this.options.quality = this.options.quality || 1.0;
-    this.options.archive = this.options.archive || TAR;
+    this.settings.quality = this.settings.quality || 1.0;
+    this.settings.archive = this.settings.archive || TAR;
 
-    switch (this.options.archive) {
+    switch (this.settings.archive) {
       case TAR: {
         this.mimeType = TARBuilder.properties.mimeType;
         this.extension = `.${TARBuilder.properties.extensions[0]}`;
@@ -59,7 +59,7 @@ class JPEGSequenceEncoder extends FrameEncoder {
         break;
       }
       default: {
-        throw new Error(`Unsupported archive type [zip, tar]: ${this.options.archive}`);
+        throw new Error(`Unsupported archive type [zip, tar]: ${this.settings.archive}`);
       }
     }
   }
@@ -73,8 +73,8 @@ class JPEGSequenceEncoder extends FrameEncoder {
   async add(canvas) {
     const mimeType = 'image/jpeg';
     const extension = '.jpg';
-    const buffer = await canvasToArrayBuffer(canvas, mimeType, this.options.quality);
-    switch (this.options.archive) {
+    const buffer = await canvasToArrayBuffer(canvas, mimeType, this.settings.quality);
+    switch (this.settings.archive) {
       case TAR: {
         const filename = pad(this.tarBuilder.count) + extension;
         this.tarBuilder.addFile(buffer, filename);
@@ -86,7 +86,7 @@ class JPEGSequenceEncoder extends FrameEncoder {
         break;
       }
       default: {
-        throw new Error(`Unsupported archive type [zip, tar]: ${this.options.archive}`);
+        throw new Error(`Unsupported archive type [zip, tar]: ${this.settings.archive}`);
       }
     }
   }
@@ -95,7 +95,7 @@ class JPEGSequenceEncoder extends FrameEncoder {
    * @return {Promise<Blob>}
    */
   async save() {
-    switch (this.options.archive) {
+    switch (this.settings.archive) {
       case TAR: {
         const arrayBuffer = await this.tarBuilder.build();
         return new Blob([arrayBuffer], {type: TARBuilder.properties.mimeType});
@@ -105,7 +105,7 @@ class JPEGSequenceEncoder extends FrameEncoder {
         return new Blob([arrayBuffer], {type: ZipWriter.mimeTypes[0]});
       }
       default: {
-        throw new Error(`Unsupported archive type [zip, tar]: ${this.options.archive}`);
+        throw new Error(`Unsupported archive type [zip, tar]: ${this.settings.archive}`);
       }
     }
   }

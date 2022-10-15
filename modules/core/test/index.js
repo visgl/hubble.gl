@@ -17,7 +17,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-import './keyframes/camera-keyframes.spec';
+import './keyframes/map-view-keyframes.spec';
 import './keyframes/kepler-filter-keyframes.spec';
 import './keyframes/utils.spec';
 import './animations/kepler-animation.spec';

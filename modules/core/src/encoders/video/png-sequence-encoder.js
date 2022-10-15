@@ -33,20 +33,20 @@ class PNGSequenceEncoder extends FrameEncoder {
   /** @type {{filename: ArrayBuffer}} */
   filemap;
 
-  /** @param {import('types').FrameEncoderSettings} settings */
+  /** @param {import('types').PNGSettings} settings */
   constructor(settings) {
     super(settings);
     this.tarBuilder = null;
     this.filemap = {};
-    this.options = {};
+    this.settings = {};
 
-    if (settings.png) {
-      this.options = {...settings.png};
+    if (settings) {
+      this.settings = {...settings};
     }
 
-    this.options.archive = this.options.archive || TAR;
+    this.settings.archive = this.settings.archive || TAR;
 
-    switch (this.options.archive) {
+    switch (this.settings.archive) {
       case TAR: {
         this.mimeType = TARBuilder.properties.mimeType;
         this.extension = `.${TARBuilder.properties.extensions[0]}`;
@@ -58,7 +58,7 @@ class PNGSequenceEncoder extends FrameEncoder {
         break;
       }
       default: {
-        throw new Error(`Unsupported archive type [zip, tar]: ${this.options.archive}`);
+        throw new Error(`Unsupported archive type [zip, tar]: ${this.settings.archive}`);
       }
     }
   }
@@ -73,7 +73,7 @@ class PNGSequenceEncoder extends FrameEncoder {
     const mimeType = 'image/png';
     const extension = '.png';
     const buffer = await canvasToArrayBuffer(canvas, mimeType);
-    switch (this.options.archive) {
+    switch (this.settings.archive) {
       case TAR: {
         const filename = pad(this.tarBuilder.count) + extension;
         this.tarBuilder.addFile(buffer, filename);
@@ -85,7 +85,7 @@ class PNGSequenceEncoder extends FrameEncoder {
         break;
       }
       default: {
-        throw new Error(`Unsupported archive type [zip, tar]: ${this.options.archive}`);
+        throw new Error(`Unsupported archive type [zip, tar]: ${this.settings.archive}`);
       }
     }
   }
@@ -94,7 +94,7 @@ class PNGSequenceEncoder extends FrameEncoder {
    * @return {Promise<Blob>}
    */
   async save() {
-    switch (this.options.archive) {
+    switch (this.settings.archive) {
       case TAR: {
         const arrayBuffer = await this.tarBuilder.build();
         return new Blob([arrayBuffer], {type: TARBuilder.properties.mimeType});
@@ -104,7 +104,7 @@ class PNGSequenceEncoder extends FrameEncoder {
         return new Blob([arrayBuffer], {type: ZipWriter.mimeTypes[0]});
       }
       default: {
-        throw new Error(`Unsupported archive type [zip, tar]: ${this.options.archive}`);
+        throw new Error(`Unsupported archive type [zip, tar]: ${this.settings.archive}`);
       }
     }
   }

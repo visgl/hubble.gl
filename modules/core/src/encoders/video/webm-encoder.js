@@ -25,17 +25,14 @@ import FrameEncoder from '../frame-encoder';
 /**
  * WebM Encoder
  */
-class WebMEncoder extends FrameEncoder {
+class WEBMEncoder extends FrameEncoder {
   /** @type {WebMWriter} */
   videoWriter;
 
-  /** @param {import('types').FrameEncoderSettings} settings */
+  /** @param {import('types').WEBMSettings} settings */
   constructor(settings) {
     super(settings);
-    this.quality = 0.8;
-    if (settings.webm && settings.webm.quality) {
-      this.quality = settings.webm.quality;
-    }
+    this.quality = settings.quality || 0.8;
 
     const canvas = document.createElement('canvas');
     if (canvas.toDataURL('image/webp').substr(5, 10) !== 'image/webp') {
@@ -74,4 +71,4 @@ class WebMEncoder extends FrameEncoder {
   }
 }
 
-export default WebMEncoder;
+export default WEBMEncoder;

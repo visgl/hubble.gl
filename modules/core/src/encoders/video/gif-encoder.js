@@ -1,29 +1,29 @@
 import {GIFBuilder} from '@loaders.gl/video';
 import FrameEncoder from '../frame-encoder';
 
-export default class GifEncoder extends FrameEncoder {
+export default class GIFEncoder extends FrameEncoder {
   /**
    * @type {{width: number, height: number, numWorkers: number, sampleInterval: number, jpegQuality: number}}
    */
-  options;
+  settings;
 
-  /** @param {import('types').FrameEncoderSettings} settings */
+  /** @param {import('types').GIFSettings} settings */
   constructor(settings) {
     super(settings);
     this.mimeType = 'image/gif';
     this.extension = '.gif';
     this.gifBuilder = null;
-    this.options = {};
+    this.settings = {};
 
-    if (settings.gif) {
-      this.options = {...settings.gif};
+    if (settings) {
+      this.settings = {...settings};
     }
 
-    this.options.width = this.options.width || 720;
-    this.options.height = this.options.height || 480;
-    this.options.numWorkers = this.options.numWorkers || 4;
-    this.options.sampleInterval = this.options.sampleInterval || 10;
-    this.options.jpegQuality = this.options.jpegQuality || 1.0;
+    this.settings.width = this.settings.width || 720;
+    this.settings.height = this.settings.height || 480;
+    this.settings.numWorkers = this.settings.numWorkers || 4;
+    this.settings.sampleInterval = this.settings.sampleInterval || 10;
+    this.settings.jpegQuality = this.settings.jpegQuality || 1.0;
 
     // this.source = settings.source
     this.source = 'images';
@@ -36,7 +36,7 @@ export default class GifEncoder extends FrameEncoder {
   start() {
     this.gifBuilder = new GIFBuilder({
       source: this.source,
-      ...this.options,
+      ...this.settings,
       interval: 1 / this.framerate
     });
   }
@@ -44,7 +44,7 @@ export default class GifEncoder extends FrameEncoder {
   /** @param {HTMLCanvasElement} canvas */
   async add(canvas) {
     if (this.source === 'images') {
-      const dataUrl = canvas.toDataURL('image/jpeg', this.options.jpegQuality);
+      const dataUrl = canvas.toDataURL('image/jpeg', this.settings.jpegQuality);
       await this.gifBuilder.add(dataUrl);
     }
   }

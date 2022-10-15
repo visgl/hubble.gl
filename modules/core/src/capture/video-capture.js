@@ -62,19 +62,19 @@ export class VideoCapture {
   /**
    * Start recording.
    * @param {Object} params
-   * @param {typeof FrameEncoder} params.Encoder
-   * @param {import('types').FormatConfigs} params.formatConfigs
+   * @param {FrameEncoder} params.encoder
    * @param {{start: number, end: number, framerate: number, duration?: number}} params.timecode
    * @param {() => void} params.onStop
    */
-  render({Encoder, formatConfigs, timecode, filename = undefined, onStop = undefined}) {
+  render({encoder, timecode, filename = undefined, onStop = undefined}) {
     if (!this.isRecording()) {
       console.time('render');
       this.filename = this._sanitizeFilename(filename);
       this.timecode = this._sanatizeTimecode(timecode);
       console.log(`Starting recording for ${this.timecode.duration}ms.`);
       this.onStop = onStop;
-      this.encoder = new Encoder({...formatConfigs, framerate: this.timecode.framerate});
+      this.encoder = encoder;
+      encoder.setFramerate(this.timecode.framerate);
       this.recording = true;
       this.encoder.start();
     }

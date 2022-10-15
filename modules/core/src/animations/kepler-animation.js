@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 import {
-  CameraKeyframes,
+  MapViewKeyframes,
   KeplerFilterKeyframes,
   KeplerLayerKeyframes,
   KeplerTripKeyframes
@@ -104,7 +104,7 @@ export default class KeplerAnimation extends Animation {
     if (this.cameraKeyframe && cameraKeyframe) {
       this.cameraKeyframe.set(cameraKeyframe);
     } else if (cameraKeyframe) {
-      this.cameraKeyframe = new CameraKeyframes(cameraKeyframe);
+      this.cameraKeyframe = new MapViewKeyframes(cameraKeyframe);
       this.unattachedKeyframes.push(this.cameraKeyframe);
     }
 

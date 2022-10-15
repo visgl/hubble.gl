@@ -48,4 +48,9 @@ export default class FrameEncoder {
   async save() {
     throw new Error('Encoder: Implement a save function');
   }
+
+  /** @type {(framerate: number) => void} */
+  setFramerate(framerate) {
+    this.framerate = framerate;
+  }
 }

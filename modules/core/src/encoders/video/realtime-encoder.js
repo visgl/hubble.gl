@@ -20,10 +20,10 @@
 
 import FrameEncoder from '../frame-encoder';
 
-/*
-  HTMLCanvasElement.captureStream()
+/**
+  A frame dropping, high performance video recorder that captures a raw canvas media stream in realtime.
 */
-class StreamEncoder extends FrameEncoder {
+class RealtimeEncoder extends FrameEncoder {
   /** @type {MediaStream} */
   stream;
   /** @type {MediaRecorder} */
@@ -32,12 +32,18 @@ class StreamEncoder extends FrameEncoder {
   chunks;
 
   /**
-   * @param {import('types').FrameEncoderSettings} settings
+   * @param {import('types').RealtimeSettings} settings
    */
   constructor(settings) {
     super(settings);
-    this.mimeType = 'video/webm';
-    this.extension = '.webm';
+    if (settings.video === 'webm') {
+      this.mimeType = 'video/webm';
+      this.extension = '.webm';
+    } else if (settings.video === 'mp4') {
+      this.mimeType = 'video/mp4';
+      this.extension = '.mp4';
+    }
+
     this.stream = null;
     this.mediaRecorder = null;
     this.chunks = [];
@@ -58,7 +64,7 @@ class StreamEncoder extends FrameEncoder {
   async add(canvas) {
     if (!this.stream) {
       this.stream = canvas.captureStream(this.framerate);
-      this.mediaRecorder = new MediaRecorder(this.stream);
+      this.mediaRecorder = new MediaRecorder(this.stream, {mimeType: this.mimeType});
       this.mediaRecorder.start();
 
       this.mediaRecorder.ondataavailable = e => {
@@ -75,7 +81,7 @@ class StreamEncoder extends FrameEncoder {
     /** @type Promise<Blob> */
     const waiting = new Promise(resolve => {
       this.mediaRecorder.onstop = () => {
-        const blob = new Blob(this.chunks, {type: 'video/webm'});
+        const blob = new Blob(this.chunks, {type: this.mimeType});
         this.chunks = [];
         resolve(blob);
       };
@@ -86,4 +92,4 @@ class StreamEncoder extends FrameEncoder {
   }
 }
 
-export default StreamEncoder;
+export default RealtimeEncoder;

@@ -21,13 +21,13 @@
 import React, {Component} from 'react';
 import {easeInOut} from 'popmotion';
 import {
-  DeckAdapter,
+  DeckAnimator,
   KeplerAnimation,
-  WebMEncoder,
+  WEBMEncoder,
   JPEGSequenceEncoder,
   PNGSequenceEncoder,
   PreviewEncoder,
-  GifEncoder
+  GIFEncoder
 } from '@hubble.gl/core';
 
 import ExportVideoPanel from './export-video-panel';
@@ -35,8 +35,8 @@ import {parseSetCameraType, scaleToVideoExport} from './utils';
 import {DEFAULT_FILENAME, getResolutionSetting} from './constants';
 
 const ENCODERS = {
-  gif: GifEncoder,
-  webm: WebMEncoder,
+  gif: GIFEncoder,
+  webm: WEBMEncoder,
   jpeg: JPEGSequenceEncoder,
   png: PNGSequenceEncoder
 };
@@ -78,7 +78,7 @@ export class ExportVideoPanelContainer extends Component {
     const viewState = scaleToVideoExport(mapState, this._getContainer());
     this.state.viewState = viewState;
     this.state.memo = {viewState};
-    this.state.adapter = new DeckAdapter({glContext});
+    this.state.adapter = new DeckAnimator({glContext});
   }
 
   componentDidMount() {

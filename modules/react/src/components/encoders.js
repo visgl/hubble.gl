@@ -1,9 +1,9 @@
 import {
-  WebMEncoder,
+  WEBMEncoder,
   JPEGSequenceEncoder,
   PNGSequenceEncoder,
   PreviewEncoder,
-  GifEncoder
+  GIFEncoder
 } from '@hubble.gl/core';
 
 export const PREVIEW = 'Preview';
@@ -16,8 +16,8 @@ export const ENCODER_LIST = [PREVIEW, WEBM, JPEG, PNG, GIF];
 
 export const ENCODERS = {
   [PREVIEW]: PreviewEncoder,
-  [GIF]: GifEncoder,
-  [WEBM]: WebMEncoder,
+  [GIF]: GIFEncoder,
+  [WEBM]: WEBMEncoder,
   [JPEG]: JPEGSequenceEncoder,
   [PNG]: PNGSequenceEncoder
 };
