@@ -83,15 +83,24 @@ ffmpeg -i $input -filter_complex "[0:v] fps=20,split [a][b];[a] palettegen [p];[
 ffmpeg -r 60 -f image2 -i "$input/%07d.png" -vcodec libx264 -pix_fmt yuv420p -filter:v "crop=3840:2160:0:0" -crf 0  "$outfile.mp4"
 ```
 
-ffmpeg -r 60 -f image2 -i despac_network_v5/%07d.png -filter:v "scale=2560:1440:force_original_aspect_ratio=increase,crop=2560:1440" -vcodec libx264 -crf 0 -pix_fmt yuv420p despac_network_v5.mp4
+```bash
+ffmpeg -r 60 -f image2 -i "$input/%07d.png" -filter:v "scale=2560:1440:force_original_aspect_ratio=increase,crop=2560:1440" -vcodec libx264 -crf 0 -pix_fmt yuv420p "$folder/$filename.mp4"
+```
 
-ffmpeg -r 30 -f image2 -start_number 1858 -i despac_network_v5_large/%07d.png -filter:v "scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080" -vcodec libx264 -crf 1 -pix_fmt yuv420p -tune animation despac_network_v5_large_2k_slow_powerpoint.mp4
-
+```bash
+ffmpeg -r 30 -f image2 -start_number 1858 -i "$input/%07d.png" -filter:v "scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080" -vcodec libx264 -crf 1 -pix_fmt yuv420p -tune animation "$folder/$filename.mp4"
+```
 
 ### PNG or JPEG sequence to GIF
 
-ffmpeg -r 60 -f image2 -start_number 1858 -i despac_network_v5_large/%07d.png -filter_complex "[0:v] fps=24,scale=1920:-1,split [a][b];[a] palettegen [p];[b][p] paletteuse" despac_network_v5_large.gif
+```bash
+ffmpeg -r 60 -f image2 -start_number 1858 -i "$input/%07d.png" -filter_complex "[0:v] fps=24,scale=1920:-1,split [a][b];[a] palettegen [p];[b][p] paletteuse" "$folder/$filename.gif"
+```
 
-ffmpeg -r 30 -f image2 -start_number 1858 -i despac_network_v5_large/%07d.png -filter_complex "[0:v] fps=10,scale=1920:-1,split [a][b];[a] palettegen [p];[b][p] paletteuse" despac_network_v5_large_2k_slow_powerpoint.gif
+```bash
+ffmpeg -r 30 -f image2 -start_number 1858 -i "$input/%07d.png" -filter_complex "[0:v] fps=10,scale=1920:-1,split [a][b];[a] palettegen [p];[b][p] paletteuse" "$folder/$filename.gif"
+```
 
-ffmpeg -r 30 -f image2 -start_number 1858 -i despac_network_v5_large/%07d.png -filter_complex "[0:v] fps=30,split [a][b];[a] palettegen [p];[b][p] paletteuse" despac_network_v5_large_2k_slow.gif
+```bash
+ffmpeg -r 30 -f image2 -start_number 1858 -i "$input/%07d.png" -filter_complex "[0:v] fps=30,split [a][b];[a] palettegen [p];[b][p] paletteuse" "$folder/$filename.gif"
+```
