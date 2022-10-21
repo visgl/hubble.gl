@@ -78,6 +78,8 @@ ffmpeg -i $input -filter_complex "[0:v] fps=20,split [a][b];[a] palettegen [p];[
 
 ### PNG or JPEG sequence to MP4
 
+> Note: Change the input extension to `.jpeg` if you're using that format. 
+
 ```bash
 # PNG
 ffmpeg -r 60 -f image2 -i "$input/%07d.png" -vcodec libx264 -pix_fmt yuv420p -filter:v "crop=3840:2160:0:0" -crf 0  "$outfile.mp4"
