@@ -16,6 +16,9 @@
       "title": "Guide Book",
       "entries": [
         {
+          "entry": "docs/convert-video"
+        },
+        {
           "entry": "docs/post-processing"
         },
         {
