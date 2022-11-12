@@ -39,7 +39,7 @@ Needless to say, this guide only scratches the surface of what you can do with `
 
 ### Prerequisites
 
-Install [ffmpeg](https://ffmpeg.org/download.html).
+Install [ffmpeg](https://ffmpeg.org/download.html) locally, or use [ffmpeg.wasm](https://ffmpegwasm.netlify.app/) in your browser.
 
 This guide references variables for inputs and outputs. For convenience, here are a `bash` helper we commonly use to place the output file next to the input file:
 
