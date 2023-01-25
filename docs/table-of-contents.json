@@ -16,10 +16,10 @@
       "title": "Guide Book",
       "entries": [
         {
-          "entry": "docs/post-processing"
+          "entry": "docs/convert-video"
         },
         {
-          "entry": "docs/rendering-tip"
+          "entry": "docs/post-processing"
         }
       ]
     },
