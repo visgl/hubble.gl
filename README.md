@@ -19,6 +19,8 @@ This project is experimental and the APIs may change.
 <h5 align="center">Animate and encode WebGL data visualizations.
 </h5>
 
+hubble.gl maps **parameters** (usually animating over time) to a **visualization** - e.g. deck.gl, kepler.gl; and encode what you see into **media** - e.g. MP4, PNG, GIF.
+
 - **High Quality Video:** 60+fps framerates, up to 8k resolution, and a variety of formats. Render a quick draft or with loseless encoding. Fine tune timing and look with keyframe markers and render everything in the same app.
 
 - **Easy Integration:** Define animations for deck.gl or kepler.gl features, then render videos. Integrate with React UI components to interact with animation and rendering settings.
