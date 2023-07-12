@@ -19,19 +19,19 @@
 // THE SOFTWARE.
 
 export {
-  // Adapter
-  DeckAdapter,
+  // Animator
+  DeckAnimator,
   // Encoders
   PNGSequenceEncoder,
   JPEGSequenceEncoder,
   JPEGEncoder,
   PNGEncoder,
-  WebMEncoder,
+  WEBMEncoder,
   FrameEncoder,
   PreviewEncoder,
   // Keyframes
   Keyframes,
-  CameraKeyframes,
+  MapViewKeyframes,
   DeckLayerKeyframes,
   KeplerFilterKeyframes,
   KeplerLayerKeyframes,

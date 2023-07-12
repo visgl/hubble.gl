@@ -17,7 +17,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-import {CameraKeyframes, DeckLayerKeyframes} from '../keyframes';
+import {MapViewKeyframes, DeckLayerKeyframes} from '../keyframes';
 import Animation from './animation';
 
 function noop() {}
@@ -60,7 +60,7 @@ export default class DeckAnimation extends Animation {
     if (this.cameraKeyframe && cameraKeyframe) {
       this.cameraKeyframe.set(cameraKeyframe);
     } else if (cameraKeyframe) {
-      this.cameraKeyframe = new CameraKeyframes(cameraKeyframe);
+      this.cameraKeyframe = new MapViewKeyframes(cameraKeyframe);
       this.unattachedKeyframes.push(this.cameraKeyframe);
     }
 

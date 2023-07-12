@@ -21,22 +21,23 @@
 // Intialize globals, check version
 import './lib/init';
 
-export {DeckAdapter} from './adapters';
+export {DeckAnimator} from './animators';
 
 export {
   PNGSequenceEncoder,
   JPEGSequenceEncoder,
   JPEGEncoder,
   PNGEncoder,
-  WebMEncoder,
+  WEBMEncoder,
   FrameEncoder,
   PreviewEncoder,
-  GifEncoder
+  GIFEncoder,
+  RealtimeEncoder
 } from './encoders';
 
 export {
   Keyframes,
-  CameraKeyframes,
+  MapViewKeyframes,
   hold,
   linear,
   DeckLayerKeyframes,

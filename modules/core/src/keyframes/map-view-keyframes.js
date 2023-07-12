@@ -46,7 +46,7 @@ export function flyToInterpolator(start, end, factor, options) {
   return viewport;
 }
 
-export default class CameraKeyFrames extends Keyframes {
+export default class MapViewKeyframes extends Keyframes {
   constructor({timings, keyframes, easings, interpolators, width, height}) {
     super({
       timings,

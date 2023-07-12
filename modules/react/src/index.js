@@ -31,5 +31,5 @@ export {
   QuickAnimation,
   RenderPlayer
 } from './components';
-export {useNextFrame, useDeckAdapter, useDeckAnimation, useHubbleGl} from './hooks';
+export {useNextFrame, useDeckAnimator, useDeckAnimation, useHubbleGl} from './hooks';
 export {createKeplerLayers} from './kepler-layers';

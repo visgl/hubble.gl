@@ -18,14 +18,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 import test from 'tape-catch';
-import {CameraKeyframes, hold} from '@hubble.gl/core';
+import {MapViewKeyframes, hold} from '@hubble.gl/core';
 import {easeInOut} from 'popmotion';
 import {toLowPrecision} from '@deck.gl/test-utils';
 import {
   flyToInterpolator
   // @ts-ignore
   // eslint-disable-next-line import/no-unresolved
-} from '@hubble.gl/core/keyframes/camera-keyframes';
+} from '@hubble.gl/core/keyframes/map-view-keyframes';
 
 /* eslint-disable max-len */
 const TEST_CASES = [
@@ -70,7 +70,7 @@ const TEST_CASES = [
 ];
 /* eslint-enable max-len */
 
-test('CameraKeyframes#flyToInterpolator', t => {
+test('MapViewKeyframes#flyToInterpolator', t => {
   TEST_CASES.filter(testCase => testCase.transition).forEach(testCase => {
     Object.keys(testCase.transition).forEach(time => {
       const propsInTransition = flyToInterpolator(
@@ -85,8 +85,8 @@ test('CameraKeyframes#flyToInterpolator', t => {
   t.end();
 });
 
-test('Keyframes#CameraKeyframes', t => {
-  const camera = new CameraKeyframes({
+test('Keyframes#MapViewKeyframes', t => {
+  const camera = new MapViewKeyframes({
     timings: [0, 5000, 20000, 40000, 42000, 47000],
     keyframes: [
       {

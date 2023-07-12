@@ -23,7 +23,7 @@ import {PreviewEncoder} from '../encoders';
 import {AnimationManager} from '../animations';
 import {VideoCapture} from '../capture/video-capture';
 
-export default class DeckAdapter {
+export default class DeckAnimator {
   /** @type {any} */
   deck;
   /** @type {AnimationManager} */
@@ -37,28 +37,34 @@ export default class DeckAdapter {
 
   /**
    * @param {Object} params
-   * @param {AnimationManager} params.animationManager
+   * @param {any} params.deck
+   * @param {any[]} params.animations
    * @param {WebGL2RenderingContext} params.glContext
    */
-  constructor({animationManager = undefined, glContext = undefined}) {
-    this.animationManager = animationManager || new AnimationManager({});
+  constructor({deck = undefined, animations = undefined, glContext = undefined}) {
+    this.animationManager = new AnimationManager({animations});
     this.glContext = glContext;
     this.videoCapture = new VideoCapture();
     this.shouldAnimate = false;
     this.enabled = false;
     this.getProps = this.getProps.bind(this);
+    this.setDeckProps = this.setDeckProps.bind(this);
+    this.setDeck = this.setDeck.bind(this);
     this.render = this.render.bind(this);
     this.stop = this.stop.bind(this);
     this.seek = this.seek.bind(this);
+    this.onAfterRender = this.onAfterRender.bind(this);
+    this.setDeck(deck);
   }
 
   setDeck(deck) {
     this.deck = deck;
+    this.setDeckProps();
   }
 
   /**
    * @param {Object} params
-   * @param {any} params.deck
+   * @param {any?} params.deck
    * @param {(nextTimeMs: number) => void} params.onNextFrame
    * @param {Object} params.extraProps
    */
@@ -86,10 +92,17 @@ export default class DeckAdapter {
     return {...extraProps, ...props};
   }
 
+  setDeckProps() {
+    this.deck.setProps(
+      this.getProps({
+        onNextFrame: this.setDeckProps // draw loop
+      })
+    );
+  }
+
   /**
    * @param {Object} params
-   * @param {typeof import('../encoders').FrameEncoder} params.Encoder
-   * @param {Partial<import('types').FormatConfigs>} params.formatConfigs
+   * @param {import('../encoders').FrameEncoder} params.encoder
    * @param {string} params.filename
    * @param {{start: number, end: number, framerate: number}} params.timecode
    * @param {() => void} params.onStopped
@@ -97,8 +110,7 @@ export default class DeckAdapter {
    * @param {() => void} params.onComplete
    */
   render({
-    Encoder = PreviewEncoder,
-    formatConfigs = {},
+    encoder = new PreviewEncoder(),
     filename = undefined,
     timecode = {start: 0, end: 0, framerate: 30},
     onStopped = undefined,
@@ -107,14 +119,13 @@ export default class DeckAdapter {
   }) {
     this.shouldAnimate = true;
     this.videoCapture.render({
-      Encoder,
-      formatConfigs,
+      encoder,
       timecode,
       filename,
       onStop: () => this.stop({onStopped, onSave, onComplete})
     });
     this.enabled = true;
-    this.seek({timeMs: timecode.start});
+    this.seek(timecode.start);
   }
 
   /**
@@ -131,10 +142,9 @@ export default class DeckAdapter {
   }
 
   /**
-   * @param {Object} params
-   * @param {number} params.timeMs
+   * @param {number} timeMs
    */
-  seek({timeMs}) {
+  seek(timeMs) {
     this.animationManager.timeline.setTime(timeMs);
     this.animationManager.draw();
   }
@@ -147,7 +157,7 @@ export default class DeckAdapter {
     const areAllLayersLoaded = this.deck && this.deck.props.layers.every(layer => layer.isLoaded);
     if (this.videoCapture.isRecording() && areAllLayersLoaded && readyToCapture) {
       this.videoCapture.capture(this.deck.canvas, nextTimeMs => {
-        this.seek({timeMs: nextTimeMs});
+        this.seek(nextTimeMs);
         proceedToNextFrame(nextTimeMs);
       });
     }

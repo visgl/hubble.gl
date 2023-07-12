@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 export {default as Keyframes} from './keyframes';
-export {default as CameraKeyframes} from './camera-keyframes';
+export {default as MapViewKeyframes} from './map-view-keyframes';
 export {default as DeckLayerKeyframes} from './deck-layer-keyframes';
 export {default as KeplerLayerKeyframes} from './kepler-layer-keyframes';
 export {default as KeplerFilterKeyframes} from './kepler-filter-keyframes';
