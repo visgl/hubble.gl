@@ -19,7 +19,7 @@ git clone git git@github.com:<github username>/hubble.gl.git
 cd hubble.gl
 
 # 3. Add the main repository as an upstream remote
-git remote add upstream "git@github.com:uber/hubble.gl.git"
+git remote add upstream "git@github.com:visgl/hubble.gl.git"
 
 # 4. Change to the master branch if not already on it (starts on master by default)
 git checkout master
@@ -53,4 +53,4 @@ Maintainers of hubble.gl have commit access to this GitHub repository, and take 
 
 ## Code of Conduct
 
-Please be mindful of and adhere to the Contributor Covenant's [Code of Conduct](https://lfprojects.org/policies/code-of-conduct/) when contributing to Hubble.gl.
+Please be mindful of and adhere to the Contributor Covenant's [Code of Conduct](https://code-of-conduct.openjsf.org/) when contributing to Hubble.gl.
