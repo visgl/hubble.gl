@@ -17,45 +17,51 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-import {Timeline} from '@luma.gl/engine';
+import test from 'tape-catch';
 
-export default class AnimationManager {
-  timeline;
-  animations = {};
+import {AnimationManager} from '@hubble.gl/core';
 
-  /**
-   * @param {Object} params
-   * @param {any} params.timeline
-   * @param {any[]} params.animations
-   */
-  constructor({timeline = undefined, animations = []}) {
-    this.timeline = timeline || new Timeline();
-    for (const animation of animations) {
-      this.attachAnimation(animation);
-    }
+class MockAnimation {
+  constructor() {
+    this.id = 'mock-animation';
   }
-
-  attachAnimation(animation) {
-    animation.attachKeyframes(this.timeline);
-    this.animations[animation.id] = animation;
+  attachKeyframes(timeline) {
+    return;
   }
-
-  setKeyframes(animationId, params) {
-    this.animations[animationId]?.setKeyframes({
-      timeline: this.timeline,
-      ...params
-    });
+  setKeyframes({}) {
+    return;
   }
-
-  getKeyframes(animationId) {
-    return this.animations[animationId]?.getKeyframes();
-  }
-
-  getAnimation(animationId) {
-    return this.animations[animationId];
-  }
-
-  draw() {
-    Object.values(this.animations).forEach(animation => animation.draw());
+  getKeyframes() {
+    return true;
   }
 }
+
+test('AnimationManager#getKeyframes', t => {
+  const manager = new AnimationManager({
+    animations: [new MockAnimation()]
+  });
+
+  const existent = manager.getKeyframes('mock-animation');
+  t.equals(existent, true, 'defined animations return keyframes');
+
+  const nonExistent = manager.getKeyframes('non-existent-animation');
+  t.equals(nonExistent, undefined, 'undefined animations dont return keyframes');
+
+  t.end();
+});
+
+test('AnimationManager#setKeyframes', t => {
+  const manager = new AnimationManager({
+    animations: [new MockAnimation()]
+  });
+
+  t.doesNotThrow(
+    () => manager.setKeyframes('mock-animation', {}),
+    'defined animations set keyframes'
+  );
+  t.doesNotThrow(
+    () => manager.setKeyframes('non-existent-animation', {}),
+    'undefined animations dont set keyframes'
+  );
+  t.end();
+});
