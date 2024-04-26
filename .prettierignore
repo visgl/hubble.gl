@@ -1,4 +1,4 @@
-node_modules/
+website/build
 **/dist*/**/*.js
 dist.js
 *.min.js
@@ -6,3 +6,4 @@ dist.js
 
 public/
 .cache/
+.docusaurus

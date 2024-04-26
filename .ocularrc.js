@@ -1,19 +1,37 @@
-// eslint-disable-next-line no-unused-vars
-const {resolve} = require('path');
+/** @typedef {import('ocular-dev-tools').OcularConfig} OcularConfig */
+import {dirname, join} from 'path';
+import {fileURLToPath} from 'url';
 
-module.exports = {
+const packageRoot = dirname(fileURLToPath(import.meta.url));
+
+/** @type {OcularConfig} */
+const config = {
   lint: {
-    paths: ['docs', 'modules', 'examples', 'test'],
-    extensions: ['js']
+    paths: ['modules', 'examples', 'test']
+    // paths: ['modules', 'test', 'examples', 'website']
   },
 
-  // aliases: {
-  //   // TEST
-  //   test: resolve(__dirname, './test')
-  // },
+  babel: false,
 
-  browserTest: {
-    server: {wait: 5000}
+  bundle: {
+    globalName: 'hubble',
+    target: ['chrome110', 'firefox110', 'safari15'],
+    format: 'umd',
+    globals: {
+      '@hubble.gl/*': 'globalThis.hubble'
+    }
+  },
+
+  typescript: {
+    project: 'tsconfig.build.json'
+  },
+
+  aliases: {
+    'deck.gl-test': join(packageRoot, './test')
+  },
+
+  coverage: {
+    test: 'browser'
   },
 
   entry: {
@@ -24,3 +42,5 @@ module.exports = {
     size: 'test/size/main.js'
   }
 };
+
+export default config;

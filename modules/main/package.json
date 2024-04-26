@@ -3,12 +3,10 @@
   "version": "1.3.7",
   "description": "hubble.gl is an animation and video capture library for vis.gl in the browser",
   "license": "MIT",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/uber/hubble.gl"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "keywords": [
     "kepler.gl",
@@ -16,18 +14,25 @@
     "webgl",
     "visualization"
   ],
-  "main": "dist/es5/index.js",
-  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
   "files": [
     "src",
     "dist",
-    "README.md",
     "dist.min.js"
   ],
   "sideEffects": false,
   "scripts": {
     "build": "npm run build-bundle",
-    "build-bundle": "webpack --config ../../scripts/bundle.config.js",
+    "build-bundle": "ocular-bundle ./bundle.ts",
     "prepublishOnly": "npm run build-bundle && npm run build-bundle -- --env.dev"
   },
   "dependencies": {
