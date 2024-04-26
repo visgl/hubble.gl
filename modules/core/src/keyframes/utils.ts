@@ -8,7 +8,7 @@ import type { Easing } from './easings';
 
 export function sanitizeInterpolators(keyframes, interpolators: string | string[]) {
   if (typeof interpolators === 'string') {
-    let _interpolators: string[] = [];
+    const _interpolators: string[] = [];
     for (let idx = 0; idx < keyframes.length - 1; idx++) {
       _interpolators.push(interpolators);
     }
@@ -23,7 +23,7 @@ export function sanitizeInterpolators(keyframes, interpolators: string | string[
 
 export function sanitizeEasings(keyframes, easings: Easing | Easing[]) {
   if (typeof easings === 'function') {
-    let _easings: Easing[] = [];
+    const _easings: Easing[] = [];
     for (let idx = 0; idx < keyframes.length - 1; idx++) {
       _easings.push(easings);
     }
@@ -39,7 +39,7 @@ export function sanitizeEasings(keyframes, easings: Easing | Easing[]) {
 
 export function sanitizeTimings(keyframes, timings: number | number[]) {
   if (typeof timings === 'number') {
-    let _timings: number[] = [];
+    const _timings: number[] = [];
     let time = 0;
     for (let idx = 0; idx < keyframes.length; idx++) {
       _timings.push(time);

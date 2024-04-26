@@ -1,4 +1,4 @@
-import { Keyframes, CameraKeyframes } from "./keyframes";
+import { Keyframes, CameraKeyframes } from './keyframes';
 
 type DeckGl = {
   animationLoop: {
