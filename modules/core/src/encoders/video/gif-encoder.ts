@@ -46,17 +46,13 @@ export default class GifEncoder extends FrameEncoder {
     });
   }
 
-  /** @param {HTMLCanvasElement} canvas */
-  async add(canvas) {
+  async add(canvas: HTMLCanvasElement) {
     if (this.source === 'images') {
       const dataUrl = canvas.toDataURL('image/jpeg', this.options.jpegQuality);
       await this.gifBuilder.add(dataUrl);
     }
   }
 
-  /**
-   * @return {Promise<Blob>}
-   */
   async save() {
     return fetch(await this.gifBuilder.build()).then(res => res.blob());
   }

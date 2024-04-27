@@ -8,9 +8,9 @@ function getFeatures<T>(keyframes: T[]) {
   return keyframes && keyframes[0] ? Object.keys(keyframes[0]) : [];
 }
 
-type DeckLayerKeyframeConstructorProps<T> = KeyframeConstructorProps<T> & {id: string}
+export type DeckLayerKeyframeConstructorProps<T> = KeyframeConstructorProps<T> & {id: string}
 
-export default class DeckLayerKeyframes<T> extends Keyframes<T> {
+export default class DeckLayerKeyframes<T extends object> extends Keyframes<T> {
   id: string;
   constructor({id, features, timings, keyframes, easings}: DeckLayerKeyframeConstructorProps<T>) {
     super({timings, keyframes, easings, features: features || getFeatures(keyframes)});

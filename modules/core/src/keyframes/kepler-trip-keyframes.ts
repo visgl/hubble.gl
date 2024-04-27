@@ -23,7 +23,7 @@ export type KeplerTripKeyframeConstructorProps = Omit<KeyframeConstructorProps<T
 export type KeplerTripKeyframeProps = Omit<KeyframeProps<TripKeyframe>, 'keyframes'> & { keyframes?: TripKeyframe[], animationConfig?: AnimationConfig }
 
 class KeplerTripKeyframes extends Keyframes<TripKeyframe> {
-  constructor({animationConfig = undefined, timings, keyframes, easings, interpolators}: KeplerTripKeyframeConstructorProps) {
+  constructor({animationConfig = undefined, timings, keyframes = undefined, easings, interpolators}: KeplerTripKeyframeProps) {
     super(
       KeplerTripKeyframes._processParams({
         animationConfig,
@@ -47,10 +47,10 @@ class KeplerTripKeyframes extends Keyframes<TripKeyframe> {
     );
   }
 
-  static _processParams({animationConfig = undefined, timings, keyframes, easings, interpolators}: KeplerTripKeyframeProps) {
+  static _processParams({animationConfig = undefined, timings, keyframes = undefined, easings, interpolators}: KeplerTripKeyframeProps) {
     let params: KeyframeConstructorProps<TripKeyframe> = {features: ['currentTime'], timings, keyframes, easings, interpolators};
     if (animationConfig && keyframes === undefined) {
-      if (Array.isArray(timings) && timings.length !== 2) throw new Error('[start, end] timings required.');
+      if (!Array.isArray(timings) || timings.length !== 2) throw new Error('[start, end] timings required.');
       params = {...params, ...tripKeyframes({animationConfig})};
     }
     return params;

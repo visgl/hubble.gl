@@ -1,5 +1,3 @@
-import { Keyframes, CameraKeyframes } from './keyframes';
-
 type DeckGl = {
   animationLoop: {
     timeline: {

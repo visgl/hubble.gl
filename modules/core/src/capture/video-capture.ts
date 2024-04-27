@@ -54,7 +54,7 @@ export class VideoCapture {
     this._save = this._save.bind(this);
   }
 
-  isRecording() {
+  isRecording(): boolean {
     return this.recording;
   }
 

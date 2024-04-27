@@ -26,7 +26,7 @@ export type KeyframeProps<T> = {
 
 export type KeyframeConstructorProps<T> = KeyframeProps<T> & { features?: string[] } 
 
-class Keyframes<T extends {}> extends LumaKeyFrames<(T & {
+class Keyframes<T extends object> extends LumaKeyFrames<(T & {
   ease: Easing;
   interpolate: string;
 })> {

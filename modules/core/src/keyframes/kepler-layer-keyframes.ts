@@ -4,13 +4,13 @@
 
 import Keyframes, { KeyframeConstructorProps, KeyframeProps } from './keyframes';
 
-function getFeatures(layer: {config: {visConfig: Object}}) {
+function getFeatures(layer: {config: {visConfig: object}}) {
   return Object.keys(layer.config.visConfig);
 }
 
 export type KeplerLayerKeyframeConstructorProps<T> = KeyframeConstructorProps<T> & {layer: any}
 
-class KeplerLayerKeyframes<T> extends Keyframes<T> {
+class KeplerLayerKeyframes<T extends object> extends Keyframes<T> {
   layer: any;
   constructor({layer, timings, keyframes, easings}: KeplerLayerKeyframeConstructorProps<T>) {
     super({timings, keyframes, easings, features: getFeatures(layer)});
