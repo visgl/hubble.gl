@@ -15,7 +15,7 @@ const ZIP = 'zip';
 class JPEGSequenceEncoder extends FrameEncoder {
   tarBuilder: TARBuilder | null = null;
   filemap: {[filename: string]: ArrayBuffer} = {};
-  options: {quality: number, archive: 'tar' | 'zip'} = {quality: 1, archive: TAR}
+  options: {quality: number, archive?: 'tar' | 'zip'} = {quality: 1, archive: TAR}
 
   constructor(settings: FrameEncoderSettings) {
     super(settings);

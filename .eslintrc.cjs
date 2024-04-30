@@ -30,8 +30,9 @@ const config = getESLintConfig({
       'no-eq-null': ['warn'],
       eqeqeq: ['warn'],
       radix: 0,
-      'arrow-parens': ['error', 'as-needed'] // TODO: Remove later
+      'arrow-parens': ['error', 'as-needed'], // TODO: Remove later
       // 'accessor-pairs': ['error', {getWithoutSet: false, setWithoutGet: false}]
+      '@typescript-eslint/unbound-method': 'off'
     },
   
     overrides: [

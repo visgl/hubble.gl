@@ -19,7 +19,7 @@ export type Keyframe<T> = [number, (T & {
 
 export type KeyframeProps<T> = {
   timings: number | number[],
-  keyframes: T[],
+  keyframes?: T[],
   easings?: Easing | Easing[],
   interpolators?: string | string[]
   features?: string[]

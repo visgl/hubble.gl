@@ -52,9 +52,9 @@ export type CameraDataType = {
   bearing?: number
 }
 
-export type CameraKeyframeProps = KeyframeProps<Partial<CameraDataType>> & {width: number, height: number}
+export type CameraKeyframeProps = KeyframeProps<CameraDataType> & {width: number, height: number}
 
-export default class CameraKeyFrames extends Keyframes<Partial<CameraDataType>> {
+export default class CameraKeyFrames extends Keyframes<CameraDataType> {
   width: number;
   height: number;
 
@@ -73,8 +73,8 @@ export default class CameraKeyFrames extends Keyframes<Partial<CameraDataType>> 
 
   getFrame() {
     const factor = this.factor;
-    const start = this.getStartData() as unknown as CameraDataType & { ease: Easing, interpolate: string };
-    const end = this.getEndData() as unknown as CameraDataType & { ease: Easing, interpolate: string };
+    const start = this.getStartData();
+    const end = this.getEndData();
 
     if (end.interpolate === 'flyTo') {
       if (!this.width || !this.height) {

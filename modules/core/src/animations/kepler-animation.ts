@@ -19,6 +19,7 @@ import type {
   KeplerLayer,
   KeplerLayerKeyframeProps,
   KeplerAnimationConfig,
+  KeplerTripKeyframeProps,
 } from '../keyframes/index';
 import Animation, { type AnimationConstructor } from './animation';
 
@@ -46,7 +47,7 @@ type KeplerAnimationProps = {
   filterKeyframes?: KeplerFilterKeyframeProps[],
   getTimeRangeFilterKeyframes?: TimeRangeKeyframeAccessor,
   animationConfig?: KeplerAnimationConfig,
-  tripKeyframe?: KeplerTripKeyframes,
+  tripKeyframe?: KeplerTripKeyframeProps,
   cameraKeyframe?: CameraKeyframeProps
   timeline?: Timeline
 }

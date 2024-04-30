@@ -4,7 +4,7 @@
 
 import {Timeline} from '@luma.gl/engine';
 import type Animation from './animation'
-import type { Keyframes } from '../keyframes';
+import type { KeyframeProps } from '../keyframes';
 
 export default class AnimationManager {
   timeline: Timeline;
@@ -22,7 +22,7 @@ export default class AnimationManager {
     this.animations[animation.id] = animation;
   }
 
-  setKeyframes(animationId: string, params: {[id: string]: Keyframes<object>}) {
+  setKeyframes(animationId: string, params: {[id: string]: KeyframeProps<object>}) {
     this.animations[animationId].setKeyframes({
       timeline: this.timeline,
       ...params

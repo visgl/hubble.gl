@@ -6,20 +6,14 @@
 import {type FrameEncoder, PreviewEncoder, type FormatConfigs} from '../encoders/index';
 import {AnimationManager} from '../animations/index';
 import {type Timecode, VideoCapture} from '../capture/video-capture';
-
-type DeckProps = {
-  _animate: boolean
-  onAfterRender?: () => void
-  controller?: boolean
-  gl?: WebGL2RenderingContext
-}
+import type {Deck, Layer, DeckProps} from '@deck.gl/core/typed'
 
 export default class DeckAdapter {
-  deck: any;
+  deck: Deck;
   animationManager: AnimationManager;
   shouldAnimate: boolean
   enabled: boolean
-  glContext: WebGL2RenderingContext
+  glContext: WebGLRenderingContext
   videoCapture: VideoCapture
 
   constructor({
@@ -27,7 +21,7 @@ export default class DeckAdapter {
     glContext = undefined
   }: {
     animationManager?: AnimationManager, 
-    glContext?: WebGL2RenderingContext
+    glContext?: WebGLRenderingContext
   }) {
     this.animationManager = animationManager || new AnimationManager({});
     this.glContext = glContext;
@@ -40,7 +34,7 @@ export default class DeckAdapter {
     this.seek = this.seek.bind(this);
   }
 
-  setDeck(deck: any) {
+  setDeck(deck: Deck) {
     this.deck = deck;
   }
 
@@ -49,7 +43,7 @@ export default class DeckAdapter {
     onNextFrame = undefined, 
     extraProps = undefined
   }: {
-    deck: any
+    deck: Deck
     onNextFrame?: (nextTimeMs: number) => void
     extraProps?: DeckProps
   }) {
@@ -127,9 +121,11 @@ export default class DeckAdapter {
   }
 
   onAfterRender(proceedToNextFrame: (nextTimeMs: number) => void, readyToCapture = true) {
-    const areAllLayersLoaded = this.deck && this.deck.props.layers.every(layer => layer.isLoaded);
+    const areAllLayersLoaded = this.deck && this.deck.props.layers.every(layer => (layer as Layer).isLoaded);
     if (this.videoCapture.isRecording() && areAllLayersLoaded && readyToCapture) {
-      this.videoCapture.capture(this.deck.canvas, nextTimeMs => {
+      // @ts-expect-error TODO use getCanvas
+      const canvas = this.deck.canvas
+      this.videoCapture.capture(canvas, nextTimeMs => {
         this.seek({timeMs: nextTimeMs});
         proceedToNextFrame(nextTimeMs);
       });

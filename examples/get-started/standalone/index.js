@@ -1,4 +1,4 @@
-/* global deck, hubble */
+/* global deck, hubble, document, URL */
 /* eslint-disable no-unused-vars */
 import 'hubble.gl/../bundle';
 

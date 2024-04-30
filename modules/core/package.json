@@ -36,11 +36,11 @@
   },
   "dependencies": {
     "@loaders.gl/core": "^3.0.0",
-    "@math.gl/core": "^3.6.0",
-    "@luma.gl/core": "^8.0.0",
-    "@luma.gl/engine": "^8.0.0",
     "@loaders.gl/video": "^3.0.12",
     "@loaders.gl/zip": "^3.0.12",
+    "@luma.gl/core": "^8.0.0",
+    "@luma.gl/engine": "^8.0.0",
+    "@math.gl/core": "^3.6.0",
     "@math.gl/web-mercator": "^3.6.2",
     "downloadjs": "^1.4.7",
     "popmotion": "9.3.1",
@@ -49,5 +49,8 @@
   },
   "resolutions": {
     "@loaders.gl/video": "3.0.12"
+  },
+  "devDependencies": {
+    "@types/tape-catch": "^1.0.2"
   }
 }

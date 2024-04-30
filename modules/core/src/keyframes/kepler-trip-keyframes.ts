@@ -33,7 +33,7 @@ class KeplerTripKeyframes extends Keyframes<TripDataType> {
     );
   }
 
-  set({animationConfig = undefined, timings, keyframes, easings, interpolators}: KeplerTripKeyframeProps) {
+  set({animationConfig = undefined, timings, keyframes = undefined, easings, interpolators}: KeplerTripKeyframeProps) {
     super.set(
       KeplerTripKeyframes._processParams({
         animationConfig,

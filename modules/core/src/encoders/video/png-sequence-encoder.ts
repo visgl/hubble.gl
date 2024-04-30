@@ -15,7 +15,7 @@ const ZIP = 'zip';
 class PNGSequenceEncoder extends FrameEncoder {
   tarBuilder: TARBuilder | null = null;
   filemap: {[filename: string]: ArrayBuffer} = {};
-  options: {archive: 'tar' | 'zip'} = {archive: TAR}
+  options: {archive?: 'tar' | 'zip'} = {archive: TAR}
 
   constructor(settings: FrameEncoderSettings) {
     super(settings);

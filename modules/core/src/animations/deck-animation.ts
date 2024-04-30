@@ -9,16 +9,16 @@ import type { Layer } from '@deck.gl/core/typed'
 
 function noop() {}
 
-type DeckAnimationProps = {
+export type DeckAnimationProps = {
   layerKeyframes?: DeckLayerKeyframeProps<object>[]
   cameraKeyframe?: CameraKeyframeProps
   timeline?: Timeline
 }
 
-type DeckAnimationConstructor = AnimationConstructor & {
+export type DeckAnimationConstructor = AnimationConstructor & {
   getLayers: (animation: DeckAnimation) => Layer[]
   onLayersUpdate: (layers: Layer[]) => void
-  onCameraUpdate?: (frame: Partial<CameraDataType>) => void
+  onCameraUpdate?: (frame: CameraDataType) => void
 } & DeckAnimationProps
 
 export default class DeckAnimation extends Animation {
@@ -27,7 +27,7 @@ export default class DeckAnimation extends Animation {
 
   getLayers: (animation: DeckAnimation) => Layer[];
   onLayersUpdate: (layers: Layer[]) => void;
-  onCameraUpdate: (frame: Partial<CameraDataType>) => void;
+  onCameraUpdate: (frame: CameraDataType) => void;
 
   constructor({
     id = 'deck',
@@ -50,7 +50,7 @@ export default class DeckAnimation extends Animation {
     this.onLayersUpdate = onLayersUpdate;
   }
 
-  setOnCameraUpdate(onCameraUpdate: (frame: Partial<CameraDataType>) => void) {
+  setOnCameraUpdate(onCameraUpdate: (frame: CameraDataType) => void) {
     this.onCameraUpdate = onCameraUpdate;
   }
 

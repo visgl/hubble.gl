@@ -15,7 +15,8 @@ export {
   WebMEncoder,
   FrameEncoder,
   PreviewEncoder,
-  GifEncoder
+  GifEncoder,
+  FormatConfigs
 } from './encoders/index';
 
 export {
@@ -29,4 +30,16 @@ export {
   KeplerTripKeyframes
 } from './keyframes/index';
 
-export {AnimationManager, Animation, DeckAnimation, KeplerAnimation} from './animations/index';
+export {
+  AnimationManager,
+  AnimationConstructor,
+  Animation, 
+  DeckAnimation, 
+  DeckAnimationConstructor,
+  DeckAnimationProps,
+  KeplerAnimation
+} from './animations/index';
+
+export {
+  Timecode
+} from './capture/video-capture'

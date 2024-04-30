@@ -10,21 +10,21 @@ interface EncoderSettings extends FormatConfigs {
 
 export interface FormatConfigs {
   png: {
-    archive: 'tar' | 'zip'
+    archive?: 'tar' | 'zip'
   }
   jpeg: {
-    archive: 'tar' | 'zip'
+    archive?: 'tar' | 'zip'
     quality: number
   },
   webm: {
     quality: number
   }
   gif: {
-    numWorkers: number,
+    numWorkers?: number,
     sampleInterval: number,
     width: number,
     height: number
-    jpegQuality: number
+    jpegQuality?: number
   }
 }
 

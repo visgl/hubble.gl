@@ -11,7 +11,7 @@ type GIFOptions = {width: number, height: number, numWorkers: number, sampleInte
 export default class GifEncoder extends FrameEncoder {
   options: GIFOptions;
   gifBuilder: GIFBuilder | null = null;
-  source: 'images' = 'images';
+  source = 'images';
 
   constructor(settings: FrameEncoderSettings) {
     super(settings);

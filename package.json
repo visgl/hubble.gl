@@ -60,7 +60,9 @@
   ],
   "resolutions": {
     "prettier": "^2.4.1",
-    "@loaders.gl/video": "3.0.12"
+    "@loaders.gl/video": "3.0.12",
+    "@types/react": "^16.8.0",
+    "@types/react-dom": "^16.8.0"
   },
   "dependencies": {}
 }
