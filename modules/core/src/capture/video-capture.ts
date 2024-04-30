@@ -7,7 +7,7 @@ import download from 'downloadjs';
 import type {FrameEncoder, FormatConfigs} from '../encoders';
 import {guid} from './utils';
 
-type Timecode = {start: number, end: number, duration: number, framerate: number}
+export type Timecode = {start: number, end: number, duration?: number, framerate: number}
 
 type CaptureStepSuccess = {
   kind: 'next-frame'
@@ -69,7 +69,7 @@ export class VideoCapture {
     onStop = undefined
   }: {
     Encoder: typeof FrameEncoder, 
-    formatConfigs: FormatConfigs,
+    formatConfigs: Partial<FormatConfigs>,
     timecode: Timecode,
     filename?: string,
     onStop?: () => void
