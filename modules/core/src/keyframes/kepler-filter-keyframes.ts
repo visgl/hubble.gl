@@ -12,9 +12,14 @@ export type KeplerFilter = {
   animationWindow: 'free' | 'incremental' | 'point' | 'interval';
   value: [number, number]
   domain: [number, number]
-  bins: {x0: number, x1: number}[]
+  bins: {
+    [id: string]: {
+      [interval: string]: {x0: number, x1: number}[]
+    }
+  }
   plotType: {
-    interval: number
+    type: string
+    interval: string
   }
 }
 

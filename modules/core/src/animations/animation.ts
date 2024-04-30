@@ -14,7 +14,7 @@ type GetKeyframes = {
   [id: string]: Keyframes<any> | {[id: string]: Keyframes<any>}
 };
 
-export type AnimationConstructor = {id: string}
+export type AnimationConstructor = {id?: string}
 
 export default class Animation {
   id: string;

@@ -1,37 +1,20 @@
-// Copyright (c) 2021 Uber Technologies, Inc.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// hubble.gl
+// SPDX-License-Identifier: MIT
+// Copyright (c) vis.gl contributors
 import test from 'tape-catch';
 
 import {
   findLayer,
   findFilterIdx
-  // @ts-ignore
-  // eslint-disable-next-line import/no-unresolved
-} from '@hubble.gl/core/animations/kepler-animation';
+} from '@hubble.gl/core/src/animations/kepler-animation';
 
 import {KeplerAnimation} from '@hubble.gl/core';
+import type { KeplerFilter } from '@hubble.gl/core/src/keyframes';
 
 const layers = [
-  {id: '2', config: {label: 'a'}},
-  {id: '1', config: {label: 'b'}},
-  {id: '3', config: {label: 'a'}}
+  {id: '2', config: {label: 'a', visConfig: {}}},
+  {id: '1', config: {label: 'b', visConfig: {}}},
+  {id: '3', config: {label: 'a', visConfig: {}}}
 ];
 
 const FIND_LAYER_TEST_CASES = [
@@ -78,7 +61,38 @@ test('KeplerAnimation#findLayer', t => {
   t.end();
 });
 
-const filters = [{id: 'f_1'}, {id: 'f_2'}];
+const filters: KeplerFilter[] = [
+  {
+    id: 'f_1',
+    type: 'timeRange',
+    animationWindow: 'free',
+    value: [0, 1],
+    domain: [0, 1],
+    bins: { 
+      someBin: {
+        '1-minute': [{ x0: 0, x1: 1 }]
+      }
+    },
+    plotType: {
+      type: '',
+      interval: '1-minute'
+    }
+  }, {
+    id: 'f_2',
+    type: 'timeRange',
+    animationWindow: 'free',
+    value: [0, 1],
+    domain: [0, 1],
+    bins: { 
+      someBin: {
+        '1-minute': [{ x0: 0, x1: 1 }]
+      }
+    },
+    plotType: {
+      type: '',
+      interval: '1-minute'
+    }
+  }];
 
 const FIND_FILTER_TEST_CASES = [
   {
@@ -92,7 +106,7 @@ const FIND_FILTER_TEST_CASES = [
   {
     args: {
       filters,
-      filterKeyframe: {filterIdx: undefined, id: 'f_2'}
+      filterKeyframe: {id: 'f_2'}
     },
     expected: 1,
     message: 'filter found by filter id should be correct'
@@ -100,7 +114,7 @@ const FIND_FILTER_TEST_CASES = [
   {
     args: {
       filters,
-      filterKeyframe: {filterIdx: undefined, id: 'f_unknown'}
+      filterKeyframe: {id: 'f_unknown'}
     },
     expected: -1,
     message: 'unknwon filter should be undefined'

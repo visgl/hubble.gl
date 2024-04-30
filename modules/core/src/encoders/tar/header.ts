@@ -92,7 +92,7 @@ export const structure = [
   }
 ];
 
-export function format(data: Object, cb?: (buffer: Uint8Array, offset: number) => Uint8Array) {
+export function format(data: object, cb?: (buffer: Uint8Array, offset: number) => Uint8Array) {
   const buffer = utils.clean(512);
   let offset = 0;
 

@@ -5,6 +5,7 @@
 import Keyframes, { KeyframeProps } from './keyframes';
 import {flyToViewport} from '@math.gl/web-mercator';
 import {lerp} from '@math.gl/core';
+import type { Easing } from './easings';
 
 const LINEARLY_INTERPOLATED_PROPS = ['bearing', 'pitch'];
 const DEFAULT_OPTS = {
@@ -13,11 +14,23 @@ const DEFAULT_OPTS = {
   // screenSpeed and maxDuration are used only if specified
 };
 
-export function flyToInterpolator(start, end, factor, options) {
-  const viewport = flyToViewport(start, end, end.ease(factor), {
-    ...DEFAULT_OPTS,
-    ...options
-  });
+export function flyToInterpolator(
+  start: CameraDataType & { ease: Easing, width: number, height: number }, 
+  end: CameraDataType & { ease: Easing }, 
+  factor: number, 
+  options?: {speed?: number, curve?: number, maxDuration?: number}
+) {
+  
+  const viewport = flyToViewport(
+    start,
+    // @ts-ignore width/height not necessary on end
+    end,
+    end.ease(factor),
+    {
+      ...DEFAULT_OPTS,
+      ...options
+    }
+  );
 
   // Linearly interpolate 'bearing' and 'pitch'.
   // If pitch/bearing are not supplied, they are interpreted as zeros in viewport calculation
@@ -35,8 +48,8 @@ export type CameraDataType = {
   latitude: number, 
   longitude: number, 
   zoom: number, 
-  pitch: number, 
-  bearing: number
+  pitch?: number, 
+  bearing?: number
 }
 
 export type CameraKeyframeProps = KeyframeProps<Partial<CameraDataType>> & {width: number, height: number}
@@ -60,8 +73,8 @@ export default class CameraKeyFrames extends Keyframes<Partial<CameraDataType>> 
 
   getFrame() {
     const factor = this.factor;
-    const start = this.getStartData();
-    const end = this.getEndData();
+    const start = this.getStartData() as unknown as CameraDataType & { ease: Easing, interpolate: string };
+    const end = this.getEndData() as unknown as CameraDataType & { ease: Easing, interpolate: string };
 
     if (end.interpolate === 'flyTo') {
       if (!this.width || !this.height) {

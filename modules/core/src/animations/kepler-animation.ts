@@ -24,7 +24,7 @@ import Animation, { type AnimationConstructor } from './animation';
 
 function noop() {}
 
-export function findLayer<T>({layers, layerKeyframe}: {layers: KeplerLayer[], layerKeyframe: T & {id?: string, label?: string}}) {
+export function findLayer({layers, layerKeyframe}: {layers: KeplerLayer[], layerKeyframe: {id?: string, label?: string}}) {
   // Either find layer using id or label.
   return (
     layers.find(layer => layer.id === layerKeyframe.id) ||
@@ -32,7 +32,7 @@ export function findLayer<T>({layers, layerKeyframe}: {layers: KeplerLayer[], la
   );
 }
 
-export function findFilterIdx<T>({filters, filterKeyframe}: {filters: KeplerFilter[], filterKeyframe: T & {filterIdx?: number, id?: string}}) {
+export function findFilterIdx({filters, filterKeyframe}: {filters: KeplerFilter[], filterKeyframe: {filterIdx?: number, id?: string}}) {
   // Either find filter using index or id.
   return Number.isFinite(filterKeyframe.filterIdx)
     ? filterKeyframe.filterIdx
@@ -41,7 +41,7 @@ export function findFilterIdx<T>({filters, filterKeyframe}: {filters: KeplerFilt
 
 type KeplerAnimationProps = {
   layers?: KeplerLayer[],
-  layerKeyframes?: Omit<KeplerLayerKeyframeProps<object>, 'layer'>[],
+  layerKeyframes?: (Omit<KeplerLayerKeyframeProps<object>, 'layer'> & {id?: string, label?: string})[],
   filters?: KeplerFilter[],
   filterKeyframes?: KeplerFilterKeyframeProps[],
   getTimeRangeFilterKeyframes?: TimeRangeKeyframeAccessor,
