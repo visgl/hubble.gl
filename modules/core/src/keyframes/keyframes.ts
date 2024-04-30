@@ -22,9 +22,8 @@ export type KeyframeProps<T> = {
   keyframes: T[],
   easings?: Easing | Easing[],
   interpolators?: string | string[]
+  features?: string[]
 }
-
-export type KeyframeConstructorProps<T> = KeyframeProps<T> & { features?: string[] } 
 
 class Keyframes<T extends object> extends LumaKeyFrames<(T & {
   ease: Easing;
@@ -44,7 +43,7 @@ class Keyframes<T extends object> extends LumaKeyFrames<(T & {
     keyframes, 
     easings = linear, 
     interpolators = 'linear'
-  }: KeyframeConstructorProps<T>) {
+  }: KeyframeProps<T>) {
     super([]);
     this._setActiveFeatures = this._setActiveFeatures.bind(this);
     this.getFrame = this.getFrame.bind(this);

@@ -1,33 +1,30 @@
-// Copyright (c) 2021 Uber Technologies, Inc.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// hubble.gl
+// SPDX-License-Identifier: MIT
+// Copyright (c) vis.gl contributors
+
+import type { Timeline } from '@luma.gl/engine';
 import {
   CameraKeyframes,
   KeplerFilterKeyframes,
   KeplerLayerKeyframes,
-  KeplerTripKeyframes
+  KeplerTripKeyframes,
 } from '../keyframes';
-import Animation from './animation';
+import type {
+  CameraDataType,
+  CameraKeyframeProps,
+  KeplerFilter,
+  FilterDataType,
+  KeplerFilterKeyframeProps,
+  TimeRangeKeyframeAccessor,
+  KeplerLayer,
+  KeplerLayerKeyframeProps,
+  KeplerAnimationConfig,
+} from '../keyframes';
+import Animation, { type AnimationConstructor } from './animation';
 
 function noop() {}
 
-export function findLayer({layers, layerKeyframe}) {
+export function findLayer<T>({layers, layerKeyframe}: {layers: KeplerLayer[], layerKeyframe: T & {id?: string, label?: string}}) {
   // Either find layer using id or label.
   return (
     layers.find(layer => layer.id === layerKeyframe.id) ||
@@ -35,18 +32,42 @@ export function findLayer({layers, layerKeyframe}) {
   );
 }
 
-export function findFilterIdx({filters, filterKeyframe}) {
+export function findFilterIdx<T>({filters, filterKeyframe}: {filters: KeplerFilter[], filterKeyframe: T & {filterIdx?: number, id?: string}}) {
   // Either find filter using index or id.
   return Number.isFinite(filterKeyframe.filterIdx)
     ? filterKeyframe.filterIdx
     : filters.findIndex(filter => filter.id === filterKeyframe.id);
 }
 
+type KeplerAnimationProps = {
+  layers?: KeplerLayer[],
+  layerKeyframes?: Omit<KeplerLayerKeyframeProps<object>, 'layer'>[],
+  filters?: KeplerFilter[],
+  filterKeyframes?: KeplerFilterKeyframeProps[],
+  getTimeRangeFilterKeyframes?: TimeRangeKeyframeAccessor,
+  animationConfig?: KeplerAnimationConfig,
+  tripKeyframe?: KeplerTripKeyframes,
+  cameraKeyframe?: CameraKeyframeProps
+  timeline?: Timeline
+}
+
+type KeplerAnimationConstructor = AnimationConstructor & {
+  onTripFrameUpdate?: (currentTime: number) => void
+  onFilterFrameUpdate?: (filterIdx: number, key: 'value', value: FilterDataType | number | number[]) => void
+  onLayerFrameUpdate?: (layer: KeplerLayer, frame: object) => void,
+  onCameraFrameUpdate?: (frame: Partial<CameraDataType>) => void
+} & KeplerAnimationProps
+
 export default class KeplerAnimation extends Animation {
-  cameraKeyframe;
-  layerKeyframes = {};
-  filterKeyframes = {};
-  tripKeyframe = undefined;
+  cameraKeyframe: CameraKeyframes;
+  layerKeyframes: {[id: string]: KeplerLayerKeyframes<object>} = {};
+  filterKeyframes: {[id: string]: KeplerFilterKeyframes} = {};
+  tripKeyframe?: KeplerTripKeyframes = undefined;
+
+  onTripFrameUpdate: (currentTime: number) => void;
+  onFilterFrameUpdate: (filterIdx: number, key: 'value', value: FilterDataType | number | number[]) => void;
+  onLayerFrameUpdate: (layer: KeplerLayer, frame: object) => void;
+  onCameraFrameUpdate: (frame: Partial<CameraDataType>) => void;
 
   constructor({
     id = 'kepler',
@@ -62,7 +83,7 @@ export default class KeplerAnimation extends Animation {
     onFilterFrameUpdate = noop,
     onLayerFrameUpdate = noop,
     onCameraFrameUpdate = noop
-  }) {
+  }: KeplerAnimationConstructor) {
     super({id});
     this.onTripFrameUpdate = onTripFrameUpdate;
     this.onFilterFrameUpdate = onFilterFrameUpdate;
@@ -93,7 +114,7 @@ export default class KeplerAnimation extends Animation {
     tripKeyframe = undefined,
     cameraKeyframe = undefined,
     timeline = undefined
-  }) {
+  }: KeplerAnimationProps) {
     if (this.tripKeyframe && tripKeyframe) {
       this.tripKeyframe.set({animationConfig, ...tripKeyframe});
     } else if (tripKeyframe) {
@@ -109,7 +130,7 @@ export default class KeplerAnimation extends Animation {
     }
 
     if (layerKeyframes.length > 0) {
-      this.layerKeyframes = layerKeyframes.reduce((acc, layerKeyframe) => {
+      this.layerKeyframes = layerKeyframes.reduce<{[id: string]: KeplerLayerKeyframes<object>}>((acc, layerKeyframe) => {
         // Either find layer using id or label.
         const layer = findLayer({layers, layerKeyframe});
         if (layer) {
@@ -159,7 +180,7 @@ export default class KeplerAnimation extends Animation {
     };
   }
 
-  animator(animation) {
+  animator(animation: this) {
     if (animation.cameraKeyframe) {
       animation.onCameraFrameUpdate(animation.cameraKeyframe.getFrame());
     }

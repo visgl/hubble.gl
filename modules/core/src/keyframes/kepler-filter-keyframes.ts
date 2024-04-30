@@ -3,10 +3,10 @@
 // Copyright (c) vis.gl contributors
 
 import {factorInterpolator} from './utils';
-import Keyframes, { KeyframeConstructorProps, KeyframeProps } from './keyframes';
+import Keyframes, { KeyframeProps } from './keyframes';
 import {Easing, hold, linear} from './easings';
 
-type Filter = {
+export type KeplerFilter = {
   id: string
   type: 'input' | 'range' | 'timeRange';
   animationWindow: 'free' | 'incremental' | 'point' | 'interval';
@@ -18,7 +18,7 @@ type Filter = {
   }
 }
 
-type FilterKeyframe = {
+export type FilterDataType = {
   value: number | [number, number] // number for point, otherwise []
 }
 
@@ -44,7 +44,7 @@ type FilterKeyframe = {
  * Current time is a point. An array of sorted time steps need to be provided.
  * animation controller calls next animation at a interval when the point jumps to the next step
  */
-function getKeyFramesFree(filter: Filter): {keyframes: FilterKeyframe[], easings: Easing} {
+function getKeyFramesFree(filter: KeplerFilter): {keyframes: FilterDataType[], easings: Easing} {
   const delta = filter.value[1] - filter.value[0];
   return {
     keyframes: [
@@ -55,8 +55,8 @@ function getKeyFramesFree(filter: Filter): {keyframes: FilterKeyframe[], easings
   };
 }
 
-export function timeRangeKeyframes({filter, timings}: {filter: Filter, timings: number[]}): 
-  {keyframes: FilterKeyframe[], easings: Easing, timings?: number[]} 
+export function timeRangeKeyframes({filter, timings}: {filter: KeplerFilter, timings: number[]}): 
+  {keyframes: FilterDataType[], easings: Easing, timings?: number[]} 
 {
   if (filter.type !== 'timeRange') {
     throw new Error('filter type must be \'timeRange\'.\'');
@@ -113,24 +113,20 @@ export function timeRangeKeyframes({filter, timings}: {filter: Filter, timings: 
   }
 }
 
-export type KeplerFilterKeyframeConstructorProps = Omit<Omit<KeyframeConstructorProps<FilterKeyframe>, 'keyframes'>, 'features'> & {
-  getTimeRangeFilterKeyframes: ({filter, timings}: {filter: Filter, timings: number[]}) => {keyframes: FilterKeyframe[], easings: Easing, timings?: number[]};
-  keyframes?: FilterKeyframe[], 
-  filter?: Filter,
-  filterIdx: number
-}
+export type TimeRangeKeyframeAccessor = ({filter, timings}: {filter: KeplerFilter, timings: number[]}) => {keyframes: FilterDataType[], easings: Easing, timings?: number[]}
 
-export type KeplerFilterKeyframeProps = Omit<KeyframeProps<FilterKeyframe>, 'keyframes'> & { 
-  keyframes?: FilterKeyframe[], 
-  filter?: Filter,
+export type KeplerFilterKeyframeProps = Omit<Omit<KeyframeProps<FilterDataType>, 'keyframes'>, 'features'> & {
+  getTimeRangeFilterKeyframes?: TimeRangeKeyframeAccessor
+  keyframes?: FilterDataType[]
+  filter?: KeplerFilter
   filterIdx?: number
 }
 
-class KeplerFilterKeyframes extends Keyframes<FilterKeyframe> {
+class KeplerFilterKeyframes extends Keyframes<FilterDataType> {
   id: string;
   type: 'input' | 'range' | 'timeRange' | 'select' | 'multiSelect' | 'polygon';
   filterIdx: number;
-  getTimeRangeFilterKeyframes: ({filter, timings}: {filter: Filter, timings: number[]}) => {keyframes: FilterKeyframe[], easings: Easing, timings?: number[]};
+  getTimeRangeFilterKeyframes: ({filter, timings}: {filter: KeplerFilter, timings: number[]}) => {keyframes: FilterDataType[], easings: Easing, timings?: number[]};
   animationWindow: 'free' | 'incremental' | 'point' | 'interval';
 
   constructor({
@@ -141,7 +137,7 @@ class KeplerFilterKeyframes extends Keyframes<FilterKeyframe> {
     easings,
     interpolators,
     getTimeRangeFilterKeyframes = undefined
-  }: KeplerFilterKeyframeConstructorProps) {
+  }: KeplerFilterKeyframeProps) {
     if (filter.type === 'input') {
       throw new Error('filter type \'input\' is not supported.');
     }
@@ -162,7 +158,7 @@ class KeplerFilterKeyframes extends Keyframes<FilterKeyframe> {
     this.getTimeRangeFilterKeyframes = getTimeRangeFilterKeyframes;
   }
 
-  set({filter = undefined, filterIdx = undefined, timings, keyframes, easings, interpolators}: KeplerFilterKeyframeProps) {
+  set({filter = undefined, filterIdx = undefined, timings, keyframes, easings, interpolators}: Omit<KeplerFilterKeyframeProps, 'KeplerFilterKeyframeProps'>) {
     if (filter && filterIdx) {
       this.id = filter.id;
       this.type = filter.type;
@@ -226,7 +222,7 @@ class KeplerFilterKeyframes extends Keyframes<FilterKeyframe> {
     easings,
     interpolators,
     getTimeRangeFilterKeyframes = undefined
-  }: Omit<KeplerFilterKeyframeConstructorProps, 'filterIdx'>) {
+  }: Omit<KeplerFilterKeyframeProps, 'filterIdx'>) {
     let params = {features: ['value'], timings, keyframes, easings, interpolators};
     if (filter && filter.type === 'timeRange' && keyframes === undefined) {
       if (!Array.isArray(timings) || timings.length !== 2) throw new Error('[start, end] timings required.');

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
 
-import Keyframes, { KeyframeConstructorProps } from './keyframes';
+import Keyframes, { KeyframeProps } from './keyframes';
 import {flyToViewport} from '@math.gl/web-mercator';
 import {lerp} from '@math.gl/core';
 
@@ -31,7 +31,7 @@ export function flyToInterpolator(start, end, factor, options) {
   return viewport;
 }
 
-type CameraKeyframe = {
+export type CameraDataType = {
   latitude: number, 
   longitude: number, 
   zoom: number, 
@@ -39,13 +39,13 @@ type CameraKeyframe = {
   bearing: number
 }
 
-type CameraKeyframeConstructorProps = KeyframeConstructorProps<Partial<CameraKeyframe>> & {width: number, height: number}
+export type CameraKeyframeProps = KeyframeProps<Partial<CameraDataType>> & {width: number, height: number}
 
-export default class CameraKeyFrames extends Keyframes<Partial<CameraKeyframe>> {
+export default class CameraKeyFrames extends Keyframes<Partial<CameraDataType>> {
   width: number;
   height: number;
 
-  constructor({timings, keyframes, easings, interpolators, width, height}: CameraKeyframeConstructorProps) {
+  constructor({timings, keyframes, easings, interpolators, width, height}: CameraKeyframeProps) {
     super({
       timings,
       keyframes,

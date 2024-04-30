@@ -1,30 +1,33 @@
-// Copyright (c) 2021 Uber Technologies, Inc.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-import {CameraKeyframes, DeckLayerKeyframes} from '../keyframes';
-import Animation from './animation';
+// hubble.gl
+// SPDX-License-Identifier: MIT
+// Copyright (c) vis.gl contributors
+
+import type { Timeline } from '@luma.gl/engine';
+import {CameraDataType, CameraKeyframeProps, CameraKeyframes, DeckLayerKeyframes, DeckLayerKeyframeProps} from '../keyframes';
+import Animation, { AnimationConstructor } from './animation';
+import type { Layer } from '@deck.gl/core/typed'
 
 function noop() {}
 
+type DeckAnimationProps = {
+  layerKeyframes?: DeckLayerKeyframeProps<object>[]
+  cameraKeyframe?: CameraKeyframeProps
+  timeline?: Timeline
+}
+
+type DeckAnimationConstructor = AnimationConstructor & {
+  getLayers: (animation: DeckAnimation) => Layer[]
+  onLayersUpdate: (layers: Layer[]) => void
+  onCameraUpdate?: (frame: Partial<CameraDataType>) => void
+} & DeckAnimationProps
+
 export default class DeckAnimation extends Animation {
-  cameraKeyframe;
-  layerKeyframes = {};
+  cameraKeyframe?: CameraKeyframes;
+  layerKeyframes: {[layerId: string]: DeckLayerKeyframes<object>} = {};
+
+  getLayers: (animation: DeckAnimation) => Layer[];
+  onLayersUpdate: (layers: Layer[]) => void;
+  onCameraUpdate: (frame: Partial<CameraDataType>) => void;
 
   constructor({
     id = 'deck',
@@ -33,7 +36,7 @@ export default class DeckAnimation extends Animation {
     layerKeyframes = [],
     onLayersUpdate = noop,
     onCameraUpdate = noop
-  }) {
+  }: DeckAnimationConstructor) {
     super({id});
     this.layerKeyframes = {};
     this.onLayersUpdate = onLayersUpdate;
@@ -43,20 +46,24 @@ export default class DeckAnimation extends Animation {
     this.draw();
   }
 
-  setOnLayersUpdate(onLayersUpdate) {
+  setOnLayersUpdate(onLayersUpdate: (layers: Layer[]) => void) {
     this.onLayersUpdate = onLayersUpdate;
   }
 
-  setOnCameraUpdate(onCameraUpdate) {
+  setOnCameraUpdate(onCameraUpdate: (frame: Partial<CameraDataType>) => void) {
     this.onCameraUpdate = onCameraUpdate;
   }
 
-  setGetLayers(getLayers) {
+  setGetLayers(getLayers: (animation: DeckAnimation) => Layer[]) {
     this.getLayers = getLayers;
     this.draw();
   }
 
-  setKeyframes({layerKeyframes = [], cameraKeyframe = undefined, timeline = undefined}) {
+  setKeyframes({
+    layerKeyframes = [], 
+    cameraKeyframe = undefined, 
+    timeline = undefined
+  }: DeckAnimationProps) {
     if (this.cameraKeyframe && cameraKeyframe) {
       this.cameraKeyframe.set(cameraKeyframe);
     } else if (cameraKeyframe) {
@@ -88,7 +95,7 @@ export default class DeckAnimation extends Animation {
     };
   }
 
-  animator(animation) {
+  animator(animation: DeckAnimation) {
     if (animation.cameraKeyframe) {
       animation.onCameraUpdate(animation.cameraKeyframe.getFrame());
     }
@@ -98,7 +105,7 @@ export default class DeckAnimation extends Animation {
     }
   }
 
-  applyLayerKeyframes(layers) {
+  applyLayerKeyframes(layers: Layer[]) {
     return layers.map(layer => {
       if (this.layerKeyframes[layer.id]) {
         const frame = this.layerKeyframes[layer.id].getFrame();

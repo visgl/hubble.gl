@@ -2,27 +2,25 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
 
-import Keyframes, { KeyframeConstructorProps, KeyframeProps } from './keyframes';
+import Keyframes, { KeyframeProps } from './keyframes';
 
-type AnimationConfig = {
+export type KeplerAnimationConfig = {
   domain: [number, number]
 }
 
-function tripKeyframes({animationConfig}: {animationConfig: AnimationConfig}) {
+function tripKeyframes({animationConfig}: {animationConfig: KeplerAnimationConfig}) {
   return {
     keyframes: [{currentTime: animationConfig.domain[0]}, {currentTime: animationConfig.domain[1]}]
   };
 }
 
-type TripKeyframe = {
+export type TripDataType = {
   currentTime: number
 }
 
-export type KeplerTripKeyframeConstructorProps = Omit<KeyframeConstructorProps<TripKeyframe>, 'keyframes'> & { keyframes?: TripKeyframe[], animationConfig?: AnimationConfig}
+export type KeplerTripKeyframeProps = Omit<KeyframeProps<TripDataType>, 'keyframes'> & { keyframes?: TripDataType[], animationConfig?: KeplerAnimationConfig}
 
-export type KeplerTripKeyframeProps = Omit<KeyframeProps<TripKeyframe>, 'keyframes'> & { keyframes?: TripKeyframe[], animationConfig?: AnimationConfig }
-
-class KeplerTripKeyframes extends Keyframes<TripKeyframe> {
+class KeplerTripKeyframes extends Keyframes<TripDataType> {
   constructor({animationConfig = undefined, timings, keyframes = undefined, easings, interpolators}: KeplerTripKeyframeProps) {
     super(
       KeplerTripKeyframes._processParams({
@@ -48,7 +46,7 @@ class KeplerTripKeyframes extends Keyframes<TripKeyframe> {
   }
 
   static _processParams({animationConfig = undefined, timings, keyframes = undefined, easings, interpolators}: KeplerTripKeyframeProps) {
-    let params: KeyframeConstructorProps<TripKeyframe> = {features: ['currentTime'], timings, keyframes, easings, interpolators};
+    let params: KeyframeProps<TripDataType> = {features: ['currentTime'], timings, keyframes, easings, interpolators};
     if (animationConfig && keyframes === undefined) {
       if (!Array.isArray(timings) || timings.length !== 2) throw new Error('[start, end] timings required.');
       params = {...params, ...tripKeyframes({animationConfig})};
