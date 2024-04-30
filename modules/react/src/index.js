@@ -30,6 +30,6 @@ export {
   KeplerUIContext,
   QuickAnimation,
   RenderPlayer
-} from './components';
+} from './components/index';
 export {useNextFrame, useDeckAdapter, useDeckAnimation, useHubbleGl} from './hooks';
 export {createKeplerLayers} from './kepler-layers';

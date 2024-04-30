@@ -3,8 +3,8 @@
 // Copyright (c) vis.gl contributors
 
 /* eslint-disable no-console */
-import {type FrameEncoder, PreviewEncoder, type FormatConfigs} from '../encoders';
-import {AnimationManager} from '../animations';
+import {type FrameEncoder, PreviewEncoder, type FormatConfigs} from '../encoders/index';
+import {AnimationManager} from '../animations/index';
 import {type Timecode, VideoCapture} from '../capture/video-capture';
 
 type DeckProps = {

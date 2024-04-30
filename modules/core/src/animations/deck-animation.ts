@@ -3,7 +3,7 @@
 // Copyright (c) vis.gl contributors
 
 import type { Timeline } from '@luma.gl/engine';
-import {CameraDataType, CameraKeyframeProps, CameraKeyframes, DeckLayerKeyframes, DeckLayerKeyframeProps} from '../keyframes';
+import {CameraDataType, CameraKeyframeProps, CameraKeyframes, DeckLayerKeyframes, DeckLayerKeyframeProps} from '../keyframes/index';
 import Animation, { AnimationConstructor } from './animation';
 import type { Layer } from '@deck.gl/core/typed'
 

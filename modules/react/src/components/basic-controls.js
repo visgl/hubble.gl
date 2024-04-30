@@ -22,7 +22,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 
 import EncoderDropdown from './encoder-dropdown';
 import styled from 'styled-components';
-import {DownloadVideo} from './icons';
+import {DownloadVideo} from './icons/index';
 import RenderPlayer from './render-player';
 import {ENCODERS, WEBM} from './encoders';
 

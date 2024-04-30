@@ -4,7 +4,7 @@
 
 import type { FrameEncoderSettings } from '../frame-encoder';
 import FrameEncoder from '../frame-encoder';
-import {canvasToArrayBuffer} from '../utils';
+import {canvasToArrayBuffer} from '../utils/index';
 
 class PhotoEncoder extends FrameEncoder {
   blob: Blob | null;

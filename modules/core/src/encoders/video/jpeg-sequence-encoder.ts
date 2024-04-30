@@ -5,7 +5,7 @@
 import type { FrameEncoderSettings } from '../frame-encoder';
 import FrameEncoder from '../frame-encoder';
 import TARBuilder from '../tar/tar-builder';
-import {pad, canvasToArrayBuffer} from '../utils';
+import {pad, canvasToArrayBuffer} from '../utils/index';
 import {encode} from '@loaders.gl/core';
 import {ZipWriter} from '@loaders.gl/zip';
 

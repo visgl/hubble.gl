@@ -35,7 +35,7 @@ import {DEFAULT_ICON_BUTTON_HEIGHT} from './constants';
 import ExportVideoPanelSettings from './export-video-panel-settings';
 import {ExportVideoPanelPreview} from './export-video-panel-preview';
 
-import {Play, Stop} from '../icons';
+import {Play, Stop} from '../icons/index';
 
 import {WithKeplerUI} from '../inject-kepler';
 

@@ -5,7 +5,7 @@
 // Intialize globals, check version
 export {VERSION} from './lib/init';
 
-export {DeckAdapter} from './adapters';
+export {DeckAdapter} from './adapters/index';
 
 export {
   PNGSequenceEncoder,
@@ -16,7 +16,7 @@ export {
   FrameEncoder,
   PreviewEncoder,
   GifEncoder
-} from './encoders';
+} from './encoders/index';
 
 export {
   Keyframes,
@@ -27,6 +27,6 @@ export {
   KeplerFilterKeyframes,
   KeplerLayerKeyframes,
   KeplerTripKeyframes
-} from './keyframes';
+} from './keyframes/index';
 
-export {AnimationManager, Animation, DeckAnimation, KeplerAnimation} from './animations';
+export {AnimationManager, Animation, DeckAnimation, KeplerAnimation} from './animations/index';

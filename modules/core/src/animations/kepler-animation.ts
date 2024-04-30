@@ -8,7 +8,7 @@ import {
   KeplerFilterKeyframes,
   KeplerLayerKeyframes,
   KeplerTripKeyframes,
-} from '../keyframes';
+} from '../keyframes/index';
 import type {
   CameraDataType,
   CameraKeyframeProps,
@@ -19,7 +19,7 @@ import type {
   KeplerLayer,
   KeplerLayerKeyframeProps,
   KeplerAnimationConfig,
-} from '../keyframes';
+} from '../keyframes/index';
 import Animation, { type AnimationConstructor } from './animation';
 
 function noop() {}

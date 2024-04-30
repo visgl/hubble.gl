@@ -9,7 +9,6 @@
   "license": "MIT",
   "scripts": {
     "bootstrap": "yarn && ocular-bootstrap",
-    "checkjs": "tsc --noEmit --allowJs --checkJs --target ES5 src/*.js",
     "clean": "ocular-clean",
     "build": "ocular-clean && ocular-build && lerna run build",
     "version": "ocular-build core",
@@ -24,8 +23,7 @@
     "tsbuild": "tsc -b tsconfig.build.json",
     "bench": "ocular-test bench",
     "bench-browser": "ocular-test bench-browser",
-    "metrics": "ocular-metrics",
-    "build-bundle": "npx lerna run build-bundle"
+    "metrics": "ocular-metrics"
   },
   "workspaces": [
     "modules/*"
