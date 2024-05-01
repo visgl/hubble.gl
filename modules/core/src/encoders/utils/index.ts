@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
 
-/* eslint-disable no-console */
+/* global fetch */
 
 export function pad(n: number) {
   return String(`0000000${n}`).slice(-7);

@@ -1,7 +1,7 @@
 // hubble.gl
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
-
+/* global requestAnimationFrame, cancelAnimationFrame */
 import FrameEncoder from '../frame-encoder';
 export default class PreviewEncoder extends FrameEncoder {
   af?: number;

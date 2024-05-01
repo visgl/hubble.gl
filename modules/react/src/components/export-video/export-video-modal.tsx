@@ -1,8 +1,7 @@
 // hubble.gl
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
-
-/* eslint-disable no-invalid-this */
+/* global window */
 import React, {Component, createRef} from 'react';
 import Modal from 'react-modal';
 import {ThemeProvider} from 'styled-components';

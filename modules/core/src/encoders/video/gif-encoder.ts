@@ -1,7 +1,7 @@
 // hubble.gl
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
-
+/* global fetch */
 import type { FrameEncoderSettings } from '../frame-encoder';
 import {GIFBuilder} from '@loaders.gl/video';
 import FrameEncoder from '../frame-encoder';

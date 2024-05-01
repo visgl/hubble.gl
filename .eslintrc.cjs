@@ -32,10 +32,71 @@ const config = getESLintConfig({
       radix: 0,
       'arrow-parens': ['error', 'as-needed'], // TODO: Remove later
       // 'accessor-pairs': ['error', {getWithoutSet: false, setWithoutGet: false}]
-      '@typescript-eslint/unbound-method': 'off'
     },
   
     overrides: [
+      {
+        files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.d.ts'],
+        rules: {
+          indent: 0,
+          // For parquet module
+          // '@typescript-eslint/no-non-null-assertion': 0,
+          // '@typescript-eslint/no-non-null-asserted-optional-chain': 0,
+          // Gradually enable
+          '@typescript-eslint/ban-ts-comment': 0,
+          '@typescript-eslint/ban-types': 0,
+          '@typescript-eslint/no-unsafe-member-access': 0,
+          '@typescript-eslint/no-unsafe-assignment': 0,
+          '@typescript-eslint/no-var-requires': 0,
+          '@typescript-eslint/no-unused-vars': [
+            'warn',
+            {vars: 'all', args: 'none', ignoreRestSiblings: false}
+          ],
+          '@typescript-eslint/unbound-method': 0,
+          // We still have some issues with import resolution
+          'import/named': 0,
+          // Warn instead of error
+          // 'max-params': ['warn'],
+          // 'no-undef': ['warn'],
+          // camelcase: ['warn'],
+          // '@typescript-eslint/no-floating-promises': ['warn'],
+          // '@typescript-eslint/await-thenable': ['warn'],
+          // '@typescript-eslint/no-misused-promises': ['warn'],
+          '@typescript-eslint/no-empty-function': 0,
+          // We use function hoisting
+          '@typescript-eslint/no-use-before-define': 0,
+          // We always want explicit typing, e.g `field: string = ''`
+          '@typescript-eslint/no-inferrable-types': 0,
+          '@typescript-eslint/restrict-template-expressions': 0,
+          '@typescript-eslint/explicit-module-boundary-types': 0,
+          '@typescript-eslint/require-await': 0,
+          '@typescript-eslint/no-unsafe-return': 0,
+          '@typescript-eslint/no-unsafe-call': 0,
+          '@typescript-eslint/no-empty-interface': 0,
+          '@typescript-eslint/restrict-plus-operands': 0
+        }
+      },
+      // tests are run with aliases set up in node and webpack.
+      // This means lint will not find the imported files and generate false warnings
+      {
+        // scripts use devDependencies
+        files: [
+          '**/test/**/*.js',
+          '**/test/**/*.ts',
+          '**/scripts/**/*.js',
+          '*.config.js',
+          '*.config.local.js',
+          '*.config.local.mjs'
+        ],
+        globals: {
+          process: true
+        },
+        rules: {
+          'import/no-unresolved': 0,
+          'import/no-extraneous-dependencies': 0,
+          'no-process-env': 0
+        }
+      },
       {
         files: ['*.spec.js', 'webpack.config.js', '**/bundle/*.js'],
         rules: {

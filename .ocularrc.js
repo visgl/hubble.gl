@@ -27,7 +27,7 @@ const config = {
   },
 
   aliases: {
-    'deck.gl-test': join(packageRoot, './test')
+    'hubble.gl-test': join(packageRoot, './test')
   },
 
   coverage: {

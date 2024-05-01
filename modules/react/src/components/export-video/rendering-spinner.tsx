@@ -1,6 +1,7 @@
 // hubble.gl
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
+/* global window */
 import {WithKeplerUI} from '../inject-kepler';
 import React, {useEffect, useState} from 'react';
 
@@ -26,17 +27,17 @@ export function RenderingSpinner({rendering, saving, width, height, adapter, dur
 
   const [message, setMessage] = useState('Saving...');
   useEffect(() => {
-    let waitTimeout: NodeJS.Timeout;
+    let waitTimeout: number;
     if (saving) {
       // Appears after "Saving..." message has been showing for at least 2s
-      waitTimeout = setTimeout(() => setMessage('Saving...Hang Tight.'), 2000);
+      waitTimeout = window.setTimeout(() => setMessage('Saving...Hang Tight.'), 2000);
     } else {
       setMessage('Saving...');
-      if (waitTimeout) clearTimeout(waitTimeout);
+      if (waitTimeout) window.clearTimeout(waitTimeout);
     }
 
     return () => {
-      if (waitTimeout) clearTimeout(waitTimeout);
+      if (waitTimeout) window.clearTimeout(waitTimeout);
     };
   }, [saving]);
 
