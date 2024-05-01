@@ -5,13 +5,16 @@
 import type { Timeline } from '@luma.gl/engine';
 import type Keyframes from '../keyframes/keyframes';
 
-type SetKeyframesProps = {
+type SetKeyframesBase = {
   [id: string]: Keyframes<any> | Timeline;
+};
+
+type SetKeyframesProps = SetKeyframesBase & {
   timeline?: Timeline;
 };
 
 type GetKeyframes = {
-  [id: string]: Keyframes<any> | {[id: string]: Keyframes<any>}
+  [id: string]: Keyframes<any> | {[id: string]: Keyframes<any> } | undefined
 };
 
 export type AnimationConstructor = {id?: string}

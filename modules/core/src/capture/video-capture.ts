@@ -34,7 +34,7 @@ export class VideoCapture {
   timecode: Timecode | null;
   encoder: FrameEncoder | null;
   filename: string | null;
-  onStop: () => void | null = null;
+  onStop?: (() => void) | null = null;
 
   constructor() {
     this.recording = false;
@@ -98,7 +98,7 @@ export class VideoCapture {
         if (data.kind === 'next-frame') {
           proceedToNextFrame(data.nextTimeMs);
         } else if (data.kind === 'stop') {
-          this.onStop();
+          this.onStop?.();
         } else {
           console.log(data);
         }
@@ -116,7 +116,7 @@ export class VideoCapture {
     abort = false
   }: {
     onComplete?: () => void,
-    onSave?: (blob: Blob) => void,
+    onSave?: (blob: Blob | null) => void,
     onStopped?: () => void,
     abort?: boolean
   }) {
@@ -143,14 +143,14 @@ export class VideoCapture {
     }
   }
 
-  download(blob: Blob) {
+  download(blob?: Blob | null) {
     if (blob) {
       download(blob, this.filename + this.encoder.extension, this.encoder.mimeType);
     }
     return false;
   }
 
-  async _save(callback: (blob: Blob) => void) {
+  async _save(callback?: (blob: Blob | null) => void) {
     if (!callback) {
       callback = this.download;
     }
@@ -161,7 +161,7 @@ export class VideoCapture {
       .then(() => console.timeEnd('save'));
   }
 
-  _sanitizeFilename(filename: string) {
+  _sanitizeFilename(filename?: string) {
     if (!filename) {
       filename = guid();
     }

@@ -12,11 +12,11 @@ export type KeplerLayer = {
   }
 }
 
-function getFeatures(layer: KeplerLayer) {
-  return Object.keys(layer.config.visConfig);
+function getFeatures(layer?: KeplerLayer) {
+  return layer ? Object.keys(layer.config.visConfig) : [];
 }
 
-export type KeplerLayerKeyframeProps<T> = KeyframeProps<T> & {layer: KeplerLayer}
+export type KeplerLayerKeyframeProps<T> = KeyframeProps<T> & {layer?: KeplerLayer}
 
 class KeplerLayerKeyframes<T extends object> extends Keyframes<T> {
   layer: KeplerLayer;

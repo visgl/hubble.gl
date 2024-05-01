@@ -15,8 +15,8 @@ const DEFAULT_OPTS = {
 };
 
 export function flyToInterpolator(
-  start: CameraDataType & { ease: Easing, width: number, height: number }, 
-  end: CameraDataType & { ease: Easing }, 
+  start: CameraDataType & { ease?: Easing, width: number, height: number }, 
+  end: CameraDataType & { ease?: Easing }, 
   factor: number, 
   options?: {speed?: number, curve?: number, maxDuration?: number}
 ) {

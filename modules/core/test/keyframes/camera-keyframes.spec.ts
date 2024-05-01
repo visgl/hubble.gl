@@ -7,7 +7,7 @@ import {easeInOut} from 'popmotion';
 import {toLowPrecision} from '@deck.gl/test-utils';
 import {
   flyToInterpolator
-} from '@hubble.gl/core/src/keyframes/camera-keyframes';
+} from '@hubble.gl/core/keyframes/camera-keyframes';
 
 /* eslint-disable max-len */
 const TEST_CASES = [

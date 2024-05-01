@@ -9,11 +9,11 @@ import {type Timecode, VideoCapture} from '../capture/video-capture';
 import type {Deck, Layer, DeckProps} from '@deck.gl/core/typed'
 
 export default class DeckAdapter {
-  deck: Deck;
+  deck?: Deck;
   animationManager: AnimationManager;
   shouldAnimate: boolean
   enabled: boolean
-  glContext: WebGLRenderingContext
+  glContext?: WebGLRenderingContext
   videoCapture: VideoCapture
 
   constructor({
@@ -84,7 +84,7 @@ export default class DeckAdapter {
     filename?: string,
     timecode?: Timecode,
     onStopped?: () => void,
-    onSave?: (blob: Blob) => void,
+    onSave?: (blob: Blob | null) => void,
     onComplete?: () => void
   }) {
     this.shouldAnimate = true;
@@ -106,7 +106,7 @@ export default class DeckAdapter {
     abort
   }: {
     onStopped?: () => void
-    onSave?: (blob: Blob) => void
+    onSave?: (blob: Blob | null) => void
     onComplete?: () => void
     abort?: boolean
   }) {

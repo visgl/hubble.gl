@@ -128,11 +128,11 @@ export type KeplerFilterKeyframeProps = Omit<Omit<KeyframeProps<FilterDataType>,
 }
 
 class KeplerFilterKeyframes extends Keyframes<FilterDataType> {
-  id: string;
-  type: 'input' | 'range' | 'timeRange' | 'select' | 'multiSelect' | 'polygon';
-  filterIdx: number;
-  getTimeRangeFilterKeyframes: ({filter, timings}: {filter: KeplerFilter, timings: number[]}) => {keyframes: FilterDataType[], easings: Easing, timings?: number[]};
-  animationWindow: 'free' | 'incremental' | 'point' | 'interval';
+  id?: string;
+  type?: 'input' | 'range' | 'timeRange' | 'select' | 'multiSelect' | 'polygon';
+  filterIdx?: number;
+  getTimeRangeFilterKeyframes?: ({filter, timings}: {filter: KeplerFilter, timings: number[]}) => {keyframes: FilterDataType[], easings: Easing, timings?: number[]};
+  animationWindow?: 'free' | 'incremental' | 'point' | 'interval';
 
   constructor({
     filter = undefined,
@@ -143,7 +143,7 @@ class KeplerFilterKeyframes extends Keyframes<FilterDataType> {
     interpolators,
     getTimeRangeFilterKeyframes = undefined
   }: KeplerFilterKeyframeProps) {
-    if (filter.type === 'input') {
+    if (filter?.type === 'input') {
       throw new Error('filter type \'input\' is not supported.');
     }
     super(
@@ -156,9 +156,9 @@ class KeplerFilterKeyframes extends Keyframes<FilterDataType> {
         getTimeRangeFilterKeyframes
       })
     );
-    this.id = filter.id;
-    this.type = filter.type;
-    this.animationWindow = filter.animationWindow;
+    this.id = filter?.id;
+    this.type = filter?.type;
+    this.animationWindow = filter?.animationWindow;
     this.filterIdx = filterIdx;
     this.getTimeRangeFilterKeyframes = getTimeRangeFilterKeyframes;
   }
@@ -187,7 +187,7 @@ class KeplerFilterKeyframes extends Keyframes<FilterDataType> {
     const start = this.getStartData();
     const end = this.getEndData();
 
-    if (['select', 'multiSelect', 'polygon'].includes(this.type)) {
+    if (['select', 'multiSelect', 'polygon'].includes(this.type || '')) {
       return start.value;
     }
 

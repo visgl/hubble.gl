@@ -60,7 +60,7 @@ type KeplerAnimationConstructor = AnimationConstructor & {
 } & KeplerAnimationProps
 
 export default class KeplerAnimation extends Animation {
-  cameraKeyframe: CameraKeyframes;
+  cameraKeyframe?: CameraKeyframes;
   layerKeyframes: {[id: string]: KeplerLayerKeyframes<object>} = {};
   filterKeyframes: {[id: string]: KeplerFilterKeyframes} = {};
   tripKeyframe?: KeplerTripKeyframes = undefined;
@@ -149,7 +149,7 @@ export default class KeplerAnimation extends Animation {
     if (filterKeyframes.length > 0) {
       this.filterKeyframes = filterKeyframes.reduce((acc, filterKeyframe) => {
         const filterIdx = findFilterIdx({filters, filterKeyframe});
-        const filter = filters[filterIdx];
+        const filter = filterIdx && filters[filterIdx];
         if (filter) {
           if (acc[filter.id]) {
             acc[filter.id].set({filter, ...filterKeyframe});

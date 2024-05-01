@@ -11,10 +11,11 @@ import {
   factorInterpolator,
   sanitizeInterpolators
 } from './utils';
+import type { KeyFrame } from '@luma.gl/engine/src/animation/key-frames';
 
 export type Keyframe<T> = [number, (T & {
-  ease: Easing;
-  interpolate: string;
+  ease?: Easing;
+  interpolate?: string;
 })]
 
 export type KeyframeProps<T> = {
@@ -26,16 +27,16 @@ export type KeyframeProps<T> = {
 }
 
 class Keyframes<T extends object> extends LumaKeyFrames<(T & {
-  ease: Easing;
-  interpolate: string;
+  ease?: Easing;
+  interpolate?: string;
 })> {
   activeFeatures = {};
   /** Set when this is attached to an Animation */
   animationHandle?: number;
-  timings: number | number[];
-  keyframes: T[];
-  easings: Easing | Easing[];
-  interpolators: string | string[];
+  timings!: number | number[];
+  keyframes!: T[];
+  easings!: Easing | Easing[];
+  interpolators!: string | string[];
 
   constructor({
     features = [], 
@@ -63,7 +64,7 @@ class Keyframes<T extends object> extends LumaKeyFrames<(T & {
     easings = linear, 
     interpolators = 'linear'
   }: KeyframeProps<T>) {
-    if (keyframes.length === 0) {
+    if (!keyframes || keyframes.length === 0) {
       throw new Error('There must be at least one keyframe');
     }
 
@@ -79,7 +80,10 @@ class Keyframes<T extends object> extends LumaKeyFrames<(T & {
     this.timings = timings;
     this.easings = easings;
     this.interpolators = interpolators;
-    this.setKeyFrames(_keyframes);
+    this.setKeyFrames(_keyframes as Array<KeyFrame<T & {
+      ease?: Easing;
+      interpolate?: string;
+    }>>);
   }
 
   getFrame() {

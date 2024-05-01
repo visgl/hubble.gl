@@ -43,14 +43,15 @@ class StreamEncoder extends FrameEncoder {
   }
 
   async save() {
-    /** @type Promise<Blob> */
     const waiting = new Promise<Blob>(resolve => {
-      this.mediaRecorder.onstop = () => {
-        const blob = new Blob(this.chunks, {type: 'video/webm'});
-        this.chunks = [];
-        resolve(blob);
-      };
-      this.mediaRecorder.stop();
+      if (this.mediaRecorder) {
+        this.mediaRecorder.onstop = () => {
+          const blob = new Blob(this.chunks, {type: 'video/webm'});
+          this.chunks = [];
+          resolve(blob);
+        };
+        this.mediaRecorder.stop();
+      }
     });
 
     return waiting;

@@ -33,8 +33,8 @@ class PNGSequenceEncoder extends FrameEncoder {
         break;
       }
       case ZIP: {
-        this.mimeType = ZipWriter.mimeTypes[0];
-        this.extension = `.${ZipWriter.extensions[0]}`;
+        this.mimeType = ZipWriter.mimeTypes?.[0] || '';
+        this.extension = `.${ZipWriter.extensions?.[0]}`;
         break;
       }
       default: {
@@ -86,7 +86,7 @@ class PNGSequenceEncoder extends FrameEncoder {
       }
       case ZIP: {
         const arrayBuffer = await encode(this.filemap, ZipWriter);
-        return new Blob([arrayBuffer], {type: ZipWriter.mimeTypes[0]});
+        return new Blob([arrayBuffer], {type: ZipWriter.mimeTypes?.[0]});
       }
       default: {
         throw new Error(`Unsupported archive type [zip, tar]: ${this.options.archive}`);

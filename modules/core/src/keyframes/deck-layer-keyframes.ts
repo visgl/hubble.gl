@@ -4,7 +4,7 @@
 
 import Keyframes, { KeyframeProps } from './keyframes';
 
-function getFeatures<T>(keyframes: T[]) {
+function getFeatures<T>(keyframes?: T[]) {
   return keyframes && keyframes[0] ? Object.keys(keyframes[0]) : [];
 }
 
