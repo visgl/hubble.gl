@@ -25,6 +25,9 @@
     "bench-browser": "ocular-test bench-browser",
     "metrics": "ocular-metrics"
   },
+  "browser": {
+    "jsdom": false
+  },
   "workspaces": [
     "modules/*"
   ],
@@ -44,7 +47,6 @@
     "@probe.gl/test-utils": "^3.5.0",
     "coveralls": "^3.0.0",
     "deck.gl": "^8.0.0",
-    "gl": "^4.9.0",
     "ocular-dev-tools": "2.0.0-alpha.33",
     "pre-commit": "^1.2.2",
     "pre-push": "^0.1.1",
