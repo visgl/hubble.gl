@@ -41,6 +41,7 @@
     "video"
   ],
   "devDependencies": {
+    "@loaders.gl/polyfills": "^4.2.0",
     "@babel/register": "^7.13.0",
     "@deck.gl/test-utils": "^8.0.0",
     "@luma.gl/test-utils": "^8.0.0",
@@ -48,6 +49,7 @@
     "@probe.gl/test-utils": "^3.5.0",
     "coveralls": "^3.0.0",
     "deck.gl": "^8.0.0",
+    "jsdom": "^20.0.0",
     "ocular-dev-tools": "2.0.0-alpha.33",
     "pre-commit": "^1.2.2",
     "pre-push": "^0.1.1",

@@ -6,7 +6,7 @@ import test from 'tape-catch';
 import {
   type KeplerFilter,
   timeRangeKeyframes
-} from '@hubble.gl/core/src/keyframes/kepler-filter-keyframes';
+} from '@hubble.gl/core/keyframes/kepler-filter-keyframes';
 
 const intervalFilter: KeplerFilter = {
   type: 'timeRange',

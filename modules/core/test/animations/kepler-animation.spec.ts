@@ -3,10 +3,10 @@
 // Copyright (c) vis.gl contributors
 import test from 'tape-catch';
 
-import {findLayer, findFilterIdx} from '@hubble.gl/core/src/animations/kepler-animation';
+import {findLayer, findFilterIdx} from '@hubble.gl/core/animations/kepler-animation';
 
 import {KeplerAnimation} from '@hubble.gl/core';
-import type {KeplerFilter} from '@hubble.gl/core/src/keyframes';
+import type {KeplerFilter} from '@hubble.gl/core/keyframes';
 
 const layers = [
   {id: '2', config: {label: 'a', visConfig: {}}},
