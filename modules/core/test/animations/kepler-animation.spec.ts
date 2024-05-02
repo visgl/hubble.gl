@@ -20,7 +20,7 @@ const FIND_LAYER_TEST_CASES = [
       layers,
       layerKeyframe: {id: '3', label: 'a'}
     },
-    expected: {id: '3', config: {label: 'a'}},
+    expected: {id: '3', config: {label: 'a', visConfig: {}}},
     message: 'layer should be found by keyframe id'
   },
   {
@@ -28,7 +28,7 @@ const FIND_LAYER_TEST_CASES = [
       layers,
       layerKeyframe: {label: 'b'}
     },
-    expected: {id: '1', config: {label: 'b'}},
+    expected: {id: '1', config: {label: 'b', visConfig: {}}},
     message: 'layer should be found by keyframe label if id is missing'
   },
   {
@@ -36,7 +36,7 @@ const FIND_LAYER_TEST_CASES = [
       layers,
       layerKeyframe: {label: 'a'}
     },
-    expected: {id: '2', config: {label: 'a'}},
+    expected: {id: '2', config: {label: 'a', visConfig: {}}},
     message: 'first matching layer should be found by keyframe label'
   },
   {

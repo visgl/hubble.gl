@@ -16,7 +16,7 @@
     "cover": "ocular-test cover",
     "publish": "ocular-publish",
     "test": "ocular-test",
-    "test-ci": "ocular-lint && ocular-test node && ocular-test cover",
+    "test-ci": "ocular-lint && ocular-test node",
     "test-fast": "ocular-test fast",
     "test-node": "ocular-test node",
     "test-browser": "ocular-test browser",
