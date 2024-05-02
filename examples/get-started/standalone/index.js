@@ -1,6 +1,9 @@
 /* global deck, hubble, document, URL */
 /* eslint-disable no-unused-vars */
 import 'hubble.gl/../bundle';
+import * as g from 'hubble.gl/../bundle';
+console.log(g)
+console.log(hubble)
 
 function createPoints(count = 10) {
   const points = [];
