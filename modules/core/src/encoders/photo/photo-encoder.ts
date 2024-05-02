@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
 
-import type { FrameEncoderSettings } from '../frame-encoder';
+import type {FrameEncoderSettings} from '../frame-encoder';
 import FrameEncoder from '../frame-encoder';
 import {canvasToArrayBuffer} from '../utils/index';
 

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
 
-import type { FrameEncoderSettings } from '../frame-encoder';
+import type {FrameEncoderSettings} from '../frame-encoder';
 import FrameEncoder from '../frame-encoder';
 import TARBuilder from '../tar/tar-builder';
 import {pad, canvasToArrayBuffer} from '../utils/index';
@@ -15,7 +15,7 @@ const ZIP = 'zip';
 class PNGSequenceEncoder extends FrameEncoder {
   tarBuilder: TARBuilder | null = null;
   filemap: {[filename: string]: ArrayBuffer} = {};
-  options: {archive?: 'tar' | 'zip'} = {archive: TAR}
+  options: {archive?: 'tar' | 'zip'} = {archive: TAR};
 
   constructor(settings: FrameEncoderSettings) {
     super(settings);
@@ -54,7 +54,7 @@ class PNGSequenceEncoder extends FrameEncoder {
     const buffer = await canvasToArrayBuffer(canvas, mimeType);
     switch (this.options.archive) {
       case TAR: {
-        if(!this.tarBuilder) {
+        if (!this.tarBuilder) {
           break;
         }
         const filename = pad(this.tarBuilder.count) + extension;
@@ -78,7 +78,7 @@ class PNGSequenceEncoder extends FrameEncoder {
   async save() {
     switch (this.options.archive) {
       case TAR: {
-        if(!this.tarBuilder) {
+        if (!this.tarBuilder) {
           break;
         }
         const arrayBuffer = await this.tarBuilder.build();

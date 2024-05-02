@@ -1,5 +1,5 @@
 website/build
-**/dist*/**/*.js
+**/dist*/**/*
 dist.js
 *.min.js
 *.md

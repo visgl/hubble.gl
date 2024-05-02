@@ -4,7 +4,7 @@
 /* global document, console */
 
 /* eslint-disable no-console */
-import type { FrameEncoderSettings } from '../frame-encoder';
+import type {FrameEncoderSettings} from '../frame-encoder';
 import WebMWriter from 'webm-writer';
 import FrameEncoder from '../frame-encoder';
 

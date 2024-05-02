@@ -8,7 +8,11 @@ export function pad(n: number) {
   return String(`0000000${n}`).slice(-7);
 }
 
-export async function canvasToArrayBuffer(canvas: HTMLCanvasElement, type: string, quality?: number) {
+export async function canvasToArrayBuffer(
+  canvas: HTMLCanvasElement,
+  type: string,
+  quality?: number
+) {
   const base64 = canvas.toDataURL(type, quality);
   const response = await fetch(base64);
   return await response.arrayBuffer();

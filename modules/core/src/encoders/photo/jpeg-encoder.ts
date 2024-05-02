@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
 
-import type { FrameEncoderSettings } from '../frame-encoder';
+import type {FrameEncoderSettings} from '../frame-encoder';
 import PhotoEncoder from './photo-encoder';
 
 class JPEGEncoder extends PhotoEncoder {

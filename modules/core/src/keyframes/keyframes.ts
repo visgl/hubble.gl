@@ -11,25 +11,30 @@ import {
   factorInterpolator,
   sanitizeInterpolators
 } from './utils';
-import type { KeyFrame } from '@luma.gl/engine/src/animation/key-frames';
+import type {KeyFrame} from '@luma.gl/engine/src/animation/key-frames';
 
-export type Keyframe<T> = [number, (T & {
-  ease?: Easing;
-  interpolate?: string;
-})]
+export type Keyframe<T> = [
+  number,
+  T & {
+    ease?: Easing;
+    interpolate?: string;
+  }
+];
 
 export type KeyframeProps<T> = {
-  timings: number | number[],
-  keyframes?: T[],
-  easings?: Easing | Easing[],
-  interpolators?: string | string[]
-  features?: string[]
-}
+  timings: number | number[];
+  keyframes?: T[];
+  easings?: Easing | Easing[];
+  interpolators?: string | string[];
+  features?: string[];
+};
 
-class Keyframes<T extends object> extends LumaKeyFrames<(T & {
-  ease?: Easing;
-  interpolate?: string;
-})> {
+class Keyframes<T extends object> extends LumaKeyFrames<
+  T & {
+    ease?: Easing;
+    interpolate?: string;
+  }
+> {
   activeFeatures = {};
   /** Set when this is attached to an Animation */
   animationHandle?: number;
@@ -39,10 +44,10 @@ class Keyframes<T extends object> extends LumaKeyFrames<(T & {
   interpolators!: string | string[];
 
   constructor({
-    features = [], 
-    timings, 
-    keyframes, 
-    easings = linear, 
+    features = [],
+    timings,
+    keyframes,
+    easings = linear,
     interpolators = 'linear'
   }: KeyframeProps<T>) {
     super([]);
@@ -58,12 +63,7 @@ class Keyframes<T extends object> extends LumaKeyFrames<(T & {
     this.set({timings, keyframes, easings, interpolators});
   }
 
-  set({
-    timings, 
-    keyframes, 
-    easings = linear, 
-    interpolators = 'linear'
-  }: KeyframeProps<T>) {
+  set({timings, keyframes, easings = linear, interpolators = 'linear'}: KeyframeProps<T>) {
     if (!keyframes || keyframes.length === 0) {
       throw new Error('There must be at least one keyframe');
     }
@@ -80,10 +80,16 @@ class Keyframes<T extends object> extends LumaKeyFrames<(T & {
     this.timings = timings;
     this.easings = easings;
     this.interpolators = interpolators;
-    this.setKeyFrames(_keyframes as Array<KeyFrame<T & {
-      ease?: Easing;
-      interpolate?: string;
-    }>>);
+    this.setKeyFrames(
+      _keyframes as Array<
+        KeyFrame<
+          T & {
+            ease?: Easing;
+            interpolate?: string;
+          }
+        >
+      >
+    );
   }
 
   getFrame() {

@@ -1,10 +1,10 @@
 // hubble.gl
 // SPDX-License-Identifier: MIT
-// Copyright (c) vis.gl contributors 
+// Copyright (c) vis.gl contributors
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Base, { BaseIconProps } from './base';
+import Base, {BaseIconProps} from './base';
 
 export default class DownloadVideo extends Component<BaseIconProps> {
   static propTypes = {

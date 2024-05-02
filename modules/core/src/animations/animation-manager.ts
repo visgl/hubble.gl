@@ -3,14 +3,20 @@
 // Copyright (c) vis.gl contributors
 
 import {Timeline} from '@luma.gl/engine';
-import type Animation from './animation'
-import type { KeyframeProps } from '../keyframes';
+import type Animation from './animation';
+import type {KeyframeProps} from '../keyframes';
 
 export default class AnimationManager {
   timeline: Timeline;
   animations: {[id: string]: Animation} = {};
 
-  constructor({timeline = undefined, animations = []}: {timeline?: Timeline, animations?: Animation[]}) {
+  constructor({
+    timeline = undefined,
+    animations = []
+  }: {
+    timeline?: Timeline;
+    animations?: Animation[];
+  }) {
     this.timeline = timeline || new Timeline();
     for (const animation of animations) {
       this.attachAnimation(animation);

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
 
-import type { Timeline } from '@luma.gl/engine';
+import type {Timeline} from '@luma.gl/engine';
 import type Keyframes from '../keyframes/keyframes';
 
 type SetKeyframesBase = {
@@ -14,10 +14,10 @@ type SetKeyframesProps = SetKeyframesBase & {
 };
 
 type GetKeyframes = {
-  [id: string]: Keyframes<any> | {[id: string]: Keyframes<any> } | undefined
+  [id: string]: Keyframes<any> | {[id: string]: Keyframes<any>} | undefined;
 };
 
-export type AnimationConstructor = {id?: string}
+export type AnimationConstructor = {id?: string};
 
 export default class Animation {
   id: string;
@@ -39,15 +39,15 @@ export default class Animation {
   }
 
   getKeyframes(): GetKeyframes {
-    throw new Error('not implemented')
+    throw new Error('not implemented');
   }
 
   setKeyframes(props: SetKeyframesProps) {
-    throw new Error('not implemented')
+    throw new Error('not implemented');
   }
 
   animator(animation: this) {
-    throw new Error('not implemented')
+    throw new Error('not implemented');
   }
 
   draw() {

@@ -24,15 +24,19 @@ const KEPLER_UI = {
 };
 */
 
-type KeplerUI = {[component: string]: any}
+type KeplerUI = {[component: string]: any};
 
 export const KeplerUIContext = createContext<KeplerUI>(null);
 
 export const WithKeplerUI = KeplerUIContext.Consumer;
 
-export const InjectKeplerUI = ({children, keplerUI}: {children: ReactChildren, keplerUI: KeplerUI}) => (
-  <KeplerUIContext.Provider value={keplerUI}>{children}</KeplerUIContext.Provider>
-);
+export const InjectKeplerUI = ({
+  children,
+  keplerUI
+}: {
+  children: ReactChildren;
+  keplerUI: KeplerUI;
+}) => <KeplerUIContext.Provider value={keplerUI}>{children}</KeplerUIContext.Provider>;
 
 export const injectKeplerUI = (Component: any, keplerUI: KeplerUI) => props =>
   (

@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
 
-import Keyframes, { KeyframeProps } from './keyframes';
+import Keyframes, {KeyframeProps} from './keyframes';
 
 function getFeatures<T>(keyframes?: T[]) {
   return keyframes && keyframes[0] ? Object.keys(keyframes[0]) : [];
 }
 
-export type DeckLayerKeyframeProps<T> = KeyframeProps<T> & {id: string}
+export type DeckLayerKeyframeProps<T> = KeyframeProps<T> & {id: string};
 
 export default class DeckLayerKeyframes<T extends object> extends Keyframes<T> {
   id: string;

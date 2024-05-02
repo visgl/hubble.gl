@@ -7,7 +7,7 @@ const packageRoot = dirname(fileURLToPath(import.meta.url));
 /** @type {OcularConfig} */
 const config = {
   lint: {
-    paths: ['modules', 'examples', 'test']
+    paths: ['modules', 'test']
     // paths: ['modules', 'test', 'examples', 'website']
   },
 

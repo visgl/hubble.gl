@@ -8,20 +8,23 @@ import PropTypes from 'prop-types';
 const getStyleClassFromColor = (totalColor: number, colors: string[]): string[] =>
   new Array(totalColor)
     .fill(1)
-    .reduce((accu: string, c, i: number) => `${accu}.cr${i + 1} {fill:${colors[i % colors.length]};}`, '');
-
+    .reduce(
+      (accu: string, c, i: number) => `${accu}.cr${i + 1} {fill:${colors[i % colors.length]};}`,
+      ''
+    );
 
 export type BaseIconProps = PropsWithChildren<{
-  height?: string | number
-  width?: string | number
-  viewBox?: string
-  style?: CSSProperties
-  predefinedClassName?: string
-  className?: string
-  colors?: string[],
-  totalColor?: number
-}> & Omit<React.SVGProps<SVGSVGElement>, 'ref'>
-  
+  height?: string | number;
+  width?: string | number;
+  viewBox?: string;
+  style?: CSSProperties;
+  predefinedClassName?: string;
+  className?: string;
+  colors?: string[];
+  totalColor?: number;
+}> &
+  Omit<React.SVGProps<SVGSVGElement>, 'ref'>;
+
 export default class Base extends Component<BaseIconProps> {
   static displayName = 'Base Icon';
 

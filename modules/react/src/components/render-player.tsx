@@ -45,7 +45,7 @@ const Thumbnail = styled.img`
   width: 64px;
 `;
 
-export default function RenderPlayer({encoder, blob}: {encoder: Encoders, blob?: Blob}) {
+export default function RenderPlayer({encoder, blob}: {encoder: Encoders; blob?: Blob}) {
   const [src, setSrc] = useState('');
   const [gallery, setGallery] = useState<{[name: string]: string}>({});
 

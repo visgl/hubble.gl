@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import {DownloadVideo} from './icons/index';
 import RenderPlayer from './render-player';
 import {ENCODERS, type Encoders, WEBM} from './encoders';
-import { DeckAdapter, FormatConfigs, Timecode } from '@hubble.gl/core';
+import {DeckAdapter, FormatConfigs, Timecode} from '@hubble.gl/core';
 
 const RenderResult = styled.div`
   position: absolute;
@@ -77,13 +77,13 @@ export default function BasicControls({
   timecode,
   embed = true
 }: {
-  children?: ReactChildren
-  adapter: DeckAdapter
-  busy: boolean
-  setBusy: (busy: boolean) => void
-  formatConfigs: Partial<FormatConfigs>
-  timecode: Timecode
-  embed?: boolean
+  children?: ReactChildren;
+  adapter: DeckAdapter;
+  busy: boolean;
+  setBusy: (busy: boolean) => void;
+  formatConfigs: Partial<FormatConfigs>;
+  timecode: Timecode;
+  embed?: boolean;
 }) {
   const [encoder, setEncoder] = useState<Encoders>(WEBM);
   const [blob, setBlob] = useState<Blob>(undefined);

@@ -2,30 +2,30 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
 
-export type FrameEncoderSettings = Partial<EncoderSettings>
+export type FrameEncoderSettings = Partial<EncoderSettings>;
 
 interface EncoderSettings extends FormatConfigs {
-  framerate: number
+  framerate: number;
 }
 
 export interface FormatConfigs {
   png: {
-    archive?: 'tar' | 'zip'
-  }
+    archive?: 'tar' | 'zip';
+  };
   jpeg: {
-    archive?: 'tar' | 'zip'
-    quality: number
-  },
+    archive?: 'tar' | 'zip';
+    quality: number;
+  };
   webm: {
-    quality: number
-  }
+    quality: number;
+  };
   gif: {
-    numWorkers?: number,
-    sampleInterval: number,
-    width: number,
-    height: number
-    jpegQuality?: number
-  }
+    numWorkers?: number;
+    sampleInterval: number;
+    width: number;
+    height: number;
+    jpegQuality?: number;
+  };
 }
 
 export default class FrameEncoder {

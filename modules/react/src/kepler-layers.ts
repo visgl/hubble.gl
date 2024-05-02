@@ -80,7 +80,9 @@ export function createKeplerLayers(map: any, viewState: MapViewState) {
     return layerOrder
       .slice()
       .reverse()
-      .filter((idx: number) => layers[idx].overlayType === 'deckgl' && layersToRender[layers[idx].id])
+      .filter(
+        (idx: number) => layers[idx].overlayType === 'deckgl' && layersToRender[layers[idx].id]
+      )
       .reduce((overlays: any, idx: number) => renderLayer(overlays, idx, map, viewState), []); // Slicing & reversing to create same layer order as Kepler
   }
   return [];

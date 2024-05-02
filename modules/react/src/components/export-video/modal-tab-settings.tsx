@@ -7,13 +7,22 @@ import {estimateFileSize} from './utils';
 import {StyledLabelCell, StyledValueCell, InputGrid} from './styled-components';
 import {FORMATS, RESOLUTIONS, ASPECT_RATIOS, DEFAULT_PREVIEW_RESOLUTIONS} from './constants';
 import {WithKeplerUI} from '../inject-kepler';
-import type { ExportVideoSettings } from './export-video-panel-settings';
+import type {ExportVideoSettings} from './export-video-panel-settings';
 
 const getOptionValue = (r: {value: string}) => r.value;
 const displayOption = (r: {label: string}) => r.label;
-const getSelectedItems = (options: {value: string}[], value: string) => options.find(o => o.value === value);
+const getSelectedItems = (options: {value: string}[], value: string) =>
+  options.find(o => o.value === value);
 
-function SettingsTab({settings, resolution, disabled}: {settings: ExportVideoSettings, resolution: [number, number], disabled: boolean}) {
+function SettingsTab({
+  settings,
+  resolution,
+  disabled
+}: {
+  settings: ExportVideoSettings;
+  resolution: [number, number];
+  disabled: boolean;
+}) {
   const [aspRatio, setAspRatio] = useState(ASPECT_RATIOS['16_9']);
   return (
     <WithKeplerUI>

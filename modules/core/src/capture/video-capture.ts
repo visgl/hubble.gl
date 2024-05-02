@@ -7,23 +7,23 @@ import download from 'downloadjs';
 import type {FrameEncoder, FormatConfigs} from '../encoders';
 import {guid} from './utils';
 
-export type Timecode = {start: number, end: number, duration?: number, framerate: number}
+export type Timecode = {start: number; end: number; duration?: number; framerate: number};
 
 type CaptureStepSuccess = {
-  kind: 'next-frame'
-  nextTimeMs: number
-}
+  kind: 'next-frame';
+  nextTimeMs: number;
+};
 
 type CaptureStepStop = {
-  kind: 'stop'
-}
+  kind: 'stop';
+};
 
 type CaptureStepError = {
-  kind: 'error'
-  error: 'NOT_RECORDING' | string
-}
+  kind: 'error';
+  error: 'NOT_RECORDING' | string;
+};
 
-type CaptureStep = CaptureStepSuccess | CaptureStepError | CaptureStepStop
+type CaptureStep = CaptureStepSuccess | CaptureStepError | CaptureStepStop;
 
 export class VideoCapture {
   /** True if recording new canvas frames, false when saving, idle, etc. */
@@ -62,17 +62,17 @@ export class VideoCapture {
    * Start recording.
    */
   render({
-    Encoder, 
-    formatConfigs, 
-    timecode, 
-    filename = undefined, 
+    Encoder,
+    formatConfigs,
+    timecode,
+    filename = undefined,
     onStop = undefined
   }: {
-    Encoder: typeof FrameEncoder, 
-    formatConfigs: Partial<FormatConfigs>,
-    timecode: Timecode,
-    filename?: string,
-    onStop?: () => void
+    Encoder: typeof FrameEncoder;
+    formatConfigs: Partial<FormatConfigs>;
+    timecode: Timecode;
+    filename?: string;
+    onStop?: () => void;
   }) {
     if (!this.isRecording()) {
       console.time('render');
@@ -110,15 +110,15 @@ export class VideoCapture {
    * Stop and save recording. Execute onComplete when finished.
    */
   stop({
-    onComplete = undefined, 
-    onSave = undefined, 
-    onStopped = undefined, 
+    onComplete = undefined,
+    onSave = undefined,
+    onStopped = undefined,
     abort = false
   }: {
-    onComplete?: () => void,
-    onSave?: (blob: Blob | null) => void,
-    onStopped?: () => void,
-    abort?: boolean
+    onComplete?: () => void;
+    onSave?: (blob: Blob | null) => void;
+    onStopped?: () => void;
+    abort?: boolean;
   }) {
     if (this.isRecording()) {
       console.log(`Stopped recording. Recorded for ${this.timeMs}ms.`);

@@ -6,22 +6,22 @@
 import {type FrameEncoder, PreviewEncoder, type FormatConfigs} from '../encoders/index';
 import {AnimationManager} from '../animations/index';
 import {type Timecode, VideoCapture} from '../capture/video-capture';
-import type {Deck, Layer, DeckProps} from '@deck.gl/core/typed'
+import type {Deck, Layer, DeckProps} from '@deck.gl/core/typed';
 
 export default class DeckAdapter {
   deck?: Deck;
   animationManager: AnimationManager;
-  shouldAnimate: boolean
-  enabled: boolean
-  glContext?: WebGLRenderingContext
-  videoCapture: VideoCapture
+  shouldAnimate: boolean;
+  enabled: boolean;
+  glContext?: WebGLRenderingContext;
+  videoCapture: VideoCapture;
 
   constructor({
-    animationManager = undefined, 
+    animationManager = undefined,
     glContext = undefined
   }: {
-    animationManager?: AnimationManager, 
-    glContext?: WebGLRenderingContext
+    animationManager?: AnimationManager;
+    glContext?: WebGLRenderingContext;
   }) {
     this.animationManager = animationManager || new AnimationManager({});
     this.glContext = glContext;
@@ -39,13 +39,13 @@ export default class DeckAdapter {
   }
 
   getProps({
-    deck, 
-    onNextFrame = undefined, 
+    deck,
+    onNextFrame = undefined,
     extraProps = undefined
   }: {
-    deck: Deck
-    onNextFrame?: (nextTimeMs: number) => void
-    extraProps?: DeckProps
+    deck: Deck;
+    onNextFrame?: (nextTimeMs: number) => void;
+    extraProps?: DeckProps;
   }) {
     if (deck) {
       this.deck = deck;
@@ -79,13 +79,13 @@ export default class DeckAdapter {
     onSave = undefined,
     onComplete = undefined
   }: {
-    Encoder?: typeof FrameEncoder,
-    formatConfigs?: Partial<FormatConfigs>
-    filename?: string,
-    timecode?: Timecode,
-    onStopped?: () => void,
-    onSave?: (blob: Blob | null) => void,
-    onComplete?: () => void
+    Encoder?: typeof FrameEncoder;
+    formatConfigs?: Partial<FormatConfigs>;
+    filename?: string;
+    timecode?: Timecode;
+    onStopped?: () => void;
+    onSave?: (blob: Blob | null) => void;
+    onComplete?: () => void;
   }) {
     this.shouldAnimate = true;
     this.videoCapture.render({
@@ -100,15 +100,15 @@ export default class DeckAdapter {
   }
 
   stop({
-    onStopped, 
-    onSave, 
-    onComplete, 
+    onStopped,
+    onSave,
+    onComplete,
     abort
   }: {
-    onStopped?: () => void
-    onSave?: (blob: Blob | null) => void
-    onComplete?: () => void
-    abort?: boolean
+    onStopped?: () => void;
+    onSave?: (blob: Blob | null) => void;
+    onComplete?: () => void;
+    abort?: boolean;
   }) {
     this.enabled = false;
     this.shouldAnimate = false;
@@ -121,10 +121,11 @@ export default class DeckAdapter {
   }
 
   onAfterRender(proceedToNextFrame: (nextTimeMs: number) => void, readyToCapture = true) {
-    const areAllLayersLoaded = this.deck && this.deck.props.layers.every(layer => (layer as Layer).isLoaded);
+    const areAllLayersLoaded =
+      this.deck && this.deck.props.layers.every(layer => (layer as Layer).isLoaded);
     if (this.videoCapture.isRecording() && areAllLayersLoaded && readyToCapture) {
       // @ts-expect-error TODO use getCanvas
-      const canvas = this.deck.canvas
+      const canvas = this.deck.canvas;
       this.videoCapture.capture(canvas, nextTimeMs => {
         this.seek({timeMs: nextTimeMs});
         proceedToNextFrame(nextTimeMs);

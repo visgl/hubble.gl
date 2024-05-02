@@ -19,8 +19,8 @@ import {
 import ExportVideoPanel from './export-video-panel';
 import {parseSetCameraType, scaleToVideoExport} from './utils';
 import {DEFAULT_FILENAME, getResolutionSetting} from './constants';
-import { StaticMapProps } from 'react-map-gl';
-import type {DeckProps, MapViewState} from '@deck.gl/core/typed'
+import {StaticMapProps} from 'react-map-gl';
+import type {DeckProps, MapViewState} from '@deck.gl/core/typed';
 
 const ENCODERS = {
   gif: GifEncoder,
@@ -30,51 +30,54 @@ const ENCODERS = {
 };
 
 export type ExportVideoSettings = {
-  mediaType?: string
-  cameraPreset?: string
-  fileName?: string
-  resolution?: string
-  durationMs?: number
-}
+  mediaType?: string;
+  cameraPreset?: string;
+  fileName?: string;
+  resolution?: string;
+  durationMs?: number;
+};
 
 type ExportVideoPanelContainerProps = {
-  initialState?: Partial<ExportVideoPanelContainerState>
-  glContext?: WebGLRenderingContext
+  initialState?: Partial<ExportVideoPanelContainerState>;
+  glContext?: WebGLRenderingContext;
 
-  exportVideoWidth: number
-  handleClose: () => void
-  mapData: any
-  header: boolean
-  deckProps?: DeckProps
-  staticMapProps: StaticMapProps
-  disableStaticMap: boolean
-  mapboxLayerBeforeId?: string
-  defaultFileName: string
+  exportVideoWidth: number;
+  handleClose: () => void;
+  mapData: any;
+  header: boolean;
+  deckProps?: DeckProps;
+  staticMapProps: StaticMapProps;
+  disableStaticMap: boolean;
+  mapboxLayerBeforeId?: string;
+  defaultFileName: string;
 
-  animatableFilters
+  animatableFilters;
 
-  onTripFrameUpdate
-  onFilterFrameUpdate
-  getTimeRangeFilterKeyframes
+  onTripFrameUpdate;
+  onFilterFrameUpdate;
+  getTimeRangeFilterKeyframes;
 
-  onSettingsChange: (settings: ExportVideoSettings) => void
-}
+  onSettingsChange: (settings: ExportVideoSettings) => void;
+};
 
 type ExportVideoPanelContainerState = {
-  adapter?: DeckAdapter
-  durationMs: number
-  mediaType: string
-  cameraPreset: string
-  fileName: string
-  resolution: string
-  viewState?: MapViewState
-  rendering: boolean
-  previewing: boolean,
-  saving: boolean
-  memo?: {viewState: MapViewState}
-}
+  adapter?: DeckAdapter;
+  durationMs: number;
+  mediaType: string;
+  cameraPreset: string;
+  fileName: string;
+  resolution: string;
+  viewState?: MapViewState;
+  rendering: boolean;
+  previewing: boolean;
+  saving: boolean;
+  memo?: {viewState: MapViewState};
+};
 
-export class ExportVideoPanelContainer extends Component<ExportVideoPanelContainerProps, ExportVideoPanelContainerState> {
+export class ExportVideoPanelContainer extends Component<
+  ExportVideoPanelContainerProps,
+  ExportVideoPanelContainerState
+> {
   constructor(props: ExportVideoPanelContainerProps) {
     super(props);
 
@@ -110,11 +113,11 @@ export class ExportVideoPanelContainer extends Component<ExportVideoPanelContain
     };
     const viewState = scaleToVideoExport(mapState, this._getContainer());
     this.state = {
-      ...this.state, 
-      viewState, 
-      memo: {viewState}, 
+      ...this.state,
+      viewState,
+      memo: {viewState},
       adapter: new DeckAdapter({glContext})
-    }
+    };
   }
 
   componentDidMount() {
@@ -222,7 +225,7 @@ export class ExportVideoPanelContainer extends Component<ExportVideoPanelContain
       Array.isArray(animatableFilters) && animatableFilters.length
         ? animatableFilters
         : // only animate an enlarged time filter if animatable filters aren't specified.
-        filters.filter(f => f.type === 'timeRange' && f.enlarged)
+          filters.filter(f => f.type === 'timeRange' && f.enlarged)
     ).map(f => ({
       id: f.id,
       timings: [0, this.state.durationMs]

@@ -27,7 +27,7 @@ export const StyledValueCell = styled.div`
   padding: 0 12px;
 `;
 
-export const InputGrid = styled.div<{rows: number, rowHeight?: string}>`
+export const InputGrid = styled.div<{rows: number; rowHeight?: string}>`
   display: grid;
   grid-template-columns: 88px auto;
   grid-template-rows: repeat(
@@ -91,7 +91,7 @@ export const timelinePlayButtonStyle = {
   fill: '#FFF'
 };
 
-export const LoaderWrapper = styled.div<{rendering: boolean, width: number, height: number}>`
+export const LoaderWrapper = styled.div<{rendering: boolean; width: number; height: number}>`
   display: ${props => (props.rendering === false ? 'none' : 'flex')};
   position: absolute;
   background: rgba(0, 0, 0, 0.5);
@@ -117,7 +117,7 @@ export const ExportVideoPanelHeader = styled.div`
   justify-content: space-between;
 `;
 
-export const DeckCanvas = styled.div<{width: number, height: number}>`
+export const DeckCanvas = styled.div<{width: number; height: number}>`
   width: ${props => props.width}px;
   height: ${props => props.height}px;
   position: relative;

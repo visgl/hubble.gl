@@ -2,21 +2,21 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
 
-import Keyframes, { KeyframeProps } from './keyframes';
+import Keyframes, {KeyframeProps} from './keyframes';
 
 export type KeplerLayer = {
-  id: string
+  id: string;
   config: {
-    label: string
-    visConfig: object
-  }
-}
+    label: string;
+    visConfig: object;
+  };
+};
 
 function getFeatures(layer?: KeplerLayer) {
   return layer ? Object.keys(layer.config.visConfig) : [];
 }
 
-export type KeplerLayerKeyframeProps<T> = KeyframeProps<T> & {layer?: KeplerLayer}
+export type KeplerLayerKeyframeProps<T> = KeyframeProps<T> & {layer?: KeplerLayer};
 
 class KeplerLayerKeyframes<T extends object> extends Keyframes<T> {
   layer: KeplerLayer;
@@ -26,7 +26,13 @@ class KeplerLayerKeyframes<T extends object> extends Keyframes<T> {
     this.layer = layer;
   }
 
-  set({layer = undefined, timings, keyframes, easings, interpolators}: KeplerLayerKeyframeProps<T>) {
+  set({
+    layer = undefined,
+    timings,
+    keyframes,
+    easings,
+    interpolators
+  }: KeplerLayerKeyframeProps<T>) {
     if (layer) this.layer = layer;
     super.set({timings, keyframes, easings, interpolators});
   }

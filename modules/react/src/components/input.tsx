@@ -74,19 +74,19 @@ const InputContainer = styled.div`
 `;
 
 type GenericInputProps = {
-  options: string[]
-  name?: string
-  min?: number, 
-  max?: number, 
-  onChange: (name: string, value: string | number | boolean) => void
-  value?: string | number | boolean
-  altValue?: string | number | boolean
-  altType?: string
-  displayName: string
-  type: string
-  displayValue: string 
-  disabled: boolean
-}
+  options: string[];
+  name?: string;
+  min?: number;
+  max?: number;
+  onChange: (name: string, value: string | number | boolean) => void;
+  value?: string | number | boolean;
+  altValue?: string | number | boolean;
+  altType?: string;
+  displayName: string;
+  type: string;
+  displayValue: string;
+  disabled: boolean;
+};
 
 export default class GenericInput extends PureComponent<GenericInputProps> {
   _onChange(evt: ChangeEvent<HTMLSelectElement | HTMLInputElement>) {
@@ -162,7 +162,7 @@ export default class GenericInput extends PureComponent<GenericInputProps> {
     }
 
     if (type === 'checkbox') {
-      props.checked = (props.value as boolean);
+      props.checked = props.value as boolean;
     }
 
     return (

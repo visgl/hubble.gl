@@ -1,8 +1,6 @@
 import test from 'tape-catch';
 
-import {
-  printDuration
-} from '@hubble.gl/react/src/components/export-video/utils';
+import {printDuration} from '@hubble.gl/react/src/components/export-video/utils';
 
 test('printDuration#duration without milli or hour', t => {
   t.equal(printDuration(106050), '01:46');

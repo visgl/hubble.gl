@@ -5,8 +5,8 @@ import React, {useState, useRef, useMemo} from 'react';
 import DeckGL, {DeckGLRef} from '@deck.gl/react/typed';
 import BasicControls from './basic-controls';
 import {useDeckAdapter, useNextFrame} from '../hooks';
-import type {MapViewState} from '@deck.gl/core/typed'
-import { FormatConfigs } from '@hubble.gl/core';
+import type {MapViewState} from '@deck.gl/core/typed';
+import {FormatConfigs} from '@hubble.gl/core';
 
 export const QuickAnimation = ({
   initialViewState,

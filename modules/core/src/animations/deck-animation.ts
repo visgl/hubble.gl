@@ -2,24 +2,30 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
 
-import type { Timeline } from '@luma.gl/engine';
-import {CameraDataType, CameraKeyframeProps, CameraKeyframes, DeckLayerKeyframes, DeckLayerKeyframeProps} from '../keyframes/index';
-import Animation, { AnimationConstructor } from './animation';
-import type { Layer } from '@deck.gl/core/typed'
+import type {Timeline} from '@luma.gl/engine';
+import {
+  CameraDataType,
+  CameraKeyframeProps,
+  CameraKeyframes,
+  DeckLayerKeyframes,
+  DeckLayerKeyframeProps
+} from '../keyframes/index';
+import Animation, {AnimationConstructor} from './animation';
+import type {Layer} from '@deck.gl/core/typed';
 
 function noop() {}
 
 export type DeckAnimationProps = {
-  layerKeyframes?: DeckLayerKeyframeProps<object>[]
-  cameraKeyframe?: CameraKeyframeProps
-  timeline?: Timeline
-}
+  layerKeyframes?: DeckLayerKeyframeProps<object>[];
+  cameraKeyframe?: CameraKeyframeProps;
+  timeline?: Timeline;
+};
 
 export type DeckAnimationConstructor = AnimationConstructor & {
-  getLayers: (animation: DeckAnimation) => Layer[]
-  onLayersUpdate: (layers: Layer[]) => void
-  onCameraUpdate?: (frame: CameraDataType) => void
-} & DeckAnimationProps
+  getLayers: (animation: DeckAnimation) => Layer[];
+  onLayersUpdate: (layers: Layer[]) => void;
+  onCameraUpdate?: (frame: CameraDataType) => void;
+} & DeckAnimationProps;
 
 export default class DeckAnimation extends Animation {
   cameraKeyframe?: CameraKeyframes;
@@ -60,8 +66,8 @@ export default class DeckAnimation extends Animation {
   }
 
   setKeyframes({
-    layerKeyframes = [], 
-    cameraKeyframe = undefined, 
+    layerKeyframes = [],
+    cameraKeyframe = undefined,
     timeline = undefined
   }: DeckAnimationProps) {
     if (this.cameraKeyframe && cameraKeyframe) {

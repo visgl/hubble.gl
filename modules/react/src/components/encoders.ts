@@ -25,4 +25,4 @@ export const ENCODERS = {
   [PNG]: PNGSequenceEncoder
 };
 
-export type Encoders = keyof typeof ENCODERS
+export type Encoders = keyof typeof ENCODERS;

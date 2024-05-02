@@ -13,40 +13,35 @@ import get from 'lodash.get';
 
 export type ExportVideoSettings = {
   // AnimationTab
-  durationMs: number
-  setDuration: (val: number) => void
-  cameraPreset: string
-  setCameraPreset: (cameraPreset: string) => void
+  durationMs: number;
+  setDuration: (val: number) => void;
+  cameraPreset: string;
+  setCameraPreset: (cameraPreset: string) => void;
   // SettingsTab
-  fileName: string
-  fileNamePlaceholder: string
-  setFileName: (value: string) => void
-  mediaType: string
-  setMediaType: (value: string) => void
-  resolution: string
-  setResolution: (value: string) => void
-  frameRate: number
-}
+  fileName: string;
+  fileNamePlaceholder: string;
+  setFileName: (value: string) => void;
+  mediaType: string;
+  setMediaType: (value: string) => void;
+  resolution: string;
+  setResolution: (value: string) => void;
+  frameRate: number;
+};
 
 type ExportVideoPanelSettingsProps = {
-  theme?: any
-  settings: ExportVideoSettings, 
-  resolution: [number, number], 
-  disabled: boolean
-}
+  theme?: any;
+  settings: ExportVideoSettings;
+  resolution: [number, number];
+  disabled: boolean;
+};
 
 type ModalTabMethod = {
-  id: string
-  label: string
-  elementType: any
-}
+  id: string;
+  label: string;
+  elementType: any;
+};
 
-function ExportVideoPanelSettings(
-  {
-    settings, 
-    resolution, 
-    disabled
-  }: ExportVideoPanelSettingsProps) {
+function ExportVideoPanelSettings({settings, resolution, disabled}: ExportVideoPanelSettingsProps) {
   const loadingMethods: ModalTabMethod[] = [
     // Each entry creates new tabs with ModalTabsFactory
     // id: The tab id in state
@@ -63,8 +58,11 @@ function ExportVideoPanelSettings(
       elementType: SettingsTab
     }
   ];
-  const getDefaultMethod = (methods?: ModalTabMethod[]) => (Array.isArray(methods) ? get(methods, [0]) : null);
-  const [currentMethod, toggleMethod] = useState<ModalTabMethod | null>(getDefaultMethod(loadingMethods));
+  const getDefaultMethod = (methods?: ModalTabMethod[]) =>
+    Array.isArray(methods) ? get(methods, [0]) : null;
+  const [currentMethod, toggleMethod] = useState<ModalTabMethod | null>(
+    getDefaultMethod(loadingMethods)
+  );
   const ModalTab = currentMethod.elementType;
 
   return (

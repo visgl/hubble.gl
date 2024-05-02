@@ -5,7 +5,10 @@ import {point} from '@turf/helpers';
 import transformTranslate from '@turf/transform-translate';
 import {WebMercatorViewport, MapViewState} from '@deck.gl/core/typed';
 
-export function scaleToVideoExport(viewState: MapViewState, container: {width: number, height: number}) {
+export function scaleToVideoExport(
+  viewState: MapViewState,
+  container: {width: number; height: number}
+) {
   const viewport = new WebMercatorViewport(viewState);
   const nw = viewport.unproject([0, 0]) as [number, number];
   const se = viewport.unproject([viewport.width, viewport.height]) as [number, number];
@@ -107,7 +110,12 @@ const BIT_DEPTH = 6;
  * @param mediaType 'GIF', 'WEBM', etc.
  * @returns size in MB
  */
-export function estimateFileSize(frameRate: number, resolution: [number, number], durationMs: number, mediaType: string) {
+export function estimateFileSize(
+  frameRate: number,
+  resolution: [number, number],
+  durationMs: number,
+  mediaType: string
+) {
   const seconds = Math.floor(durationMs / 1000);
   if (mediaType === 'gif') {
     // Based off of https://www.youtube.com/watch?v=DDcYvesZsnw for uncompressed video

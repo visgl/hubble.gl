@@ -33,13 +33,11 @@ export {
 export {
   AnimationManager,
   AnimationConstructor,
-  Animation, 
-  DeckAnimation, 
+  Animation,
+  DeckAnimation,
   DeckAnimationConstructor,
   DeckAnimationProps,
   KeplerAnimation
 } from './animations/index';
 
-export {
-  Timecode
-} from './capture/video-capture'
+export {Timecode} from './capture/video-capture';

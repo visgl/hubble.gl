@@ -12,9 +12,9 @@ import {
   VideoLengthDisplay
 } from './styled-components';
 import {WithKeplerUI} from '../inject-kepler';
-import type { ExportVideoSettings } from './export-video-panel-settings';
+import type {ExportVideoSettings} from './export-video-panel-settings';
 
-function AnimationTab({settings, disabled}: {settings: ExportVideoSettings, disabled: boolean}) {
+function AnimationTab({settings, disabled}: {settings: ExportVideoSettings; disabled: boolean}) {
   return (
     <WithKeplerUI>
       {({Slider, ItemSelector}) => (

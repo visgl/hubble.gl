@@ -13,34 +13,37 @@ import isEqual from 'lodash.isequal';
 import {deckStyle, DeckCanvas} from './styled-components';
 import {RenderingSpinner} from './rendering-spinner';
 import {createKeplerLayers} from '../../kepler-layers';
-import { DeckAdapter } from '@hubble.gl/core';
+import {DeckAdapter} from '@hubble.gl/core';
 
 export type ExportVideoPanelPreviewProps = {
-  mapData: any
-  resolution: [number, number]
-  exportVideoWidth: number
-  disableStaticMap: boolean
-  deckProps?: DeckProps
-  viewState: MapViewState
-  adapter: DeckAdapter
-  mapboxLayerBeforeId?: string
-  rendering: boolean
-  saving: boolean
-  setViewState: (viewState: MapViewState) => void
-  durationMs: number
-  staticMapProps?: StaticMapProps
-}
+  mapData: any;
+  resolution: [number, number];
+  exportVideoWidth: number;
+  disableStaticMap: boolean;
+  deckProps?: DeckProps;
+  viewState: MapViewState;
+  adapter: DeckAdapter;
+  mapboxLayerBeforeId?: string;
+  rendering: boolean;
+  saving: boolean;
+  setViewState: (viewState: MapViewState) => void;
+  durationMs: number;
+  staticMapProps?: StaticMapProps;
+};
 
 type ExportVideoPanelPreviewState = {
-  memoDevicePixelRatio: number
-  mapStyle: string
-  mapboxLayerIds?: string[]
-  glContext?: WebGLRenderingContext
-}
+  memoDevicePixelRatio: number;
+  mapStyle: string;
+  mapboxLayerIds?: string[];
+  glContext?: WebGLRenderingContext;
+};
 
-export class ExportVideoPanelPreview extends Component<ExportVideoPanelPreviewProps, ExportVideoPanelPreviewState> {
-  mapRef: RefObject<MapRef>
-  deckRef: RefObject<DeckGLRef>
+export class ExportVideoPanelPreview extends Component<
+  ExportVideoPanelPreviewProps,
+  ExportVideoPanelPreviewState
+> {
+  mapRef: RefObject<MapRef>;
+  deckRef: RefObject<DeckGLRef>;
 
   constructor(props: ExportVideoPanelPreviewProps) {
     super(props);
@@ -204,7 +207,7 @@ export class ExportVideoPanelPreview extends Component<ExportVideoPanelPreviewPr
             controller={true}
             glOptions={{stencil: true}}
             onWebGLInitialized={gl => this.setState({glContext: gl})}
-            onViewStateChange={({viewState: vs}) => setViewState((vs as MapViewState))}
+            onViewStateChange={({viewState: vs}) => setViewState(vs as MapViewState)}
             {...(disableStaticMap ? {onAfterRender: this._onAfterRender} : {})}
             width={resolution[0]}
             height={resolution[1]}

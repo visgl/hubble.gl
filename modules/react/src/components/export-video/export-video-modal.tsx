@@ -10,23 +10,23 @@ import {createSelector} from 'reselect';
 
 type ExportVideoModalProps = {
   theme: {
-    sidePanelInnerPadding?: number
+    sidePanelInnerPadding?: number;
     sidePanel?: {
       margin?: {
-        left?: number
-      }
-    }
-    sidePanelScrollBarWidth?: number
-    modalOverLayZ?: number
-    sidePanelBg?: string
-    panelBorderRadius?: string
-  }
-  isOpen: boolean
-  defaultSettingsPos?: {top: string, left: string}
-  bottomBuffer?: number
-  settingsHeight: number
-  showSettings: boolean
-}
+        left?: number;
+      };
+    };
+    sidePanelScrollBarWidth?: number;
+    modalOverLayZ?: number;
+    sidePanelBg?: string;
+    panelBorderRadius?: string;
+  };
+  isOpen: boolean;
+  defaultSettingsPos?: {top: string; left: string};
+  bottomBuffer?: number;
+  settingsHeight: number;
+  showSettings: boolean;
+};
 
 class ExportVideoModal extends Component<ExportVideoModalProps> {
   static defaultProps = {
@@ -44,8 +44,8 @@ class ExportVideoModal extends Component<ExportVideoModalProps> {
     return props.theme;
   }
   settingsPosSelector = createSelector(
-    this.showSettingsSelector, 
-    this.themeSelector, 
+    this.showSettingsSelector,
+    this.themeSelector,
     (showSettings, theme = {}) => {
       const {defaultSettingsPos, bottomBuffer, settingsHeight} = this.props;
       if (showSettings === false || !this.root || !this.root.current) return defaultSettingsPos;
@@ -63,28 +63,26 @@ class ExportVideoModal extends Component<ExportVideoModalProps> {
           : window.innerHeight - bottomBuffer - settingsHeight;
 
       return {top: `${top}px`, left: `${x + width + offsetX}px`};
-    });
-
-  modalStylesSelector = createSelector(
-    this.themeSelector,
-    theme => ({
-      content: {
-        top: 'auto',
-        left: 'auto',
-        right: '50%',
-        bottom: '50%',
-        transform: 'translate(50%, 50%)',
-        padding: '0px 0px 0px 0px',
-        border: 0,
-        backgroundColor: theme.sidePanelBg,
-        borderRadius: theme.panelBorderRadius || '2px'
-      },
-      overlay: {
-        backgroundColor: 'rgba(0, 0, 0, .5)',
-        zIndex: (this.props.theme && this.props.theme.modalOverLayZ) || 1000
-      }
-    })
+    }
   );
+
+  modalStylesSelector = createSelector(this.themeSelector, theme => ({
+    content: {
+      top: 'auto',
+      left: 'auto',
+      right: '50%',
+      bottom: '50%',
+      transform: 'translate(50%, 50%)',
+      padding: '0px 0px 0px 0px',
+      border: 0,
+      backgroundColor: theme.sidePanelBg,
+      borderRadius: theme.panelBorderRadius || '2px'
+    },
+    overlay: {
+      backgroundColor: 'rgba(0, 0, 0, .5)',
+      zIndex: (this.props.theme && this.props.theme.modalOverLayZ) || 1000
+    }
+  }));
 
   render() {
     const {isOpen, theme, children} = this.props;
@@ -100,10 +98,11 @@ class ExportVideoModal extends Component<ExportVideoModalProps> {
               ariaHideApp={false}
               parentSelector={() => {
                 return (
-                  this.root.current || {
+                  this.root.current ||
+                  ({
                     removeChild: () => {},
                     appendChild: () => {}
-                  } as unknown as HTMLElement
+                  } as unknown as HTMLElement)
                 );
               }}
             >

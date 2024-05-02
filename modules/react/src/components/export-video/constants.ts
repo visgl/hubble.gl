@@ -15,9 +15,9 @@ export const DEFAULT_PREVIEW_RESOLUTIONS = {'16:9': '1280x720', '4:3': '1280x960
 export const SIDEPANEL_WIDTH = 300;
 
 export type Format = {
-  value: string
-  label: string
-}
+  value: string;
+  label: string;
+};
 
 export const FORMATS: Format[] = [
   {
@@ -41,12 +41,12 @@ export const FORMATS: Format[] = [
 export const ASPECT_RATIOS = {'4_3': '4:3', '16_9': '16:9'};
 
 type Resolution = {
-  value: string
-  label: string
-  width: number
-  height: number
-  aspectRatio: string
-}
+  value: string;
+  label: string;
+  width: number;
+  height: number;
+  aspectRatio: string;
+};
 
 export const RESOLUTIONS: Resolution[] = [
   {

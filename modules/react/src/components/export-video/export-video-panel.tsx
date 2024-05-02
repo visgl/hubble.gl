@@ -15,7 +15,7 @@ import {
 } from './styled-components';
 
 import {DEFAULT_ICON_BUTTON_HEIGHT} from './constants';
-import ExportVideoPanelSettings, { ExportVideoSettings } from './export-video-panel-settings';
+import ExportVideoPanelSettings, {ExportVideoSettings} from './export-video-panel-settings';
 import {ExportVideoPanelPreview, ExportVideoPanelPreviewProps} from './export-video-panel-preview';
 
 import {Play, Stop} from '../icons/index';
@@ -40,12 +40,12 @@ const PanelClose = ({handleClose}: {handleClose: () => void}) => (
 );
 
 type PanelBodyProps = Omit<ExportVideoPanelPreviewProps, 'durationMs'> & {
-  settings: ExportVideoSettings
-  previewing: boolean
-  handlePreviewVideo: () => void
-  handleRenderVideo: () => void
-  handleStop: ({ abort }: { abort?: boolean; }) => void
-}
+  settings: ExportVideoSettings;
+  previewing: boolean;
+  handlePreviewVideo: () => void;
+  handleRenderVideo: () => void;
+  handleStop: ({abort}: {abort?: boolean}) => void;
+};
 
 const PanelBody = ({
   exportVideoWidth,
@@ -112,10 +112,10 @@ const PanelBody = ({
 );
 
 type ExportVideoPanelProps = PanelBodyProps & {
-  theme?: any
-  handleClose: () => void
-  header: boolean
-}
+  theme?: any;
+  handleClose: () => void;
+  header: boolean;
+};
 
 const ExportVideoPanel = ({
   theme,

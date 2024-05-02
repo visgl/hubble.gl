@@ -2,11 +2,17 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
 /* global fetch */
-import type { FrameEncoderSettings } from '../frame-encoder';
+import type {FrameEncoderSettings} from '../frame-encoder';
 import {GIFBuilder} from '@loaders.gl/video';
 import FrameEncoder from '../frame-encoder';
 
-type GIFOptions = {width: number, height: number, numWorkers: number, sampleInterval: number, jpegQuality: number}
+type GIFOptions = {
+  width: number;
+  height: number;
+  numWorkers: number;
+  sampleInterval: number;
+  jpegQuality: number;
+};
 
 export default class GifEncoder extends FrameEncoder {
   options: GIFOptions;

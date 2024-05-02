@@ -5,8 +5,8 @@
 import Tar from './tar';
 
 type TarBuilderOptions = {
-  recordsPerBlock: number
-}
+  recordsPerBlock: number;
+};
 
 const TAR_BUILDER_OPTIONS: TarBuilderOptions = {
   recordsPerBlock: 20

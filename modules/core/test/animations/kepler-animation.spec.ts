@@ -3,13 +3,10 @@
 // Copyright (c) vis.gl contributors
 import test from 'tape-catch';
 
-import {
-  findLayer,
-  findFilterIdx
-} from '@hubble.gl/core/src/animations/kepler-animation';
+import {findLayer, findFilterIdx} from '@hubble.gl/core/src/animations/kepler-animation';
 
 import {KeplerAnimation} from '@hubble.gl/core';
-import type { KeplerFilter } from '@hubble.gl/core/src/keyframes';
+import type {KeplerFilter} from '@hubble.gl/core/src/keyframes';
 
 const layers = [
   {id: '2', config: {label: 'a', visConfig: {}}},
@@ -68,31 +65,33 @@ const filters: KeplerFilter[] = [
     animationWindow: 'free',
     value: [0, 1],
     domain: [0, 1],
-    bins: { 
+    bins: {
       someBin: {
-        '1-minute': [{ x0: 0, x1: 1 }]
+        '1-minute': [{x0: 0, x1: 1}]
       }
     },
     plotType: {
       type: '',
       interval: '1-minute'
     }
-  }, {
+  },
+  {
     id: 'f_2',
     type: 'timeRange',
     animationWindow: 'free',
     value: [0, 1],
     domain: [0, 1],
-    bins: { 
+    bins: {
       someBin: {
-        '1-minute': [{ x0: 0, x1: 1 }]
+        '1-minute': [{x0: 0, x1: 1}]
       }
     },
     plotType: {
       type: '',
       interval: '1-minute'
     }
-  }];
+  }
+];
 
 const FIND_FILTER_TEST_CASES = [
   {

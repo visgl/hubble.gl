@@ -8,12 +8,12 @@ import * as header from './header';
 let blockSize: number;
 const recordSize = 512;
 
-type Block = { 
-  header: any; 
-  input: Uint8Array; 
-  headerLength: number; 
-  inputLength: number; 
-}
+type Block = {
+  header: any;
+  input: Uint8Array;
+  headerLength: number;
+  inputLength: number;
+};
 
 class Tar {
   blocks: Block[];
@@ -32,7 +32,11 @@ class Tar {
     this.append = this.append.bind(this);
   }
 
-  append(filepath: string, input: string | Uint8Array, opts: { mode?: number; mtime?: number; uid?: any; gid?: number; owner?: any; group?: any; } = {}) {
+  append(
+    filepath: string,
+    input: string | Uint8Array,
+    opts: {mode?: number; mtime?: number; uid?: any; gid?: number; owner?: any; group?: any} = {}
+  ) {
     let checksum: number;
 
     if (typeof input === 'string') {
@@ -40,7 +44,8 @@ class Tar {
     } else if (input?.constructor && input.constructor !== Uint8Array.prototype.constructor) {
       const errorInput = input.constructor
         .toString()
-        .match(/function\s*([$A-Za-z_][0-9A-Za-z_]*)\s*\(/)?.at(1);
+        .match(/function\s*([$A-Za-z_][0-9A-Za-z_]*)\s*\(/)
+        ?.at(1);
       const errorMessage = `Invalid input type. You gave me: ${errorInput}`;
       throw errorMessage;
     }
@@ -94,7 +99,7 @@ class Tar {
 
   save() {
     const buffers: Uint8Array[] = [];
-    const chunks: {blocks: Block[], length: number}[] = [];
+    const chunks: {blocks: Block[]; length: number}[] = [];
     let length = 0;
     const max = Math.pow(2, 20);
 

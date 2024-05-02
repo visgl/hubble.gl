@@ -3,8 +3,8 @@
 // Copyright (c) vis.gl contributors
 
 import {interpolate, linear} from 'popmotion';
-import type { Keyframe } from './keyframes';
-import type { Easing } from './easings';
+import type {Keyframe} from './keyframes';
+import type {Easing} from './easings';
 
 export function sanitizeInterpolators(keyframes, interpolators: string | string[]) {
   if (typeof interpolators === 'string') {
@@ -53,7 +53,12 @@ export function sanitizeTimings(keyframes, timings: number | number[]) {
   return timings;
 }
 
-export function merge<T>(timings: number[], keyframes: T[], easings: Easing[], interpolators: string[]) {
+export function merge<T>(
+  timings: number[],
+  keyframes: T[],
+  easings: Easing[],
+  interpolators: string[]
+) {
   const _keyframes: Keyframe<T>[] = keyframes.map((keyframe, idx: number) => {
     if (idx === 0) {
       return [timings[idx], {...keyframe, ease: undefined, interpolate: undefined}];

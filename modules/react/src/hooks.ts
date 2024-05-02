@@ -7,14 +7,17 @@ import {DeckAdapter, DeckAnimation, DeckAnimationConstructor} from '@hubble.gl/c
 import {MapboxLayer} from '@deck.gl/mapbox/typed';
 import type {Layer, MapViewState} from '@deck.gl/core/typed';
 import type {DeckGLRef} from '@deck.gl/react/typed';
-import { MapRef } from 'react-map-gl';
+import {MapRef} from 'react-map-gl';
 
 export function useNextFrame() {
   const [, updateState] = useState({});
   return useCallback(() => updateState({}), []);
 }
 
-export function useDeckAdapter(deckAnimation: DeckAnimation, initialViewState: MapViewState = undefined) {
+export function useDeckAdapter(
+  deckAnimation: DeckAnimation,
+  initialViewState: MapViewState = undefined
+) {
   const [layers, setLayers] = useState<Layer[]>([]);
   const [cameraFrame, setCameraFrame] = useState<MapViewState>(initialViewState);
   const adapter = useMemo(() => {
@@ -40,10 +43,10 @@ export function useHubbleGl({
   deckAnimation,
   initialViewState = undefined
 }: {
-  deckRef: RefObject<DeckGLRef>,
-  staticMapRef?: RefObject<MapRef>,
-  deckAnimation: DeckAnimation,
-  initialViewState?: MapViewState
+  deckRef: RefObject<DeckGLRef>;
+  staticMapRef?: RefObject<MapRef>;
+  deckAnimation: DeckAnimation;
+  initialViewState?: MapViewState;
 }) {
   const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
   const nextFrame = useNextFrame();

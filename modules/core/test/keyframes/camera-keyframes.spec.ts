@@ -5,9 +5,7 @@ import test from 'tape-catch';
 import {CameraKeyframes, hold} from '@hubble.gl/core';
 import {easeInOut} from 'popmotion';
 import {toLowPrecision} from '@deck.gl/test-utils';
-import {
-  flyToInterpolator
-} from '@hubble.gl/core/keyframes/camera-keyframes';
+import {flyToInterpolator} from '@hubble.gl/core/keyframes/camera-keyframes';
 
 /* eslint-disable max-len */
 const TEST_CASES = [

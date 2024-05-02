@@ -19,7 +19,7 @@ export default function ResolutionGuide() {
   );
 }
 
-function Outline({width, height, name}: {width: number, height: number, name: string}) {
+function Outline({width, height, name}: {width: number; height: number; name: string}) {
   return (
     <div style={{position: 'absolute', width, height, outline: '2px dashed black'}}>
       <div
@@ -28,7 +28,7 @@ function Outline({width, height, name}: {width: number, height: number, name: st
           bottom: -20,
           right: 0,
           fontSize: '14px',
-          font: 'normal 14px/20px \'Uber Move\',Helvetica,Arial,sans-serif'
+          font: "normal 14px/20px 'Uber Move',Helvetica,Arial,sans-serif"
         }}
       >
         {name} ({width} x {height})

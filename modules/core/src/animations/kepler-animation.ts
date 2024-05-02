@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
 
-import type { Timeline } from '@luma.gl/engine';
+import type {Timeline} from '@luma.gl/engine';
 import {
   CameraKeyframes,
   KeplerFilterKeyframes,
   KeplerLayerKeyframes,
-  KeplerTripKeyframes,
+  KeplerTripKeyframes
 } from '../keyframes/index';
 import type {
   CameraDataType,
@@ -19,13 +19,19 @@ import type {
   KeplerLayer,
   KeplerLayerKeyframeProps,
   KeplerAnimationConfig,
-  KeplerTripKeyframeProps,
+  KeplerTripKeyframeProps
 } from '../keyframes/index';
-import Animation, { type AnimationConstructor } from './animation';
+import Animation, {type AnimationConstructor} from './animation';
 
 function noop() {}
 
-export function findLayer({layers, layerKeyframe}: {layers: KeplerLayer[], layerKeyframe: {id?: string, label?: string}}) {
+export function findLayer({
+  layers,
+  layerKeyframe
+}: {
+  layers: KeplerLayer[];
+  layerKeyframe: {id?: string; label?: string};
+}) {
   // Either find layer using id or label.
   return (
     layers.find(layer => layer.id === layerKeyframe.id) ||
@@ -33,7 +39,13 @@ export function findLayer({layers, layerKeyframe}: {layers: KeplerLayer[], layer
   );
 }
 
-export function findFilterIdx({filters, filterKeyframe}: {filters: KeplerFilter[], filterKeyframe: {filterIdx?: number, id?: string}}) {
+export function findFilterIdx({
+  filters,
+  filterKeyframe
+}: {
+  filters: KeplerFilter[];
+  filterKeyframe: {filterIdx?: number; id?: string};
+}) {
   // Either find filter using index or id.
   return Number.isFinite(filterKeyframe.filterIdx)
     ? filterKeyframe.filterIdx
@@ -41,23 +53,30 @@ export function findFilterIdx({filters, filterKeyframe}: {filters: KeplerFilter[
 }
 
 type KeplerAnimationProps = {
-  layers?: KeplerLayer[],
-  layerKeyframes?: (Omit<KeplerLayerKeyframeProps<object>, 'layer'> & {id?: string, label?: string})[],
-  filters?: KeplerFilter[],
-  filterKeyframes?: KeplerFilterKeyframeProps[],
-  getTimeRangeFilterKeyframes?: TimeRangeKeyframeAccessor,
-  animationConfig?: KeplerAnimationConfig,
-  tripKeyframe?: KeplerTripKeyframeProps,
-  cameraKeyframe?: CameraKeyframeProps
-  timeline?: Timeline
-}
+  layers?: KeplerLayer[];
+  layerKeyframes?: (Omit<KeplerLayerKeyframeProps<object>, 'layer'> & {
+    id?: string;
+    label?: string;
+  })[];
+  filters?: KeplerFilter[];
+  filterKeyframes?: KeplerFilterKeyframeProps[];
+  getTimeRangeFilterKeyframes?: TimeRangeKeyframeAccessor;
+  animationConfig?: KeplerAnimationConfig;
+  tripKeyframe?: KeplerTripKeyframeProps;
+  cameraKeyframe?: CameraKeyframeProps;
+  timeline?: Timeline;
+};
 
 type KeplerAnimationConstructor = AnimationConstructor & {
-  onTripFrameUpdate?: (currentTime: number) => void
-  onFilterFrameUpdate?: (filterIdx: number, key: 'value', value: FilterDataType | number | number[]) => void
-  onLayerFrameUpdate?: (layer: KeplerLayer, frame: object) => void,
-  onCameraFrameUpdate?: (frame: Partial<CameraDataType>) => void
-} & KeplerAnimationProps
+  onTripFrameUpdate?: (currentTime: number) => void;
+  onFilterFrameUpdate?: (
+    filterIdx: number,
+    key: 'value',
+    value: FilterDataType | number | number[]
+  ) => void;
+  onLayerFrameUpdate?: (layer: KeplerLayer, frame: object) => void;
+  onCameraFrameUpdate?: (frame: Partial<CameraDataType>) => void;
+} & KeplerAnimationProps;
 
 export default class KeplerAnimation extends Animation {
   cameraKeyframe?: CameraKeyframes;
@@ -66,7 +85,11 @@ export default class KeplerAnimation extends Animation {
   tripKeyframe?: KeplerTripKeyframes = undefined;
 
   onTripFrameUpdate: (currentTime: number) => void;
-  onFilterFrameUpdate: (filterIdx: number, key: 'value', value: FilterDataType | number | number[]) => void;
+  onFilterFrameUpdate: (
+    filterIdx: number,
+    key: 'value',
+    value: FilterDataType | number | number[]
+  ) => void;
   onLayerFrameUpdate: (layer: KeplerLayer, frame: object) => void;
   onCameraFrameUpdate: (frame: Partial<CameraDataType>) => void;
 
@@ -131,19 +154,22 @@ export default class KeplerAnimation extends Animation {
     }
 
     if (layerKeyframes.length > 0) {
-      this.layerKeyframes = layerKeyframes.reduce<{[id: string]: KeplerLayerKeyframes<object>}>((acc, layerKeyframe) => {
-        // Either find layer using id or label.
-        const layer = findLayer({layers, layerKeyframe});
-        if (layer) {
-          if (acc[layer.id]) {
-            acc[layer.id].set({layer, ...layerKeyframe});
-          } else {
-            acc[layer.id] = new KeplerLayerKeyframes({layer, ...layerKeyframe});
-            this.unattachedKeyframes.push(acc[layer.id]);
+      this.layerKeyframes = layerKeyframes.reduce<{[id: string]: KeplerLayerKeyframes<object>}>(
+        (acc, layerKeyframe) => {
+          // Either find layer using id or label.
+          const layer = findLayer({layers, layerKeyframe});
+          if (layer) {
+            if (acc[layer.id]) {
+              acc[layer.id].set({layer, ...layerKeyframe});
+            } else {
+              acc[layer.id] = new KeplerLayerKeyframes({layer, ...layerKeyframe});
+              this.unattachedKeyframes.push(acc[layer.id]);
+            }
           }
-        }
-        return acc;
-      }, this.layerKeyframes);
+          return acc;
+        },
+        this.layerKeyframes
+      );
     }
 
     if (filterKeyframes.length > 0) {
