@@ -36,9 +36,9 @@ const config = {
 
   entry: {
     test: 'test/node.ts',
-    // 'test-browser': 'test/browser.js',
-    // bench: 'test/bench/node.js',
-    // 'bench-browser': 'test/bench/browser.js',
+    'test-browser': 'index.html',
+    // bench: 'test/bench/index.js',
+    // 'bench-browser': 'test/bench/browser.html',
     size: 'test/size/import-nothing.js'
   }
 };

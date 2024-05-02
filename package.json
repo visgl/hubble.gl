@@ -10,16 +10,17 @@
   "scripts": {
     "bootstrap": "yarn && ocular-bootstrap",
     "clean": "ocular-clean",
-    "build": "ocular-clean && ocular-build && lerna run build",
+    "build": "npm run clean && ocular-build && lerna run build",
     "version": "ocular-build core",
     "lint": "ocular-lint",
     "cover": "ocular-test cover",
     "publish": "ocular-publish",
     "test": "ocular-test",
-    "test-ci": "ocular-lint && ocular-test node",
+    "test-ci": "ocular-lint && ocular-test node && ocular-test cover",
     "test-fast": "ocular-test fast",
-    "test-node": "ocular-test node",
+    "test-node": "ocular-test node | tap-spec",
     "test-browser": "ocular-test browser",
+    "test-browser-headless": "ocular-test browser-headless | tap-spec",
     "tsclean": "find . -name tsconfig.tsbuildinfo -exec rm {} \\;",
     "tsbuild": "tsc -b tsconfig.build.json",
     "bench": "ocular-test bench",
@@ -54,6 +55,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-map-gl": "^5.2.10",
+    "tap-spec": "^5.0.0",
     "tape-catch": "^1.0.6"
   },
   "resolutions_comments": [
