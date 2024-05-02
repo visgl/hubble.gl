@@ -1780,11 +1780,6 @@
   resolved "https://registry.yarnpkg.com/@deck.gl/react/-/react-8.8.6.tgz#e752f42af1f30e1d29dd79521567b9ab0ea2652a"
   integrity sha512-z875ZNpdkXYe3rMuOKI8TAa0DiPkUrs2jBGOOHRe0U+48eYbwS+zIrAHk4dX+8kEKkTWs4QkU25YA/NH572pTQ==
 
-"@deck.gl/test-utils@^8.0.0":
-  version "8.8.6"
-  resolved "https://registry.yarnpkg.com/@deck.gl/test-utils/-/test-utils-8.8.6.tgz#e4b83643e36a5bc2926bad82fe23fdf6301de2ff"
-  integrity sha512-Jj/SUIHcXWrfjN1RQXDJFWsAB6s2QsuYnPF5TekO9YNL5YUHwT0x4WrX8URXU2On3GN5WAxVxn5E5EwE9ocNZQ==
-
 "@emotion/is-prop-valid@^0.8.1":
   version "0.8.8"
   resolved "https://registry.yarnpkg.com/@emotion/is-prop-valid/-/is-prop-valid-0.8.8.tgz#db28b1c4368a259b60a97311d6a952d4fd01ac1a"
@@ -2634,13 +2629,6 @@
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@math.gl/core" "^3.5.0"
-
-"@luma.gl/test-utils@^8.0.0":
-  version "8.5.16"
-  resolved "https://registry.yarnpkg.com/@luma.gl/test-utils/-/test-utils-8.5.16.tgz#c05451075e4c3d58bafe1646670b1a2b720c088c"
-  integrity sha512-MNZc+h9QdfcDNBKgF0GWypRU+fTUlKsDHnkgzIloR8Kx6Oz+vkgWyIPDunVpcnxEnIpwmOCGGwTR5E9rahT7BA==
-  dependencies:
-    "@probe.gl/stats" "^3.5.0"
 
 "@luma.gl/webgl@8.5.16":
   version "8.5.16"
