@@ -15,8 +15,7 @@ export {
   WebMEncoder,
   FrameEncoder,
   PreviewEncoder,
-  GifEncoder,
-  FormatConfigs
+  GifEncoder
 } from './encoders/index';
 
 export {
@@ -30,14 +29,28 @@ export {
   KeplerTripKeyframes
 } from './keyframes/index';
 
-export {
-  AnimationManager,
-  AnimationConstructor,
-  Animation,
-  DeckAnimation,
-  DeckAnimationConstructor,
-  DeckAnimationProps,
-  KeplerAnimation
-} from './animations/index';
+export {AnimationManager, Animation, DeckAnimation, KeplerAnimation} from './animations/index';
 
-export {Timecode} from './capture/video-capture';
+// Types
+export type {FormatConfigs, FrameEncoderSettings} from './encoders/index';
+export type {
+  AnimationConstructor,
+  DeckAnimationConstructor,
+  DeckAnimationProps
+} from './animations/index';
+export type {
+  KeyframeProps,
+  CameraDataType,
+  CameraKeyframeProps,
+  DeckLayerKeyframeProps,
+  KeplerLayerKeyframeProps,
+  KeplerLayer,
+  KeplerFilterKeyframeProps,
+  FilterDataType,
+  KeplerFilter,
+  TimeRangeKeyframeAccessor,
+  KeplerTripKeyframeProps,
+  TripDataType,
+  KeplerAnimationConfig
+} from './keyframes/index';
+export type {Timecode} from './capture/video-capture';
