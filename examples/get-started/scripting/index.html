@@ -1,0 +1,158 @@
+<html>
+  <head>
+    <!-- deck.gl standalone bundle -->
+    <script src="https://unpkg.com/deck.gl@8.5.10/dist.min.js"></script>
+    <script src="https://unpkg.com/hubble.gl@1.3.8/dist.min.js"></script>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+      body {margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif;}
+      #geo, #non-geo {position: absolute; width: 50vw; height: 50vh;}
+      /* #non-geo {left: 50vw; top: 0;} */
+      .render-result {
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        right: 0;
+        background-color: #FFF;
+        margin: 24px;
+        padding: 10px 24px;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        min-width: 300px;
+      }
+      .render-result h3 { font-size: 16px; margin: 8px 0; }
+      #re-render { margin-top: 8px; }
+      #result {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="non-geo" ></div>
+    <div class="render-result">
+      <h3 id="render-status">Rendering video...</h3>
+      <div id="result">
+        <div class="video">
+          <video id="video-render"></video>
+        </div>
+        <button id="re-render">Re-Render</button>
+      </div>
+    </div>
+  </body>
+
+  <script type="text/javascript">
+    function createPoints(count = 10) {
+      const points = [];
+      for (let x = 0; x < count; x++) {
+        for (let y = 0; y < count; y++) {
+          for (let z = 0; z < count; z++) {
+            points.push({
+              position: [x - count / 2, y - count / 2, z - count / 2],
+              color: [(x / count) * 255, (y / count) * 255, (z / count) * 255]
+            });
+          }
+        }
+      }
+      return points;
+    }
+
+    const LAYER_ID = 'point-cloud';
+    const DATA_ID = 'point-data';
+
+    function smoothstep(value) {
+      const x = Math.max(0, Math.min(1, value));
+      return x * x * (3 - 2 * x);
+    }
+
+    const animation = new hubble.DeckAnimation({
+      getLayers: ani => {
+        const dataFrame = ani.layerKeyframes[DATA_ID].getFrame();
+        return [
+          new deck.PointCloudLayer({
+            id: LAYER_ID,
+            coordinateSystem: deck.COORDINATE_SYSTEM.IDENTITY,
+            opacity: 0.8,
+            data: createPoints(dataFrame.pointCount),
+            getPosition: d => d.position,
+            getColor: d => d.color,
+            getNormal: [0, 0, 1],
+            pointSize: 4
+          })
+        ];
+      },
+      layerKeyframes: [
+        {
+          id: DATA_ID,
+          keyframes: [{pointCount: 1}, {pointCount: 30}],
+          timings: [0, 3000],
+          easings: smoothstep
+        }
+      ]
+    });
+
+    const timecode = {
+      start: 0,
+      end: 3000,
+      framerate: 60
+    };
+
+    const filename = 'non-geo-example';
+
+    const animationManager = new hubble.AnimationManager({animations: [animation]});
+    const adapter = new hubble.DeckAdapter({animationManager});
+
+    const nonGeoExample = new deck.DeckGL({
+      container: document.getElementById('non-geo'),
+      mapbox: false /* disable map */,
+      views: [new deck.OrbitView()],
+      initialViewState: {distance: 1, fov: 50, rotationX: 10, rotationOrbit: 160, zoom: 3.5},
+      controller: false,
+      parameters: {
+        clearColor: [255, 255, 255, 1]
+      },
+      // retina displays will double resolution
+      useDevicePixels: false
+    });
+
+    adapter.setDeck(nonGeoExample);
+
+    const setProps = () => {
+      nonGeoExample.setProps(adapter.getProps({onNextFrame: setProps}));
+    };
+
+    const embedVideo = blob => {
+      document.getElementById('render-status').innerText = 'Render complete!';
+      const resultElement = document.getElementById('result');
+      resultElement.style.display = 'block';
+      const videoElement = document.getElementById('video-render');
+      videoElement.setAttribute('controls', true);
+      videoElement.setAttribute('autoplay', true);
+      videoElement.src = URL.createObjectURL(blob);
+      videoElement.addEventListener('canplaythrough', () => {
+        videoElement.play();
+      });
+    };
+
+    const render = () => {
+      // adapter.seek({timeMs: 0});
+      adapter.render({
+        Encoder: hubble.WebMEncoder,
+        timecode,
+        filename,
+        onComplete: setProps,
+        onSave: embedVideo
+      });
+      nonGeoExample.redraw(true);
+    };
+
+    nonGeoExample.setProps({
+      ...adapter.getProps({onNextFrame: setProps}),
+      onLoad: render
+    });
+
+    animation.setOnLayersUpdate(layers => nonGeoExample.setProps({layers}));
+
+    const reRenderElement = document.getElementById('re-render');
+    reRenderElement.onclick = render;
+  </script>
+</html>
