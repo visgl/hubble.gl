@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {render} from 'react-dom';
+import {createRoot} from 'react-dom/client';
 import DeckGL from '@deck.gl/react';
 import {TerrainLayer} from '@deck.gl/geo-layers';
 import {BasicControls, useHubbleGl} from '@hubble.gl/react';
@@ -204,12 +204,6 @@ export default function App() {
 }
 
 export async function renderToDOM(container) {
-  render(<App />, container);
-
-  // const root = createRoot(container);
-  // root.render(<App />);
-
-  // const resp = await fetch(DATA_URL);
-  // const {features} = await resp.json();
-  // root.render(<App data={features} />);
+  const root = createRoot(container);
+  root.render(<App />);
 }

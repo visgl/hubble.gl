@@ -1,7 +1,7 @@
 // hubble.gl
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
-import React, {ReactChildren, createContext} from 'react';
+import React, {type PropsWithChildren, createContext} from 'react';
 
 /*
 // Hook up mutual kepler imports
@@ -33,10 +33,9 @@ export const WithKeplerUI = KeplerUIContext.Consumer;
 export const InjectKeplerUI = ({
   children,
   keplerUI
-}: {
-  children: ReactChildren;
+}: PropsWithChildren<{
   keplerUI: KeplerUI;
-}) => <KeplerUIContext.Provider value={keplerUI}>{children}</KeplerUIContext.Provider>;
+}>) => <KeplerUIContext.Provider value={keplerUI}>{children}</KeplerUIContext.Provider>;
 
 export const injectKeplerUI = (Component: any, keplerUI: KeplerUI) => props =>
   (

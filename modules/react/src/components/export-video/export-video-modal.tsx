@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
 /* global window */
-import React, {Component, createRef} from 'react';
+import React, {Component, createRef, type PropsWithChildren} from 'react';
 import Modal from 'react-modal';
 import {ThemeProvider} from 'styled-components';
 import {ModalContainer} from './styled-components';
@@ -28,7 +28,7 @@ type ExportVideoModalProps = {
   showSettings: boolean;
 };
 
-class ExportVideoModal extends Component<ExportVideoModalProps> {
+class ExportVideoModal extends Component<PropsWithChildren<ExportVideoModalProps>> {
   static defaultProps = {
     defaultSettingsPos: {top: '320px', left: '320px'},
     bottomBuffer: 212

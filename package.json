@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Hubble.gl is a powerful open source animation tool for large-scale data sets.",
   "repository": "https://github.com/uber/hubble.gl.git",
-  "author": "Chris Gervang <chr@uber.com>",
+  "author": "Chris Gervang <chris@gervang.com>",
   "license": "MIT",
   "scripts": {
     "bootstrap": "yarn && ocular-bootstrap",
@@ -52,8 +52,8 @@
     "ocular-dev-tools": "2.0.0-alpha.33",
     "pre-commit": "^1.2.2",
     "pre-push": "^0.1.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
     "react-map-gl": "^5.2.10",
     "tap-spec": "^5.0.0",
     "tape-catch": "^1.0.6"
@@ -65,9 +65,7 @@
   ],
   "resolutions": {
     "prettier": "^2.4.1",
-    "@loaders.gl/video": "3.0.12",
-    "@types/react": "^16.8.0",
-    "@types/react-dom": "^16.8.0"
+    "@loaders.gl/video": "3.0.12"
   },
   "dependencies": {}
 }

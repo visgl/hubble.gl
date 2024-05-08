@@ -1,7 +1,7 @@
 // hubble.gl
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
-import React, {ReactChildren, useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState, type PropsWithChildren} from 'react';
 
 import EncoderDropdown from './encoder-dropdown';
 import styled from 'styled-components';
@@ -68,6 +68,15 @@ const TogglePlayer = styled.div`
   }
 `;
 
+type BasicControlsProps = {
+  adapter: DeckAdapter;
+  busy: boolean;
+  setBusy: (busy: boolean) => void;
+  formatConfigs: Partial<FormatConfigs>;
+  timecode: Timecode;
+  embed?: boolean;
+};
+
 export default function BasicControls({
   children,
   adapter,
@@ -76,15 +85,7 @@ export default function BasicControls({
   formatConfigs,
   timecode,
   embed = true
-}: {
-  children?: ReactChildren;
-  adapter: DeckAdapter;
-  busy: boolean;
-  setBusy: (busy: boolean) => void;
-  formatConfigs: Partial<FormatConfigs>;
-  timecode: Timecode;
-  embed?: boolean;
-}) {
+}: PropsWithChildren<BasicControlsProps>) {
   const [encoder, setEncoder] = useState<Encoders>(WEBM);
   const [blob, setBlob] = useState<Blob>(undefined);
   const [renderStatus, setRenderStatus] = useState<string>(undefined);
