@@ -5,6 +5,7 @@
  */
 
 import React, {useState, useRef, useEffect} from 'react';
+import {render} from 'react-dom';
 import DeckGL from '@deck.gl/react';
 import {BasicControls, useHubbleGl, useDeckAnimation} from '@hubble.gl/react';
 import {StaticMap} from 'react-map-gl';
@@ -174,4 +175,15 @@ export default function App({mapStyle = 'mapbox://styles/mapbox/streets-v11'}) {
       />
     </Container>
   );
+}
+
+export async function renderToDOM(container) {
+  render(<App />, container);
+
+  // const root = createRoot(container);
+  // root.render(<App />);
+
+  // const resp = await fetch(DATA_URL);
+  // const {features} = await resp.json();
+  // root.render(<App data={features} />);
 }
