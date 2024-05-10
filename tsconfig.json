@@ -27,7 +27,8 @@
       "hubble.gl": ["modules/main/src"],
       "@hubble.gl/react": ["modules/react/src"],
 
-      "hubble.gl-test/*": ["test/*"]
+      "hubble.gl-test/*": ["test/*"],
+      "react": [ "./node_modules/@types/react" ]
     },
     "typeRoots" : ["./node_modules/@types"]
   },

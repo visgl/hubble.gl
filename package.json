@@ -42,12 +42,14 @@
     "video"
   ],
   "devDependencies": {
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
     "@loaders.gl/polyfills": "^4.2.0",
     "@babel/register": "^7.13.0",
     "@probe.gl/bench": "^3.5.0",
     "@probe.gl/test-utils": "^3.5.0",
     "coveralls": "^3.0.0",
-    "deck.gl": "^8.0.0",
+    "deck.gl": "^8.9",
     "jsdom": "^20.0.0",
     "ocular-dev-tools": "2.0.0-alpha.33",
     "pre-commit": "^1.2.2",
@@ -59,7 +61,6 @@
     "tape-catch": "^1.0.6"
   },
   "resolutions_comments": [
-    "deck.gl: pinned to 8.2.0 for compatibility with kepler.gl",
     "prettier: 2.3.2 breaks on `import type`, remove when ocular bumps",
     "@loaders.gl/video: https://github.com/visgl/loaders.gl/issues/2164"
   ],

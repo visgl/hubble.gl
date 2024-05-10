@@ -4,9 +4,9 @@
 
 import log from '../utils/log';
 
-declare global {
-  const __VERSION__: string;
-}
+// declare global {
+//   const __VERSION__: string;
+// }
 
 function checkVersion() {
   // Version detection using babel plugin
