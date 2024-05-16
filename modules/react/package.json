@@ -51,7 +51,7 @@
     "react-modal": "^3.8.1",
     "react-onclickoutside": "^6.9.0",
     "reselect": "^3.0.0",
-    "styled-components": "^4.4.1"
+    "styled-components": "^6.1.11"
   },
   "peerDependencies": {
     "@hubble.gl/core": "^1.3.0",

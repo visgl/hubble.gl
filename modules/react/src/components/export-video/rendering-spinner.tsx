@@ -53,12 +53,12 @@ export function RenderingSpinner({
       {({LoadingSpinner}) => (
         <LoaderWrapper
           className="loader-wrapper"
-          width={width}
-          height={height}
-          rendering={rendering}
+          $width={width}
+          $height={height}
+          $rendering={rendering}
         >
           <LoadingSpinner />
-          <RenderingFeedbackContainer className="rendering-feedback-container" height={height}>
+          <RenderingFeedbackContainer className="rendering-feedback-container" $height={height}>
             {showRenderingPercent && <div className="rendering-percent">{percentRendered} %</div>}
             {saving && <div className="saving-message">{message}</div>}
           </RenderingFeedbackContainer>

@@ -33,8 +33,8 @@ const ButtonGroup = styled.div`
   justify-content: flex-end;
 `;
 
-const Result = styled.div<{show?: boolean}>`
-  display: ${props => (props.show ? 'block' : 'none')};
+const Result = styled.div<{$show?: boolean}>`
+  display: ${props => (props.$show ? 'block' : 'none')};
   max-width: 500px;
 `;
 
@@ -49,11 +49,11 @@ const H3 = styled.h3`
   font-family: Helvetica, Arial, sans-serif;
 `;
 
-const Download = styled.div<{show?: boolean}>`
+const Download = styled.div<{$show?: boolean}>`
   color: blue;
   cursor: pointer;
   padding: 0 8px;
-  display: ${props => (props.show ? 'flex' : 'none')};
+  display: ${props => (props.$show ? 'flex' : 'none')};
 `;
 
 const TogglePlayer = styled.div`
@@ -142,7 +142,7 @@ export default function BasicControls({
         <Status>
           <H3>{renderText}</H3>
           <Download
-            show={Boolean(blob)}
+            $show={Boolean(blob)}
             title="Download"
             onClick={() => {
               adapter.videoCapture.download(blob);
@@ -162,7 +162,7 @@ export default function BasicControls({
             </button>
           </ButtonGroup>
         </RenderControls>
-        <Result show={Boolean(blob)}>
+        <Result $show={Boolean(blob)}>
           <TogglePlayer onClick={() => setShowPlayer(!showPlayer)}>
             {showPlayer ? 'Hide Player' : 'Show Player'}
           </TogglePlayer>

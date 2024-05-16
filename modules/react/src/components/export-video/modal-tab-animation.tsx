@@ -19,7 +19,7 @@ function AnimationTab({settings, disabled}: {settings: ExportVideoSettings; disa
     <WithKeplerUI>
       {({Slider, ItemSelector}) => (
         <>
-          <InputGrid rows={5}>
+          <InputGrid $rows={5}>
             <StyledLabelCell>Duration</StyledLabelCell>
             <StyledValueCell style={{paddingLeft: '0px', paddingRight: '0px'}}>
               <SliderWrapper

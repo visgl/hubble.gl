@@ -28,7 +28,7 @@ function SettingsTab({
     <WithKeplerUI>
       {({Input, ItemSelector}) => (
         <>
-          <InputGrid rows={5}>
+          <InputGrid $rows={5}>
             <StyledLabelCell>File Name</StyledLabelCell>
             <Input
               value={settings.fileName}
