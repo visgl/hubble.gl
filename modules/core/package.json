@@ -51,6 +51,7 @@
     "@loaders.gl/video": "3.0.12"
   },
   "devDependencies": {
+    "@deck.gl/core": "^8.9",
     "@types/tape-catch": "^1.0.2"
   }
 }
