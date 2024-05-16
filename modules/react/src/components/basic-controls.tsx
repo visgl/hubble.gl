@@ -1,7 +1,7 @@
 // hubble.gl
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
-import React, {useEffect, useMemo, useState, type PropsWithChildren} from 'react';
+import React, {useCallback, useEffect, useMemo, useState, type PropsWithChildren} from 'react';
 
 import EncoderDropdown from './encoder-dropdown';
 import styled from 'styled-components';
@@ -110,12 +110,12 @@ export default function BasicControls({
     setRenderStatus(undefined);
   }, [encoder]);
 
-  const onSave = (newBlob: Blob) => {
+  const onSave = useCallback((newBlob: Blob) => {
     setBlob(newBlob);
     setRenderStatus('rendered');
-  };
+  }, []);
 
-  const onRender = () => {
+  const onRender = useCallback(() => {
     adapter.render({
       Encoder: ENCODERS[encoder],
       formatConfigs,
@@ -126,15 +126,15 @@ export default function BasicControls({
     });
     setRenderStatus('in-progress');
     setBusy(true);
-  };
+  }, [adapter, onSave, encoder, embed, formatConfigs, timecode]);
 
-  const onStop = () => {
+  const onStop = useCallback(() => {
     adapter.stop({
       onStopped: () => setRenderStatus('saving'),
       onComplete: () => setBusy(false),
       onSave: embed && onSave
     });
-  };
+  }, [adapter, onSave, embed]);
 
   return (
     <RenderResult>

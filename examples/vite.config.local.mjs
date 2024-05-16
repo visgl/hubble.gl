@@ -13,7 +13,7 @@ export default defineConfig(async () => {
       alias: {
         ...aliases,
         // Use root dependencies
-        // '@luma.gl': join(rootDir, './node_modules/@luma.gl'),
+        '@luma.gl': join(rootDir, './node_modules/@luma.gl'),
         // '@math.gl': join(rootDir, './node_modules/@math.gl'),
         // '@arcgis/core': join(rootDir, './node_modules/@arcgis/core'),
         // '@loaders.gl/core': join(rootDir, './node_modules/@loaders.gl/core'),
@@ -31,6 +31,9 @@ export default defineConfig(async () => {
     },
     optimizeDeps: {
       esbuildOptions: {target: 'es2020'}
-    }
+    },
+    build: {
+      sourcemap: 'inline',
+    },
   };
 });
