@@ -4,13 +4,9 @@
 
 import log from '../utils/log';
 
-// declare global {
-//   const __VERSION__: string;
-// }
-
 function checkVersion() {
-  // Version detection using babel plugin
-  // Fallback for tests and SSR since global variable is defined by Webpack.
+  // Version detection using typescript plugin. Note: global type is already declared by deck.
+  // Fallback for tests and SSR since global variable is defined by esbuild.
   const version =
     typeof __VERSION__ !== 'undefined'
       ? __VERSION__
