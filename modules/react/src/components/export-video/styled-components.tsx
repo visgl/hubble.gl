@@ -27,12 +27,12 @@ export const StyledValueCell = styled.div`
   padding: 0 12px;
 `;
 
-export const InputGrid = styled.div<{rows: number; rowHeight?: string}>`
+export const InputGrid = styled.div<{$rows: number; $rowHeight?: string}>`
   display: grid;
   grid-template-columns: 88px auto;
   grid-template-rows: repeat(
-    ${props => props.rows},
-    ${props => (props.rowHeight ? props.rowHeight : '34px')}
+    ${props => props.$rows},
+    ${props => (props.$rowHeight ? props.$rowHeight : '34px')}
   );
   grid-row-gap: ${DEFAULT_ROW_GAP}px;
 `;
@@ -58,16 +58,16 @@ export const StyledTitle = styled.div`
   padding-bottom: 16px;
 `;
 
-export const PanelBodyInner = styled.div<{exportVideoWidth: number}>`
+export const PanelBodyInner = styled.div<{$exportVideoWidth: number}>`
   display: grid;
-  grid-template-columns: ${props => props.exportVideoWidth}px ${DEFAULT_SETTINGS_WIDTH}px;
+  grid-template-columns: ${props => props.$exportVideoWidth}px ${DEFAULT_SETTINGS_WIDTH}px;
   grid-template-rows: auto;
   grid-column-gap: ${DEFAULT_ROW_GAP}px;
 `;
 
-export const Panel = styled.div<{exportVideoWidth: number}>`
+export const Panel = styled.div<{$exportVideoWidth: number}>`
   width: ${props =>
-    props.exportVideoWidth + 2 * DEFAULT_PADDING + DEFAULT_ROW_GAP + DEFAULT_SETTINGS_WIDTH}px;
+    props.$exportVideoWidth + 2 * DEFAULT_PADDING + DEFAULT_ROW_GAP + DEFAULT_SETTINGS_WIDTH}px;
   padding: ${DEFAULT_PADDING}px;
 `;
 
@@ -91,20 +91,20 @@ export const timelinePlayButtonStyle = {
   fill: '#FFF'
 };
 
-export const LoaderWrapper = styled.div<{rendering: boolean; width: number; height: number}>`
-  display: ${props => (props.rendering === false ? 'none' : 'flex')};
+export const LoaderWrapper = styled.div<{$rendering: boolean; $width: number; $height: number}>`
+  display: ${props => (props.$rendering === false ? 'none' : 'flex')};
   position: absolute;
   background: rgba(0, 0, 0, 0.5);
-  width: ${props => props.width}px;
-  height: ${props => props.height}px;
+  width: ${props => props.$width}px;
+  height: ${props => props.$height}px;
   align-items: center;
   justify-content: center;
 `;
 
-export const RenderingFeedbackContainer = styled.div<{height: number}>`
+export const RenderingFeedbackContainer = styled.div<{$height: number}>`
   color: white;
   position: absolute;
-  top: ${props => props.height - 180}px;
+  top: ${props => props.$height - 180}px;
 `;
 
 export const VideoLengthDisplay = styled.div`
@@ -117,8 +117,8 @@ export const ExportVideoPanelHeader = styled.div`
   justify-content: space-between;
 `;
 
-export const DeckCanvas = styled.div<{width: number; height: number}>`
-  width: ${props => props.width}px;
-  height: ${props => props.height}px;
+export const DeckCanvas = styled.div<{$width: number; $height: number}>`
+  width: ${props => props.$width}px;
+  height: ${props => props.$height}px;
   position: relative;
 `;

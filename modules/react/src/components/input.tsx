@@ -7,7 +7,10 @@ import styled from 'styled-components';
 const InputContainer = styled.div`
   position: relative;
   width: 100%;
-  font: 14px / 20px Helvetica, Arial, sans-serif;
+  font:
+    14px / 20px Helvetica,
+    Arial,
+    sans-serif;
   box-sizing: border-box;
 
   &:last-child {

@@ -4,7 +4,7 @@
 /* global window */
 
 import React, {Component, RefObject} from 'react';
-import {DeckGL, DeckGLRef} from '@deck.gl/react/typed';
+import DeckGL, {DeckGLRef} from '@deck.gl/react/typed';
 import {MapRef, StaticMap, StaticMapProps} from 'react-map-gl';
 import {MapboxLayer} from '@deck.gl/mapbox/typed';
 import type {DeckProps, MapViewState} from '@deck.gl/core/typed';
@@ -197,7 +197,7 @@ export class ExportVideoPanelPreview extends Component<
 
     return (
       <>
-        <DeckCanvas id="deck-canvas" width={width} height={height}>
+        <DeckCanvas id="deck-canvas" $width={width} $height={height}>
           <DeckGL
             ref={this.deckRef}
             viewState={viewState}

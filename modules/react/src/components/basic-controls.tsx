@@ -1,7 +1,7 @@
 // hubble.gl
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
-import React, {useEffect, useMemo, useState, type PropsWithChildren} from 'react';
+import React, {useCallback, useEffect, useMemo, useState, type PropsWithChildren} from 'react';
 
 import EncoderDropdown from './encoder-dropdown';
 import styled from 'styled-components';
@@ -33,8 +33,8 @@ const ButtonGroup = styled.div`
   justify-content: flex-end;
 `;
 
-const Result = styled.div<{show?: boolean}>`
-  display: ${props => (props.show ? 'block' : 'none')};
+const Result = styled.div<{$show?: boolean}>`
+  display: ${props => (props.$show ? 'block' : 'none')};
   max-width: 500px;
 `;
 
@@ -49,11 +49,11 @@ const H3 = styled.h3`
   font-family: Helvetica, Arial, sans-serif;
 `;
 
-const Download = styled.div<{show?: boolean}>`
+const Download = styled.div<{$show?: boolean}>`
   color: blue;
   cursor: pointer;
   padding: 0 8px;
-  display: ${props => (props.show ? 'flex' : 'none')};
+  display: ${props => (props.$show ? 'flex' : 'none')};
 `;
 
 const TogglePlayer = styled.div`
@@ -110,12 +110,12 @@ export default function BasicControls({
     setRenderStatus(undefined);
   }, [encoder]);
 
-  const onSave = (newBlob: Blob) => {
+  const onSave = useCallback((newBlob: Blob) => {
     setBlob(newBlob);
     setRenderStatus('rendered');
-  };
+  }, []);
 
-  const onRender = () => {
+  const onRender = useCallback(() => {
     adapter.render({
       Encoder: ENCODERS[encoder],
       formatConfigs,
@@ -126,15 +126,15 @@ export default function BasicControls({
     });
     setRenderStatus('in-progress');
     setBusy(true);
-  };
+  }, [adapter, onSave, encoder, embed, formatConfigs, timecode]);
 
-  const onStop = () => {
+  const onStop = useCallback(() => {
     adapter.stop({
       onStopped: () => setRenderStatus('saving'),
       onComplete: () => setBusy(false),
       onSave: embed && onSave
     });
-  };
+  }, [adapter, onSave, embed]);
 
   return (
     <RenderResult>
@@ -142,7 +142,7 @@ export default function BasicControls({
         <Status>
           <H3>{renderText}</H3>
           <Download
-            show={Boolean(blob)}
+            $show={Boolean(blob)}
             title="Download"
             onClick={() => {
               adapter.videoCapture.download(blob);
@@ -162,7 +162,7 @@ export default function BasicControls({
             </button>
           </ButtonGroup>
         </RenderControls>
-        <Result show={Boolean(blob)}>
+        <Result $show={Boolean(blob)}>
           <TogglePlayer onClick={() => setShowPlayer(!showPlayer)}>
             {showPlayer ? 'Hide Player' : 'Show Player'}
           </TogglePlayer>

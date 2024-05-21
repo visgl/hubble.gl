@@ -10,16 +10,13 @@
   },
   "dependencies": {
     "d3-color": "^1.4.1",
+    "deck.gl": "^8.9",
     "hubble.gl": "^1.3.0",
-    "deck.gl": "8.8.6",
+    "popmotion": "9.3.1",
     "react": "^18.3.0",
-    "react-dom": "^18.3.0",
-    "popmotion": "9.3.1"
+    "react-dom": "^18.3.0"
   },
   "devDependencies": {
     "vite": "^4.0.0"
-  },
-  "resolutions": {
-    "@luma.gl/core": "8.5.16"
   }
 }

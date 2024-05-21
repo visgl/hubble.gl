@@ -38,8 +38,6 @@
     "@loaders.gl/core": "^3.0.0",
     "@loaders.gl/video": "^3.0.12",
     "@loaders.gl/zip": "^3.0.12",
-    "@luma.gl/core": "^8.0.0",
-    "@luma.gl/engine": "^8.0.0",
     "@math.gl/core": "^3.6.0",
     "@math.gl/web-mercator": "^3.6.2",
     "downloadjs": "^1.4.7",
@@ -50,7 +48,15 @@
   "resolutions": {
     "@loaders.gl/video": "3.0.12"
   },
+  "peerDependencies": {
+    "@luma.gl/core": ">=8.3",
+    "@luma.gl/engine": ">=8.3",
+    "@deck.gl/core": ">=8.3"
+  },
   "devDependencies": {
+    "@luma.gl/core": "^8.5.0",
+    "@luma.gl/engine": "^8.5.0",
+    "@deck.gl/core": "^8.9",
     "@types/tape-catch": "^1.0.2"
   }
 }

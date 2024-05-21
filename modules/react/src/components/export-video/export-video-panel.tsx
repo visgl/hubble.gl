@@ -68,7 +68,7 @@ const PanelBody = ({
 }: PanelBodyProps) => (
   <WithKeplerUI>
     {({Button}) => (
-      <PanelBodyInner className="export-video-panel__body" exportVideoWidth={exportVideoWidth}>
+      <PanelBodyInner className="export-video-panel__body" $exportVideoWidth={exportVideoWidth}>
         <ExportVideoPanelPreview
           mapData={mapData}
           adapter={adapter}
@@ -144,7 +144,7 @@ const ExportVideoPanel = ({
   disableStaticMap
 }: ExportVideoPanelProps) => {
   return (
-    <Panel exportVideoWidth={exportVideoWidth} className="export-video-panel">
+    <Panel $exportVideoWidth={exportVideoWidth} className="export-video-panel">
       {header !== false ? (
         <ExportVideoPanelHeader className="export-video-panel__header">
           <StyledTitle className="export-video-panel__title">Export Video</StyledTitle>
