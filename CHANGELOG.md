@@ -21,6 +21,14 @@ Ref: http://keepachangelog.com/en/0.3.0/
 
 ### hubble.gl v1.4 Prereleases
 
+#### hubble.gl [1.4.0-alpha.0] - May 22 2024 
+
+- chore(core) publish NPM packages from CI (#274)
+- chore(react) upgrade to react 18
+- chore(examples) using vite in website examples (#271)
+- add(examples) scripting example (#270)
+- chore: typescript (#269)
+
 ## hubble.gl v1.3
 
 ### hubble.gl v1.3 Prereleases
