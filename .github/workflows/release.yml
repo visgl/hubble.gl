@@ -54,7 +54,7 @@ jobs:
           curl \
             -X POST \
             -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/visgl/deck.gl/releases \
+            https://api.github.com/repos/visgl/hubble.gl/releases \
             -d "${body}" \
             -H "Authorization: token ${GITHUB_TOKEN}"
 
