@@ -17,10 +17,10 @@ Each version should:
 Ref: http://keepachangelog.com/en/0.3.0/
 -->
 
-## hubble.gl v1.0
+## hubble.gl v1.4
 
-### hubble.gl v1.0 Prereleases
+### hubble.gl v1.4 Prereleases
 
-#### hubble.gl [1.0.0-beta.1] - Apr 24 2024
+#### hubble.gl [1.4.0-beta.1] - May 22 2024
 
-- Publish NPM packages from CI (#8828)
+- publish NPM packages from CI (#274)
