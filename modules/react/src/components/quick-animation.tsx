@@ -5,6 +5,7 @@ import React, {useState, useRef, useMemo} from 'react';
 import DeckGL, {DeckGLRef} from '@deck.gl/react/typed';
 import BasicControls from './basic-controls';
 import {useDeckAdapter, useNextFrame} from '../hooks';
+import {DeckGLRender} from '../renderer/deckgl-renderer';
 import type {MapViewState} from '@deck.gl/core/typed';
 import {FormatConfigs} from '@hubble.gl/core';
 
@@ -53,19 +54,23 @@ export const QuickAnimation = ({
   return (
     <>
       <div style={{position: 'relative'}}>
-        <DeckGL
-          ref={deckRef}
-          style={{position: 'unset'}}
-          viewState={cameraFrame}
-          onViewStateChange={({viewState: vs}) => {
-            setCameraFrame(vs as MapViewState);
-          }}
-          controller={true}
-          width={resolution.width}
-          height={resolution.height}
-          layers={layers}
-          {...adapter.getProps({deck, onNextFrame, extraProps: deckProps})}
-        />
+        <DeckGLRender renderResolution={resolution}>
+          {deckglStyle => (
+            <DeckGL
+              ref={deckRef}
+              style={deckglStyle}
+              viewState={cameraFrame}
+              onViewStateChange={({viewState: vs}) => {
+                setCameraFrame(vs as MapViewState);
+              }}
+              controller={true}
+              width={resolution.width}
+              height={resolution.height}
+              layers={layers}
+              {...adapter.getProps({deck, onNextFrame, extraProps: deckProps})}
+            />
+          )}
+        </DeckGLRender>
       </div>
       <BasicControls
         adapter={adapter}

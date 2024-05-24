@@ -50,6 +50,7 @@
     "react-map-gl": "^5.2.10",
     "react-modal": "^3.8.1",
     "react-onclickoutside": "^6.9.0",
+    "react-virtualized-auto-sizer": "^1.0.7",
     "reselect": "^3.0.0",
     "styled-components": "^6.1.11"
   },
