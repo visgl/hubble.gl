@@ -26,13 +26,13 @@ npm install hubble.gl
 
 #### Pure JS
 
-- [Pure JS example](https://github.com/visgl/hubble.gl/tree/master/examples/pure-js)
+- [Pure JS example](https://github.com/visgl/hubble.gl/tree/master/examples/get-started/pure-js)
 
 #### React
 
-- [Get started](https://github.com/visgl/hubble.gl/tree/master/examples/camera)
+- [Get started](https://github.com/visgl/hubble.gl/tree/master/examples/website/camera)
 
-- [With basemap](https://github.com/visgl/hubble.gl/tree/master/examples/trips)
+- [With basemap](https://github.com/visgl/hubble.gl/tree/master/examples/website/trips)
 
 ## Basic Animation
 
@@ -46,7 +46,7 @@ import DeckGL from '@deck.gl/react';
 import {useNextFrame, BasicControls} from '@hubble.gl/react';
 import {LineLayer} from '@deck.gl/layers';
 import {DeckAnimation} from 'hubble.gl';
-import {easing} from 'popmotion';
+import {easeInOut} from 'popmotion';
 
 const deckAnimation = new DeckAnimation({
   // Use applyLayerKeyframes to spread keyframe values onto layers by id.
@@ -81,7 +81,7 @@ const deckAnimation = new DeckAnimation({
         pitch: 30
       }
     ],
-    easings: easing.easeInOut // any easing number => number function is supported
+    easings: easeInOut // any easing number => number function is supported
   }
 });
 

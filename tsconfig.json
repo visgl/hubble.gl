@@ -1,0 +1,43 @@
+{
+  "ts-node": {
+    "include": [
+      "modules",
+      "test/modules"
+    ],
+    // It is faster to skip typechecking. Remove if you want ts-node to do typechecking.
+    "transpileOnly": true
+  },
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "es2020",
+    "jsx": "react",
+    // "strict": true,
+    "noImplicitAny": false,
+    "allowJs": true,
+    "checkJs": false,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@hubble.gl/core": ["modules/core/src"],
+      "hubble.gl": ["modules/main/src"],
+      "@hubble.gl/react": ["modules/react/src"],
+
+      "hubble.gl-test/*": ["test/*"]
+    },
+    "typeRoots" : ["./node_modules/@types"]
+  },
+  "include": [
+    "modules",
+    "test",
+    "examples"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/dist"
+  ]
+}

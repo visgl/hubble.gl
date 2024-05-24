@@ -9,7 +9,7 @@ import {
 import {useKepler, loadKeplerJson} from '../../features/kepler';
 import {updateViewState} from '../../features/map';
 import {useEffect} from 'react';
-import {easing} from 'popmotion';
+import {easeInOut} from 'popmotion';
 
 // const SF = {"latitude":37.75996553215378,"longitude":-122.43586511157562,"zoom":12.29897059083749,"bearing":0,"pitch":0}
 const SF = {
@@ -37,7 +37,7 @@ export const useScene = () => {
     cameraKeyframe: {
       timings: [500, 2500],
       keyframes: [SF, {...SF, pitch: 0, zoom: SF.zoom - 3}],
-      easings: [easing.easeInOut]
+      easings: [easeInOut]
     }
   });
 

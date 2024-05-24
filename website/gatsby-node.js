@@ -2,7 +2,7 @@ const resolve = require('path').resolve;
 // eslint-disable-next-line import/no-extraneous-dependencies
 const webpack = require('webpack');
 // eslint-disable-next-line import/no-extraneous-dependencies
-const getOcularConfig = require('ocular-dev-tools/config/ocular.config');
+const {getOcularConfig} = require('ocular-dev-tools');
 
 module.exports.onCreateWebpackConfig = function onCreateWebpackConfigOverride(opts) {
   const {
@@ -31,15 +31,32 @@ module.exports.onCreateWebpackConfig = function onCreateWebpackConfigOverride(op
   }
 
   const config = getConfig();
+  // config.module.rules.push(
+  //   {
+  //     // Transpile ES6 to ES5 with babel
+  //     // Remove if your app does not use JSX or you don't need to support old browsers
+  //     test: /\.js$/,
+  //     loader: 'babel-loader',
+  //     exclude: [/node_modules/],
+  //     options: {
+  //       plugins: ['@babel/plugin-proposal-class-properties'],
+  //       presets: ['@babel/preset-env', '@babel/preset-react']
+  //     }
+  //   }
+  // );
   config.resolve = config.resolve || {};
   config.resolve.alias = Object.assign({
+    'website-examples': resolve('../examples/website'),
     react: resolve('node_modules/react'),
-    'react-dom': resolve('node_modules/react-dom')
+    'react-dom': resolve('node_modules/react-dom'),
+    '@luma.gl': resolve('../node_modules/@luma.gl'),
+    '@loaders.gl/core': resolve('../node_modules/@loaders.gl/core'),
   }, config.resolve.alias, ALIASES, dependencyAliases);
 
-  config.plugins = config.plugins.concat([
+  config.plugins = config.plugins || [];
+  config.plugins.push(
     new webpack.EnvironmentPlugin(['MapboxAccessToken'])
-  ])
+  );
 
   // Completely replace the webpack config for the current stage.
   // This can be dangerous and break Gatsby if certain configuration options are changed.

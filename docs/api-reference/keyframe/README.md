@@ -8,10 +8,10 @@ Keyframes interpolated between these values over the course of your animation. H
 | Keyframe Class        | Description |
 | ---                   | ---         |
 | [`Keyframes`](/docs/api-reference/keyframe/keyframes) | The base keyframe is typically extended. |
-| [`CameraKeyframes`](/docs/api-reference/keyframes/camera-keyframes) | For animating web mercator views. e.g. deck.gl `viewState` or kepler.gl `mapState` |
-| [`DeckLayerKeyframes`](/docs/api-reference/keyframes/deck-layer-keyframes) | For animating deck.gl layers, such as ScatterPlotLayer radius. |
-| [`KeplerLayerKeyframes`](/docs/api-reference/keyframes/kepler-layer-keyframes) | For animating kepler.gl layers, such as point layer opacity or color. |
-| [`KeplerFilterKeyframes`](/docs/api-reference/keyframes/kepler-filter-keyframes) | For animating kepler.gl filters, such as time or range. |
-| [`KeplerTripKeyframes`](/docs/api-reference/keyframes/kepler-trip-keyframes) | For animating kepler.gl layer animations, such as trip time. |
+| [`CameraKeyframes`](/docs/api-reference/keyframe/camera-keyframes) | For animating web mercator views. e.g. deck.gl `viewState` or kepler.gl `mapState` |
+| [`DeckLayerKeyframes`](/docs/api-reference/keyframe/deck-layer-keyframes) | For animating deck.gl layers, such as ScatterPlotLayer radius. |
+| [`KeplerLayerKeyframes`](/docs/api-reference/keyframe/kepler-layer-keyframes) | For animating kepler.gl layers, such as point layer opacity or color. |
+| [`KeplerFilterKeyframes`](/docs/api-reference/keyframe/kepler-filter-keyframes) | For animating kepler.gl filters, such as time or range. |
+| [`KeplerTripKeyframes`](/docs/api-reference/keyframe/kepler-trip-keyframes) | For animating kepler.gl layer animations, such as trip time. |
 
 If using the built-in animation classes, such as [`DeckAnimation`](/docs/api-reference/animations/deck-animation) or [`KeplerAnimation`](/docs/api-reference/animations/kepler-animation), you will not directly construct these keyframes but instead pass in their parameters to animation methods.

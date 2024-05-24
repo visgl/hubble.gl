@@ -8,31 +8,25 @@
   ],
   "main": "gatsby-config.js",
   "scripts": {
+    "install-deps": "yarn && find ../examples/website -name 'package.json' -maxdepth 2 -execdir yarn \\;",
     "start": "yarn clean && yarn develop",
-    "build": "yarn clean-examples && yarn clean && gatsby build --prefix-paths",
+    "build": "./scripts/build.sh prod",
+    "build-staging": "./scripts/build.sh staging",
     "clean": "rm -rf ./.cache ./public",
-    "clean-examples": "find ../examples -name node_modules -exec rm -r {} \\; || true",
-    "develop": "yarn clean-examples && gatsby develop",
+    "develop": "yarn clean && gatsby develop",
     "serve": "gatsby serve",
     "deploy": "NODE_DEBUG=gh-pages gh-pages -d public"
   },
   "dependencies": {
-    "@deck.gl/core": "8.2.0",
-    "@deck.gl/geo-layers": "8.2.0",
-    "@deck.gl/layers": "8.2.0",
-    "@deck.gl/mesh-layers": "8.2.0",
-    "@deck.gl/react": "8.2.0",
-    "@luma.gl/core": "8.2.0",
     "d3-color": "^1.4.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "styled-components": "^4.4.1",
-    "redux-thunk": "^1.0.0"
+    "global": "^4.3.0"
   },
   "devDependencies": {
     "gatsby": "^2.32.13",
     "gatsby-plugin-no-sourcemaps": "^2.1.2",
     "gatsby-theme-ocular": "^1.2.4",
-    "gh-pages": "^2.2.0"
+    "gh-pages": "^2.2.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   }
 }

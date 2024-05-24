@@ -1,3 +1,4 @@
+/* global window */
 import React from 'react';
 
 /* eslint-disable complexity */

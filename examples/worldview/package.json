@@ -6,28 +6,28 @@
     "clean": "rm -rf yarn.lock ./node_modules",
     "bootstrap": "yarn clean && yarn"
   },
-  "peerDependencies": {
-    "@luma.gl/debug": "^8.2.0"
-  },
   "dependencies": {
+    "deck.gl": "8.2.0",
     "@loaders.gl/core": "^2.3.13",
     "@loaders.gl/json": "^2.3.13",
-    "@loaders.gl/csv": "^2.3.13",
     "@reduxjs/toolkit": "^1.5.0",
     "d3-request": "^1.0.6",
     "global": "^4.3.0",
+    "hubble.gl": "^1.3.0",
     "lodash.isequal": "^4.5.0",
+    "kepler.gl": "^2.5.5",
     "react-copy-to-clipboard": "^5.0.3",
     "react-helmet": "^6.1.0",
     "react-map-gl": "^6.1.15",
     "react-markdown": "^4.2.2",
     "react-palm": "^3.3.6",
     "redux-actions": "^2.2.1",
-    "redux-thunk": "^1.0.0"
+    "redux-thunk": "^1.0.0",
+    "react-intl": "^3.12.0",
+    "popmotion": "9.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.1",
-    "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/plugin-transform-runtime": "^7.12.10",
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-react": "^7.12.1",
@@ -38,7 +38,16 @@
     "webpack-dev-server": "^3.1.14",
     "webpack-hot-middleware": "^2.24.3"
   },
+  "resolutions_comments": [
+    "deck.gl: pinned to 8.2.0 for compatibility with kepler.gl",
+    "mapbox-gl: pinned to v1 for open license"
+  ],
   "resolutions": {
-    "mapbox-gl": "2.4.1"
+    "deck.gl": "8.2.0",
+    "@luma.gl/constants": "8.2.0",
+    "@luma.gl/core": "8.2.0",
+    "@luma.gl/shadertools": "8.2.0",
+    "@luma.gl/experimental": "8.2.0",
+    "mapbox-gl": "^1.13.0"
   }
 }
