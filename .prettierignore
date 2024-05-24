@@ -1,8 +1,9 @@
-node_modules/
-**/dist*/**/*.js
+website/build
+**/dist*/**/*
 dist.js
 *.min.js
 *.md
 
 public/
 .cache/
+.docusaurus
