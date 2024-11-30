@@ -33,7 +33,6 @@
     "dist"
   ],
   "sideEffects": false,
-  "scripts": {},
   "dependencies": {
     "@loaders.gl/zip": "^3.0.12",
     "@turf/helpers": "^5.1.5",

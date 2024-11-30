@@ -62,5 +62,8 @@
   "resolutions": {
     "@loaders.gl/video": "3.0.12"
   },
-  "dependencies": {}
+  "volta": {
+    "node": "18.20.5",
+    "yarn": "4.5.2"
+  }
 }
