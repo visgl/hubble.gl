@@ -7,6 +7,8 @@ coverage/
 .reify-cache/
 .cache/
 
+tsconfig.tsbuildinfo
+
 */**/yarn.lock
 yarn-error.log
 */**/package-lock.json

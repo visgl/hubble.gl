@@ -1,8 +1,9 @@
 {
   "name": "@hubble.gl/react",
-  "version": "1.3.7",
+  "version": "1.4.0-alpha.0",
   "description": "React components for hubble.gl",
   "license": "MIT",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/uber/hubble.gl"
@@ -17,12 +18,19 @@
     "visualization",
     "react"
   ],
-  "main": "dist/es5/index.js",
-  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
   "files": [
     "src",
-    "dist",
-    "README.md"
+    "dist"
   ],
   "sideEffects": false,
   "scripts": {},
@@ -43,14 +51,28 @@
     "react-modal": "^3.8.1",
     "react-onclickoutside": "^6.9.0",
     "reselect": "^3.0.0",
-    "styled-components": "^4.4.1"
+    "styled-components": "^6.1.11"
   },
   "peerDependencies": {
-    "@loaders.gl/core": "^3.0.0",
-    "deck.gl": "^8.0.0",
+    "@deck.gl/core": ">=8.3",
+    "@deck.gl/mapbox": ">=8.3",
+    "@deck.gl/react": ">=8.3",
     "@hubble.gl/core": "^1.3.0",
+    "@loaders.gl/core": "^3.0.0",
     "mapbox-gl": "<=2.4.1",
-    "react": "^16.8.0",
-    "react-dom": "^16.8.0"
+    "react": ">=16.3.0",
+    "react-dom": ">=16.3.0"
+  },
+  "devDependencies": {
+    "@deck.gl/core": "^8.9",
+    "@deck.gl/mapbox": "^8.9",
+    "@deck.gl/react": "^8.9",
+    "@types/lodash.get": "^4.4.9",
+    "@types/lodash.isequal": "^4.5.8",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@types/tape-catch": "^1.0.2",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
   }
 }
