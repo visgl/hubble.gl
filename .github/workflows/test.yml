@@ -33,7 +33,7 @@ jobs:
         env:
           YARN_ENABLE_IMMUTABLE_INSTALLS: false 
 
-      - name: Install dependencies
+      - name: Build packages
         run: yarn bootstrap
 
       - name: Run tests
