@@ -28,6 +28,12 @@ jobs:
           cache: 'yarn'
 
       - name: Install dependencies
+        run: |
+          yarn install
+        env:
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false 
+
+      - name: Install dependencies
         run: yarn bootstrap
 
       - name: Run tests
