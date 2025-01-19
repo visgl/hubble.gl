@@ -20,7 +20,7 @@ import ExportVideoPanel from './export-video-panel';
 import {parseSetCameraType, scaleToVideoExport} from './utils';
 import {DEFAULT_FILENAME, getResolutionSetting} from './constants';
 import {StaticMapProps} from 'react-map-gl';
-import type {DeckProps, MapViewState} from '@deck.gl/core/typed';
+import type {DeckProps, MapViewState} from '@deck.gl/core';
 
 const ENCODERS = {
   gif: GifEncoder,
@@ -39,7 +39,7 @@ export type ExportVideoSettings = {
 
 type ExportVideoPanelContainerProps = {
   initialState?: Partial<ExportVideoPanelContainerState>;
-  glContext?: WebGLRenderingContext;
+  glContext?: WebGL2RenderingContext;
 
   exportVideoWidth: number;
   handleClose: () => void;

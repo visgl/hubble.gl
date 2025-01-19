@@ -4,10 +4,10 @@
 /* global window */
 
 import React, {Component, RefObject} from 'react';
-import DeckGL, {DeckGLRef} from '@deck.gl/react/typed';
+import DeckGL, {DeckGLRef} from '@deck.gl/react';
 import {MapRef, StaticMap, StaticMapProps} from 'react-map-gl';
-import {MapboxLayer} from '@deck.gl/mapbox/typed';
-import type {DeckProps, MapViewState} from '@deck.gl/core/typed';
+import {MapboxOverlay as MapboxLayer} from '@deck.gl/mapbox';
+import type {DeckProps, MapViewState} from '@deck.gl/core';
 import isEqual from 'lodash.isequal';
 
 import {deckStyle, DeckCanvas} from './styled-components';
@@ -163,13 +163,13 @@ export class ExportVideoPanelPreview extends Component<
 
     // If there aren't any layers, combine map and deck with a fake layer.
     if (!keplerLayers.length) {
-      map.addLayer(new MapboxLayer({id: '%%blank-layer', deck}));
+      map.addLayer(new MapboxLayer({id: '%%blank-layer', ...deck}));
       mapboxLayerIds.push('%%blank-layer');
     }
 
     for (let i = 0; i < keplerLayers.length; i++) {
       // Adds DeckGL layers to Mapbox so Mapbox can be the bottom layer. Removing this clips DeckGL layers
-      map.addLayer(new MapboxLayer({id: keplerLayers[i].id, deck}), beforeId);
+      map.addLayer(new MapboxLayer({id: keplerLayers[i].id, ...deck}), beforeId);
       mapboxLayerIds.push(keplerLayers[i].id);
     }
 
@@ -207,7 +207,7 @@ export class ExportVideoPanelPreview extends Component<
             controller={true}
             glOptions={{stencil: true}}
             onWebGLInitialized={gl => this.setState({glContext: gl})}
-            onViewStateChange={({viewState: vs}) => setViewState(vs as MapViewState)}
+            onViewStateChange={({viewState: vs}) => setViewState(vs)}
             {...(disableStaticMap ? {onAfterRender: this._onAfterRender} : {})}
             width={resolution[0]}
             height={resolution[1]}
