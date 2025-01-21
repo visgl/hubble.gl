@@ -228,7 +228,7 @@ class AnimatedLayer<LayerClassT extends ConcreteConstructor<typeof Layer>> exten
       }
     }
     console.log('theatre props', theatreProps)
-    return sheet.object(id, {...theatreProps, ...propTypes})
+    return sheet.object(`${id} (${Class.layerName})`, {...theatreProps, ...propTypes})
   }
 
   renderLayers(): Layer | null {
