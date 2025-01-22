@@ -56,7 +56,7 @@ const KEPLER_UI = {
   Slider,
   LoadingSpinner,
   ModalTabsFactory,
-  Play,  
+  Play
 };
 
 const mapStateToProps = state => {
