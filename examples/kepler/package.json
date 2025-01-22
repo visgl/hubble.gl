@@ -16,8 +16,6 @@
     "react-dom": "^18.2.0",
     "react-map-gl": "^7.1.6",
     "react-markdown": "^6.0.3",
-    "react-palm": "^3.3.6",
-    "redux-actions": "^2.2.1",
     "redux-thunk": "^1.0.0",
     "react-intl": "^6.8.9",
     "styled-components": "6.1.8"
