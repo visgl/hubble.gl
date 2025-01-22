@@ -34,6 +34,7 @@ import {AUTH_TOKENS} from './constants/default-settings';
 import {loadSampleConfigurations} from './actions';
 import isPropValid from '@emotion/is-prop-valid';
 import ExportVideo from './components/export-video';
+import {injectComponents} from '@kepler.gl/components';
 
 // Sample data
 /* eslint-disable no-unused-vars */
@@ -53,7 +54,7 @@ function shouldForwardProp(propName, target) {
   return true;
 }
 
-const KeplerGl = (await import('@kepler.gl/components')).injectComponents([
+const KeplerGl = injectComponents([
   replaceLoadDataModal(),
   replaceMapControl(),
   replacePanelHeader(),
