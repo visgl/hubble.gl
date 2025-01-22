@@ -84,11 +84,11 @@ const PanelBody = ({
           disableBaseMap={disableBaseMap}
           mapboxLayerBeforeId={mapboxLayerBeforeId}
         />
-        {/* <ExportVideoPanelSettings
+        <ExportVideoPanelSettings
           settings={settings}
           resolution={resolution}
           disabled={rendering || previewing}
-        /> */}
+        />
         <TimelineControls className="timeline-controls">
           {rendering || previewing ? (
             <Stop style={timelinePlayButtonStyle} onClick={() => handleStop({})} />

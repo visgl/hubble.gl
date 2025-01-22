@@ -26,65 +26,61 @@ function SettingsTab({
   const [aspRatio, setAspRatio] = useState(ASPECT_RATIOS['16_9']);
   return (
     <WithKeplerUI>
-      {({Input, ItemSelector, locale, messages, IntlProvider}) => (
+      {({Input, ItemSelector}) => (
         <>
-          <IntlProvider locale={locale} messages={messages[locale]}>
-            <InputGrid $rows={5}>
-              <StyledLabelCell>File Name</StyledLabelCell>
-              <Input
-                value={settings.fileName}
-                placeholder={settings.fileNamePlaceholder}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  settings.setFileName(e.target.value)
-                }
-                disabled={disabled}
-              />
-              <StyledLabelCell>Media Type</StyledLabelCell>
-              <ItemSelector
-                selectedItems={getSelectedItems(FORMATS, settings.mediaType)}
-                options={FORMATS}
-                getOptionValue={getOptionValue}
-                displayOption={displayOption}
-                multiSelect={false}
-                searchable={false}
-                onChange={settings.setMediaType}
-                disabled={disabled}
-              />
-              <StyledLabelCell>Ratio</StyledLabelCell>
-              <ItemSelector
-                selectedItems={aspRatio}
-                options={[ASPECT_RATIOS['4_3'], ASPECT_RATIOS['16_9']]}
-                multiSelect={false}
-                searchable={false}
-                onChange={ratio => {
-                  setAspRatio(ratio);
-                  settings.setResolution(DEFAULT_PREVIEW_RESOLUTIONS[ratio]);
-                }}
-                disabled={disabled}
-              />
-              <StyledLabelCell>Quality</StyledLabelCell>
-              <ItemSelector
-                selectedItems={getSelectedItems(RESOLUTIONS, settings.resolution)}
-                options={RESOLUTIONS.filter(o => o.aspectRatio === aspRatio)}
-                getOptionValue={getOptionValue}
-                displayOption={displayOption}
-                multiSelect={false}
-                searchable={false}
-                onChange={settings.setResolution}
-                disabled={disabled}
-              />
-              <StyledLabelCell>File Size</StyledLabelCell>
-              <StyledValueCell>
-                Approx.{' '}
-                {estimateFileSize(
-                  settings.frameRate,
-                  resolution,
-                  settings.durationMs,
-                  settings.mediaType
-                )}
-              </StyledValueCell>
-            </InputGrid>
-          </IntlProvider>
+          <InputGrid $rows={5}>
+            <StyledLabelCell>File Name</StyledLabelCell>
+            <Input
+              value={settings.fileName}
+              placeholder={settings.fileNamePlaceholder}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => settings.setFileName(e.target.value)}
+              disabled={disabled}
+            />
+            <StyledLabelCell>Media Type</StyledLabelCell>
+            <ItemSelector
+              selectedItems={getSelectedItems(FORMATS, settings.mediaType)}
+              options={FORMATS}
+              getOptionValue={getOptionValue}
+              displayOption={displayOption}
+              multiSelect={false}
+              searchable={false}
+              onChange={settings.setMediaType}
+              disabled={disabled}
+            />
+            <StyledLabelCell>Ratio</StyledLabelCell>
+            <ItemSelector
+              selectedItems={aspRatio}
+              options={[ASPECT_RATIOS['4_3'], ASPECT_RATIOS['16_9']]}
+              multiSelect={false}
+              searchable={false}
+              onChange={ratio => {
+                setAspRatio(ratio);
+                settings.setResolution(DEFAULT_PREVIEW_RESOLUTIONS[ratio]);
+              }}
+              disabled={disabled}
+            />
+            <StyledLabelCell>Quality</StyledLabelCell>
+            <ItemSelector
+              selectedItems={getSelectedItems(RESOLUTIONS, settings.resolution)}
+              options={RESOLUTIONS.filter(o => o.aspectRatio === aspRatio)}
+              getOptionValue={getOptionValue}
+              displayOption={displayOption}
+              multiSelect={false}
+              searchable={false}
+              onChange={settings.setResolution}
+              disabled={disabled}
+            />
+            <StyledLabelCell>File Size</StyledLabelCell>
+            <StyledValueCell>
+              Approx.{' '}
+              {estimateFileSize(
+                settings.frameRate,
+                resolution,
+                settings.durationMs,
+                settings.mediaType
+              )}
+            </StyledValueCell>
+          </InputGrid>
         </>
       )}
     </WithKeplerUI>

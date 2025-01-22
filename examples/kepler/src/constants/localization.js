@@ -23,7 +23,10 @@
 const en = {
   'sampleMapsTab.noData': 'No data ?',
   'sampleMapsTab.trySampleData': 'Try sample data',
-  'sampleDataViewer.rowCount': ' {rowCount} rows'
+  'sampleDataViewer.rowCount': ' {rowCount} rows',
+  'exportVideoModal.animation': 'Animation',
+  'exportVideoModal.settings': 'Settings',
+  'placeholder.search': 'Search',
 };
 
 export const messages = {
