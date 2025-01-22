@@ -1983,7 +1983,7 @@ __metadata:
     react: "npm:^18.3.0"
     react-dom: "npm:^18.3.0"
     react-lifecycles-compat: "npm:^3.0.4"
-    react-map-gl: "npm:^7.1.6"
+    react-map-gl: "npm:^7.1.8"
     react-modal: "npm:^3.8.1"
     react-onclickoutside: "npm:^6.9.0"
     reselect: "npm:^3.0.0"
@@ -11087,7 +11087,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-map-gl@npm:^7.1.6":
+"react-map-gl@npm:^7.1.8":
   version: 7.1.8
   resolution: "react-map-gl@npm:7.1.8"
   dependencies:
