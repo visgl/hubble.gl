@@ -35,6 +35,7 @@ export type ExportVideoPanelPreviewProps = {
 type ExportVideoPanelPreviewState = {
   memoDevicePixelRatio: number;
   mapStyle: string;
+  mapboxAccessToken?: string;
   deckLayers: Layer[];
   glContext?: WebGLRenderingContext;
 };
@@ -63,13 +64,14 @@ export class ExportVideoPanelPreview extends Component<
   constructor(props: ExportVideoPanelPreviewProps) {
     super(props);
     const mapStyle = this.props.mapData.mapStyle;
-    const mapStyleUrl = mapStyle.mapStyles[mapStyle.styleType].url;
+    const {url, accessToken} = mapStyle.mapStyles[mapStyle.styleType];
 
     this.mapRef = React.createRef<MapRef>();
     this.deckRef = React.createRef<Deck>();
 
     this.state = {
-      mapStyle: mapStyleUrl, // Unsure if mapStyle would ever change but allowing it just in case
+      mapStyle: url, // Unsure if mapStyle would ever change but allowing it just in case
+      mapboxAccessToken: accessToken,
       glContext: undefined,
       memoDevicePixelRatio: 1,
       deckLayers: []
@@ -183,17 +185,17 @@ export class ExportVideoPanelPreview extends Component<
       mapProps,
       disableBaseMap
     } = this.props;
-    const {glContext, mapStyle, deckLayers} = this.state;
+    const {glContext, mapStyle, deckLayers, mapboxAccessToken} = this.state;
     const deck = this.deckRef.current;
     const {width, height} = this._getContainer();
     const doubleResolution = {width: resolution[0] * 2, height: resolution[1] * 2};
     return (
       <>
         <DeckCanvas id="deck-canvas" $width={width} $height={height}>
-          {disableBaseMap || !glContext ? (
+          {disableBaseMap ? (
             <DeckGL
               ref={ref => setRef(this.deckRef, ref?.deck)}
-              {...deckProps}
+              {...adapter.getProps({deck, extraProps: {...deckProps, layers: deckLayers}})}
               // {...doubleResolution}
               {...this._getContainer()}
               layers={deckLayers}
@@ -201,13 +203,20 @@ export class ExportVideoPanelPreview extends Component<
           ) : (
             <ReactMapGL
               // style={doubleResolution}
+              ref={this.mapRef}
               style={this._getContainer()}
               antialias
-              mapStyle={mapStyle}
-              onLoad={this._onMapLoad}
               {...mapProps}
+              {...viewState}
+              mapStyle={mapStyle}
+              mapboxAccessToken={mapboxAccessToken}
+              onLoad={this._onMapLoad}
+              onMove={e => setViewState(e.viewState)}
             >
-              <DeckGLOverlay ref={this.deckRef} {...deckProps} layers={deckLayers} />
+              <DeckGLOverlay
+                ref={this.deckRef}
+                {...adapter.getProps({deck, extraProps: {...deckProps, layers: deckLayers}})}
+              />
             </ReactMapGL>
           )}
         </DeckCanvas>
@@ -255,16 +264,6 @@ export class ExportVideoPanelPreview extends Component<
     //         )}
     //       </DeckGL>
     //     </DeckCanvas>
-    //     {rendering && (
-    //       <RenderingSpinner
-    //         rendering={rendering}
-    //         saving={saving}
-    //         width={width}
-    //         height={height}
-    //         adapter={adapter}
-    //         durationMs={durationMs}
-    //       />
-    //     )}
     //   </>
     // );
   }

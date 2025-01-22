@@ -2454,6 +2454,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@luma.gl/experimental@npm:8.5.21":
+  version: 8.5.21
+  resolution: "@luma.gl/experimental@npm:8.5.21"
+  dependencies:
+    "@luma.gl/constants": "npm:8.5.21"
+    "@math.gl/core": "npm:^3.5.0"
+    earcut: "npm:^2.0.6"
+  peerDependencies:
+    "@loaders.gl/gltf": ^3.0.0
+    "@loaders.gl/images": ^3.0.0
+    "@luma.gl/engine": ^8.4.0
+    "@luma.gl/gltools": ^8.4.0
+    "@luma.gl/shadertools": ^8.4.0
+    "@luma.gl/webgl": ^8.4.0
+  checksum: 10c0/ed65e12b71fbabca9dccaf237b5d185eb7303491a92a9b8c438f9f8d1d551fe8ac615503bb86fd46c8d2244e9a7fc0b57e4c6254622f3d537d33c4ae329fe6a3
+  languageName: node
+  linkType: hard
+
 "@luma.gl/gltools@npm:8.5.21":
   version: 8.5.21
   resolution: "@luma.gl/gltools@npm:8.5.21"
@@ -5581,7 +5599,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"earcut@npm:^2.2.2":
+"earcut@npm:^2.0.6, earcut@npm:^2.2.2":
   version: 2.2.4
   resolution: "earcut@npm:2.2.4"
   checksum: 10c0/01ca51830edd2787819f904ae580087d37351f6048b4565e7add4b3da8a86b7bc19262ab2aa7fdc64129ab03af2d9cec8cccee4d230c82275f97ef285c79aafb
@@ -7544,6 +7562,7 @@ __metadata:
   resolution: "hubble.gl-monorepo@workspace:."
   dependencies:
     "@loaders.gl/polyfills": "npm:^4.2.0"
+    "@luma.gl/experimental": "npm:^8.5.0"
     "@probe.gl/bench": "npm:^3.5.0"
     "@probe.gl/test-utils": "npm:^3.5.0"
     coveralls: "npm:^3.0.0"

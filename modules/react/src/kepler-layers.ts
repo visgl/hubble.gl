@@ -74,7 +74,13 @@ function renderLayer(
       animationConfig,
       objectHovered
     })
-    .map((deckLayer: Layer) => deckLayer.clone({pickable: false, beforeId}));
+    .map((deckLayer: Layer) =>
+      deckLayer.clone({
+        pickable: false,
+        // @ts-expect-error MapboxOverlay layers are extended to include beforeId
+        beforeId
+      })
+    );
   return overlays.concat(layerOverlay || []);
 }
 
