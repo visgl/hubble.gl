@@ -196,7 +196,7 @@ class App extends Component {
   render() {
     return (
       <StyleSheetManager shouldForwardProp={shouldForwardProp}>
-        {/* <IntlProvider locale="en" messages={messages.en}> */}
+        <IntlProvider locale="en" messages={messages.en}>
           <ThemeProvider theme={theme}>
             <GlobalStyle />
             <WindowSize>
@@ -219,7 +219,7 @@ class App extends Component {
               </div>
             </WindowSize>
           </ThemeProvider>
-        {/* </IntlProvider> */}
+        </IntlProvider>
       </StyleSheetManager>
     );
   }

@@ -67,24 +67,22 @@ function ExportVideoPanelSettings({settings, resolution, disabled}: ExportVideoP
 
   return (
     <WithKeplerUI>
-      {({ModalTabsFactory, locale, messages, IntlProvider}) => {
+      {({ModalTabsFactory}) => {
         const ModalTabs = ModalTabsFactory();
         return (
           <div className="export-video-modal-tab-container">
-            <IntlProvider locale={locale} messages={messages[locale]}>
-              <ModalTabs
-                currentMethod={currentMethod.id}
-                loadingMethods={loadingMethods}
-                toggleMethod={toggleMethod}
+            <ModalTabs
+              currentMethod={currentMethod.id}
+              loadingMethods={loadingMethods}
+              toggleMethod={toggleMethod}
+            />
+            {currentMethod && (
+              <ModalTab // Represents all the params needed across all tabs
+                settings={settings}
+                resolution={resolution}
+                disabled={disabled}
               />
-              {currentMethod && (
-                <ModalTab // Represents all the params needed across all tabs
-                  settings={settings}
-                  resolution={resolution}
-                  disabled={disabled}
-                />
-              )}
-            </IntlProvider>
+            )}
           </div>
         );
       }}

@@ -27,8 +27,6 @@ import {InjectKeplerUI, ExportVideoModal, ExportVideoPanelContainer} from '@hubb
 import {toggleHubbleExportModal} from '../actions';
 import {setFilter, setLayerAnimationTime} from '@kepler.gl/actions';
 import mapboxgl from 'mapbox-gl';
-import {messages} from '../constants/localization';
-import {IntlProvider} from 'react-intl';
 
 // Hook up mutual kepler imports
 import {
@@ -58,10 +56,7 @@ const KEPLER_UI = {
   Slider,
   LoadingSpinner,
   ModalTabsFactory,
-  Play,
-  messages,
-  locale: 'en',
-  IntlProvider
+  Play,  
 };
 
 const mapStateToProps = state => {
