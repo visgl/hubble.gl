@@ -12,8 +12,8 @@
 <body>
   <div id="app"></div>
 </body>
-<script type="text/javascript" src="app.js"></script>
-<script type="text/javascript">
-  Root.renderToDOM(document.getElementById('app'));
+<script type="module">
+  import {renderToDOM} from './src/main.jsx';
+  renderToDOM(document.getElementById('app'));
 </script>
 </html>

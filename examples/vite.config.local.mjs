@@ -7,13 +7,13 @@ const rootDir = join(__dirname, '..');
 /** https://vitejs.dev/config/ */
 export default defineConfig(async () => {
   const {aliases} = await getOcularConfig({root: rootDir});
-
+  // console.log(aliases)
   return {
     resolve: {
       alias: {
         ...aliases,
         // Use root dependencies
-        '@luma.gl': join(rootDir, './node_modules/@luma.gl'),
+        // '@luma.gl': join(rootDir, './node_modules/@luma.gl'),
         // '@math.gl': join(rootDir, './node_modules/@math.gl'),
         // '@arcgis/core': join(rootDir, './node_modules/@arcgis/core'),
         // '@loaders.gl/core': join(rootDir, './node_modules/@loaders.gl/core'),

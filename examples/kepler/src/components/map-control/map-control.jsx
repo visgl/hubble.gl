@@ -20,7 +20,7 @@
 
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import {Icons, IconRoundSmall, MapControlButton} from 'kepler.gl/components';
+import {Icons, IconRoundSmall, MapControlButton} from '@kepler.gl/components';
 import ReactMarkdown from 'react-markdown';
 
 const StyledFloatingPanel = styled.div`
@@ -80,7 +80,7 @@ const StyledPanelAction = styled.div`
     }
   }
 
-  :hover {
+  &:hover {
     cursor: pointer;
     a {
       color: ${props => props.theme.textColorHl};

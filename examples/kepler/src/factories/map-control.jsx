@@ -19,17 +19,33 @@
 // THE SOFTWARE.
 
 import React from 'react';
-import {Provider} from 'react-redux';
-import {render} from 'react-dom';
-import store from './store';
-import App from './app';
+import styled from 'styled-components';
+import {MapControlFactory, withState} from '@kepler.gl/components';
+import {SampleMapPanel} from '../components/map-control/map-control';
 
-export const Root = () => (
-  <Provider store={store}>
-    <App />
-  </Provider>
-);
+CustomMapControlFactory.deps = MapControlFactory.deps;
+function CustomMapControlFactory(...deps) {
+  const MapControl = MapControlFactory(...deps);
 
-export function renderToDOM(container) {
-  render(<Root />, container);
+  const StyledMapControlOverlay = styled.div`
+    position: absolute;
+    top: ${props => props.top}px;
+    right: 0px;
+    z-index: 1;
+  `;
+
+  const CustomMapControl = props => {
+    return (
+      <StyledMapControlOverlay top={props.top}>
+        {!props.isExport && props.currentSample ? <SampleMapPanel {...props} /> : null}
+        <MapControl {...props} top={0} />
+      </StyledMapControlOverlay>
+    );
+  };
+
+  return withState([], state => ({...state.demo.app}))(CustomMapControl);
+}
+
+export function replaceMapControl() {
+  return [MapControlFactory, CustomMapControlFactory];
 }

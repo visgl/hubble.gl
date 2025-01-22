@@ -43,24 +43,24 @@
     "lodash.get": "^4.4.2",
     "lodash.isequal": "^4.5.0",
     "lodash.uniqby": "^4.7.0",
+    "mapbox-gl": "1.13.1",
     "popmotion": "9.3.1",
     "prop-types": "^15.7.2",
     "react-lifecycles-compat": "^3.0.4",
-    "react-map-gl": "^5.2.10",
+    "react-map-gl": "^7.1.6",
     "react-modal": "^3.8.1",
     "react-onclickoutside": "^6.9.0",
     "reselect": "^3.0.0",
-    "styled-components": "^6.1.11"
+    "styled-components": "6.1.8"
   },
   "peerDependencies": {
     "@deck.gl/core": ">=8.3",
     "@deck.gl/mapbox": ">=8.3",
     "@deck.gl/react": ">=8.3",
-    "@hubble.gl/core": "^1.3.0",
+    "@hubble.gl/core": "^1.4.0",
     "@loaders.gl/core": "^3.0.0",
-    "mapbox-gl": "<=2.4.1",
-    "react": ">=16.3.0",
-    "react-dom": ">=16.3.0"
+    "react": ">=18.2",
+    "react-dom": ">=18.2"
   },
   "devDependencies": {
     "@deck.gl/core": "^8.9",

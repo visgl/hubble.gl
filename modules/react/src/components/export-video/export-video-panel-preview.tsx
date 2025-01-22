@@ -3,23 +3,24 @@
 // Copyright (c) vis.gl contributors
 /* global window */
 
-import React, {Component, RefObject} from 'react';
-import DeckGL, {DeckGLRef} from '@deck.gl/react/typed';
-import {MapRef, StaticMap, StaticMapProps} from 'react-map-gl';
-import {MapboxLayer} from '@deck.gl/mapbox/typed';
-import type {DeckProps, MapViewState} from '@deck.gl/core/typed';
+import React, {Component, ForwardedRef, RefObject, forwardRef} from 'react';
+import DeckGL from '@deck.gl/react/typed';
+import ReactMapGL, {type MapProps, type MapRef, useControl} from 'react-map-gl';
+import {MapboxOverlay, MapboxOverlayProps} from '@deck.gl/mapbox/typed';
+import type {Deck, DeckProps, Layer, MapViewState} from '@deck.gl/core/typed';
 import isEqual from 'lodash.isequal';
 
 import {deckStyle, DeckCanvas} from './styled-components';
 import {RenderingSpinner} from './rendering-spinner';
 import {createKeplerLayers} from '../../kepler-layers';
 import {DeckAdapter} from '@hubble.gl/core';
+import {setRef} from './set-ref';
 
 export type ExportVideoPanelPreviewProps = {
   mapData: any;
   resolution: [number, number];
   exportVideoWidth: number;
-  disableStaticMap: boolean;
+  disableBaseMap: boolean;
   deckProps?: DeckProps;
   viewState: MapViewState;
   adapter: DeckAdapter;
@@ -28,22 +29,36 @@ export type ExportVideoPanelPreviewProps = {
   saving: boolean;
   setViewState: (viewState: MapViewState) => void;
   durationMs: number;
-  staticMapProps?: StaticMapProps;
+  mapProps?: MapProps;
 };
 
 type ExportVideoPanelPreviewState = {
   memoDevicePixelRatio: number;
   mapStyle: string;
-  mapboxLayerIds?: string[];
+  deckLayers: Layer[];
   glContext?: WebGLRenderingContext;
 };
+
+const DeckGLOverlay = forwardRef<Deck, MapboxOverlayProps>(
+  (props: MapboxOverlayProps, ref: ForwardedRef<Deck>) => {
+    // MapboxOverlay handles a variety of props differently than the Deck class.
+    // https://deck.gl/docs/api-reference/mapbox/mapbox-overlay#constructor
+    const deck = useControl<MapboxOverlay>(() => new MapboxOverlay({...props, interleaved: true}));
+
+    deck.setProps(props);
+
+    // @ts-expect-error private property
+    setRef(ref, deck._deck);
+    return null;
+  }
+);
 
 export class ExportVideoPanelPreview extends Component<
   ExportVideoPanelPreviewProps,
   ExportVideoPanelPreviewState
 > {
   mapRef: RefObject<MapRef>;
-  deckRef: RefObject<DeckGLRef>;
+  deckRef: RefObject<Deck>;
 
   constructor(props: ExportVideoPanelPreviewProps) {
     super(props);
@@ -51,12 +66,13 @@ export class ExportVideoPanelPreview extends Component<
     const mapStyleUrl = mapStyle.mapStyles[mapStyle.styleType].url;
 
     this.mapRef = React.createRef<MapRef>();
-    this.deckRef = React.createRef<DeckGLRef>();
+    this.deckRef = React.createRef<Deck>();
 
     this.state = {
       mapStyle: mapStyleUrl, // Unsure if mapStyle would ever change but allowing it just in case
       glContext: undefined,
-      memoDevicePixelRatio: window.devicePixelRatio // memoize
+      memoDevicePixelRatio: 1,
+      deckLayers: []
     };
 
     this._onMapLoad = this._onMapLoad.bind(this);
@@ -73,9 +89,6 @@ export class ExportVideoPanelPreview extends Component<
   }
 
   componentWillUnmount() {
-    const {memoDevicePixelRatio} = this.state;
-    this._setDevicePixelRatio(memoDevicePixelRatio);
-
     if (this.mapRef.current) {
       const map = this.mapRef.current.getMap();
 
@@ -84,21 +97,15 @@ export class ExportVideoPanelPreview extends Component<
       listeners.forEach(listener => {
         map.off('render', listener);
       });
-
-      if (this.state.mapboxLayerIds) {
-        this.state.mapboxLayerIds.forEach(id => {
-          map.removeLayer(id);
-        });
-      }
     }
   }
 
   _resizeVideo() {
-    const {exportVideoWidth, resolution, disableStaticMap} = this.props;
+    const {exportVideoWidth, resolution, disableBaseMap} = this.props;
 
     this._setDevicePixelRatio(resolution[0] / exportVideoWidth);
 
-    if (disableStaticMap) {
+    if (disableBaseMap) {
       return;
     }
 
@@ -136,44 +143,29 @@ export class ExportVideoPanelPreview extends Component<
     return {height: exportVideoWidth / aspectRatio, width: exportVideoWidth};
   }
 
-  createLayers() {
+  createLayers(beforeId?: string) {
     const {deckProps, mapData, viewState} = this.props;
     // returns an arr of DeckGL layer objects
     if (deckProps && deckProps.layers) {
       return deckProps.layers;
     }
-    return createKeplerLayers(mapData, viewState);
+    return createKeplerLayers(mapData, viewState, beforeId);
   }
 
   _onAfterRender() {
     this.props.adapter.onAfterRender(() => {
       this.forceUpdate();
-    }, this.props.disableStaticMap || this.mapRef.current.getMap().areTilesLoaded());
+    }, this.props.disableBaseMap || this.mapRef.current.getMap().areTilesLoaded());
   }
 
   _onMapLoad() {
     // Adds mapbox layer to modal
     const map = this.mapRef.current.getMap();
-    const deck = this.deckRef.current.deck;
 
-    const keplerLayers = this.createLayers();
     const beforeId = this.props.mapboxLayerBeforeId;
+    const keplerLayers = this.createLayers(beforeId);
 
-    const mapboxLayerIds = [];
-
-    // If there aren't any layers, combine map and deck with a fake layer.
-    if (!keplerLayers.length) {
-      map.addLayer(new MapboxLayer({id: '%%blank-layer', deck}));
-      mapboxLayerIds.push('%%blank-layer');
-    }
-
-    for (let i = 0; i < keplerLayers.length; i++) {
-      // Adds DeckGL layers to Mapbox so Mapbox can be the bottom layer. Removing this clips DeckGL layers
-      map.addLayer(new MapboxLayer({id: keplerLayers[i].id, deck}), beforeId);
-      mapboxLayerIds.push(keplerLayers[i].id);
-    }
-
-    this.setState({mapboxLayerIds});
+    this.setState({deckLayers: keplerLayers});
 
     map.on('render', this._onAfterRender);
   }
@@ -188,43 +180,36 @@ export class ExportVideoPanelPreview extends Component<
       durationMs,
       resolution,
       deckProps,
-      staticMapProps,
-      disableStaticMap
+      mapProps,
+      disableBaseMap
     } = this.props;
-    const {glContext, mapStyle} = this.state;
-    const deck = this.deckRef.current && this.deckRef.current.deck;
+    const {glContext, mapStyle, deckLayers} = this.state;
+    const deck = this.deckRef.current;
     const {width, height} = this._getContainer();
-
+    const doubleResolution = {width: resolution[0] * 2, height: resolution[1] * 2};
     return (
       <>
         <DeckCanvas id="deck-canvas" $width={width} $height={height}>
-          <DeckGL
-            ref={this.deckRef}
-            viewState={viewState}
-            id="hubblegl-overlay"
-            layers={this.createLayers()}
-            style={deckStyle}
-            controller={true}
-            glOptions={{stencil: true}}
-            onWebGLInitialized={gl => this.setState({glContext: gl})}
-            onViewStateChange={({viewState: vs}) => setViewState(vs as MapViewState)}
-            {...(disableStaticMap ? {onAfterRender: this._onAfterRender} : {})}
-            width={resolution[0]}
-            height={resolution[1]}
-            // onClick={visStateActions.onLayerClick}
-            {...adapter.getProps({deck, extraProps: deckProps})}
-          >
-            {disableStaticMap || !glContext ? null : (
-              <StaticMap
-                ref={this.mapRef}
-                mapStyle={mapStyle}
-                preventStyleDiffing={true}
-                gl={glContext}
-                onLoad={this._onMapLoad}
-                {...staticMapProps}
-              />
-            )}
-          </DeckGL>
+          {disableBaseMap || !glContext ? (
+            <DeckGL
+              ref={ref => setRef(this.deckRef, ref?.deck)}
+              {...deckProps}
+              // {...doubleResolution}
+              {...this._getContainer()}
+              layers={deckLayers}
+            />
+          ) : (
+            <ReactMapGL
+              // style={doubleResolution}
+              style={this._getContainer()}
+              antialias
+              mapStyle={mapStyle}
+              onLoad={this._onMapLoad}
+              {...mapProps}
+            >
+              <DeckGLOverlay ref={this.deckRef} {...deckProps} layers={deckLayers} />
+            </ReactMapGL>
+          )}
         </DeckCanvas>
         {rendering && (
           <RenderingSpinner
@@ -238,5 +223,49 @@ export class ExportVideoPanelPreview extends Component<
         )}
       </>
     );
+
+    // return (
+    //   <>
+    //     <DeckCanvas id="deck-canvas" $width={width} $height={height}>
+    //       <DeckGL
+    //         ref={this.deckRef}
+    //         viewState={viewState}
+    //         id="hubblegl-overlay"
+    //         layers={deckLayers}
+    //         style={deckStyle}
+    //         controller={true}
+    //         glOptions={{stencil: true}}
+    //         onWebGLInitialized={gl => this.setState({glContext: gl})}
+    //         onViewStateChange={({viewState: vs}) => setViewState(vs as MapViewState)}
+    //         {...(disableBaseMap ? {onAfterRender: this._onAfterRender} : {})}
+    //         width={resolution[0]}
+    //         height={resolution[1]}
+    //         // onClick={visStateActions.onLayerClick}
+    //         {...adapter.getProps({deck, extraProps: {...deckProps, layers: deckLayers}})}
+    //       >
+    //         {disableBaseMap || !glContext ? null : (
+    //           <ReactMapGL
+    //             ref={this.mapRef}
+    //             mapStyle={mapStyle}
+    //             preventStyleDiffing={true}
+    //             gl={glContext}
+    //             onLoad={this._onMapLoad}
+    //             {...mapProps}
+    //           />
+    //         )}
+    //       </DeckGL>
+    //     </DeckCanvas>
+    //     {rendering && (
+    //       <RenderingSpinner
+    //         rendering={rendering}
+    //         saving={saving}
+    //         width={width}
+    //         height={height}
+    //         adapter={adapter}
+    //         durationMs={durationMs}
+    //       />
+    //     )}
+    //   </>
+    // );
   }
 }
