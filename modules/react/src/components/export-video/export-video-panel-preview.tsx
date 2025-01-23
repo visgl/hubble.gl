@@ -95,6 +95,7 @@ export class ExportVideoPanelPreview extends Component<
       const map = this.mapRef.current.getMap();
 
       // remove all rendering related handlers to prevent rendering after unmount
+      // @ts-ignore _listeners is private
       const listeners = [...map._listeners.render];
       listeners.forEach(listener => {
         map.off('render', listener);
@@ -212,6 +213,7 @@ export class ExportVideoPanelPreview extends Component<
               mapboxAccessToken={mapboxAccessToken}
               onLoad={this._onMapLoad}
               onMove={e => setViewState(e.viewState)}
+              projection={{name: 'mercator'}}
             >
               <DeckGLOverlay
                 ref={this.deckRef}
