@@ -4,7 +4,7 @@
 
 import {useState, useCallback, useMemo, RefObject} from 'react';
 import {DeckAdapter, DeckAnimation, DeckAnimationConstructor} from '@hubble.gl/core';
-import {MapboxOverlay as MapboxLayer} from '@deck.gl/mapbox';
+import {MapboxOverlay} from '@deck.gl/mapbox';
 import type {Layer, MapViewState} from '@deck.gl/core';
 import type {DeckGLRef} from '@deck.gl/react';
 import {MapRef} from 'react-map-gl';
@@ -60,11 +60,11 @@ export function useHubbleGl({
       const map = staticMapRef.current.getMap();
       // If there aren't any layers, combine map and deck with a fake layer.
       if (!layers.length) {
-        map.addLayer(new MapboxLayer({id: '%%blank-layer', ...deck}));
+        map.addLayer(new MapboxOverlay({id: '%%blank-layer', ...deck.props}));
       }
       for (let i = 0; i < layers.length; i++) {
         // Adds DeckGL layers to Mapbox so Mapbox can be the bottom layer. Removing this clips DeckGL layers
-        map.addLayer(new MapboxLayer({id: layers[i].id, ...deck}));
+        map.addLayer(new MapboxOverlay({id: layers[i].id, ...deck.props}));
       }
       map.on('render', () => adapter.onAfterRender(nextFrame, map.areTilesLoaded()));
     }

@@ -6,7 +6,7 @@
 import React, {Component, RefObject} from 'react';
 import DeckGL, {DeckGLRef} from '@deck.gl/react';
 import {MapRef, StaticMap, StaticMapProps} from 'react-map-gl';
-import {MapboxOverlay as MapboxLayer} from '@deck.gl/mapbox';
+import {MapboxOverlay} from '@deck.gl/mapbox';
 import type {DeckProps, MapViewState} from '@deck.gl/core';
 import isEqual from 'lodash.isequal';
 
@@ -154,7 +154,7 @@ export class ExportVideoPanelPreview extends Component<
   _onMapLoad() {
     // Adds mapbox layer to modal
     const map = this.mapRef.current.getMap();
-    const deck = this.deckRef.current.deck;
+    const {deckProps} = this.props;
 
     const keplerLayers = this.createLayers();
     const beforeId = this.props.mapboxLayerBeforeId;
@@ -163,13 +163,13 @@ export class ExportVideoPanelPreview extends Component<
 
     // If there aren't any layers, combine map and deck with a fake layer.
     if (!keplerLayers.length) {
-      map.addLayer(new MapboxLayer({id: '%%blank-layer', ...deck}));
+      map.addLayer(new MapboxOverlay({id: '%%blank-layer', ...deckProps}));
       mapboxLayerIds.push('%%blank-layer');
     }
 
     for (let i = 0; i < keplerLayers.length; i++) {
       // Adds DeckGL layers to Mapbox so Mapbox can be the bottom layer. Removing this clips DeckGL layers
-      map.addLayer(new MapboxLayer({id: keplerLayers[i].id, ...deck}), beforeId);
+      map.addLayer(new MapboxOverlay({id: keplerLayers[i].id, ...deckProps}), beforeId);
       mapboxLayerIds.push(keplerLayers[i].id);
     }
 
