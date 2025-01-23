@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Copyright contributors to the kepler.gl project
+// Copyright contributors to the hubble.gl project
 
 import {LoadDataModalFactory, withState} from '@kepler.gl/components';
 import {LOADING_METHODS} from '../constants/default-settings';

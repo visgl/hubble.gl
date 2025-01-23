@@ -7,7 +7,6 @@ const rootDir = join(__dirname, '..');
 /** https://vitejs.dev/config/ */
 export default defineConfig(async () => {
   const {aliases} = await getOcularConfig({root: rootDir});
-  // console.log(aliases)
   return {
     resolve: {
       alias: {

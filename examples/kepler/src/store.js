@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Copyright contributors to the kepler.gl project
+// Copyright contributors to the hubble.gl project
 
 import {combineReducers, createStore, applyMiddleware, compose} from 'redux';
 import {enhanceReduxMiddleware} from '@kepler.gl/reducers';
