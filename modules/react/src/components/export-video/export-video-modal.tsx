@@ -101,7 +101,8 @@ class ExportVideoModal extends Component<PropsWithChildren<ExportVideoModalProps
                   this.root.current ||
                   ({
                     removeChild: () => {},
-                    appendChild: () => {}
+                    appendChild: () => {},
+                    contains: () => {}
                   } as unknown as HTMLElement)
                 );
               }}

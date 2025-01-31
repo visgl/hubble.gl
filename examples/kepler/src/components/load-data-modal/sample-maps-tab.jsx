@@ -1,27 +1,10 @@
-// Copyright (c) 2021 Uber Technologies, Inc.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// SPDX-License-Identifier: MIT
+// Copyright contributors to the hubble.gl project
 
 import React from 'react';
 import styled from 'styled-components';
-import {Icons} from 'kepler.gl/components';
-import {media} from 'kepler.gl/styles';
+import {Icons} from '@kepler.gl/components';
+import {media} from '@kepler.gl/styles';
 import {FormattedMessage, IntlProvider} from 'react-intl';
 
 import {ASSETS_URL} from '../../constants/default-settings';
@@ -74,7 +57,7 @@ const StyledTrySampleData = styled.div`
       font-size: 12px;
     `};
 
-    :hover {
+    &:hover {
       color: ${props => props.theme.textColorLT};
     }
 
@@ -95,10 +78,10 @@ const SampleMapsTab = ({onClick, intl}) => {
       <IntlProvider locale={intl.locale} messages={messages[intl.locale]}>
         <div className="demo-map-title">
           <div className="demo-map-label">
-            <FormattedMessage id={'sampleMapsTab.noData'} />
+            <FormattedMessage id={'sampleMapsTab.noData'} defaultMessage="No Data" />
           </div>
           <div className="demo-map-action" onClick={onClick}>
-            <FormattedMessage id={'sampleMapsTab.trySampleData'} />
+            <FormattedMessage id={'sampleMapsTab.trySampleData'} defaultMessage="Sample Maps" />
             <Icons.ArrowRight height="16px" />
           </div>
         </div>

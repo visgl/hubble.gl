@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 
 import {text as requestText, json as requestJson} from 'd3-request';
-import {toggleModal} from 'kepler.gl/actions';
+import {toggleModal} from '@kepler.gl/actions';
 
 import {
   LOADING_SAMPLE_ERROR_MESSAGE,

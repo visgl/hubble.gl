@@ -46,6 +46,7 @@
   ],
   "devDependencies": {
     "@loaders.gl/polyfills": "^4.2.0",
+    "@luma.gl/experimental": "^8.5.0",
     "@probe.gl/bench": "^3.5.0",
     "@probe.gl/test-utils": "^3.5.0",
     "coveralls": "^3.0.0",
@@ -57,10 +58,12 @@
     "tape-catch": "^1.0.6"
   },
   "resolutions_comments": [
-    "@loaders.gl/video: https://github.com/visgl/loaders.gl/issues/2164"
+    "@loaders.gl/video: https://github.com/visgl/loaders.gl/issues/2164",
+    "@luma.gl/experimental: must include in devDeps for local dev examples"
   ],
   "resolutions": {
-    "@loaders.gl/video": "3.0.12"
+    "@loaders.gl/video": "3.0.12",
+    "@luma.gl/experimental": "8.5.21"
   },
   "volta": {
     "node": "18.20.5",
