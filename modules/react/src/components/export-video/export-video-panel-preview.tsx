@@ -37,7 +37,6 @@ type ExportVideoPanelPreviewState = {
   mapStyle: string;
   mapboxAccessToken?: string;
   deckLayers: Layer[];
-  glContext?: WebGLRenderingContext;
 };
 
 const DeckGLOverlay = forwardRef<Deck, MapboxOverlayProps>(
@@ -72,7 +71,6 @@ export class ExportVideoPanelPreview extends Component<
     this.state = {
       mapStyle: url, // Unsure if mapStyle would ever change but allowing it just in case
       mapboxAccessToken: accessToken,
-      glContext: undefined,
       memoDevicePixelRatio: 1,
       deckLayers: []
     };
@@ -186,7 +184,7 @@ export class ExportVideoPanelPreview extends Component<
       mapProps,
       disableBaseMap
     } = this.props;
-    const {glContext, mapStyle, deckLayers, mapboxAccessToken} = this.state;
+    const {mapStyle, deckLayers, mapboxAccessToken} = this.state;
     const deck = this.deckRef.current;
     const {width, height} = this._getContainer();
     const doubleResolution = {width: resolution[0] * 2, height: resolution[1] * 2};
@@ -205,7 +203,7 @@ export class ExportVideoPanelPreview extends Component<
             <ReactMapGL
               // style={doubleResolution}
               ref={this.mapRef}
-              style={this._getContainer()}
+              style={{width, height}}
               antialias
               {...mapProps}
               {...viewState}
