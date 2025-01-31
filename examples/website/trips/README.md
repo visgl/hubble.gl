@@ -48,7 +48,7 @@ import {useDeckAnimation, useHubbleGl} from '@hubble.gl/react';
 
 const initialViewState = {...};
 
-function Map() {
+function Visualization() {
   const deckRef = useRef(null);
   const staticMapRef = useRef(null);
   const deckAnimation = useDeckAnimation({
@@ -95,25 +95,37 @@ const timecode = {
 };
 ```
 
-3. Add to props of the `DeckGl ` and `StaticMap` component
+3. Define an interleaved deck.gl MapboxOverlay
 
 ```jsx
-  <DeckGL
-    ref={deckRef}
-    viewState={cameraFrame}
-    width={resolution.width}
-    height={resolution.height}
-    viewState={cameraFrame}
+import {forwardRef} from 'react';
+import Map, {useControl} from 'react-map-gl';
+import {MapboxOverlay} from '@deck.gl/mapbox';
+
+const DeckGLOverlay = forwardRef((props, ref) => {
+  // MapboxOverlay handles a variety of props differently than the Deck class.
+  // https://deck.gl/docs/api-reference/mapbox/mapbox-overlay#constructor
+  const deck = useControl(() => new MapboxOverlay({...props, interleaved: true}));
+  deck.setProps(props);
+  ref.current = deck._deck;
+  return null;
+});
+```
+
+4. Add to props of the `DeckGl ` and `StaticMap` component
+
+```jsx
+  <Map
+    ref={mapRef}
+    {...cameraFrame}
+    style={{width: resolution.width, height: resolution.height}}
     {/* add your props before spreading hubble props */}
-    {...deckProps}
+    {...mapProps}
   >
-    {/* optional base map */}
-    {staticMapProps.gl && (
-      <StaticMap
-        ref={staticMapRef}
-        {/* add your props before spreading hubble props */}
-        {...staticMapProps}
-      />
-    )}
-  </DeckGL>
+    <DeckGLOverlay 
+      ref={deckRef} 
+      {/* add your props before spreading hubble props */}
+      {...deckProps}
+    />
+  </Map>
 ```

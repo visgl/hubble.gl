@@ -20,7 +20,7 @@ yarn start-local
 ```
 
 ### Data format
-Sample data is stored in [deck.gl Example Data](https://github.com/visgl/deck.gl-data/tree/master/examples/trips). To use your own data, check out
+Sample data is stored in [deck.gl Example Data](https://github.com/visgl/deck.gl-data/tree/master/examples). To use your own data, check out
 the [documentation of PolygonLayer](https://deck.gl/docs/api-reference/layers/polygon-layer).
 
 ### How to add this feature to a hubble.gl example
@@ -98,7 +98,7 @@ const DeckGLOverlay = forwardRef((props, ref) => {
 ```
 
 
-3. Add to props of the `DeckGl ` and `Map` component
+4. Add to props of the `DeckGl ` and `Map` component
 
 ```jsx
   <Map
@@ -114,23 +114,4 @@ const DeckGLOverlay = forwardRef((props, ref) => {
       {...deckProps}
     />
   </Map>
-  
-  <DeckGL
-    ref={deckRef}
-    viewState={cameraFrame}
-    width={resolution.width}
-    height={resolution.height}
-    viewState={cameraFrame}
-    {/* add your props before spreading hubble props */}
-    {...deckProps}
-  >
-    {/* optional base map */}
-    {mapProps.gl && (
-      <Map
-        ref={mapRef}
-        {/* add your props before spreading hubble props */}
-        {...mapProps}
-      />
-    )}
-  </DeckGL>
 ```
