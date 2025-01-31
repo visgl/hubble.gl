@@ -215,6 +215,7 @@ export class ExportVideoPanelPreview extends Component<
             >
               <DeckGLOverlay
                 ref={this.deckRef}
+                glOptions={{stencil: true}}
                 {...adapter.getProps({deck, extraProps: {...deckProps, layers: deckLayers}})}
               />
             </ReactMapGL>
@@ -232,39 +233,5 @@ export class ExportVideoPanelPreview extends Component<
         )}
       </>
     );
-
-    // return (
-    //   <>
-    //     <DeckCanvas id="deck-canvas" $width={width} $height={height}>
-    //       <DeckGL
-    //         ref={this.deckRef}
-    //         viewState={viewState}
-    //         id="hubblegl-overlay"
-    //         layers={deckLayers}
-    //         style={deckStyle}
-    //         controller={true}
-    //         glOptions={{stencil: true}}
-    //         onWebGLInitialized={gl => this.setState({glContext: gl})}
-    //         onViewStateChange={({viewState: vs}) => setViewState(vs as MapViewState)}
-    //         {...(disableBaseMap ? {onAfterRender: this._onAfterRender} : {})}
-    //         width={resolution[0]}
-    //         height={resolution[1]}
-    //         // onClick={visStateActions.onLayerClick}
-    //         {...adapter.getProps({deck, extraProps: {...deckProps, layers: deckLayers}})}
-    //       >
-    //         {disableBaseMap || !glContext ? null : (
-    //           <ReactMapGL
-    //             ref={this.mapRef}
-    //             mapStyle={mapStyle}
-    //             preventStyleDiffing={true}
-    //             gl={glContext}
-    //             onLoad={this._onMapLoad}
-    //             {...mapProps}
-    //           />
-    //         )}
-    //       </DeckGL>
-    //     </DeckCanvas>
-    //   </>
-    // );
   }
 }
