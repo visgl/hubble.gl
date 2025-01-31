@@ -50,7 +50,7 @@ const initialViewState = {...};
 
 function Visualization() {
   const deckRef = useRef(null);
-  const staticMapRef = useRef(null);
+  const mapRef = useRef(null);
   const deckAnimation = useDeckAnimation({
     getLayers: a =>
       a.applyLayerKeyframes([
@@ -62,13 +62,13 @@ function Visualization() {
 
   const {
     deckProps, 
-    staticMapProps,    // optional, use for basemap
+    mapProps,          // optional, use for basemap
     adapter,           // optional, use to modify animation at run time
     cameraFrame,       // optional, use for camera animation
     setCameraFrame     // optional, use for camera animation
   } = useHubbleGl({
       deckRef,
-      staticMapRef,    // optional, use for basemap
+      mapRef,          // optional, use for basemap
       deckAnimation,
       initialViewState // optional, use for camera animation
   });
@@ -112,7 +112,7 @@ const DeckGLOverlay = forwardRef((props, ref) => {
 });
 ```
 
-4. Add to props of the `DeckGl ` and `StaticMap` component
+4. Add to props of the `DeckGLOverlay ` and `Map` component
 
 ```jsx
   <Map

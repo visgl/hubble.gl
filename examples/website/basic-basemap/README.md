@@ -80,7 +80,7 @@ const timecode = {
 };
 ```
 
-3. Define an interleaved deck.gl MapboxOverlay
+3. Define an interleaved deck.gl `MapboxOverlay`
 
 ```jsx
 import {forwardRef} from 'react';
@@ -98,7 +98,7 @@ const DeckGLOverlay = forwardRef((props, ref) => {
 ```
 
 
-4. Add to props of the `DeckGl ` and `Map` component
+4. Add to props of the `DeckGLOverlay ` and `Map` component
 
 ```jsx
   <Map
