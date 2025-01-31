@@ -2,15 +2,7 @@ This is a basic basemap + deck.gl data animation utilizing [react-map-gl](https:
 
 ### Usage
 
-Copy the content of this folder to your project. 
-
-To see the base map, you need a [Mapbox access token](https://docs.mapbox.com/help/how-mapbox-works/access-tokens/). You can either set an environment variable:
-
-```bash
-export MapboxAccessToken=<mapbox_access_token>
-```
-
-Or set `MAPBOX_TOKEN` directly in `app.js`.
+Copy the content of this folder to your project.
 
 Other options can be found at [using with Mapbox GL](https://deck.gl/docs/developer-guide/base-maps/using-with-mapbox).
 
@@ -41,9 +33,9 @@ import {useDeckAnimation, useHubbleGl} from '@hubble.gl/react';
 
 const initialViewState = {...};
 
-function Map() {
+function Visualization() {
   const deckRef = useRef(null);
-  const staticMapRef = useRef(null);
+  const mapRef = useRef(null);
   const deckAnimation = useDeckAnimation({
     getLayers: a =>
       a.applyLayerKeyframes([
@@ -55,13 +47,13 @@ function Map() {
 
   const {
     deckProps, 
-    staticMapProps,    // optional, use for basemap
+    mapProps,          // optional, use for basemap
     adapter,           // optional, use to modify animation at run time
     cameraFrame,       // optional, use for camera animation
     setCameraFrame     // optional, use for camera animation
   } = useHubbleGl({
       deckRef,
-      staticMapRef,    // optional, use for basemap
+      mapRef,          // optional, use for basemap
       deckAnimation,
       initialViewState // optional, use for camera animation
   });
@@ -88,9 +80,41 @@ const timecode = {
 };
 ```
 
-3. Add to props of the `DeckGl ` and `StaticMap` component
+3. Define an interleaved deck.gl MapboxOverlay
 
 ```jsx
+import {forwardRef} from 'react';
+import Map, {useControl} from 'react-map-gl';
+import {MapboxOverlay} from '@deck.gl/mapbox';
+
+const DeckGLOverlay = forwardRef((props, ref) => {
+  // MapboxOverlay handles a variety of props differently than the Deck class.
+  // https://deck.gl/docs/api-reference/mapbox/mapbox-overlay#constructor
+  const deck = useControl(() => new MapboxOverlay({...props, interleaved: true}));
+  deck.setProps(props);
+  ref.current = deck._deck;
+  return null;
+});
+```
+
+
+3. Add to props of the `DeckGl ` and `Map` component
+
+```jsx
+  <Map
+    ref={mapRef}
+    {...cameraFrame}
+    style={{width: resolution.width, height: resolution.height}}
+    {/* add your props before spreading hubble props */}
+    {...mapProps}
+  >
+    <DeckGLOverlay 
+      ref={deckRef} 
+      {/* add your props before spreading hubble props */}
+      {...deckProps}
+    />
+  </Map>
+  
   <DeckGL
     ref={deckRef}
     viewState={cameraFrame}
@@ -101,11 +125,11 @@ const timecode = {
     {...deckProps}
   >
     {/* optional base map */}
-    {staticMapProps.gl && (
-      <StaticMap
-        ref={staticMapRef}
+    {mapProps.gl && (
+      <Map
+        ref={mapRef}
         {/* add your props before spreading hubble props */}
-        {...staticMapProps}
+        {...mapProps}
       />
     )}
   </DeckGL>

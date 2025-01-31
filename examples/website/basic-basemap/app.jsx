@@ -4,13 +4,15 @@
  * Source code: https://github.com/visgl/deck.gl/tree/master/examples/website/trips
  */
 
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, forwardRef} from 'react';
 import {createRoot} from 'react-dom/client';
-import DeckGL from '@deck.gl/react';
 import {BasicControls, useHubbleGl, useDeckAnimation} from '@hubble.gl/react';
-import {StaticMap} from 'react-map-gl';
+import {MapboxOverlay} from '@deck.gl/mapbox';
+import Map, {useControl} from 'react-map-gl';
 import {PolygonLayer} from '@deck.gl/layers';
 import {easeInOut} from 'popmotion';
+import maplibregl from 'maplibre-gl';
+import {setRef} from './set-ref';
 
 // Source data CSV
 const BUILDINGS =
@@ -71,6 +73,18 @@ const timecode = {
   framerate: 30
 };
 
+const DeckGLOverlay = forwardRef((props, ref) => {
+  // MapboxOverlay handles a variety of props differently than the Deck class.
+  // https://deck.gl/docs/api-reference/mapbox/mapbox-overlay#constructor
+  const deck = useControl(() => new MapboxOverlay({...props, interleaved: true}));
+
+  deck.setProps(props);
+
+  // @ts-expect-error private property
+  setRef(ref, deck._deck);
+  return null;
+});
+
 const Container = ({children}) => (
   <div
     style={{
@@ -94,9 +108,9 @@ const randomColor = () => [
   Math.floor(Math.random() * 255)
 ];
 
-export default function App({mapStyle = 'mapbox://styles/mapbox/streets-v11'}) {
+export default function App({mapStyle = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'}) {
   const deckRef = useRef(null);
-  const staticMapRef = useRef(null);
+  const mapRef = useRef(null);
   const [busy, setBusy] = useState(false);
 
   const deckAnimation = useDeckAnimation({
@@ -133,9 +147,9 @@ export default function App({mapStyle = 'mapbox://styles/mapbox/streets-v11'}) {
     ]
   });
 
-  const {deckProps, staticMapProps, adapter, cameraFrame, setCameraFrame} = useHubbleGl({
+  const {deckProps, mapProps, adapter, cameraFrame, setCameraFrame} = useHubbleGl({
     deckRef,
-    staticMapRef,
+    mapRef,
     deckAnimation,
     initialViewState: START
   });
@@ -146,25 +160,21 @@ export default function App({mapStyle = 'mapbox://styles/mapbox/streets-v11'}) {
   return (
     <Container>
       <div style={{position: 'relative'}}>
-        <DeckGL
-          ref={deckRef}
-          style={{position: 'unset'}}
-          controller={true}
-          viewState={cameraFrame}
-          onViewStateChange={onViewStateChange}
-          width={resolution.width}
-          height={resolution.height}
-          {...deckProps}
+        <Map
+          ref={mapRef}
+          mapStyle={mapStyle}
+          {...mapProps}
+          {...cameraFrame}
+          style={{width: resolution.width, height: resolution.height}}
+          onMove={onViewStateChange}
+          mapLib={maplibregl}
+          // Note: 'reuseMap' prop with gatsby and mapbox extension causes stale reference error.
         >
-          {staticMapProps.gl && (
-            <StaticMap
-              ref={staticMapRef}
-              mapStyle={mapStyle}
-              {...staticMapProps}
-              // Note: 'reuseMap' prop with gatsby and mapbox extension causes stale reference error.
-            />
-          )}
-        </DeckGL>
+          <DeckGLOverlay 
+            ref={deckRef} 
+            {...deckProps} 
+          />
+        </Map>
       </div>
       <BasicControls
         adapter={adapter}
