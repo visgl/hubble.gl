@@ -1,0 +1,23 @@
+{
+  "name": "hubblegl-theatrejs-sandbox",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "start": "vite --open",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@theatre/core": "^0.7.0",
+    "@theatre/studio": "^0.7.0",
+    "deck.gl": "^9.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "typescript": "^5.4.0",
+    "vite": "^5.2.0"
+  }
+}
