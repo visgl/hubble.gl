@@ -1,5 +1,5 @@
 {
-  "name": "hubblegl-examples-trips",
+  "name": "hubblegl-examples-basic-basemap-mapbox-legacy",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
@@ -9,20 +9,16 @@
     "build": "vite build"
   },
   "dependencies": {
-    "d3-color": "^1.4.1",
-    "react-map-gl": "^7.1.0",
-    "hubble.gl": "^1.4.0-alpha.0",
-    "mapbox-gl": "^1.13.0",
     "deck.gl": "^8.9",
+    "hubble.gl": "^1.4.0-alpha.0",
+    "d3-color": "^1.4.1",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
+    "react-map-gl": "^7.1.8",
+    "mapbox-gl": "^1.13.0",
     "popmotion": "9.3.1"
   },
   "devDependencies": {
-    "typescript": "^4.6.0",
     "vite": "^4.0.0"
-  },
-  "resolutions_comments": [
-    "mapbox-gl: pinned to v1 for open license"
-  ]
+  }
 }

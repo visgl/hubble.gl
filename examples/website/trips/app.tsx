@@ -4,14 +4,15 @@
  * Source code: https://github.com/visgl/deck.gl/tree/master/examples/website/trips
  */
 
-import React, {useState, useRef, useEffect, useCallback} from 'react';
+import React, {useState, useRef, useEffect, useCallback, forwardRef, ForwardedRef} from 'react';
 import {createRoot} from 'react-dom/client';
-import DeckGL from '@deck.gl/react';
 import {BasicControls, useHubbleGl, useDeckAnimation} from '@hubble.gl/react';
-import {AmbientLight, PointLight, LightingEffect} from '@deck.gl/core';
-import {StaticMap} from 'react-map-gl';
-import {PolygonLayer} from '@deck.gl/layers';
-import {TripsLayer} from '@deck.gl/geo-layers';
+import {AmbientLight, PointLight, LightingEffect, Deck} from '@deck.gl/core/typed';
+import {MapboxOverlay, MapboxOverlayProps} from '@deck.gl/mapbox/typed';
+import Map, {MapRef, useControl} from 'react-map-gl';
+import {PolygonLayer} from '@deck.gl/layers/typed';
+import {TripsLayer} from '@deck.gl/geo-layers/typed';
+import {setRef} from './set-ref';
 
 import {easeInOut} from 'popmotion';
 
@@ -114,9 +115,23 @@ const Container = ({children}) => (
   </div>
 );
 
+const DeckGLOverlay = forwardRef<Deck, MapboxOverlayProps>(
+  (props: MapboxOverlayProps, ref: ForwardedRef<Deck>) => {
+    // MapboxOverlay handles a variety of props differently than the Deck class.
+    // https://deck.gl/docs/api-reference/mapbox/mapbox-overlay#constructor
+    const deck = useControl<MapboxOverlay>(() => new MapboxOverlay({...props, interleaved: true}));
+
+    deck.setProps(props);
+
+    // @ts-expect-error private property
+    setRef(ref, deck._deck);
+    return null;
+  }
+);
+
 export default function App({mapStyle = 'mapbox://styles/mapbox/dark-v9'}) {
-  const deckRef = useRef(null);
-  const staticMapRef = useRef(null);
+  const deckRef = useRef<Deck>(null);
+  const mapRef = useRef<MapRef>(null);
   const [busy, setBusy] = useState(false);
 
   const deckAnimation = useDeckAnimation({
@@ -156,15 +171,15 @@ export default function App({mapStyle = 'mapbox://styles/mapbox/dark-v9'}) {
     layerKeyframes: [
       {
         id: 'trips',
-        timings: [0, timecode.end],
-        keyframes: [{currentTime: 0}, {currentTime: 1800}]
+        timings: [700, timecode.end],
+        keyframes: [{currentTime: 700}, {currentTime: 1800}]
       }
     ]
   });
 
-  const {deckProps, staticMapProps, adapter, cameraFrame, setCameraFrame} = useHubbleGl({
+  const {deckProps, mapProps, adapter, cameraFrame, setCameraFrame} = useHubbleGl({
     deckRef,
-    staticMapRef,
+    mapRef,
     deckAnimation,
     initialViewState: INITIAL_VIEW_STATE
   });
@@ -202,26 +217,21 @@ export default function App({mapStyle = 'mapbox://styles/mapbox/dark-v9'}) {
   return (
     <Container>
       <div style={{position: 'relative'}}>
-        <DeckGL
-          ref={deckRef}
-          style={{position: 'unset'}}
-          effects={DEFAULT_THEME.effects}
-          controller={true}
-          viewState={cameraFrame}
-          onViewStateChange={onViewStateChange}
-          width={resolution.width}
-          height={resolution.height}
-          {...deckProps}
+        <Map
+          ref={mapRef}
+          mapStyle={mapStyle}
+          {...mapProps}
+          {...cameraFrame}
+          style={{width: resolution.width, height: resolution.height}}
+          onMove={onViewStateChange}
+          // Note: 'reuseMap' prop with gatsby and mapbox extension causes stale reference error.
         >
-          {staticMapProps.gl && (
-            <StaticMap
-              ref={staticMapRef}
-              mapStyle={mapStyle}
-              {...staticMapProps}
-              // Note: 'reuseMap' prop with gatsby and mapbox extension causes stale reference error.
-            />
-          )}
-        </DeckGL>
+          <DeckGLOverlay 
+            ref={deckRef} 
+            {...deckProps} 
+            effects={DEFAULT_THEME.effects} 
+          />
+        </Map>
       </div>
       <BasicControls
         adapter={adapter}

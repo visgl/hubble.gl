@@ -2,7 +2,15 @@ This is a basic basemap + deck.gl data animation utilizing [react-map-gl](https:
 
 ### Usage
 
-Copy the content of this folder to your project.
+Copy the content of this folder to your project. 
+
+To see the base map, you need a [Mapbox access token](https://docs.mapbox.com/help/how-mapbox-works/access-tokens/). You can either set an environment variable:
+
+```bash
+export MapboxAccessToken=<mapbox_access_token>
+```
+
+Or set `MAPBOX_TOKEN` directly in `app.js`.
 
 Other options can be found at [using with Mapbox GL](https://deck.gl/docs/developer-guide/base-maps/using-with-mapbox).
 
@@ -12,7 +20,7 @@ Other options can be found at [using with Mapbox GL](https://deck.gl/docs/develo
 # install dependencies within hubble.gl root
 yarn bootstrap
 # To install example go to the folder 
-cd examples/basic-basemap
+cd examples/basic-basemap-mapbox
 # do this once per example
 yarn 
 # To run the example
@@ -96,7 +104,6 @@ const DeckGLOverlay = forwardRef((props, ref) => {
   return null;
 });
 ```
-
 
 4. Add to props of the `DeckGLOverlay ` and `Map` component
 
