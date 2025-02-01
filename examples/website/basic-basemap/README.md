@@ -4,7 +4,7 @@ This is a basic basemap + deck.gl data animation utilizing [react-map-gl](https:
 
 Copy the content of this folder to your project.
 
-Other options can be found at [using with Mapbox GL](https://deck.gl/docs/developer-guide/base-maps/using-with-mapbox).
+Other options can be found at [using with Maplibre GL](https://deck.gl/docs/developer-guide/base-maps/using-with-maplibre).
 
 ### Installation
 

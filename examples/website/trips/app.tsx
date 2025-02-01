@@ -12,6 +12,7 @@ import {MapboxOverlay, MapboxOverlayProps} from '@deck.gl/mapbox/typed';
 import Map, {MapRef, useControl} from 'react-map-gl';
 import {PolygonLayer} from '@deck.gl/layers/typed';
 import {TripsLayer} from '@deck.gl/geo-layers/typed';
+import maplibregl from 'maplibre-gl';
 import {setRef} from './set-ref';
 
 import {easeInOut} from 'popmotion';
@@ -129,7 +130,7 @@ const DeckGLOverlay = forwardRef<Deck, MapboxOverlayProps>(
   }
 );
 
-export default function App({mapStyle = 'mapbox://styles/mapbox/dark-v9'}) {
+export default function App({mapStyle = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'}) {
   const deckRef = useRef<Deck>(null);
   const mapRef = useRef<MapRef>(null);
   const [busy, setBusy] = useState(false);
@@ -224,6 +225,7 @@ export default function App({mapStyle = 'mapbox://styles/mapbox/dark-v9'}) {
           {...cameraFrame}
           style={{width: resolution.width, height: resolution.height}}
           onMove={onViewStateChange}
+          mapLib={maplibregl}
           // Note: 'reuseMap' prop with gatsby and mapbox extension causes stale reference error.
         >
           <DeckGLOverlay 

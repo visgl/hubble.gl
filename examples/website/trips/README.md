@@ -11,15 +11,7 @@ Users can drag, zoom in and zoom out, change pitch and bearing from within the d
 
 Copy the content of this folder to your project. 
 
-To see the base map, you need a [Mapbox access token](https://docs.mapbox.com/help/how-mapbox-works/access-tokens/). You can either set an environment variable:
-
-```bash
-export MapboxAccessToken=<mapbox_access_token>
-```
-
-Or set `MAPBOX_TOKEN` directly in `app.js`.
-
-Other options can be found at [using with Mapbox GL](https://deck.gl/docs/get-started/using-with-map).
+Other options can be found at [using with Maplibre GL](https://deck.gl/docs/developer-guide/base-maps/using-with-maplibre).
 
 ### Installation
 
