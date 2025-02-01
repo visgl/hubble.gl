@@ -239,6 +239,7 @@ export default function App({mapStyle = 'mapbox://styles/mapbox/dark-v9'}) {
         setBusy={setBusy}
         formatConfigs={formatConfigs}
         timecode={timecode}
+        filename="trips"
       />
     </Container>
   );

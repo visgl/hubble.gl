@@ -181,6 +181,7 @@ export default function App({mapStyle = 'mapbox://styles/mapbox/streets-v11'}) {
         setBusy={setBusy}
         formatConfigs={formatConfigs}
         timecode={timecode}
+        filename="basic-basemap-mapbox-legacy"
       />
     </Container>
   );

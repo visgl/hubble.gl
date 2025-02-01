@@ -182,6 +182,7 @@ export default function App({mapStyle = 'https://basemaps.cartocdn.com/gl/positr
         setBusy={setBusy}
         formatConfigs={formatConfigs}
         timecode={timecode}
+        filename="basic-basemap"
       />
     </Container>
   );
