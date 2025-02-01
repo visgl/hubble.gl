@@ -9,10 +9,9 @@ import {createRoot} from 'react-dom/client';
 import {BasicControls, useHubbleGl, useDeckAnimation} from '@hubble.gl/react';
 import {AmbientLight, PointLight, LightingEffect, Deck} from '@deck.gl/core/typed';
 import {MapboxOverlay, MapboxOverlayProps} from '@deck.gl/mapbox/typed';
-import Map, {MapRef, useControl} from 'react-map-gl';
+import Map, {MapRef, useControl} from 'react-map-gl/maplibre';
 import {PolygonLayer} from '@deck.gl/layers/typed';
 import {TripsLayer} from '@deck.gl/geo-layers/typed';
-import maplibregl from 'maplibre-gl';
 import {setRef} from './set-ref';
 
 import {easeInOut} from 'popmotion';
@@ -178,7 +177,7 @@ export default function App({mapStyle = 'https://basemaps.cartocdn.com/gl/dark-m
     ]
   });
 
-  const {deckProps, mapProps, adapter, cameraFrame, setCameraFrame} = useHubbleGl({
+  const {deckProps, mapProps, adapter, cameraFrame, setCameraFrame} = useHubbleGl<MapRef>({
     deckRef,
     mapRef,
     deckAnimation,
@@ -225,7 +224,6 @@ export default function App({mapStyle = 'https://basemaps.cartocdn.com/gl/dark-m
           {...cameraFrame}
           style={{width: resolution.width, height: resolution.height}}
           onMove={onViewStateChange}
-          mapLib={maplibregl}
           // Note: 'reuseMap' prop with gatsby and mapbox extension causes stale reference error.
         >
           <DeckGLOverlay 

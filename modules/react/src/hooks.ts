@@ -35,14 +35,14 @@ export function useDeckAnimation(params: DeckAnimationConstructor) {
   return useMemo(() => new DeckAnimation(params), []);
 }
 
-export function useHubbleGl({
+export function useHubbleGl<ReactMapRef extends MapRef>({
   deckRef,
   mapRef = undefined,
   deckAnimation,
   initialViewState = undefined
 }: {
   deckRef: RefObject<Deck>;
-  mapRef?: RefObject<MapRef>;
+  mapRef?: RefObject<ReactMapRef>;
   deckAnimation: DeckAnimation;
   initialViewState?: MapViewState;
 }) {
