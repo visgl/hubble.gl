@@ -138,6 +138,7 @@ export default function App() {
         setBusy={setBusy}
         formatConfigs={formatConfigs}
         timecode={timecode}
+        filename="camera"
       >
         <button disabled={busy} onClick={() => setViewStateA(filterCamera(cameraFrame))}>
           Set Camera Start

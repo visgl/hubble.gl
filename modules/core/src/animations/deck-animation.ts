@@ -22,8 +22,8 @@ export type DeckAnimationProps = {
 };
 
 export type DeckAnimationConstructor = AnimationConstructor & {
-  getLayers: (animation: DeckAnimation) => Layer[];
-  onLayersUpdate: (layers: Layer[]) => void;
+  getLayers?: (animation: DeckAnimation) => Layer[];
+  onLayersUpdate?: (layers: Layer[]) => void;
   onCameraUpdate?: (frame: CameraDataType) => void;
 } & DeckAnimationProps;
 

@@ -191,6 +191,7 @@ export default function App() {
         setBusy={setBusy}
         formatConfigs={formatConfigs}
         timecode={timecode}
+        filename="terrain"
       >
         <div style={{width: '100%'}}>
           <label style={{fontFamily: 'sans-serif', width: '40%', marginRight: '10%'}}>
