@@ -95,4 +95,4 @@ Returns:
 
 ## Source
 
-[modules/core/src/encoders/frame-encoder.js](https://github.com/uber/hubble.gl/blob/master/modules/core/src/encoders/frame-encoder.js)
+[modules/core/src/encoders/frame-encoder.ts](https://github.com/visgl/hubble.gl/blob/master/modules/core/src/encoders/frame-encoder.ts)
