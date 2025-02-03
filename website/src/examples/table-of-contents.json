@@ -1,0 +1,24 @@
+[
+  {
+    "type": "doc",
+    "label": "Overview",
+    "id": "index"
+  },
+  {
+    "type": "category",
+    "label": "Getting Started",
+    "items": [
+      "website/basic-basemap",
+      "website/quick-start"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Animations",
+    "items": [
+      "website/camera",
+      "website/terrain",
+      "website/trips"
+    ]
+  }
+]

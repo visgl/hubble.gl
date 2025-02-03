@@ -85,7 +85,7 @@ Returns:
 
 * `Promise<void>` - Add is an async function. The promise will resolve when the frame capture is complete.
 
-##### save(): Promise<Blob | ArrayBuffer>
+##### save(): `Promise<Blob | ArrayBuffer>`
 
 Compile a video of the captured frames.
 
