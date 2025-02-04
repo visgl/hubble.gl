@@ -20,5 +20,12 @@
       "website/terrain",
       "website/trips"
     ]
+  },
+  {
+    "type": "category",
+    "label": "Integrations",
+    "items": [
+      "website/kepler"
+    ]
   }
 ]

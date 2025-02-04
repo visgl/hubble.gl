@@ -44,7 +44,8 @@ const config = getDocusaurusConfig({
   },
 
   customCss: [
-    './src/styles.css'
+    './src/styles.css',
+    './node_modules/maplibre-gl/dist/maplibre-gl.css'
   ]
 });
 

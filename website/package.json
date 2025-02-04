@@ -1,11 +1,12 @@
 {
   "name": "project-website",
-  "version": "0.0.0",
+  "version": "1.4.0-beta.2",
   "private": true,
   "description": "Website for vis.gl project",
   "scripts": {
     "start": "docusaurus start",
-    "build": "docusaurus build",
+    "build": "./scripts/build.sh prod",
+    "build-staging": "./scripts/build.sh staging",
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
     "write-heading-ids": "ocular-doc-headers ../docs",
@@ -18,11 +19,9 @@
     "cheerio": "1.0.0-rc.9"
   },
   "dependencies": {
+    "@algolia/autocomplete-js": "1.18.0",
     "@docusaurus/core": "^3.0.0",
     "@vis.gl/docusaurus-website": "1.0.0",
-    "@algolia/autocomplete-js": "1.18.0",
-    "d3-array": "^3.1.1",
-    "d3-scale": "^4.0.2",
     "deck.gl": "^8.9",
     "immutable": "^4.0.0",
     "maplibre-gl": "^3.6.2",
