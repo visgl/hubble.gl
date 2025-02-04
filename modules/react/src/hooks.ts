@@ -4,10 +4,8 @@
 
 import {useState, useCallback, useMemo, RefObject} from 'react';
 import {DeckAdapter, DeckAnimation, DeckAnimationConstructor} from '@hubble.gl/core';
-import {MapboxOverlay} from '@deck.gl/mapbox';
-import type {Layer, MapViewState} from '@deck.gl/core';
-import type {DeckGLRef} from '@deck.gl/react';
-import {MapRef} from 'react-map-gl';
+import type {Layer, MapViewState, Deck} from '@deck.gl/core';
+import type {MapRef} from 'react-map-gl';
 
 export function useNextFrame() {
   const [, updateState] = useState({});
@@ -37,47 +35,37 @@ export function useDeckAnimation(params: DeckAnimationConstructor) {
   return useMemo(() => new DeckAnimation(params), []);
 }
 
-export function useHubbleGl({
+export function useHubbleGl<ReactMapRef extends MapRef>({
   deckRef,
-  staticMapRef = undefined,
+  mapRef = undefined,
   deckAnimation,
   initialViewState = undefined
 }: {
-  deckRef: RefObject<DeckGLRef>;
-  staticMapRef?: RefObject<MapRef>;
+  deckRef: RefObject<Deck>;
+  mapRef?: RefObject<ReactMapRef>;
   deckAnimation: DeckAnimation;
   initialViewState?: MapViewState;
 }) {
-  const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
+  const deck = useMemo(() => deckRef.current, [deckRef.current]);
   const nextFrame = useNextFrame();
   const {adapter, layers, cameraFrame, setCameraFrame} = useDeckAdapter(
     deckAnimation,
     initialViewState
   );
 
-  const onStaticMapLoad = useCallback(() => {
-    if (staticMapRef) {
-      const map = staticMapRef.current.getMap();
-      // If there aren't any layers, combine map and deck with a fake layer.
-      if (!layers.length) {
-        map.addLayer(new MapboxOverlay({id: '%%blank-layer', ...deck.props}));
-      }
-      for (let i = 0; i < layers.length; i++) {
-        // Adds DeckGL layers to Mapbox so Mapbox can be the bottom layer. Removing this clips DeckGL layers
-        map.addLayer(new MapboxOverlay({id: layers[i].id, ...deck.props}));
-      }
+  const onMapLoad = useCallback(() => {
+    if (mapRef) {
+      const map = mapRef.current.getMap();
       map.on('render', () => adapter.onAfterRender(nextFrame, map.areTilesLoaded()));
     }
-  }, [deck]);
+  }, [adapter, nextFrame]);
 
-  const [glContext, setGLContext] = useState<WebGLRenderingContext>();
-
-  if (!staticMapRef) {
+  if (!mapRef) {
     return {
       adapter,
       cameraFrame,
       setCameraFrame,
-      staticMapProps: {},
+      mapProps: {},
       deckProps: adapter.getProps({
         deck,
         onNextFrame: nextFrame,
@@ -92,16 +80,14 @@ export function useHubbleGl({
     adapter,
     cameraFrame,
     setCameraFrame,
-    onStaticMapLoad,
-    staticMapProps: {
-      gl: glContext,
-      onLoad: onStaticMapLoad,
+    onMapLoad,
+    mapProps: {
+      onLoad: onMapLoad,
       preventStyleDiffing: true
     },
     deckProps: adapter.getProps({
       deck,
       extraProps: {
-        onWebGLInitialized: setGLContext,
         layers
       }
     })

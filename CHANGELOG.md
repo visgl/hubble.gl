@@ -21,6 +21,19 @@ Ref: http://keepachangelog.com/en/0.3.0/
 
 ### hubble.gl v1.4 Prereleases
 
+#### hubble.gl [1.4.0-beta.2] - Jan 31 2025
+
+- fix release action
+
+#### hubble.gl [1.4.0-beta.1] - Jan 31 2025
+
+- fix release action
+
+#### hubble.gl [1.4.0-beta.0] - Jan 31 2025
+
+- chore(core) Upgrade to deck 8.9, kepler v3.1 alpha, react-map-gl 7, and react 18 (#286)
+- chore(react) MapboxOverlay-ready hooks (#288)
+
 #### hubble.gl [1.4.0-alpha.0] - May 22 2024 
 
 - chore(core) publish NPM packages from CI (#274)

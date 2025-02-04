@@ -25,7 +25,8 @@ import styled, {withTheme} from 'styled-components';
 import {InjectKeplerUI, ExportVideoModal, ExportVideoPanelContainer} from '@hubble.gl/react';
 // Redux stores/actions
 import {toggleHubbleExportModal} from '../actions';
-import {setFilter, setLayerAnimationTime} from 'kepler.gl/actions';
+import {setFilter, setLayerAnimationTime} from '@kepler.gl/actions';
+import mapboxgl from 'mapbox-gl';
 
 // Hook up mutual kepler imports
 import {
@@ -37,7 +38,7 @@ import {
   LoadingSpinner,
   ModalTabsFactory,
   Play
-} from 'kepler.gl/components';
+} from '@kepler.gl/components';
 
 const IconButton = styled(Button)`
   padding: 0;
@@ -95,6 +96,9 @@ class ExportVideo extends Component {
               onTripFrameUpdate={onTripFrameUpdate}
               exportVideoWidth={720}
               defaultFileName={'hubble.gl'}
+              mapProps={{
+                mapLib: mapboxgl
+              }}
             />
           </ExportVideoModal>
         </div>

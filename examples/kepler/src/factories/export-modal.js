@@ -1,10 +1,10 @@
-import {SaveExportDropdownFactory, withState} from 'kepler.gl/components';
+import {SaveExportDropdownFactory, withState} from '@kepler.gl/components';
 import {toggleHubbleExportModal} from '../actions';
-import {Icons} from 'kepler.gl/components';
+import {Icons} from '@kepler.gl/components';
 
 const CustomSaveExportDropdownFactory = (...deps) => {
   const SaveExportDropdown = SaveExportDropdownFactory(...deps);
-  const defaultLoadingMethods = SaveExportDropdown.defaultProps.items;
+  const defaultItems = SaveExportDropdown.defaultItems;
 
   const exportVideoModal = {
     label: 'toolbar.exportVideoModal',
@@ -14,12 +14,15 @@ const CustomSaveExportDropdownFactory = (...deps) => {
   };
 
   // add more loading methods
-  SaveExportDropdown.defaultProps = {
-    ...SaveExportDropdown.defaultProps,
-    items: [...defaultLoadingMethods, exportVideoModal]
-  };
+  const items = [...defaultItems, exportVideoModal];
 
-  return withState([], () => {}, {toggleHubbleExportModal})(SaveExportDropdown);
+  return withState(
+    [],
+    state => ({...state.demo.app, items}),
+    {
+      toggleHubbleExportModal
+    }
+  )(SaveExportDropdown);
 };
 
 CustomSaveExportDropdownFactory.deps = SaveExportDropdownFactory.deps;

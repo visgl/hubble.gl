@@ -75,6 +75,7 @@ type BasicControlsProps = {
   formatConfigs: Partial<FormatConfigs>;
   timecode: Timecode;
   embed?: boolean;
+  filename?: string;
 };
 
 export default function BasicControls({
@@ -84,7 +85,8 @@ export default function BasicControls({
   setBusy,
   formatConfigs,
   timecode,
-  embed = true
+  embed = true,
+  filename = undefined
 }: PropsWithChildren<BasicControlsProps>) {
   const [encoder, setEncoder] = useState<Encoders>(WEBM);
   const [blob, setBlob] = useState<Blob>(undefined);
@@ -119,6 +121,7 @@ export default function BasicControls({
     adapter.render({
       Encoder: ENCODERS[encoder],
       formatConfigs,
+      filename,
       timecode,
       onStopped: () => setRenderStatus('saving'),
       onComplete: () => setBusy(false),
@@ -126,7 +129,7 @@ export default function BasicControls({
     });
     setRenderStatus('in-progress');
     setBusy(true);
-  }, [adapter, onSave, encoder, embed, formatConfigs, timecode]);
+  }, [adapter, onSave, encoder, embed, formatConfigs, timecode, filename]);
 
   const onStop = useCallback(() => {
     adapter.stop({

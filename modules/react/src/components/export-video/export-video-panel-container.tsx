@@ -19,7 +19,7 @@ import {
 import ExportVideoPanel from './export-video-panel';
 import {parseSetCameraType, scaleToVideoExport} from './utils';
 import {DEFAULT_FILENAME, getResolutionSetting} from './constants';
-import {StaticMapProps} from 'react-map-gl';
+import type {MapProps} from 'react-map-gl';
 import type {DeckProps, MapViewState} from '@deck.gl/core';
 
 const ENCODERS = {
@@ -46,8 +46,8 @@ type ExportVideoPanelContainerProps = {
   mapData: any;
   header: boolean;
   deckProps?: DeckProps;
-  staticMapProps: StaticMapProps;
-  disableStaticMap: boolean;
+  mapProps: MapProps;
+  disableBaseMap: boolean;
   mapboxLayerBeforeId?: string;
   defaultFileName: string;
 
@@ -379,8 +379,8 @@ export class ExportVideoPanelContainer extends Component<
       mapData,
       header,
       deckProps,
-      staticMapProps,
-      disableStaticMap,
+      mapProps,
+      disableBaseMap,
       mapboxLayerBeforeId,
       defaultFileName
     } = this.props;
@@ -430,8 +430,8 @@ export class ExportVideoPanelContainer extends Component<
         viewState={viewState}
         setViewState={this.setViewState}
         deckProps={deckProps}
-        staticMapProps={staticMapProps}
-        disableStaticMap={disableStaticMap}
+        mapProps={mapProps}
+        disableBaseMap={disableBaseMap}
         mapboxLayerBeforeId={mapboxLayerBeforeId}
         // Settings Props
         settings={settings}
@@ -455,7 +455,7 @@ ExportVideoPanelContainer.defaultProps = {
   header: true,
   glContext: undefined,
   deckProps: {},
-  staticMapProps: {},
+  mapProps: {},
   disableStaticMap: false,
   defaultFileName: DEFAULT_FILENAME
 };

@@ -10,20 +10,19 @@
   },
   "dependencies": {
     "d3-color": "^1.4.1",
-    "react-map-gl": "^5.0.0",
-    "hubble.gl": "^1.3.0",
+    "react-map-gl": "^7.1.0",
+    "hubble.gl": "^1.4.0-beta.2",
+    "maplibre-gl": "^3.6.2",
     "deck.gl": "^8.9",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
     "popmotion": "9.3.1"
   },
   "devDependencies": {
+    "typescript": "^4.6.0",
     "vite": "^4.0.0"
   },
   "resolutions_comments": [
     "mapbox-gl: pinned to v1 for open license"
-  ],
-  "resolutions": {
-    "mapbox-gl": "^1.13.0"
-  }
+  ]
 }

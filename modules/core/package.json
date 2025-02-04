@@ -1,6 +1,6 @@
 {
   "name": "@hubble.gl/core",
-  "version": "1.4.0-alpha.0",
+  "version": "1.4.0-beta.2",
   "description": "hubble.gl core library classes",
   "license": "MIT",
   "type": "module",

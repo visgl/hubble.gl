@@ -1,4 +1,4 @@
-# Encoders
+# Encoders Overview
 
 Encoders are used to capture image frames of an HTML `<canvas/>` and encode them into videos. Each instance of an encoder represents a file artifact. During capture, they provide asynchronous functions for adding frames and saving videos. See [DeckAdapter.render](/docs/api-reference/deck-adapter#renderen) for usage.
 

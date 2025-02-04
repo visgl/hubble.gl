@@ -111,7 +111,7 @@ export default function App() {
     <Container>
       <div style={{position: 'relative'}}>
         <DeckGL
-          ref={deckRef}
+          ref={ref => deckRef.current = ref?.deck}
           style={{position: 'unset'}}
           views={new MapView({farZMultiplier: 3})}
           parameters={{
@@ -138,6 +138,7 @@ export default function App() {
         setBusy={setBusy}
         formatConfigs={formatConfigs}
         timecode={timecode}
+        filename="camera"
       >
         <button disabled={busy} onClick={() => setViewStateA(filterCamera(cameraFrame))}>
           Set Camera Start

@@ -1,6 +1,6 @@
 {
   "name": "@hubble.gl/react",
-  "version": "1.4.0-alpha.0",
+  "version": "1.4.0-beta.2",
   "description": "React components for hubble.gl",
   "license": "MIT",
   "type": "module",
@@ -43,24 +43,25 @@
     "lodash.get": "^4.4.2",
     "lodash.isequal": "^4.5.0",
     "lodash.uniqby": "^4.7.0",
+    "mapbox-gl": "1.13.1",
     "popmotion": "9.3.1",
     "prop-types": "^15.7.2",
     "react-lifecycles-compat": "^3.0.4",
-    "react-map-gl": "^5.2.10",
+    "react-map-gl": "^7.1.8",
     "react-modal": "^3.8.1",
     "react-onclickoutside": "^6.9.0",
     "reselect": "^3.0.0",
-    "styled-components": "^6.1.11"
+    "styled-components": "6.1.8"
   },
   "peerDependencies": {
     "@deck.gl/core": ">=9.0",
     "@deck.gl/mapbox": ">=9.0",
     "@deck.gl/react": ">=9.0",
-    "@hubble.gl/core": "1.4.0-alpha.0",
-    "@loaders.gl/core": "^4.3.3",
-    "mapbox-gl": "<=2.4.1",
-    "react": ">=18.3.0",
-    "react-dom": ">=16.3.0"
+    "@hubble.gl/core": "^1.4.0",
+    "@loaders.gl/core": "^4.0.0",
+    "mapbox-gl": "<=3.0.0",
+    "react": ">=18.2",
+    "react-dom": ">=18.2"
   },
   "devDependencies": {
     "@deck.gl/core": "^9.0",

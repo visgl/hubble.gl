@@ -173,7 +173,7 @@ export default function App() {
     <Container>
       <div style={{position: 'relative'}}>
         <DeckGL
-          ref={deckRef}
+          ref={ref => deckRef.current = ref?.deck}
           style={{position: 'unset'}}
           viewState={cameraFrame}
           onViewStateChange={({viewState: vs}) => {
@@ -191,6 +191,7 @@ export default function App() {
         setBusy={setBusy}
         formatConfigs={formatConfigs}
         timecode={timecode}
+        filename="terrain"
       >
         <div style={{width: '100%'}}>
           <label style={{fontFamily: 'sans-serif', width: '40%', marginRight: '10%'}}>

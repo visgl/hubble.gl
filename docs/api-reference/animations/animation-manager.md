@@ -67,4 +67,4 @@ Draws the current frame for all attached animations.
 
 ## Source
 
-[modules/core/src/animations/animation-manager.js](https://github.com/uber/hubble.gl/blob/master/modules/core/src/animations/animation-manager.js)
+[modules/core/src/animations/animation-manager.ts](https://github.com/visgl/hubble.gl/blob/master/modules/core/src/animations/animation-manager.ts)

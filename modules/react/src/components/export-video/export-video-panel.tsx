@@ -56,8 +56,8 @@ const PanelBody = ({
   resolution,
   viewState,
   deckProps,
-  staticMapProps,
-  disableStaticMap,
+  mapProps,
+  disableBaseMap,
   mapboxLayerBeforeId,
   handlePreviewVideo,
   handleRenderVideo,
@@ -80,8 +80,8 @@ const PanelBody = ({
           saving={saving}
           durationMs={settings.durationMs}
           deckProps={deckProps}
-          staticMapProps={staticMapProps}
-          disableStaticMap={disableStaticMap}
+          mapProps={mapProps}
+          disableBaseMap={disableBaseMap}
           mapboxLayerBeforeId={mapboxLayerBeforeId}
         />
         <ExportVideoPanelSettings
@@ -140,8 +140,8 @@ const ExportVideoPanel = ({
   resolution,
   viewState,
   deckProps,
-  staticMapProps,
-  disableStaticMap
+  mapProps,
+  disableBaseMap
 }: ExportVideoPanelProps) => {
   return (
     <Panel $exportVideoWidth={exportVideoWidth} className="export-video-panel">
@@ -160,8 +160,8 @@ const ExportVideoPanel = ({
         resolution={resolution}
         viewState={viewState}
         deckProps={deckProps}
-        staticMapProps={staticMapProps}
-        disableStaticMap={disableStaticMap}
+        mapProps={mapProps}
+        disableBaseMap={disableBaseMap}
         mapboxLayerBeforeId={mapboxLayerBeforeId}
         handlePreviewVideo={handlePreviewVideo}
         handleRenderVideo={handleRenderVideo}

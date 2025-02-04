@@ -20,7 +20,7 @@ In addition to the top level [FrameEncoder](/docs/api-reference/encoder/frame-en
 
 ## Source
 
-[modules/core/src/encoders/video/webm-encoder.js](https://github.com/uber/hubble.gl/blob/master/modules/core/src/encoders/video/webm-encoder.js)
+[modules/core/src/encoders/video/webm-encoder.ts](https://github.com/visgl/hubble.gl/blob/master/modules/core/src/encoders/video/webm-encoder.ts)
 
 ### Attributions
 

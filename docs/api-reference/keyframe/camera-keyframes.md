@@ -35,3 +35,7 @@ Parameters:
 ## More Info
 
 See hubble.gl Keyframes and [luma.gl Keyframes](https://luma.gl/docs/api-reference/engine/animation/key-frames) for more information.
+
+## Source
+
+[modules/core/src/keyframes/camera-keyframes.ts](https://github.com/visgl/hubble.gl/blob/master/modules/core/src/keyframes/camera-keyframes.ts)

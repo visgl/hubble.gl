@@ -1,0 +1,24 @@
+{
+  "name": "hubblegl-examples-basic-basemap-mapbox",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "start": "vite --open",
+    "start-local": "vite --config ../../vite.config.local.mjs",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "deck.gl": "^8.9",
+    "hubble.gl": "^1.4.0-beta.2",
+    "d3-color": "^1.4.1",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "react-map-gl": "^7.1.8",
+    "mapbox-gl": "^2.0.0",
+    "popmotion": "9.3.1"
+  },
+  "devDependencies": {
+    "vite": "^4.0.0"
+  }
+}

@@ -20,30 +20,41 @@
 
 import React, {Component} from 'react';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
-import styled, {createGlobalStyle, ThemeProvider} from 'styled-components';
+import styled, {createGlobalStyle, ThemeProvider, StyleSheetManager} from 'styled-components';
 import window from 'global/window';
 import {connect} from 'react-redux';
 import {IntlProvider} from 'react-intl';
-import {messages} from 'kepler.gl/localization';
-import {theme} from 'kepler.gl/styles';
+import {messages} from '@kepler.gl/localization';
+import {theme} from '@kepler.gl/styles';
 import {replaceLoadDataModal} from './factories/load-data-modal';
 import {replaceMapControl} from './factories/map-control';
 import {replacePanelHeader} from './factories/panel-header';
 import {replaceSaveExportDropdown} from './factories/export-modal';
 import {AUTH_TOKENS} from './constants/default-settings';
 import {loadSampleConfigurations} from './actions';
-
+import isPropValid from '@emotion/is-prop-valid';
 import ExportVideo from './components/export-video';
+import {injectComponents} from '@kepler.gl/components';
 
 // Sample data
 /* eslint-disable no-unused-vars */
 import sampleTripData, {testCsvData, sampleTripDataConfig} from './data/sample-trip-data';
 import sampleAnimateTrip from './data/sample-animate-trip-data';
-import {addDataToMap} from 'kepler.gl/actions';
-import {processCsvData, processGeojson} from 'kepler.gl/processors';
+import {addDataToMap} from '@kepler.gl/actions';
+import {processCsvData, processGeojson} from '@kepler.gl/processors';
 /* eslint-enable no-unused-vars */
 
-const KeplerGl = require('kepler.gl/components').injectComponents([
+// This implements the default behavior from styled-components v5
+function shouldForwardProp(propName, target) {
+  if (typeof target === 'string') {
+    // For HTML elements, forward the prop if it is a valid HTML attribute
+    return isPropValid(propName);
+  }
+  // For other elements, forward all props
+  return true;
+}
+
+const KeplerGl = injectComponents([
   replaceLoadDataModal(),
   replaceMapControl(),
   replacePanelHeader(),
@@ -185,30 +196,32 @@ class App extends Component {
 
   render() {
     return (
-      <IntlProvider locale="en" messages={messages.en}>
-        <ThemeProvider theme={theme}>
-          <GlobalStyle />
-          <WindowSize>
-            <ExportVideo />
-            <div style={{transition: 'margin 1s, height 1s', flex: 1}}>
-              <AutoSizer>
-                {({height, width}) => (
-                  <KeplerGl
-                    mapboxApiAccessToken={AUTH_TOKENS.MAPBOX_TOKEN}
-                    id="map"
-                    /*
-                     * Specify path to keplerGl state, because it is not mount at the root
-                     */
-                    getState={keplerGlGetState}
-                    width={width}
-                    height={height}
-                  />
-                )}
-              </AutoSizer>
-            </div>
-          </WindowSize>
-        </ThemeProvider>
-      </IntlProvider>
+      <StyleSheetManager shouldForwardProp={shouldForwardProp}>
+        <IntlProvider locale="en" messages={messages.en}>
+          <ThemeProvider theme={theme}>
+            <GlobalStyle />
+            <WindowSize>
+              <ExportVideo />
+              <div style={{transition: 'margin 1s, height 1s', flex: 1}}>
+                <AutoSizer>
+                  {({height, width}) => (
+                    <KeplerGl
+                      mapboxApiAccessToken={AUTH_TOKENS.MAPBOX_TOKEN}
+                      id="map"
+                      /*
+                      * Specify path to keplerGl state, because it is not mount at the root
+                      */
+                      getState={keplerGlGetState}
+                      width={width}
+                      height={height}
+                    />
+                  )}
+                </AutoSizer>
+              </div>
+            </WindowSize>
+          </ThemeProvider>
+        </IntlProvider>
+      </StyleSheetManager>
     );
   }
 }

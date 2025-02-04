@@ -1,88 +1,60 @@
-{
-  "id": "table-of-contents",
-  "chapters": [
-    {
-      "title": "Overview",
-      "entries": [
-        {
-          "entry": "docs"
-        },
-        {
-          "entry": "docs/whats-new"
-        }
-      ]
-    },
-    {
-      "title": "Guide Book",
-      "entries": [
-        {
-          "entry": "docs/convert-video"
-        },
-        {
-          "entry": "docs/post-processing"
-        }
-      ]
-    },
-    {
-      "title": "@hubble.gl/core",
-      "chapters": [
-        {
-          "title": "Adapter",
-          "entries": [
-            {
-              "entry": "docs/api-reference/deck-adapter"
-            }
-          ]
-        },
-        {
-          "title": "Animations",
-          "entries": [
-            {
-              "entry": "docs/api-reference/animations/animation-manager"
-            }
-          ]
-        },
-        {
-          "title": "Keyframes",
-          "entries": [
-            {
-              "entry": "docs/api-reference/keyframe"
-            },
-            {
-              "entry": "docs/api-reference/keyframe/keyframes"
-            },
-            {
-              "entry": "docs/api-reference/keyframe/camera-keyframes"
-            },
-            {
-              "entry": "docs/api-reference/keyframe/deck-layer-keyframes"
-            }
-          ]
-        },
-        {
-          "title": "Encoders",
-          "entries": [
-            {
-              "entry": "docs/api-reference/encoder"
-            },
-            {
-              "entry": "docs/api-reference/encoder/frame-encoder"
-            },
-            {
-              "entry": "docs/api-reference/encoder/webm-encoder"
-            },
-            {
-              "entry": "docs/api-reference/encoder/gif-encoder"
-            },
-            {
-              "entry": "docs/api-reference/encoder/jpeg-sequence-encoder"
-            },
-            {
-              "entry": "docs/api-reference/encoder/png-sequence-encoder"
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
+[
+  {
+    "type": "category",
+    "label": "Overview",
+    "items": [
+      "README",
+      "whats-new"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Guide Book",
+    "items": [
+      "convert-video",
+      "post-processing"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "API Reference",
+    "items": [
+      {
+        "type": "category",
+        "label": "Adapters",
+        "items": [
+          "api-reference/deck-adapter"
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Animations",
+        "items": [
+          "api-reference/animations/animation-manager"
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Keyframes",
+        "items": [
+          "api-reference/keyframe/README",
+          "api-reference/keyframe/keyframes",
+          "api-reference/keyframe/camera-keyframes",
+          "api-reference/keyframe/deck-layer-keyframes"
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Encoders",
+        "items": [
+          "api-reference/encoder/README",
+          "api-reference/encoder/frame-encoder",
+          "api-reference/encoder/webm-encoder",
+          "api-reference/encoder/gif-encoder",
+          "api-reference/encoder/jpeg-sequence-encoder",
+          "api-reference/encoder/png-sequence-encoder"
+        ]
+      }
+    ]
+  }
+]

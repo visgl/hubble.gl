@@ -65,7 +65,7 @@ export default class DeckAdapter {
     }
 
     if (this.glContext) {
-      props.deviceProps.gl = this.glContext;
+      props.deviceProps.webgl = this.glContext;
     }
     return {...extraProps, ...props};
   }

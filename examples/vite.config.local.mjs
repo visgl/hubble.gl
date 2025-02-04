@@ -7,17 +7,16 @@ const rootDir = join(__dirname, '..');
 /** https://vitejs.dev/config/ */
 export default defineConfig(async () => {
   const {aliases} = await getOcularConfig({root: rootDir});
-
   return {
     resolve: {
       alias: {
         ...aliases,
         // Use root dependencies
-        '@luma.gl': join(rootDir, './node_modules/@luma.gl'),
+        '@luma.gl': join(rootDir, './node_modules/@luma.gl'), // Multiple installs cause issues for equality e.g. "instanceof Program" "Model needs a Program"
         // '@math.gl': join(rootDir, './node_modules/@math.gl'),
         // '@arcgis/core': join(rootDir, './node_modules/@arcgis/core'),
         // '@loaders.gl/core': join(rootDir, './node_modules/@loaders.gl/core'),
-        'react': join(rootDir, './node_modules/react'),
+        'react': join(rootDir, './node_modules/react'), // Multiple installs cause issues for hooks e.g. useState
       }
     },
     define: {

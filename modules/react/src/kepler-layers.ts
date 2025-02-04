@@ -41,7 +41,13 @@ function _onLayerSetDomain(idx: number, colorDomain: any) {
   // });
 }
 
-function renderLayer(overlays: any, idx: number, map: any, viewState: MapViewState) {
+function renderLayer(
+  overlays: any,
+  idx: number,
+  map: any,
+  viewState: MapViewState,
+  beforeId?: string
+) {
   const {
     visState: {datasets, layers, layerData, hoverInfo, clicked, interactionConfig, animationConfig},
     mapState
@@ -68,11 +74,17 @@ function renderLayer(overlays: any, idx: number, map: any, viewState: MapViewSta
       animationConfig,
       objectHovered
     })
-    .map((deckLayer: Layer) => deckLayer.clone({pickable: false}));
+    .map((deckLayer: Layer) =>
+      deckLayer.clone({
+        pickable: false,
+        // @ts-expect-error MapboxOverlay layers are extended to include beforeId
+        beforeId
+      })
+    );
   return overlays.concat(layerOverlay || []);
 }
 
-export function createKeplerLayers(map: any, viewState: MapViewState) {
+export function createKeplerLayers(map: any, viewState: MapViewState, beforeId?: string) {
   const layersToRender = layersToRenderSelector(map);
   // returns an arr of DeckGL layer objects
   const {layerOrder, layerData, layers} = map.visState;
@@ -81,9 +93,12 @@ export function createKeplerLayers(map: any, viewState: MapViewState) {
       .slice()
       .reverse()
       .filter(
-        (idx: number) => layers[idx].overlayType === 'deckgl' && layersToRender[layers[idx].id]
+        (_, idx: number) => layers[idx].overlayType === 'deckgl' && layersToRender[layers[idx].id]
       )
-      .reduce((overlays: any, idx: number) => renderLayer(overlays, idx, map, viewState), []); // Slicing & reversing to create same layer order as Kepler
+      .reduce(
+        (overlays: any, _, idx: number) => renderLayer(overlays, idx, map, viewState, beforeId),
+        []
+      ); // Slicing & reversing to create same layer order as Kepler
   }
   return [];
 }
