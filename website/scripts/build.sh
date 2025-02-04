@@ -2,34 +2,35 @@
 set -e
 
 node scripts/validate-token.js
+npm pkg set version=$(node -p "require('../modules/core/package.json').version")
 
 # staging or prod
 MODE=$1
-WEBSITE_DIR=`pwd`
+OUTPUT_DIR=build
+
+# rebuild modules from source
+(
+  cd ..
+  yarn build
+)
 
 # clean up cache
-rm -rf ./.cache ./public
+docusaurus clear
 
 case $MODE in
   "prod")
-    gatsby build
+    docusaurus build
     ;;
   "staging")
-    gatsby build --prefix-paths
+    STAGING=true docusaurus build
     ;;
 esac
-
-# # transpile workers
-# (
-#   cd ..
-#   BABEL_ENV=es5 npx babel ./website/static/workers --out-dir ./website/public/workers
-# )
 
 # build kepler example
 (
   cd ../examples/kepler
   yarn
-  yarn build
+  yarn build --base /kepler
 )
-mkdir public/kepler
-cp -r ../examples/kepler/dist/* public/kepler/
+mkdir $OUTPUT_DIR/kepler
+cp -r ../examples/kepler/dist/* $OUTPUT_DIR/kepler/

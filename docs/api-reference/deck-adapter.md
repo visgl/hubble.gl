@@ -111,4 +111,4 @@ Parameters:
 
 ## Source
 
-[modules/main/src/adapters/deck-adapter.js](https://github.com/uber/hubble.gl/blob/master/modules/main/src/adapters/deck-adapter.js)
+[modules/core/src/adapters/deck-adapter.ts](https://github.com/visgl/hubble.gl/blob/master/modules/core/src/adapters/deck-adapter.ts)

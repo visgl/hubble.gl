@@ -24,4 +24,4 @@ In addition to the [FrameEncoder](/docs/api-reference/encoder/frame-encoder) set
 
 ## Source
 
-[modules/core/src/encoders/video/jpeg-sequence-encoder.js](https://github.com/uber/hubble.gl/blob/master/modules/core/src/encoders/video/jpeg-sequence-encoder.js)
+[modules/core/src/encoders/video/jpeg-sequence-encoder.ts](https://github.com/visgl/hubble.gl/blob/master/modules/core/src/encoders/video/jpeg-sequence-encoder.ts)

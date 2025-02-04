@@ -85,7 +85,7 @@ Returns:
 
 * `Promise<void>` - Add is an async function. The promise will resolve when the frame capture is complete.
 
-##### save(): Promise<Blob | ArrayBuffer>
+##### save(): `Promise<Blob | ArrayBuffer>`
 
 Compile a video of the captured frames.
 
@@ -95,4 +95,4 @@ Returns:
 
 ## Source
 
-[modules/core/src/encoders/frame-encoder.js](https://github.com/uber/hubble.gl/blob/master/modules/core/src/encoders/frame-encoder.js)
+[modules/core/src/encoders/frame-encoder.ts](https://github.com/visgl/hubble.gl/blob/master/modules/core/src/encoders/frame-encoder.ts)

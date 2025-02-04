@@ -1,32 +1,39 @@
 {
-  "name": "hubble.gl-website",
-  "version": "0.0.0",
-  "description": "Website for hubble.gl",
-  "license": "MIT",
-  "keywords": [
-    "ocular"
-  ],
-  "main": "gatsby-config.js",
+  "name": "project-website",
+  "version": "1.4.0-beta.2",
+  "private": true,
+  "description": "Website for vis.gl project",
   "scripts": {
-    "install-deps": "yarn && find ../examples/website -name 'package.json' -maxdepth 2 -execdir yarn \\;",
-    "start": "yarn clean && yarn develop",
+    "start": "docusaurus start",
     "build": "./scripts/build.sh prod",
     "build-staging": "./scripts/build.sh staging",
-    "clean": "rm -rf ./.cache ./public",
-    "develop": "yarn clean && gatsby develop",
-    "serve": "gatsby serve",
-    "deploy": "NODE_DEBUG=gh-pages gh-pages -d public"
+    "clear": "docusaurus clear",
+    "serve": "docusaurus serve",
+    "write-heading-ids": "ocular-doc-headers ../docs",
+    "deploy": "docusaurus deploy"
+  },
+  "resolution_notes": {
+    "cheerio": "@cmfcmf/docusaurus-search-local breaks with v1.0.0 production release"
+  },
+  "resolutions": {
+    "cheerio": "1.0.0-rc.9"
   },
   "dependencies": {
-    "d3-color": "^1.4.1",
-    "global": "^4.3.0"
+    "@algolia/autocomplete-js": "1.18.0",
+    "@docusaurus/core": "^3.0.0",
+    "@vis.gl/docusaurus-website": "1.0.0",
+    "deck.gl": "^8.9",
+    "immutable": "^4.0.0",
+    "maplibre-gl": "^3.6.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
-  "devDependencies": {
-    "gatsby": "^2.32.13",
-    "gatsby-plugin-no-sourcemaps": "^2.1.2",
-    "gatsby-theme-ocular": "^1.2.4",
-    "gh-pages": "^2.2.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+  "browserslist": [
+    ">0.2% and supports async-functions",
+    "not dead"
+  ],
+  "volta": {
+    "node": "18.20.5",
+    "yarn": "1.22.22"
   }
 }

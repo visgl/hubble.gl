@@ -1,3 +1,7 @@
+// hubble.gl
+// SPDX-License-Identifier: MIT
+// Copyright (c) vis.gl contributors
+
 // Enables ES2015 import/export in Node.js
 
 const console = require('console');

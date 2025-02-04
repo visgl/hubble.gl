@@ -1,4 +1,4 @@
-# Keyframes
+# Keyframes (Class)
 
 The Keyframes class extends the luma.gl [Keyframes](https://luma.gl/docs/api-reference/engine/animation/key-frames) class and adds additional features. In your application, extend from hubble.gl's Keyframes as shown in the `CameraKeyFrames` example. Add `features` to animate, such as `latitude`. When designing your animation, keyframe values are required for each feature you define.
 
@@ -59,3 +59,7 @@ Returns:
 ## More Info
 
 See [luma.gl Keyframes](https://luma.gl/docs/api-reference/engine/animation/key-frames) for more information.
+
+## Source
+
+[modules/core/src/keyframes/keyframes.ts](https://github.com/visgl/hubble.gl/blob/master/modules/core/src/keyframes/keyframes.ts)
