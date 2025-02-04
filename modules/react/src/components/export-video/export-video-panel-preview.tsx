@@ -4,13 +4,13 @@
 /* global window */
 
 import React, {Component, ForwardedRef, RefObject, forwardRef} from 'react';
-import DeckGL from '@deck.gl/react/typed';
+import DeckGL from '@deck.gl/react';
 import ReactMapGL, {type MapProps, type MapRef, useControl} from 'react-map-gl';
-import {MapboxOverlay, MapboxOverlayProps} from '@deck.gl/mapbox/typed';
-import type {Deck, DeckProps, Layer, MapViewState} from '@deck.gl/core/typed';
+import {MapboxOverlay, MapboxOverlayProps} from '@deck.gl/mapbox';
+import type {Deck, DeckProps, Layer, MapViewState} from '@deck.gl/core';
 import isEqual from 'lodash.isequal';
 
-import {deckStyle, DeckCanvas} from './styled-components';
+import {DeckCanvas} from './styled-components';
 import {RenderingSpinner} from './rendering-spinner';
 import {createKeplerLayers} from '../../kepler-layers';
 import {DeckAdapter} from '@hubble.gl/core';
@@ -52,14 +52,12 @@ const DeckGLOverlay = forwardRef<Deck, MapboxOverlayProps>(
     return null;
   }
 );
+DeckGLOverlay.displayName = 'DeckGLOverlay';
 
 export class ExportVideoPanelPreview extends Component<
   ExportVideoPanelPreviewProps,
   ExportVideoPanelPreviewState
 > {
-  mapRef: RefObject<MapRef>;
-  deckRef: RefObject<Deck>;
-
   constructor(props: ExportVideoPanelPreviewProps) {
     super(props);
     const mapStyle = this.props.mapData.mapStyle;
@@ -100,6 +98,9 @@ export class ExportVideoPanelPreview extends Component<
       });
     }
   }
+
+  mapRef: RefObject<MapRef>;
+  deckRef: RefObject<Deck>;
 
   _resizeVideo() {
     const {exportVideoWidth, resolution, disableBaseMap} = this.props;
@@ -215,7 +216,7 @@ export class ExportVideoPanelPreview extends Component<
             >
               <DeckGLOverlay
                 ref={this.deckRef}
-                glOptions={{stencil: true}}
+                deviceProps={{type: 'webgl', webgl: {stencil: true}}}
                 {...adapter.getProps({deck, extraProps: {...deckProps, layers: deckLayers}})}
               />
             </ReactMapGL>

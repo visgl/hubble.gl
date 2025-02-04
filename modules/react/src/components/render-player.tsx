@@ -8,13 +8,14 @@ import styled from 'styled-components';
 import {type Encoders, GIF, JPEG, PNG, WEBM} from './encoders';
 
 const parseImages = async (blob: Blob, encoder?: Encoders): Promise<{[name: string]: string}> => {
-  const images = await parse(blob, ZipLoader);
+  const images = (await parse(blob, ZipLoader)) as {[name: string]: ArrayBuffer};
+  const imageUrls: {[name: string]: string} = {};
   for (const image in images) {
-    images[image] = URL.createObjectURL(
+    imageUrls[image] = URL.createObjectURL(
       new Blob([images[image]], {type: encoder === JPEG ? 'image/jpeg' : 'image/png'})
     );
   }
-  return images;
+  return imageUrls;
 };
 
 const VideoPlayer = styled.video`

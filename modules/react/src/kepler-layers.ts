@@ -3,7 +3,7 @@
 // Copyright (c) vis.gl contributors
 
 import {createSelector} from 'reselect';
-import type {Layer, MapViewState} from '@deck.gl/core/typed';
+import type {Layer, MapViewState} from '@deck.gl/core';
 
 /**
  * Kepler Layer Creation

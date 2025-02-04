@@ -4,7 +4,7 @@
 
 import {useState, useCallback, useMemo, RefObject} from 'react';
 import {DeckAdapter, DeckAnimation, DeckAnimationConstructor} from '@hubble.gl/core';
-import type {Layer, MapViewState, Deck} from '@deck.gl/core/typed';
+import type {Layer, MapViewState, Deck} from '@deck.gl/core';
 import type {MapRef} from 'react-map-gl';
 
 export function useNextFrame() {
