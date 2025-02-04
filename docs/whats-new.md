@@ -4,13 +4,19 @@
 
 This release focuses on improved deck.gl compatibility, and package maintainability.
 
+### Code base upgrades
+
+In preparation for the 1.4 release, we made major upgrades to the tools that support the development and publishing of hubble.gl. This allows us to iterate faster and makes it easier for first-time users to get started.
+
+- [#269](https://github.com/visgl/hubble.gl/pull/269) Library rewritten in TypeScript
+- All examples are bootstrapped with [vite](https://vitejs.dev)
+- Pre-bundled scripts built with [esbuild](https://esbuild.github.io)
+- Website rewritten using [Docusaurus](https://docusaurus.io)
+- Tests are run with `tsnode` with ESM modules for node, and `vite` for the browser
+
 ### Fixed
 
 - [#286](https://github.com/visgl/hubble.gl/pull/286) Improved compatibility up to deck.gl 8.9, react 18.0, react-map-gl 7.1, and kepler.gl 3.1.
-
-### Added
-
-- [#269](https://github.com/visgl/hubble.gl/pull/269) library is now authored in TypeScript and publishes official types.
 
 ### Changed
 
