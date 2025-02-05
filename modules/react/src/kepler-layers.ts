@@ -4,9 +4,11 @@
 
 import {createSelector} from 'reselect';
 import type {Layer, MapViewState} from '@deck.gl/core/typed';
+// Note: kepler type imports are commented out to avoid issues when hubble is installed by kepler.
 // import type {KeplerGlState} from '@kepler.gl/reducers';
 // import type {Layer as KeplerLayer} from '@kepler.gl/layers';
 // import type {SplitMap, SplitMapLayers} from '@kepler.gl/types';
+
 /**
  * Kepler Layer Creation
  * Forked from kepler.gl
@@ -42,7 +44,7 @@ const layersToRenderSelector = createSelector(
           layer.config.isVisible &&
           layer.shouldRenderLayer(layerData[idx]) &&
           _isVisibleSplitMapLayer(layer, splitMapLayers) &&
-          layer.overlayType === 'deckgl' // eslint-disable-line
+          layer.overlayType === 'deckgl'
       }),
       {}
     )
@@ -52,9 +54,6 @@ function _isVisibleSplitMapLayer(
   layer: any /* KeplerLayer*/,
   splitMapLayers?: any[] /* SplitMapLayers*/
 ) {
-  console.log('layer', layer);
-  console.log('splitMapLayers', splitMapLayers);
-
   // Undefined splitMapLayers means there isn't a split map, so don't refer to it for layer visibility.
   // If splitMapLayers is defined, it means there is a split map and the upstream caller has selected the map to render in video.
   return !splitMapLayers || (splitMapLayers && splitMapLayers[layer.id]);
@@ -89,6 +88,7 @@ function renderLayer(
     onSetLayerDomain: (val: any) => _onLayerSetDomain(idx, val)
   };
 
+  // Skip layers that aren't supposed to be visible
   if (!isVisible) {
     return overlays;
   }
@@ -121,22 +121,18 @@ export function createKeplerLayers(
   beforeId?: string
 ) {
   const layersToRender = layersToRenderSelector(map, 0);
-  console.log('layersToRender', layersToRender);
   // returns an arr of DeckGL layer objects
   const {layerOrder, layerData, layers} = map.visState;
-  console.log('layerData', layerData);
-  console.log('layerOrder', layerOrder);
-  console.log('layers', layers);
 
   if (layerData && layerData.length) {
+    // Create same layer order as Kepler
     const overlays = [...layerOrder]
       .map(layerId => ({layerId, visible: layersToRender[layerId]}))
       .reduce(
         (overlays: any, layerMeta, idx) =>
           renderLayer(overlays, idx, map, viewState, layerMeta.visible, beforeId),
         []
-      ); // Create same layer order as Kepler
-    console.log('overlays', overlays);
+      );
     return overlays;
   }
   return [];
