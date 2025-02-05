@@ -4,27 +4,25 @@
 
 import {createSelector} from 'reselect';
 import type {Layer, MapViewState} from '@deck.gl/core/typed';
-import type {KeplerGlState} from '@kepler.gl/reducers';
-import type {Layer as KeplerLayer} from '@kepler.gl/layers';
-import type {SplitMap, SplitMapLayers} from '@kepler.gl/types';
+// import type {KeplerGlState} from '@kepler.gl/reducers';
+// import type {Layer as KeplerLayer} from '@kepler.gl/layers';
+// import type {SplitMap, SplitMapLayers} from '@kepler.gl/types';
 /**
  * Kepler Layer Creation
  * Forked from kepler.gl
  * https://github.com/keplergl/kepler.gl/blob/master/src/components/map-container.js
  */
-const layersSelector = (state: KeplerGlState) => state.visState.layers;
-const layerDataSelector = (state: KeplerGlState) => state.visState.layerData;
-// const mapLayersSelector = (state: KeplerGlState) => state.visState.mapLayers;
-
+const layersSelector = (state: any /* KeplerGlState*/) => state.visState.layers;
+const layerDataSelector = (state: any /* KeplerGlState*/) => state.visState.layerData;
 const getMapLayersFromSplitMaps = (
-  splitMaps: SplitMap[],
+  splitMaps: any /* SplitMap[]*/,
   mapIndex?: number
-): SplitMapLayers | undefined | null => {
+): any[] /* SplitMapLayers*/ | undefined | null => {
   return splitMaps[mapIndex || 0]?.layers;
 };
 
-const splitMapSelector = (state: KeplerGlState) => state.visState.splitMaps;
-const splitMapIndexSelector = (_: KeplerGlState, mapIndex: number | undefined) => mapIndex;
+const splitMapSelector = (state: any /* KeplerGlState*/) => state.visState.splitMaps;
+const splitMapIndexSelector = (_: any /* KeplerGlState*/, mapIndex: number | undefined) => mapIndex;
 const mapLayersSelector = createSelector(
   splitMapSelector,
   splitMapIndexSelector,
@@ -38,7 +36,7 @@ const layersToRenderSelector = createSelector(
   // {[id]: true \ false}
   (layers, layerData, splitMapLayers) =>
     layers.reduce(
-      (accu: object, layer: KeplerLayer, idx: number) => ({
+      (accu: object, layer: any /* KeplerLayer*/, idx: number) => ({
         ...accu,
         [layer.id]:
           layer.config.isVisible &&
@@ -50,7 +48,10 @@ const layersToRenderSelector = createSelector(
     )
 );
 
-function _isVisibleSplitMapLayer(layer: KeplerLayer, splitMapLayers?: SplitMapLayers) {
+function _isVisibleSplitMapLayer(
+  layer: any /* KeplerLayer*/,
+  splitMapLayers?: any[] /* SplitMapLayers*/
+) {
   console.log('layer', layer);
   console.log('splitMapLayers', splitMapLayers);
 
@@ -69,10 +70,10 @@ function _onLayerSetDomain(idx: number, colorDomain: any) {
 function renderLayer(
   overlays: any,
   idx: number,
-  map: KeplerGlState,
+  map: any /* KeplerGlState*/,
   viewState: MapViewState,
-  beforeId?: string,
-  isVisible: boolean
+  isVisible: boolean,
+  beforeId?: string
 ) {
   const {
     visState: {datasets, layers, layerData, hoverInfo, clicked, interactionConfig, animationConfig},
@@ -114,7 +115,11 @@ function renderLayer(
   return overlays.concat(layerOverlay || []);
 }
 
-export function createKeplerLayers(map: KeplerGlState, viewState: MapViewState, beforeId?: string) {
+export function createKeplerLayers(
+  map: any /* KeplerGlState*/,
+  viewState: MapViewState,
+  beforeId?: string
+) {
   const layersToRender = layersToRenderSelector(map, 0);
   console.log('layersToRender', layersToRender);
   // returns an arr of DeckGL layer objects
@@ -128,7 +133,7 @@ export function createKeplerLayers(map: KeplerGlState, viewState: MapViewState, 
       .map(layerId => ({layerId, visible: layersToRender[layerId]}))
       .reduce(
         (overlays: any, layerMeta, idx) =>
-          renderLayer(overlays, idx, map, viewState, beforeId, layerMeta.visible),
+          renderLayer(overlays, idx, map, viewState, layerMeta.visible, beforeId),
         []
       ); // Create same layer order as Kepler
     console.log('overlays', overlays);
