@@ -229,7 +229,7 @@ export class ExportVideoPanelContainer extends Component<
       Array.isArray(animatableFilters) && animatableFilters.length
         ? animatableFilters
         : // only animate an enlarged time filter if animatable filters aren't specified.
-          filters.filter(f => f.type === 'timeRange' && f.enlarged)
+          filters.filter(f => f.type === 'timeRange' && f.view === 'enlarged')
     ).map(f => ({
       id: f.id,
       timings: [0, this.state.durationMs]
