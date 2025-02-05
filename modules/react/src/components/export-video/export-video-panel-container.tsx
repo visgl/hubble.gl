@@ -166,7 +166,11 @@ export class ExportVideoPanelContainer extends Component<
         quality: 0.8
       },
       jpeg: {
+        archive: 'zip',
         quality: 0.8
+      },
+      png: {
+        archive: 'zip'
       },
       gif: {
         sampleInterval: 1000,
