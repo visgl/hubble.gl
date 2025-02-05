@@ -1658,92 +1658,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@probe.gl/env@npm:4.1.0":
-  version: 4.1.0
-  resolution: "@probe.gl/env@npm:4.1.0"
-  checksum: 10c0/f364124e5b45613528e7c6c4889aa0139db0a3b2287362e7293f499ea191358059218f8d1e7372edd7f0ae6dac5a8d9fa0465c3c15f208dae3c893874f457c70
-  languageName: node
-  linkType: hard
-
-"@probe.gl/log@npm:4.0.9":
-  version: 4.0.9
-  resolution: "@probe.gl/log@npm:4.0.9"
-  dependencies:
-    "@probe.gl/env": "npm:4.0.9"
-  checksum: 10c0/23521b46fdda80470d8b38d70c62d77f3b50257a63b3e7660655936593cf5f54ec7f1e2b0a36e8ecb7635c7fd45280bb66bd379a3e58afbde99f23d46f43c112
-  languageName: node
-  linkType: hard
-
-"@probe.gl/log@npm:4.1.0, @probe.gl/log@npm:^4.0.2, @probe.gl/log@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "@probe.gl/log@npm:4.1.0"
-  dependencies:
-    "@probe.gl/env": "npm:4.1.0"
-  checksum: 10c0/717f3c306a55419ffc4e7302e564cfa9948b7373dcaf355d2472d72d78a7f65d816cead3b8d942f8867421e30b803ac1060c41ba2bb85e0a1e6931e606c4a495
-  languageName: node
-  linkType: hard
-
-"@probe.gl/log@npm:^3.5.0":
-  version: 3.5.0
-  resolution: "@probe.gl/log@npm:3.5.0"
-  dependencies:
-    "@babel/runtime": "npm:^7.0.0"
-    "@probe.gl/env": "npm:3.5.0"
-  checksum: 10c0/992deb26aa2ca756590c70172cce40d8a729ab770f693a2b42b6fb17bb92b6fdbe10ef2ef519fb726deabdbb3ca36095e530f7ca7bf4f8b1481a90dccd576e3b
-  languageName: node
-  linkType: hard
-
-"@probe.gl/stats@npm:^3.5.0":
-  version: 3.5.0
-  resolution: "@probe.gl/stats@npm:3.5.0"
-  dependencies:
-    "@babel/runtime": "npm:^7.0.0"
-  checksum: 10c0/663c3b1fa50b64f1ddb3a4517e13a4ae11997c6d2f8a2161591c728a0a0080e6032ed6b96c4c4600e99bfbd77a4e49bae947061a298e369727b94e89c32c3c97
-  languageName: node
-  linkType: hard
-
-"@probe.gl/stats@npm:^4.0.2":
-  version: 4.0.9
-  resolution: "@probe.gl/stats@npm:4.0.9"
-  checksum: 10c0/23c205232a45941b13d1e87efe060d81f3a09339b0294991fc9fdf6dd9d090a9e6c79cccf23ce8f09e5c14aa44ef128836639490df22729a13214b0ff3c7cd80
-  languageName: node
-  linkType: hard
-
-"@probe.gl/test-utils@npm:^4.0.6":
-  version: 4.0.9
-  resolution: "@probe.gl/test-utils@npm:4.0.9"
-  dependencies:
-    "@probe.gl/log": "npm:4.0.9"
-    "@types/pngjs": "npm:^6.0.1"
-    pixelmatch: "npm:^4.0.2"
-  peerDependencies:
-    puppeteer: ">=19"
-  peerDependenciesMeta:
-    puppeteer:
-      optional: true
-  checksum: 10c0/c4f7df76cab7ad9659958d0f696c12c88952dc69e5b1e620e4b292e93787b339af5edcca6eb32313ae2f412f31d027d27aae9df5d664b4e2673abfc3eef5aa47
-  languageName: node
-  linkType: hard
-
-"@puppeteer/browsers@npm:2.3.0":
-  version: 2.3.0
-  resolution: "@puppeteer/browsers@npm:2.3.0"
-  dependencies:
-    debug: "npm:^4.3.5"
-    extract-zip: "npm:^2.0.1"
-    progress: "npm:^2.0.3"
-    proxy-agent: "npm:^6.4.0"
-    semver: "npm:^7.6.3"
-    tar-fs: "npm:^3.0.6"
-    unbzip2-stream: "npm:^1.4.3"
-    yargs: "npm:^17.7.2"
-  bin:
-    browsers: lib/cjs/main-cli.js
-  checksum: 10c0/8665a7d5be5e1489855780b7684bf94a55647b54a8391474cbdc1defdb2e4e6642722ef1d20bfabe49d3aed3eec2c8db41d6eabc24440f4a16d071effc5a1049
-  languageName: node
-  linkType: hard
-
-"@probe.gl/test-utils@npm:^4.1.0":
+"@probe.gl/test-utils@npm:4.1.0":
   version: 4.1.0
   resolution: "@probe.gl/test-utils@npm:4.1.0"
   dependencies:
@@ -2377,9 +2292,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vis.gl/dev-tools@npm:1.0.0-alpha.21":
-  version: 1.0.0-alpha.21
-  resolution: "@vis.gl/dev-tools@npm:1.0.0-alpha.21"
+"@vis.gl/dev-tools@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@vis.gl/dev-tools@npm:1.0.0"
   dependencies:
     "@esbuild-plugins/node-globals-polyfill": "npm:^0.2.0"
     "@esbuild-plugins/node-modules-polyfill": "npm:^0.2.0"
@@ -2420,19 +2335,19 @@ __metadata:
     ocular-metrics: scripts/metrics.js
     ocular-publish: scripts/publish.js
     ocular-test: scripts/test.js
-  checksum: 10c0/12c8f5ac372a2256031740dabac9026cae41ecd291a53ec062cba9fb75fce12602e8c904540bb7a90b155228a0bd8de69a1f03c0ffa8f5d2b9f95df261bf56d3
+  checksum: 10c0/0758ffc4162e0427316e379c2c36b0811d687c6dbec9393129be65a48c46efdf59b8ea99396d87fd44f07a7e7b5be35da74c04e6b2cb84f75c0570ca993e50ae
   languageName: node
   linkType: hard
 
-"@vis.gl/ts-plugins@npm:1.0.0-alpha.21":
-  version: 1.0.0-alpha.21
-  resolution: "@vis.gl/ts-plugins@npm:1.0.0-alpha.21"
+"@vis.gl/ts-plugins@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@vis.gl/ts-plugins@npm:1.0.0"
   dependencies:
     "@luma.gl/constants": "npm:^9.0.0"
     minimatch: "npm:^3.0.0"
     ts-patch: "npm:^3.1.2"
     typescript: "npm:^5.2.2"
-  checksum: 10c0/4b871c45d9ef4ac8988ede5792077744cc5e35898651951805e2c38706428ca8de674e2542fd145c9ed8f13faab339cdfae618b160fad8e99e0bc1b1d148c73d
+  checksum: 10c0/9aff8314b70cc69e6532c4fb348c9902f8358b7bb8c8e9cd1590dd739a2252354eb8cd4553ab78b7921a3ac98a578cedb18c92b5540f516c48225f7b27a30358
   languageName: node
   linkType: hard
 
@@ -2967,58 +2882,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-dynamic-import-node@npm:^2.3.3":
-  version: 2.3.3
-  resolution: "babel-plugin-dynamic-import-node@npm:2.3.3"
-  dependencies:
-    object.assign: "npm:^4.1.0"
-  checksum: 10c0/1bd80df981e1fc1aff0cd4e390cf27aaa34f95f7620cd14dff07ba3bad56d168c098233a7d2deb2c9b1dc13643e596a6b94fc608a3412ee3c56e74a25cd2167e
-  languageName: node
-  linkType: hard
-
-"babel-plugin-polyfill-corejs2@npm:^0.3.2":
-  version: 0.3.2
-  resolution: "babel-plugin-polyfill-corejs2@npm:0.3.2"
-  dependencies:
-    "@babel/compat-data": "npm:^7.17.7"
-    "@babel/helper-define-polyfill-provider": "npm:^0.3.2"
-    semver: "npm:^6.1.1"
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  checksum: 10c0/704c9cefc0c447a8bc6376a51ba81829429cc1a92459ed089b8832829063ccabd64df81e9c10dd369353e345f75a342343ffac0db43a546ad48c2f9751d2916e
-  languageName: node
-  linkType: hard
-
-"babel-plugin-polyfill-corejs3@npm:^0.5.3":
-  version: 0.5.3
-  resolution: "babel-plugin-polyfill-corejs3@npm:0.5.3"
-  dependencies:
-    "@babel/helper-define-polyfill-provider": "npm:^0.3.2"
-    core-js-compat: "npm:^3.21.0"
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  checksum: 10c0/87f9eb8be5e8e115b930624c8e3e91b5396eca8d563120b0cd03853960addf587fd4cab8776ecf3a59ec94a774f214f2321a96c354a667a62fa2dc5eb122eaa0
-  languageName: node
-  linkType: hard
-
-"babel-plugin-polyfill-regenerator@npm:^0.4.0":
-  version: 0.4.0
-  resolution: "babel-plugin-polyfill-regenerator@npm:0.4.0"
-  dependencies:
-    "@babel/helper-define-polyfill-provider": "npm:^0.3.2"
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  checksum: 10c0/b5a8837e41bf6767c6f68fb37459363c84b54e40e787f8b6461cb32fe13d16b6d6ca380bf2f941e521c48d4be41ec10ee42c9f3cdb9433b8885929d808a598e5
-  languageName: node
-  linkType: hard
-
-"babel-plugin-version-inline@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "babel-plugin-version-inline@npm:1.0.0"
-  checksum: 10c0/bb15cede4b6533911c992e45aba8a4d7a4aa507f0f1833e51df264a939af3a445e91fe43c14838282e63e705b2e69e00821417278b0cbb1dd65e438dcfa81d0d
-  languageName: node
-  linkType: hard
-
 "balanced-match@npm:^1.0.0":
   version: 1.0.2
   resolution: "balanced-match@npm:1.0.2"
@@ -3152,20 +3015,6 @@ __metadata:
   dependencies:
     base64-js: "npm:^1.1.2"
   checksum: 10c0/9d24e24f8b7eabf44af034ed5f7d5530008b835f09a107a84ac060723e86dd43c6aa68958691fe5df524f59473b35f5ce2e0854aa1152c0a254d1010f51bcf22
-  languageName: node
-  linkType: hard
-
-"browserslist@npm:^4.20.2, browserslist@npm:^4.21.3":
-  version: 4.21.3
-  resolution: "browserslist@npm:4.21.3"
-  dependencies:
-    caniuse-lite: "npm:^1.0.30001370"
-    electron-to-chromium: "npm:^1.4.202"
-    node-releases: "npm:^2.0.6"
-    update-browserslist-db: "npm:^1.0.5"
-  bin:
-    browserslist: cli.js
-  checksum: 10c0/1012070e49470b1e2bfd7b376ba0990a2f01be25ca8a0cc3bc7bd5307ca13f664efc63bbf23f60304777e592c7c931e37ed19df0623a284c5f9d7cf573c26239
   languageName: node
   linkType: hard
 
@@ -3452,25 +3301,6 @@ __metadata:
   version: 0.0.2
   resolution: "charenc@npm:0.0.2"
   checksum: 10c0/a45ec39363a16799d0f9365c8dd0c78e711415113c6f14787a22462ef451f5013efae8a28f1c058f81fc01f2a6a16955f7a5fd0cd56247ce94a45349c89877d8
-  languageName: node
-  linkType: hard
-
-"chokidar@npm:^3.4.0":
-  version: 3.5.3
-  resolution: "chokidar@npm:3.5.3"
-  dependencies:
-    anymatch: "npm:~3.1.2"
-    braces: "npm:~3.0.2"
-    fsevents: "npm:~2.3.2"
-    glob-parent: "npm:~5.1.2"
-    is-binary-path: "npm:~2.1.0"
-    is-glob: "npm:~4.0.1"
-    normalize-path: "npm:~3.0.0"
-    readdirp: "npm:~3.6.0"
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  checksum: 10c0/1076953093e0707c882a92c66c0f56ba6187831aa51bb4de878c1fec59ae611a3bf02898f190efec8e77a086b8df61c2b2a3ea324642a0558bdf8ee6c5dc9ca1
   languageName: node
   linkType: hard
 
@@ -4074,7 +3904,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:^4.0.0, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.3, debug@npm:^4.3.4":
+"debug@npm:4, debug@npm:^4.0.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.3, debug@npm:^4.3.4":
   version: 4.3.4
   resolution: "debug@npm:4.3.4"
   dependencies:
@@ -6272,6 +6102,8 @@ __metadata:
     "@luma.gl/experimental": "npm:^8.5.0"
     "@probe.gl/bench": "npm:^4.1.0"
     "@probe.gl/test-utils": "npm:^4.1.0"
+    "@vis.gl/dev-tools": "npm:1.0.0"
+    "@vis.gl/ts-plugins": "npm:1.0.0"
     coveralls: "npm:^3.0.0"
     jsdom: "npm:^20.0.0"
     pre-commit: "npm:^1.2.2"
@@ -10414,7 +10246,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.6.3":
+"semver@npm:^7.6.0, semver@npm:^7.6.3":
   version: 7.7.1
   resolution: "semver@npm:7.7.1"
   bin:

@@ -21,6 +21,7 @@
     "publish-beta": "ocular-publish version-only-beta",
     "publish-prod": "ocular-publish version-only-prod",
     "test": "ocular-test",
+    "test-fast": "ocular-lint && ocular-test node",
     "metrics": "ocular-metrics"
   },
   "browser": {
@@ -39,8 +40,8 @@
     "@luma.gl/experimental": "^8.5.0",
     "@probe.gl/bench": "^4.1.0",
     "@probe.gl/test-utils": "^4.1.0",
-    "@vis.gl/dev-tools": "1.0.0-alpha.21",
-    "@vis.gl/ts-plugins": "1.0.0-alpha.21",
+    "@vis.gl/dev-tools": "1.0.0",
+    "@vis.gl/ts-plugins": "1.0.0",
     "coveralls": "^3.0.0",
     "jsdom": "^20.0.0",
     "pre-commit": "^1.2.2",
@@ -60,6 +61,9 @@
     "@probe.gl/stats": "4.1.0",
     "@probe.gl/test-utils": "4.1.0"
   },
+  "pre-commit": [
+    "test-fast"
+  ],
   "volta": {
     "node": "18.20.5",
     "yarn": "4.5.2"
