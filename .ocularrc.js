@@ -1,4 +1,4 @@
-/** @typedef {import('ocular-dev-tools').OcularConfig} OcularConfig */
+/** @typedef {import('@vis.gl/dev-tools').OcularConfig} OcularConfig */
 import {dirname, join} from 'path';
 import {fileURLToPath} from 'url';
 
@@ -20,10 +20,6 @@ const config = {
     globals: {
       '@hubble.gl/*': 'globalThis.hubble'
     }
-  },
-
-  typescript: {
-    project: 'tsconfig.build.json'
   },
 
   aliases: {

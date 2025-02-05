@@ -22,8 +22,9 @@ jobs:
         id: permitted
         run: |
           result=
-          branchName=$(git branch -a --contains $GITHUB_SHA | grep 'remotes/origin/' || echo "")
-          if [[ $branchName == *"master" || $branchName == *"-release" ]]; then
+          if git branch -a --contains $GITHUB_SHA | grep -q 'remotes/origin/master$'; then
+            result=true
+          elif git branch -a --contains $GITHUB_SHA | grep -q 'remotes/origin/.*-release$'; then
             result=true
           fi
           echo "result=${result}" >> "$GITHUB_OUTPUT"
@@ -46,6 +47,18 @@ jobs:
         with:
           cache: 'yarn'
 
+      - name: Install dependencies
+        run: yarn
+
+      - name: Build packages
+        run: yarn build
+
+      - name: Run tests from transpiled code
+        run: npx ocular-test dist
+
+      - name: Login to NPM
+        run: npm config set "//registry.npmjs.org/:_authToken=${NPM_ACCESS_TOKEN}"
+
       - name: Create GitHub release entry
         run: |
           body=$(node scripts/github-release.js) &&
@@ -55,12 +68,6 @@ jobs:
             https://api.github.com/repos/visgl/hubble.gl/releases \
             -d "${body}" \
             -H "Authorization: token ${GITHUB_TOKEN}"
-
-      - name: Login to NPM
-        run: npm config set "//registry.npmjs.org/:_authToken=${NPM_ACCESS_TOKEN}"
-
-      - name: Install dependencies
-        run: yarn
       
       - name: Publish to NPM
         run: npx ocular-publish from-git

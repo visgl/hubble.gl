@@ -1,4 +1,4 @@
-const {getESLintConfig} = require('ocular-dev-tools/configuration');
+const {getESLintConfig} = require('@vis.gl/dev-tools/configuration');
 
 const config = getESLintConfig({
   react: '18.3.0',
