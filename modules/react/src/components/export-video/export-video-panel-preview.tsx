@@ -148,7 +148,8 @@ export class ExportVideoPanelPreview extends Component<
     if (deckProps && deckProps.layers) {
       return deckProps.layers;
     }
-    return createKeplerLayers(mapData, viewState, beforeId);
+    const mapIndex = 0; // TODO: select mapIndex from redux
+    return createKeplerLayers(mapData, viewState, mapIndex, beforeId);
   }
 
   _onAfterRender() {

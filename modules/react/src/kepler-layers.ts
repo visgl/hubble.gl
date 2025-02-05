@@ -118,9 +118,10 @@ function renderLayer(
 export function createKeplerLayers(
   map: any /* KeplerGlState*/,
   viewState: MapViewState,
+  mapIndex: number = undefined,
   beforeId?: string
 ) {
-  const layersToRender = layersToRenderSelector(map, 0);
+  const layersToRender = layersToRenderSelector(map, mapIndex);
   // returns an arr of DeckGL layer objects
   const {layerOrder, layerData, layers} = map.visState;
 
