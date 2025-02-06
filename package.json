@@ -47,13 +47,14 @@
   "devDependencies": {
     "@loaders.gl/polyfills": "^4.2.0",
     "@luma.gl/experimental": "^8.5.0",
-    "@probe.gl/bench": "^3.5.0",
-    "@probe.gl/test-utils": "^3.5.0",
+    "@probe.gl/bench": "^4.1.0",
+    "@probe.gl/test-utils": "^4.1.0",
     "coveralls": "^3.0.0",
     "jsdom": "^20.0.0",
     "ocular-dev-tools": "2.0.0-alpha.33",
     "pre-commit": "^1.2.2",
     "pre-push": "^0.1.1",
+    "puppeteer": "24.2.0",
     "tap-spec": "^5.0.0",
     "tape-catch": "^1.0.6"
   },
