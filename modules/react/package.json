@@ -34,8 +34,7 @@
   ],
   "sideEffects": false,
   "dependencies": {
-    "@loaders.gl/core": "^4.3.3",
-    "@loaders.gl/zip": "^4.3.3",
+    "@loaders.gl/zip": "^3.0.12",
     "@turf/helpers": "^5.1.5",
     "@turf/transform-translate": "^5.1.5",
     "classnames": "^2.2.6",
@@ -59,6 +58,7 @@
     "@deck.gl/mapbox": ">=8.3",
     "@deck.gl/react": ">=8.3",
     "@hubble.gl/core": "^1.4.0",
+    "@loaders.gl/core": "^3.0.0",
     "react": ">=18.2",
     "react-dom": ">=18.2"
   },

@@ -7,15 +7,14 @@ import {ZipLoader} from '@loaders.gl/zip';
 import styled from 'styled-components';
 import {type Encoders, GIF, JPEG, PNG, WEBM} from './encoders';
 
-const parseImages = async (blob: Blob, encoder?: Encoders): Promise<Record<string, string>> => {
+const parseImages = async (blob: Blob, encoder?: Encoders): Promise<{[name: string]: string}> => {
   const images = await parse(blob, ZipLoader);
-  const imageBlobs: Record<string, string> = {};
   for (const image in images) {
-    imageBlobs[image] = URL.createObjectURL(
+    images[image] = URL.createObjectURL(
       new Blob([images[image]], {type: encoder === JPEG ? 'image/jpeg' : 'image/png'})
     );
   }
-  return imageBlobs;
+  return images;
 };
 
 const VideoPlayer = styled.video`
@@ -48,7 +47,7 @@ const Thumbnail = styled.img`
 
 export default function RenderPlayer({encoder, blob}: {encoder: Encoders; blob?: Blob}) {
   const [src, setSrc] = useState('');
-  const [gallery, setGallery] = useState<Record<string, string>>({});
+  const [gallery, setGallery] = useState<{[name: string]: string}>({});
 
   useEffect(() => {
     setSrc('');
