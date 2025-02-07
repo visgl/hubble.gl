@@ -30,4 +30,4 @@ ffmpeg -pattern_type glob -framerate 30 -pix_fmt yuv420p -i "*.png" -tune animat
 
 ## Source
 
-[modules/core/src/encoders/video/png-sequence-encoder.ts](https://github.com/visgl/hubble.gl/blob/master/modules/core/src/encoders/video/png-sequence-encoder.ts)
+[modules/core/src/encoders/video/png-sequence-encoder.ts](https://github.com/visgl/hubble.gl/tree/1.4-release/modules/core/src/encoders/video/png-sequence-encoder.ts)

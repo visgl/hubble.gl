@@ -17,4 +17,4 @@ adapter.render({Encoder: PreviewEncoder});
 
 ## Source
 
-[modules/core/src/encoders/utils/preview-encoder.ts](https://github.com/visgl/hubble.gl/blob/master/modules/core/src/encoders/utils/preview-encoder.ts)
+[modules/core/src/encoders/utils/preview-encoder.ts](https://github.com/visgl/hubble.gl/tree/1.4-release/modules/core/src/encoders/utils/preview-encoder.ts)

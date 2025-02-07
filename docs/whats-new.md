@@ -112,8 +112,8 @@ This release introduces a new decoupled animation manager, and refactors Please 
 
 - [Quick start example](https://github.com/uber/hubble.gl/blob/a821066de6aa24ed747609b3c0b71dfcc17d27b3/examples/quick-start/app.js)
   - Read how to wrap deck.gl with a recorder in this [before](https://github.com/uber/hubble.gl/blob/a821066de6aa24ed747609b3c0b71dfcc17d27b3/examples/quick-start/quick-start-before.js) and [after](https://github.com/uber/hubble.gl/blob/a821066de6aa24ed747609b3c0b71dfcc17d27b3/examples/quick-start/quick-start-after.js).
-- [Kepler.gl integration example](https://github.com/uber/hubble.gl/tree/master/examples/kepler-integration)
-- [Worldview example](https://github.com/uber/hubble.gl/tree/master/examples/worldview) is a web app you can use to create fully customizable animated map videos in seconds without any installation or expensive server processing by utilizing hubble.gl.
+- [Kepler.gl integration example](https://github.com/uber/hubble.gl/tree/1.4-release/examples/kepler-integration)
+- [Worldview example](https://github.com/uber/hubble.gl/tree/1.4-release/examples/worldview) is a web app you can use to create fully customizable animated map videos in seconds without any installation or expensive server processing by utilizing hubble.gl.
 
 ### Removed
 

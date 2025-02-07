@@ -29,7 +29,7 @@ In addition to the top level [FrameEncoder](/docs/api-reference/encoder/frame-en
 
 ## Source
 
-[modules/core/src/encoders/video/gif-encoder.ts](https://github.com/visgl/hubble.gl/blob/master/modules/core/src/encoders/video/gif-encoder.ts)
+[modules/core/src/encoders/video/gif-encoder.ts](https://github.com/visgl/hubble.gl/tree/1.4-release/modules/core/src/encoders/video/gif-encoder.ts)
 
 ### Attributions
 

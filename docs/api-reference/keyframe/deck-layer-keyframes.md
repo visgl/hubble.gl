@@ -29,4 +29,4 @@ See hubble.gl Keyframes and [luma.gl Keyframes](https://luma.gl/docs/api-referen
 
 ## Source
 
-[modules/core/src/keyframes/deck-layer-keyframes.ts](https://github.com/visgl/hubble.gl/blob/master/modules/core/src/keyframes/deck-layer-keyframes.ts)
+[modules/core/src/keyframes/deck-layer-keyframes.ts](https://github.com/visgl/hubble.gl/tree/1.4-release/modules/core/src/keyframes/deck-layer-keyframes.ts)

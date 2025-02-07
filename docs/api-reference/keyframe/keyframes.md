@@ -62,4 +62,4 @@ See [luma.gl Keyframes](https://luma.gl/docs/api-reference/engine/animation/key-
 
 ## Source
 
-[modules/core/src/keyframes/keyframes.ts](https://github.com/visgl/hubble.gl/blob/master/modules/core/src/keyframes/keyframes.ts)
+[modules/core/src/keyframes/keyframes.ts](https://github.com/visgl/hubble.gl/tree/1.4-release/modules/core/src/keyframes/keyframes.ts)

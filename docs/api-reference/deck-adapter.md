@@ -111,4 +111,4 @@ Parameters:
 
 ## Source
 
-[modules/core/src/adapters/deck-adapter.ts](https://github.com/visgl/hubble.gl/blob/master/modules/core/src/adapters/deck-adapter.ts)
+[modules/core/src/adapters/deck-adapter.ts](https://github.com/visgl/hubble.gl/tree/1.4-release/modules/core/src/adapters/deck-adapter.ts)
