@@ -63,7 +63,6 @@
     "@luma.gl/experimental: must include in devDeps for local dev examples"
   ],
   "resolutions": {
-    "@loaders.gl/video": "3.0.12",
     "@luma.gl/experimental": "8.5.21"
   },
   "volta": {
