@@ -31,7 +31,8 @@
     "tsbuild": "tsc -b tsconfig.build.json",
     "bench": "ocular-test bench",
     "bench-browser": "ocular-test bench-browser",
-    "metrics": "ocular-metrics"
+    "metrics": "ocular-metrics",
+    "update-release-branch": "scripts/update-release-branch.sh"
   },
   "browser": {
     "jsdom": false
