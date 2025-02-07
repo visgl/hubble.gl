@@ -4959,6 +4959,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chroma-js@npm:2.1.2":
+  version: 2.1.2
+  resolution: "chroma-js@npm:2.1.2"
+  dependencies:
+    cross-env: "npm:^6.0.3"
+  checksum: 10c0/f3760059b76240bab7387f335c798bbf55a4edf937534be7bc5c16ecad9b358dcfd891ca4fffa2c34742f45d5c3e96c8927c6a9906a13905da2bfa4c9ad30418
+  languageName: node
+  linkType: hard
+
 "chromium-bidi@npm:1.2.0":
   version: 1.2.0
   resolution: "chromium-bidi@npm:1.2.0"
