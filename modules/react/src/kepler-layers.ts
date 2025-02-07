@@ -66,14 +66,21 @@ function _onLayerSetDomain(idx: number, colorDomain: any) {
   // });
 }
 
-function renderLayer(
-  overlays: any,
-  idx: number,
-  map: any /* KeplerGlState*/,
-  viewState: MapViewState,
-  isVisible: boolean,
-  beforeId?: string
-) {
+function renderLayer({
+  overlays,
+  idx,
+  map,
+  viewState,
+  isVisible,
+  beforeId
+}: {
+  overlays: any;
+  idx: number;
+  map: any /* KeplerGlState*/;
+  viewState: MapViewState;
+  isVisible: boolean;
+  beforeId?: string;
+}) {
   const {
     visState: {datasets, layers, layerData, hoverInfo, clicked, interactionConfig, animationConfig},
     mapState
@@ -127,14 +134,13 @@ export function createKeplerLayers(
 
   if (layerData && layerData.length) {
     // Create same layer order as Kepler
-    const overlays = [...layerOrder]
+    return [...layerOrder]
       .map(layerId => ({layerId, visible: layersToRender[layerId]}))
       .reduce(
         (overlays: any, layerMeta, idx) =>
-          renderLayer(overlays, idx, map, viewState, layerMeta.visible, beforeId),
+          renderLayer({overlays, idx, map, viewState, isVisible: layerMeta.visible, beforeId}),
         []
       );
-    return overlays;
   }
   return [];
 }
