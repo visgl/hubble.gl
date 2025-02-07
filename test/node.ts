@@ -23,3 +23,4 @@ _global.requestAnimationFrame = cb => setTimeout(cb, 0);
 _global.cancelAnimationFrame = t => clearTimeout(t);
 
 // import './imports-spec';
+import '../modules/core/test/index';
