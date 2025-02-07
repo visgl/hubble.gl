@@ -2350,17 +2350,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@loaders.gl/loader-utils@npm:3.0.12":
-  version: 3.0.12
-  resolution: "@loaders.gl/loader-utils@npm:3.0.12"
-  dependencies:
-    "@babel/runtime": "npm:^7.3.1"
-    "@loaders.gl/worker-utils": "npm:3.0.12"
-    "@probe.gl/stats": "npm:^3.4.0"
-  checksum: 10c0/dc471596385735b7d9d9333a7c081b9b555c38a2870672768ce0396ec13f62290b303af70b47e35c66ae9a799eccda8c29b34ef2e263b5e366a6559a2aafe1b0
-  languageName: node
-  linkType: hard
-
 "@loaders.gl/loader-utils@npm:3.4.15":
   version: 3.4.15
   resolution: "@loaders.gl/loader-utils@npm:3.4.15"
@@ -2415,23 +2404,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@loaders.gl/video@npm:3.0.12":
-  version: 3.0.12
-  resolution: "@loaders.gl/video@npm:3.0.12"
+"@loaders.gl/video@npm:^3.4.13":
+  version: 3.4.15
+  resolution: "@loaders.gl/video@npm:3.4.15"
   dependencies:
-    "@loaders.gl/loader-utils": "npm:3.0.12"
-    "@loaders.gl/worker-utils": "npm:3.0.12"
+    "@loaders.gl/loader-utils": "npm:3.4.15"
+    "@loaders.gl/worker-utils": "npm:3.4.15"
     gifshot: "npm:^0.4.5"
-  checksum: 10c0/b9f59b752d8ec72f1a89a818047cd927066004b9945857dda2393930f10f1e5acfe001e9f48518287dab42ba2055a1b5d5be6c64cbd7a40b72b29c118b12ed61
-  languageName: node
-  linkType: hard
-
-"@loaders.gl/worker-utils@npm:3.0.12":
-  version: 3.0.12
-  resolution: "@loaders.gl/worker-utils@npm:3.0.12"
-  dependencies:
-    "@babel/runtime": "npm:^7.3.1"
-  checksum: 10c0/386cb4e0d5307088f202a51c31d2e0619968cbf14f0efe1d27f66a6df61d9c23a709e9fb7081761667f735423811adad7c0c9564d03730ebe3ff28707e0a4eac
+  checksum: 10c0/d734a472945ec93babf69b385589a1ce20364ed46591f40431f0d83625d8cafb22ed483d2479290ff0294b2cccfcb425afae2e300e95af3cf73ba5796fbbd250
   languageName: node
   linkType: hard
 
@@ -3182,7 +3162,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@probe.gl/stats@npm:^3.4.0, @probe.gl/stats@npm:^3.5.0":
+"@probe.gl/stats@npm:^3.5.0":
   version: 3.5.0
   resolution: "@probe.gl/stats@npm:3.5.0"
   dependencies:

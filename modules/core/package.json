@@ -45,9 +45,6 @@
     "popmotion": "9.3.1",
     "webm-writer": "^1.0.0"
   },
-  "resolutions": {
-    "@loaders.gl/video": "3.0.12"
-  },
   "peerDependencies": {
     "@deck.gl/core": ">=8.3",
     "@luma.gl/core": ">=8.3",
