@@ -175,7 +175,7 @@ export default class KeplerAnimation extends Animation {
     if (filterKeyframes.length > 0) {
       this.filterKeyframes = filterKeyframes.reduce((acc, filterKeyframe) => {
         const filterIdx = findFilterIdx({filters, filterKeyframe});
-        const filter = filterIdx && filters[filterIdx];
+        const filter = Number.isFinite(filterIdx) && filters[filterIdx];
         if (filter) {
           if (acc[filter.id]) {
             acc[filter.id].set({filter, ...filterKeyframe});

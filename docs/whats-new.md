@@ -17,6 +17,14 @@ In preparation for the 1.4 release, we made major upgrades to the tools that sup
 ### Fixed
 
 - [#286](https://github.com/visgl/hubble.gl/pull/286) Improved compatibility up to deck.gl 8.9, react 18.0, react-map-gl 7.1, and kepler.gl 3.1.
+- [#302](https://github.com/visgl/hubble.gl/pull/302) Fixed kepler.gl 3.1 integration
+  - fix(react) kepler layers should be visible
+  - fix(kepler) layers should update on every react render
+  - chore(kepler) component should configure which map to render
+  - change(kepler) switch png and jpeg encoder to use zip archives
+  - fix(kepler) filters should render enlarged filters using latest schema
+  - fix(kepler) all defined filters should render
+- [#298](https://github.com/visgl/hubble.gl/pull/298) Added missing exports to the main `hubble.gl` package.
 
 ### Changed
 

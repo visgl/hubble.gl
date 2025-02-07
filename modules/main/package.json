@@ -1,6 +1,6 @@
 {
   "name": "hubble.gl",
-  "version": "1.4.0-beta.2",
+  "version": "1.4.0-beta.4",
   "description": "hubble.gl is an animation and video capture library for vis.gl in the browser",
   "license": "MIT",
   "type": "module",
@@ -36,8 +36,8 @@
     "prepublishOnly": "npm run build-bundle && npm run build-bundle -- --env.dev"
   },
   "dependencies": {
-    "@hubble.gl/core": "1.4.0-beta.2",
-    "@hubble.gl/react": "1.4.0-beta.2"
+    "@hubble.gl/core": "1.4.0-beta.4",
+    "@hubble.gl/react": "1.4.0-beta.4"
   },
   "peerDependencies": {
     "react": ">=16.3.0",
