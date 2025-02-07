@@ -34,10 +34,9 @@ jobs:
         with:
           token: ${{ secrets.WEBSITE_DEPLOY_TOKEN }}
 
-      - name: Use Node.js
-        uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65 # v4.0.0
+      - uses: volta-cli/action@2d68418f32546fd191eb666e232b321d5726484d # v4.1.1
         with:
-          node-version: '18.x'
+          cache: 'yarn'
 
       - name: Install dependencies
         run: |
