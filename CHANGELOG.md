@@ -21,6 +21,11 @@ Ref: http://keepachangelog.com/en/0.3.0/
 
 ### hubble.gl v1.4 Prereleases
 
+#### hubble.gl [1.4.0-beta.3] - Feb 6 2025
+
+- fix(kepler) 3.1 integration (#302)
+- fix(website) revert loaders to fix build (#303)
+
 #### hubble.gl [1.4.0-beta.2] - Jan 31 2025
 
 - fix release action
