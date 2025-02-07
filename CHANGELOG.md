@@ -19,6 +19,10 @@ Ref: http://keepachangelog.com/en/0.3.0/
 
 ## hubble.gl v1.4
 
+#### hubble.gl [1.4.0] - Feb 6 2025
+
+- bump dependencies to production release
+
 ### hubble.gl v1.4 Prereleases
 
 #### hubble.gl [1.4.0-beta.4] - Feb 6 2025
