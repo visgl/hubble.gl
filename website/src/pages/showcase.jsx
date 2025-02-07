@@ -5,7 +5,10 @@ export default function Showcase() {
     return (
         <Layout title="Showcase" description="Animations built with hubble.gl">
             <div style={{padding: "64px 64px 0 64px"}}>
-                <h1 style={{marginTop: "64px"}}>Showcase</h1>
+                <h1>Showcase</h1>
+                <p style={{font: "normal 14px/20px 'Uber Move',Helvetica,Arial,sans-serif"}}>
+                    <i>Would you like us to feature your project? <a href="https://github.com/visgl/hubble.gl/issues">Let us know!</a></i>
+                </p>
                 <p style={{marginBottom: "48px", font: "normal 14px/20px 'Uber Move',Helvetica,Arial,sans-serif"}}>
                     These videos demonstrate polished animations made with hubble.gl and light post processing. Video editors and presentation software can be used to add text, dissolve between clips, and combine multiple renderings. Learn more about these techniques in the <a href="/docs/post-processing">post processing</a> guide.
                 </p>

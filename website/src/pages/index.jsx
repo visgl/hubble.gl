@@ -85,18 +85,15 @@ export default function IndexPage() {
   const baseUrl = useBaseUrl('/');
   return (
     <Layout title="Home" description="hubble.gl">
-      <Home theme="dark" HeroExample={HeroExample}>
-        <div style={{padding: "2rem", paddingLeft: "4rem"}}>
-          <TextContainer>
-            <h3>High Quality Video</h3>
-            <p>Ensured framerates, high resolutions, and a variety of formats. Fine tune animations with keyframe markers and easings.</p>
-            <h3>Easy Integration</h3>
-            <p>Stand up scenes within deck.gl or kepler.gl, then animate any aspect of it. Empower users to animate without code with UI components powered by this library.</p>
-            <h3>Client Side Library</h3>
-            <p>Render within the browser without a backend. User data never leaves their machine. Since nothing runs on a server, sites can scale without backend encoders.</p>
-          </TextContainer>
-        </div>
-      </Home>
+      <Home theme="dark" HeroExample={HeroExample} />
+      <TextContainer>
+        <h3>High Quality Video</h3>
+        <p>Ensured framerates, high resolutions, and a variety of formats. Fine tune animations with keyframe markers and easings.</p>
+        <h3>Easy Integration</h3>
+        <p>Stand up scenes within deck.gl or kepler.gl, then animate any aspect of it. Empower users to animate without code with UI components powered by this library.</p>
+        <h3>Client Side Library</h3>
+        <p>Render within the browser without a backend. User data never leaves their machine. Since nothing runs on a server, sites can scale without backend encoders.</p>
+      </TextContainer>
     </Layout>
   );
 }
