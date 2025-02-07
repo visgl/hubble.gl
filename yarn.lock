@@ -1986,9 +1986,9 @@ __metadata:
   resolution: "@hubble.gl/core@workspace:modules/core"
   dependencies:
     "@deck.gl/core": "npm:^8.9"
-    "@loaders.gl/core": "npm:^3.0.0"
-    "@loaders.gl/video": "npm:^3.0.12"
-    "@loaders.gl/zip": "npm:^3.0.12"
+    "@loaders.gl/core": "npm:^3.4.13"
+    "@loaders.gl/video": "npm:^3.4.13"
+    "@loaders.gl/zip": "npm:^3.4.13"
     "@luma.gl/core": "npm:^8.5.0"
     "@luma.gl/engine": "npm:^8.5.0"
     "@math.gl/core": "npm:^3.6.0"
@@ -2013,7 +2013,7 @@ __metadata:
     "@deck.gl/mapbox": "npm:^8.9"
     "@deck.gl/react": "npm:^8.9"
     "@kepler.gl/constants": "npm:3.1.0"
-    "@loaders.gl/zip": "npm:^3.0.12"
+    "@loaders.gl/zip": "npm:^3.4.13"
     "@turf/helpers": "npm:^5.1.5"
     "@turf/transform-translate": "npm:^5.1.5"
     "@types/lodash.get": "npm:^4.4.9"
@@ -2043,7 +2043,7 @@ __metadata:
     "@deck.gl/mapbox": ">=8.3"
     "@deck.gl/react": ">=8.3"
     "@hubble.gl/core": ^1.4.0
-    "@loaders.gl/core": ^3.0.0
+    "@loaders.gl/core": ^3.4.13
     react: ">=18.2"
     react-dom: ">=18.2"
   languageName: unknown
@@ -2316,19 +2316,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@loaders.gl/core@npm:^3.0.0":
-  version: 3.2.6
-  resolution: "@loaders.gl/core@npm:3.2.6"
-  dependencies:
-    "@babel/runtime": "npm:^7.3.1"
-    "@loaders.gl/loader-utils": "npm:3.2.6"
-    "@loaders.gl/worker-utils": "npm:3.2.6"
-    "@probe.gl/log": "npm:^3.5.0"
-    probe.gl: "npm:^3.4.0"
-  checksum: 10c0/a4dcaa517a4778bf3726010d49ea08517f74f746002b14461c0d2e2a2b9635cff74f5b1318eafbbe9cbab927199afdca6935c58d114076ff0efcc30c6a695ea7
-  languageName: node
-  linkType: hard
-
 "@loaders.gl/core@npm:^3.4.13":
   version: 3.4.15
   resolution: "@loaders.gl/core@npm:3.4.15"
@@ -2371,17 +2358,6 @@ __metadata:
     "@loaders.gl/worker-utils": "npm:3.0.12"
     "@probe.gl/stats": "npm:^3.4.0"
   checksum: 10c0/dc471596385735b7d9d9333a7c081b9b555c38a2870672768ce0396ec13f62290b303af70b47e35c66ae9a799eccda8c29b34ef2e263b5e366a6559a2aafe1b0
-  languageName: node
-  linkType: hard
-
-"@loaders.gl/loader-utils@npm:3.2.6":
-  version: 3.2.6
-  resolution: "@loaders.gl/loader-utils@npm:3.2.6"
-  dependencies:
-    "@babel/runtime": "npm:^7.3.1"
-    "@loaders.gl/worker-utils": "npm:3.2.6"
-    "@probe.gl/stats": "npm:^3.5.0"
-  checksum: 10c0/b6438aeab76cedcd00212bc5a88571e6b07f27627bc96835622787294881eefe584a38413bc59618e1df9b2363e129e8db19a086d74314870ebb8a56fa7a04fa
   languageName: node
   linkType: hard
 
@@ -2459,15 +2435,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@loaders.gl/worker-utils@npm:3.2.6":
-  version: 3.2.6
-  resolution: "@loaders.gl/worker-utils@npm:3.2.6"
-  dependencies:
-    "@babel/runtime": "npm:^7.3.1"
-  checksum: 10c0/2e9471e935127ad5c718d4f84202461bb7357c37c983caa998021c590db7d7d19d4eb3e8c49f604870b8b20660a04fe5f6815155dac94062fda31e701db0b82b
-  languageName: node
-  linkType: hard
-
 "@loaders.gl/worker-utils@npm:3.4.15":
   version: 3.4.15
   resolution: "@loaders.gl/worker-utils@npm:3.4.15"
@@ -2486,12 +2453,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@loaders.gl/zip@npm:^3.0.12":
-  version: 3.2.6
-  resolution: "@loaders.gl/zip@npm:3.2.6"
+"@loaders.gl/zip@npm:^3.4.13":
+  version: 3.4.15
+  resolution: "@loaders.gl/zip@npm:3.4.15"
   dependencies:
     jszip: "npm:^3.1.5"
-  checksum: 10c0/7c25d7199a8d9043fee14112d21d4c8a189410582a09fba842bc4f9ea5539050829b9177084ac1daa46c2f80e3f1ea8cb46f38b9686ca004a75fde988fdfc714
+  checksum: 10c0/90010ceb67fe1a55f1126fa9f3438207a66bab9e98d7989d6e3650eafd900f34521222335400ba1d0bf9b67410137d735e6acefda80e1b8de7a7c2da015f5291
   languageName: node
   linkType: hard
 
@@ -3187,16 +3154,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@probe.gl/log@npm:3.5.0, @probe.gl/log@npm:^3.5.0":
-  version: 3.5.0
-  resolution: "@probe.gl/log@npm:3.5.0"
-  dependencies:
-    "@babel/runtime": "npm:^7.0.0"
-    "@probe.gl/env": "npm:3.5.0"
-  checksum: 10c0/992deb26aa2ca756590c70172cce40d8a729ab770f693a2b42b6fb17bb92b6fdbe10ef2ef519fb726deabdbb3ca36095e530f7ca7bf4f8b1481a90dccd576e3b
-  languageName: node
-  linkType: hard
-
 "@probe.gl/log@npm:4.0.9":
   version: 4.0.9
   resolution: "@probe.gl/log@npm:4.0.9"
@@ -3215,7 +3172,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@probe.gl/stats@npm:3.5.0, @probe.gl/stats@npm:^3.4.0, @probe.gl/stats@npm:^3.5.0":
+"@probe.gl/log@npm:^3.5.0":
+  version: 3.5.0
+  resolution: "@probe.gl/log@npm:3.5.0"
+  dependencies:
+    "@babel/runtime": "npm:^7.0.0"
+    "@probe.gl/env": "npm:3.5.0"
+  checksum: 10c0/992deb26aa2ca756590c70172cce40d8a729ab770f693a2b42b6fb17bb92b6fdbe10ef2ef519fb726deabdbb3ca36095e530f7ca7bf4f8b1481a90dccd576e3b
+  languageName: node
+  linkType: hard
+
+"@probe.gl/stats@npm:^3.4.0, @probe.gl/stats@npm:^3.5.0":
   version: 3.5.0
   resolution: "@probe.gl/stats@npm:3.5.0"
   dependencies:
@@ -11295,18 +11262,6 @@ __metadata:
     parse-ms: "npm:^1.0.0"
     plur: "npm:^1.0.0"
   checksum: 10c0/039c5ae944e779d8e1cb5e2d21df00c40a9f873713f32d26fe2f8cf994beee9e2beec0d9872e344a2385eb2c541bde91a7ea5ef6697b9a80c5e03b06232b3520
-  languageName: node
-  linkType: hard
-
-"probe.gl@npm:^3.4.0":
-  version: 3.5.0
-  resolution: "probe.gl@npm:3.5.0"
-  dependencies:
-    "@babel/runtime": "npm:^7.0.0"
-    "@probe.gl/env": "npm:3.5.0"
-    "@probe.gl/log": "npm:3.5.0"
-    "@probe.gl/stats": "npm:3.5.0"
-  checksum: 10c0/50835b39f1b115cc60b3a81a2fa027cd338ba394b61299e26dcaaecb5a2744014ce81eb821fc9e83f55254b67a4d0017caa886c1e503671980707c69dfdbe262
   languageName: node
   linkType: hard
 

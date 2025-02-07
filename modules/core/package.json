@@ -35,9 +35,9 @@
     "build-bundle": "ocular-bundle ./bundle.ts"
   },
   "dependencies": {
-    "@loaders.gl/core": "^3.0.0",
-    "@loaders.gl/video": "^3.0.12",
-    "@loaders.gl/zip": "^3.0.12",
+    "@loaders.gl/core": "^3.4.13",
+    "@loaders.gl/video": "^3.4.13",
+    "@loaders.gl/zip": "^3.4.13",
     "@math.gl/core": "^3.6.0",
     "@math.gl/web-mercator": "^3.6.2",
     "@probe.gl/log": "^4.1.0",
