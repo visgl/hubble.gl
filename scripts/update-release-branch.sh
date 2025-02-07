@@ -26,3 +26,4 @@ update_dep() {
 # https://stackoverflow.com/questions/4321456/find-exec-a-shell-function-in-linux
 export -f update_dep
 find examples/*/package.json -exec bash -c 'update_dep "$0" $1' {} $VERSION \;
+find examples/*/*/package.json -exec bash -c 'update_dep "$0" $1' {} $VERSION \;
