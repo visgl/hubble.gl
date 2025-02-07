@@ -7,7 +7,7 @@ import React, {Component, ForwardedRef, RefObject, forwardRef} from 'react';
 import DeckGL from '@deck.gl/react/typed';
 import ReactMapGL, {type MapProps, type MapRef, useControl} from 'react-map-gl';
 import {MapboxOverlay, MapboxOverlayProps} from '@deck.gl/mapbox/typed';
-import type {Deck, DeckProps, Layer, MapViewState} from '@deck.gl/core/typed';
+import type {Deck, DeckProps, MapViewState} from '@deck.gl/core/typed';
 import isEqual from 'lodash.isequal';
 
 import {deckStyle, DeckCanvas} from './styled-components';
@@ -36,7 +36,6 @@ type ExportVideoPanelPreviewState = {
   memoDevicePixelRatio: number;
   mapStyle: string;
   mapboxAccessToken?: string;
-  deckLayers: Layer[];
 };
 
 const DeckGLOverlay = forwardRef<Deck, MapboxOverlayProps>(
@@ -71,8 +70,7 @@ export class ExportVideoPanelPreview extends Component<
     this.state = {
       mapStyle: url, // Unsure if mapStyle would ever change but allowing it just in case
       mapboxAccessToken: accessToken,
-      memoDevicePixelRatio: 1,
-      deckLayers: []
+      memoDevicePixelRatio: 1
     };
 
     this._onMapLoad = this._onMapLoad.bind(this);
@@ -150,7 +148,8 @@ export class ExportVideoPanelPreview extends Component<
     if (deckProps && deckProps.layers) {
       return deckProps.layers;
     }
-    return createKeplerLayers(mapData, viewState, beforeId);
+    const mapIndex = 0; // TODO: select mapIndex from redux
+    return createKeplerLayers(mapData, viewState, mapIndex, beforeId);
   }
 
   _onAfterRender() {
@@ -162,12 +161,6 @@ export class ExportVideoPanelPreview extends Component<
   _onMapLoad() {
     // Adds mapbox layer to modal
     const map = this.mapRef.current.getMap();
-
-    const beforeId = this.props.mapboxLayerBeforeId;
-    const keplerLayers = this.createLayers(beforeId);
-
-    this.setState({deckLayers: keplerLayers});
-
     map.on('render', this._onAfterRender);
   }
 
@@ -182,22 +175,23 @@ export class ExportVideoPanelPreview extends Component<
       resolution,
       deckProps,
       mapProps,
-      disableBaseMap
+      disableBaseMap,
+      mapboxLayerBeforeId
     } = this.props;
-    const {mapStyle, deckLayers, mapboxAccessToken} = this.state;
+    const {mapStyle, mapboxAccessToken} = this.state;
     const deck = this.deckRef.current;
     const {width, height} = this._getContainer();
     const doubleResolution = {width: resolution[0] * 2, height: resolution[1] * 2};
+    const keplerLayers = this.createLayers(mapboxLayerBeforeId);
     return (
       <>
         <DeckCanvas id="deck-canvas" $width={width} $height={height}>
           {disableBaseMap ? (
             <DeckGL
               ref={ref => setRef(this.deckRef, ref?.deck)}
-              {...adapter.getProps({deck, extraProps: {...deckProps, layers: deckLayers}})}
+              {...adapter.getProps({deck, extraProps: {...deckProps, layers: keplerLayers}})}
               // {...doubleResolution}
               {...this._getContainer()}
-              layers={deckLayers}
             />
           ) : (
             <ReactMapGL
@@ -216,7 +210,7 @@ export class ExportVideoPanelPreview extends Component<
               <DeckGLOverlay
                 ref={this.deckRef}
                 glOptions={{stencil: true}}
-                {...adapter.getProps({deck, extraProps: {...deckProps, layers: deckLayers}})}
+                {...adapter.getProps({deck, extraProps: {...deckProps, layers: keplerLayers}})}
               />
             </ReactMapGL>
           )}

@@ -21,6 +21,7 @@ import {parseSetCameraType, scaleToVideoExport} from './utils';
 import {DEFAULT_FILENAME, getResolutionSetting} from './constants';
 import type {MapProps} from 'react-map-gl';
 import type {DeckProps, MapViewState} from '@deck.gl/core/typed';
+import {FILTER_VIEW_TYPES} from '@kepler.gl/constants';
 
 const ENCODERS = {
   gif: GifEncoder,
@@ -166,7 +167,11 @@ export class ExportVideoPanelContainer extends Component<
         quality: 0.8
       },
       jpeg: {
+        archive: 'zip',
         quality: 0.8
+      },
+      png: {
+        archive: 'zip'
       },
       gif: {
         sampleInterval: 1000,
@@ -225,7 +230,7 @@ export class ExportVideoPanelContainer extends Component<
       Array.isArray(animatableFilters) && animatableFilters.length
         ? animatableFilters
         : // only animate an enlarged time filter if animatable filters aren't specified.
-          filters.filter(f => f.type === 'timeRange' && f.enlarged)
+          filters.filter(f => f.type === 'timeRange' && f.view === FILTER_VIEW_TYPES.enlarged)
     ).map(f => ({
       id: f.id,
       timings: [0, this.state.durationMs]
