@@ -13,24 +13,14 @@
     "modules/*"
   ],
   "scripts": {
-    "bootstrap": "yarn && ocular-bootstrap",
-    "clean": "ocular-clean",
-    "build": "npm run clean && ocular-build && lerna run build",
-    "version": "node scripts/verify-changelog.js && git add CHANGELOG.md",
+    "bootstrap": "yarn && ocular-bootstrap && npm run build",
+    "build": "ocular-clean && ocular-build",
     "lint": "ocular-lint",
     "cover": "ocular-test cover",
     "publish-beta": "ocular-publish version-only-beta",
     "publish-prod": "ocular-publish version-only-prod",
     "test": "ocular-test",
-    "test-ci": "ocular-lint && ocular-test node && ocular-test cover",
-    "test-fast": "ocular-test fast",
-    "test-node": "ocular-test node | tap-spec",
-    "test-browser": "ocular-test browser",
-    "test-browser-headless": "ocular-test browser-headless | tap-spec",
-    "tsclean": "find . -name tsconfig.tsbuildinfo -exec rm {} \\;",
-    "tsbuild": "tsc -b tsconfig.build.json",
-    "bench": "ocular-test bench",
-    "bench-browser": "ocular-test bench-browser",
+    "test-fast": "ocular-lint && ocular-test node",
     "metrics": "ocular-metrics",
     "update-release-branch": "scripts/update-release-branch.sh"
   },
@@ -50,9 +40,10 @@
     "@luma.gl/experimental": "^8.5.0",
     "@probe.gl/bench": "^4.1.0",
     "@probe.gl/test-utils": "^4.1.0",
+    "@vis.gl/dev-tools": "1.0.0",
+    "@vis.gl/ts-plugins": "1.0.0",
     "coveralls": "^3.0.0",
     "jsdom": "^20.0.0",
-    "ocular-dev-tools": "2.0.0-alpha.33",
     "pre-commit": "^1.2.2",
     "puppeteer": "24.2.0",
     "tap-spec": "^5.0.0",
@@ -64,8 +55,15 @@
   ],
   "resolutions": {
     "@loaders.gl/video": "3.0.12",
-    "@luma.gl/experimental": "8.5.21"
+    "@luma.gl/experimental": "8.5.21",
+    "@probe.gl/log": "4.1.0",
+    "@probe.gl/env": "4.1.0",
+    "@probe.gl/stats": "4.1.0",
+    "@probe.gl/test-utils": "4.1.0"
   },
+  "pre-commit": [
+    "test-fast"
+  ],
   "volta": {
     "node": "18.20.5",
     "yarn": "4.5.2"

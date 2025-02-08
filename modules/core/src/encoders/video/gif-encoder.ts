@@ -16,7 +16,7 @@ type GIFOptions = {
 
 export default class GifEncoder extends FrameEncoder {
   options: GIFOptions;
-  gifBuilder: GIFBuilder | null = null;
+  gifBuilder?: GIFBuilder = null;
   source = 'images';
 
   constructor(settings: FrameEncoderSettings) {
@@ -55,7 +55,8 @@ export default class GifEncoder extends FrameEncoder {
   async add(canvas: HTMLCanvasElement) {
     if (this.source === 'images') {
       const dataUrl = canvas.toDataURL('image/jpeg', this.options.jpegQuality);
-      await this.gifBuilder.add(dataUrl);
+      // eslint-disable-next-line @typescript-eslint/await-thenable
+      await this.gifBuilder.add(dataUrl); // @loaders.gl/gif has the wrong type
     }
   }
 
