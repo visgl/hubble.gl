@@ -20,7 +20,7 @@ type CaptureStepStop = {
 
 type CaptureStepError = {
   kind: 'error';
-  error: 'NOT_RECORDING' | string;
+  error: string;
 };
 
 type CaptureStep = CaptureStepSuccess | CaptureStepError | CaptureStepStop;

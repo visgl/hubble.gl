@@ -3,9 +3,11 @@
 // Copyright (c) vis.gl contributors
 
 export {
+  VERSION,
   // Adapter
   DeckAdapter,
   // Encoders
+  GifEncoder,
   PNGSequenceEncoder,
   JPEGSequenceEncoder,
   JPEGEncoder,
@@ -37,5 +39,14 @@ export {
   useHubbleGl,
   BasicControls,
   EncoderDropdown,
-  QuickAnimation
+  QuickAnimation,
+  ExportVideoModal,
+  ExportVideoPanelContainer,
+  InjectKeplerUI,
+  KeplerUIContext,
+  RenderPlayer,
+  ResolutionGuide,
+  WithKeplerUI,
+  createKeplerLayers,
+  injectKeplerUI
 } from '@hubble.gl/react';

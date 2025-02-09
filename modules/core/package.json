@@ -1,6 +1,6 @@
 {
   "name": "@hubble.gl/core",
-  "version": "1.4.0-beta.2",
+  "version": "1.4.0-beta.4",
   "description": "hubble.gl core library classes",
   "license": "MIT",
   "type": "module",
@@ -35,14 +35,14 @@
     "build-bundle": "ocular-bundle ./bundle.ts"
   },
   "dependencies": {
-    "@loaders.gl/core": "^4.3.3",
-    "@loaders.gl/video": "^4.3.3",
-    "@loaders.gl/zip": "^4.3.3",
-    "@math.gl/core": "^4.1.0",
-    "@math.gl/web-mercator": "^4.1.0",
+    "@loaders.gl/core": "^3.4.13",
+    "@loaders.gl/video": "^3.4.13",
+    "@loaders.gl/zip": "^3.4.13",
+    "@math.gl/core": "^3.6.0",
+    "@math.gl/web-mercator": "^3.6.2",
+    "@probe.gl/log": "^4.1.0",
     "downloadjs": "^1.4.7",
     "popmotion": "9.3.1",
-    "probe.gl": "^3.4.0",
     "webm-writer": "^1.0.0"
   },
   "peerDependencies": {
