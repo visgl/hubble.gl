@@ -2,7 +2,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    // "build": true,
+    "build": true,
     "esModuleInterop": true,
     "declaration": true,
     "declarationMap": true,
