@@ -210,6 +210,7 @@ export class ExportVideoPanelPreview extends Component<
             >
               <DeckGLOverlay
                 ref={this.deckRef}
+                // @ts-expect-error stencil is not recognized
                 deviceProps={{type: 'webgl', webgl: {stencil: true}}}
                 {...adapter.getProps({deck, extraProps: {...deckProps, layers: keplerLayers}})}
               />
