@@ -6,7 +6,6 @@ import transformTranslate from '@turf/transform-translate';
 import {WebMercatorViewport} from '@deck.gl/core';
 import type {MapViewState} from '@deck.gl/core';
 
-
 export function scaleToVideoExport(
   viewState: MapViewState,
   container: {width: number; height: number}
