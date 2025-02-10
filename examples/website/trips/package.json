@@ -9,9 +9,8 @@
     "build": "vite build"
   },
   "dependencies": {
-    "d3-color": "^1.4.1",
     "react-map-gl": "^7.1.0",
-    "hubble.gl": "^1.4.0-beta.4",
+    "hubble.gl": "^1.4.0",
     "maplibre-gl": "^3.6.2",
     "deck.gl": "^8.9",
     "react": "^18.3.0",
