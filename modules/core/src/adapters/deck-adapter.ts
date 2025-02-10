@@ -3,10 +3,10 @@
 // Copyright (c) vis.gl contributors
 
 /* eslint-disable no-console */
+import {Deck, Layer, DeckProps} from '@deck.gl/core';
 import {type FrameEncoder, PreviewEncoder, type FormatConfigs} from '../encoders/index';
 import {AnimationManager} from '../animations/index';
 import {type Timecode, VideoCapture} from '../capture/video-capture';
-import {Deck, Layer, DeckProps} from '@deck.gl/core';
 
 export default class DeckAdapter {
   deck?: Deck;
@@ -65,7 +65,7 @@ export default class DeckAdapter {
     }
 
     if (this.glContext) {
-      props.deviceProps.webgl = this.glContext;
+      props.gl = this.glContext;
     }
     return {...extraProps, ...props};
   }

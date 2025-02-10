@@ -4,11 +4,11 @@
 import React, {useEffect, useState} from 'react';
 import {parse} from '@loaders.gl/core';
 import {ZipLoader} from '@loaders.gl/zip';
-import styled from 'styled-components';
+import {styled} from 'styled-components';
 import {type Encoders, GIF, JPEG, PNG, WEBM} from './encoders';
 
 const parseImages = async (blob: Blob, encoder?: Encoders): Promise<Record<string, string>> => {
-  const images = await parse(blob, ZipLoader);
+  const images = (await parse(blob, ZipLoader)) as Record<string, ArrayBuffer>;
   const imageBlobs: Record<string, string> = {};
   for (const image in images) {
     imageBlobs[image] = URL.createObjectURL(
