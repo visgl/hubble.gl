@@ -9,7 +9,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "hubble.gl": "^2.0.0-alpha.1",
+    "hubble.gl": "^1.4.0",
     "deck.gl": "^8.9",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",

@@ -1,6 +1,6 @@
 {
   "name": "project-website",
-  "version": "2.0.0-alpha.1",
+  "version": "1.4.0",
   "private": true,
   "description": "Website for vis.gl project",
   "scripts": {
