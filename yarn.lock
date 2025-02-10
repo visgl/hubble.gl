@@ -124,6 +124,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@deck.gl/widgets@npm:^9.1":
+  version: 9.1.0
+  resolution: "@deck.gl/widgets@npm:9.1.0"
+  dependencies:
+    preact: "npm:^10.17.0"
+  peerDependencies:
+    "@deck.gl/core": ^9.1.0
+  checksum: 10c0/488cec875d244780930989cc7e49edb315b1408de2b7eb9274cdca5a092356891066fd8baafe9dd4f3b3380961813a5f6049ec3088cf77fd5c099ec416eb20fd
+  languageName: node
+  linkType: hard
+
 "@dnd-kit/accessibility@npm:^3.1.1":
   version: 3.1.1
   resolution: "@dnd-kit/accessibility@npm:3.1.1"
@@ -605,6 +616,7 @@ __metadata:
     "@deck.gl/core": "npm:^9.1"
     "@deck.gl/mapbox": "npm:^9.1"
     "@deck.gl/react": "npm:^9.1"
+    "@deck.gl/widgets": "npm:^9.1"
     "@kepler.gl/constants": "npm:3.1.0"
     "@loaders.gl/zip": "npm:^4.3.3"
     "@turf/helpers": "npm:^5.1.5"
@@ -634,6 +646,7 @@ __metadata:
     "@deck.gl/core": ">=9.1.0"
     "@deck.gl/mapbox": ">=9.1.0"
     "@deck.gl/react": ">=9.1.0"
+    "@deck.gl/widgets": ">=9.1.0"
     "@hubble.gl/core": ^2.0.0-alpha.1
     "@loaders.gl/core": ^4.3.3
     react: ">=18.2"
@@ -9318,6 +9331,13 @@ __metadata:
     spawn-sync: "npm:^1.0.15"
     which: "npm:1.2.x"
   checksum: 10c0/879e57445ce6ce821f1e5eaf7c2f449912ca337b431c4fbd4d167cbf8d5040de87930db4c2ca583e1c4abcb525f53b220d9b0686dc3b548d7563067a7a8ad5bb
+  languageName: node
+  linkType: hard
+
+"preact@npm:^10.17.0":
+  version: 10.25.4
+  resolution: "preact@npm:10.25.4"
+  checksum: 10c0/33a009d614d2b47df1c867935fe057c1dfd2bae1aaab41d6e981434b761f75b88e82eac7847ae486b4dbcffc74af814b8dc59ccef17b10625e3effefa2e1ef67
   languageName: node
   linkType: hard
 
