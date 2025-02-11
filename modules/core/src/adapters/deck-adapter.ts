@@ -46,7 +46,7 @@ export default class DeckAdapter {
     deck: Deck;
     onNextFrame?: (nextTimeMs: number) => void;
     extraProps?: DeckProps;
-  }) {
+  }): DeckProps & {[key: string]: any} {
     if (deck) {
       this.deck = deck;
     }

@@ -4,17 +4,25 @@
  * Source code: https://github.com/visgl/deck.gl/tree/master/examples/website/trips
  */
 
-import React, {useState, useRef, useEffect, useCallback, forwardRef, ForwardedRef} from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  forwardRef,
+  ForwardedRef,
+  useMemo
+} from 'react';
 import {createRoot} from 'react-dom/client';
 import {BasicControls, useHubbleGl, useDeckAnimation} from '@hubble.gl/react';
-import {AmbientLight, PointLight, LightingEffect, Deck} from '@deck.gl/core/typed';
-import {MapboxOverlay, MapboxOverlayProps} from '@deck.gl/mapbox/typed';
-import Map, {MapRef, useControl} from 'react-map-gl/maplibre';
-import {PolygonLayer} from '@deck.gl/layers/typed';
-import {TripsLayer} from '@deck.gl/geo-layers/typed';
-import {setRef} from './set-ref';
-
+import {AmbientLight, PointLight, LightingEffect, Deck, MapViewState, Layer} from '@deck.gl/core';
+import {MapboxOverlay, MapboxOverlayProps} from '@deck.gl/mapbox';
+import {Map, type MapRef, useControl} from 'react-map-gl/maplibre';
+import {PolygonLayer} from '@deck.gl/layers';
+import {TripsLayer} from '@deck.gl/geo-layers';
 import {easeInOut} from 'popmotion';
+import {Container} from 'react-dom';
+import {setRef} from './set-ref';
 
 // Source data CSV
 const DATA_URL = {
@@ -40,13 +48,13 @@ const material = {
   ambient: 0.1,
   diffuse: 0.6,
   shininess: 32,
-  specularColor: [60, 64, 70]
+  specularColor: [60, 64, 70] as [number, number, number]
 };
 
 const DEFAULT_THEME = {
-  buildingColor: [74, 80, 87],
-  trailColor0: [253, 128, 93],
-  trailColor1: [23, 184, 190],
+  buildingColor: [74, 80, 87] as [number, number, number],
+  trailColor0: [253, 128, 93] as [number, number, number],
+  trailColor1: [23, 184, 190] as [number, number, number],
   material,
   effects: [lightingEffect]
 };
@@ -79,10 +87,10 @@ const formatConfigs = {
     quality: 0.8
   },
   png: {
-    archive: 'zip'
+    archive: 'zip' as const
   },
   jpeg: {
-    archive: 'zip',
+    archive: 'zip' as const,
     quality: 0.8
   },
   gif: {
@@ -115,59 +123,66 @@ const Container = ({children}) => (
   </div>
 );
 
-const DeckGLOverlay = forwardRef<Deck, MapboxOverlayProps>(
-  (props: MapboxOverlayProps, ref: ForwardedRef<Deck>) => {
-    // MapboxOverlay handles a variety of props differently than the Deck class.
-    // https://deck.gl/docs/api-reference/mapbox/mapbox-overlay#constructor
-    const deck = useControl<MapboxOverlay>(() => new MapboxOverlay({...props, interleaved: true}));
+const DeckGLOverlay = forwardRef<Deck, MapboxOverlayProps>(function DeckGLOverlay(
+  props: MapboxOverlayProps,
+  ref: ForwardedRef<Deck>
+) {
+  // MapboxOverlay handles a variety of props differently than the Deck class.
+  // https://deck.gl/docs/api-reference/mapbox/mapbox-overlay#constructor
+  const deck = useControl<MapboxOverlay>(() => new MapboxOverlay({...props, interleaved: true}));
 
-    deck.setProps(props);
+  deck.setProps(props);
 
-    // @ts-expect-error private property
-    setRef(ref, deck._deck);
-    return null;
-  }
-);
+  // @ts-expect-error private property
+  setRef(ref, deck._deck);
+  return null;
+});
 
-export default function App({mapStyle = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'}) {
+export default function App({
+  mapStyle = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
+}) {
   const deckRef = useRef<Deck>(null);
   const mapRef = useRef<MapRef>(null);
   const [busy, setBusy] = useState(false);
 
+  const layers: Layer[] = useMemo(
+    () => [
+      new TripsLayer({
+        id: 'trips',
+        data: DATA_URL.TRIPS,
+        getPath: d => d.path,
+        getTimestamps: d => d.timestamps,
+        getColor: d => (d.vendor === 0 ? DEFAULT_THEME.trailColor0 : DEFAULT_THEME.trailColor1),
+        opacity: 1,
+        widthMinPixels: 2,
+        rounded: true,
+        trailLength: 180,
+        shadowEnabled: false
+      }),
+      new PolygonLayer({
+        id: 'buildings',
+        data: DATA_URL.BUILDINGS,
+        extruded: true,
+        wireframe: false,
+        opacity: 0.5,
+        getPolygon: f => f.polygon,
+        getElevation: f => f.height,
+        getFillColor: DEFAULT_THEME.buildingColor,
+        material: DEFAULT_THEME.material
+      }),
+      new PolygonLayer({
+        id: 'ground',
+        data: landCover,
+        getPolygon: f => f,
+        stroked: false,
+        getFillColor: [0, 0, 0, 0]
+      })
+    ],
+    []
+  );
+
   const deckAnimation = useDeckAnimation({
-    getLayers: a =>
-      a.applyLayerKeyframes([
-        new TripsLayer({
-          id: 'trips',
-          data: DATA_URL.TRIPS,
-          getPath: d => d.path,
-          getTimestamps: d => d.timestamps,
-          getColor: d => (d.vendor === 0 ? DEFAULT_THEME.trailColor0 : DEFAULT_THEME.trailColor1),
-          opacity: 1,
-          widthMinPixels: 2,
-          rounded: true,
-          trailLength: 180,
-          shadowEnabled: false
-        }),
-        new PolygonLayer({
-          id: 'buildings',
-          data: DATA_URL.BUILDINGS,
-          extruded: true,
-          wireframe: false,
-          opacity: 0.5,
-          getPolygon: f => f.polygon,
-          getElevation: f => f.height,
-          getFillColor: DEFAULT_THEME.buildingColor,
-          material: DEFAULT_THEME.material
-        }),
-        new PolygonLayer({
-          id: 'ground',
-          data: landCover,
-          getPolygon: f => f,
-          stroked: false,
-          getFillColor: [0, 0, 0, 0]
-        })
-      ]),
+    getLayers: a => a.applyLayerKeyframes(layers),
     layerKeyframes: [
       {
         id: 'trips',
@@ -177,6 +192,7 @@ export default function App({mapStyle = 'https://basemaps.cartocdn.com/gl/dark-m
     ]
   });
 
+  // @ts-expect-error MapRef is not compatible with Mapbox MapRef
   const {deckProps, mapProps, adapter, cameraFrame, setCameraFrame} = useHubbleGl<MapRef>({
     deckRef,
     mapRef,
@@ -185,7 +201,7 @@ export default function App({mapStyle = 'https://basemaps.cartocdn.com/gl/dark-m
   });
 
   const onViewStateChange = useCallback(
-    ({viewState: vs}) => {
+    ({viewState: vs}: {viewState: MapViewState}) => {
       adapter.animationManager.setKeyframes('deck', {
         cameraKeyframe: {
           timings: [0, timecode.end],
@@ -226,11 +242,7 @@ export default function App({mapStyle = 'https://basemaps.cartocdn.com/gl/dark-m
           onMove={onViewStateChange}
           // Note: 'reuseMap' prop with gatsby and mapbox extension causes stale reference error.
         >
-          <DeckGLOverlay 
-            ref={deckRef} 
-            {...deckProps} 
-            effects={DEFAULT_THEME.effects} 
-          />
+          <DeckGLOverlay ref={deckRef} {...deckProps} effects={DEFAULT_THEME.effects} />
         </Map>
       </div>
       <BasicControls
@@ -245,7 +257,7 @@ export default function App({mapStyle = 'https://basemaps.cartocdn.com/gl/dark-m
   );
 }
 
-export async function renderToDOM(container) {
+export async function renderToDOM(container: Container) {
   const root = createRoot(container);
   root.render(<App />);
 }
