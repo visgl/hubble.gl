@@ -11,7 +11,7 @@ import {
   DeckLayerKeyframeProps
 } from '../keyframes/index';
 import Animation, {AnimationConstructor} from './animation';
-import type {Layer} from '@deck.gl/core/typed';
+import type {Layer} from '@deck.gl/core';
 
 function noop() {}
 

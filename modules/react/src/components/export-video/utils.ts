@@ -3,8 +3,8 @@
 // Copyright (c) vis.gl contributors
 import {point} from '@turf/helpers';
 import transformTranslate from '@turf/transform-translate';
-import {WebMercatorViewport} from '@deck.gl/core'; // importing non-typed module since it's a peer dependency and node errors while testing
-import type {MapViewState} from '@deck.gl/core/typed';
+import {WebMercatorViewport} from '@deck.gl/core';
+import type {MapViewState} from '@deck.gl/core';
 
 export function scaleToVideoExport(
   viewState: MapViewState,

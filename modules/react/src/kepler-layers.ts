@@ -3,7 +3,7 @@
 // Copyright (c) vis.gl contributors
 
 import {createSelector} from 'reselect';
-import type {Layer, MapViewState} from '@deck.gl/core/typed';
+import type {Layer, MapViewState} from '@deck.gl/core';
 // Note: kepler type imports are commented out to avoid issues when hubble is installed by kepler.
 // import type {KeplerGlState} from '@kepler.gl/reducers';
 // import type {Layer as KeplerLayer} from '@kepler.gl/layers';

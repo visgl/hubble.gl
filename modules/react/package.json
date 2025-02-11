@@ -35,7 +35,7 @@
   "sideEffects": false,
   "dependencies": {
     "@kepler.gl/constants": "3.1.0",
-    "@loaders.gl/zip": "^3.4.13",
+    "@loaders.gl/zip": "^4.3.3",
     "@turf/helpers": "^5.1.5",
     "@turf/transform-translate": "^5.1.5",
     "classnames": "^2.3.1",
@@ -44,7 +44,6 @@
     "lodash.get": "^4.4.2",
     "lodash.isequal": "^4.5.0",
     "lodash.uniqby": "^4.7.0",
-    "mapbox-gl": "1.13.1",
     "popmotion": "9.3.1",
     "prop-types": "^15.7.2",
     "react-lifecycles-compat": "^3.0.4",
@@ -55,23 +54,27 @@
     "styled-components": "6.1.8"
   },
   "peerDependencies": {
-    "@deck.gl/core": ">=8.3",
-    "@deck.gl/mapbox": ">=8.3",
-    "@deck.gl/react": ">=8.3",
-    "@hubble.gl/core": "^1.4.0",
-    "@loaders.gl/core": "^3.4.13",
+    "@deck.gl/core": ">=9.1.0",
+    "@deck.gl/mapbox": ">=9.1.0",
+    "@deck.gl/react": ">=9.1.0",
+    "@deck.gl/widgets": ">=9.1.0",
+    "@hubble.gl/core": "1.4.0",
+    "@loaders.gl/core": "^4.3.3",
+    "mapbox-gl": ">=1.13.1",
     "react": ">=18.2",
     "react-dom": ">=18.2"
   },
   "devDependencies": {
-    "@deck.gl/core": "^8.9",
-    "@deck.gl/mapbox": "^8.9",
-    "@deck.gl/react": "^8.9",
+    "@deck.gl/core": "^9.1",
+    "@deck.gl/mapbox": "^9.1",
+    "@deck.gl/react": "^9.1",
+    "@deck.gl/widgets": "^9.1",
     "@types/lodash.get": "^4.4.9",
     "@types/lodash.isequal": "^4.5.8",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
     "@types/tape-catch": "^1.0.2",
+    "mapbox-gl": "^1.13.1",
     "react": "^18.3.0",
     "react-dom": "^18.3.0"
   }

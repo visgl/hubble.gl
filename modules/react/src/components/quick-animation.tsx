@@ -2,10 +2,9 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
 import React, {useState, useRef, useMemo} from 'react';
-import DeckGL, {DeckGLRef} from '@deck.gl/react/typed';
+import DeckGL, {DeckGLRef} from '@deck.gl/react';
 import BasicControls from './basic-controls';
 import {useDeckAdapter, useNextFrame} from '../hooks';
-import type {MapViewState} from '@deck.gl/core/typed';
 import {FormatConfigs} from '@hubble.gl/core';
 
 export const QuickAnimation = ({
@@ -57,9 +56,7 @@ export const QuickAnimation = ({
           ref={deckRef}
           style={{position: 'unset'}}
           viewState={cameraFrame}
-          onViewStateChange={({viewState: vs}) => {
-            setCameraFrame(vs as MapViewState);
-          }}
+          onViewStateChange={({viewState: vs}) => setCameraFrame(vs)}
           controller={true}
           width={resolution.width}
           height={resolution.height}
