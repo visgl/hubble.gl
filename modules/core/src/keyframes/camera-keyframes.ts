@@ -62,8 +62,7 @@ export default class CameraKeyFrames extends Keyframes<CameraDataType> {
       timings,
       keyframes,
       easings,
-      interpolators,
-      features: ['latitude', 'longitude', 'zoom', 'pitch', 'bearing']
+      interpolators
     });
 
     this.width = width;

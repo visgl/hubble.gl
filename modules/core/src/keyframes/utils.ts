@@ -6,7 +6,7 @@ import {interpolate, linear} from 'popmotion';
 import type {Keyframe} from './keyframes';
 import type {Easing} from './easings';
 
-export function sanitizeInterpolators(keyframes, interpolators: string | string[]) {
+export function sanitizeInterpolators<K>(keyframes: K[], interpolators: string | string[]) {
   if (typeof interpolators === 'string') {
     const _interpolators: string[] = [];
     for (let idx = 0; idx < keyframes.length - 1; idx++) {
@@ -21,7 +21,7 @@ export function sanitizeInterpolators(keyframes, interpolators: string | string[
   return interpolators;
 }
 
-export function sanitizeEasings(keyframes, easings: Easing | Easing[]) {
+export function sanitizeEasings<K>(keyframes: K[], easings: Easing | Easing[]) {
   if (typeof easings === 'function') {
     const _easings: Easing[] = [];
     for (let idx = 0; idx < keyframes.length - 1; idx++) {
@@ -37,7 +37,7 @@ export function sanitizeEasings(keyframes, easings: Easing | Easing[]) {
   return easings;
 }
 
-export function sanitizeTimings(keyframes, timings: number | number[]) {
+export function sanitizeTimings<K>(keyframes: K[], timings: number | number[]) {
   if (typeof timings === 'number') {
     const _timings: number[] = [];
     let time = 0;

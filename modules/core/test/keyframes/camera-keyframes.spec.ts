@@ -149,10 +149,10 @@ test('Keyframes#CameraKeyframes', t => {
   //   .ease(linear)
   //   .add();
 
-  t.looseEqual(
-    camera.activeFeatures,
-    {latitude: true, longitude: true, zoom: true, pitch: true, bearing: true},
-    'All camera features active'
+  t.deepEqual(
+    camera.features,
+    ['latitude', 'longitude', 'zoom', 'pitch', 'bearing'],
+    'All camera features'
   );
 
   t.end();
