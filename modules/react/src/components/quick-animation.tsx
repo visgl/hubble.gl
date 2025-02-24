@@ -2,10 +2,13 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
 import React, {useState, useRef, useMemo} from 'react';
-import DeckGL, {DeckGLRef} from '@deck.gl/react';
+import {DeckGL, DeckGLRef} from '@deck.gl/react';
+
+import type {DeckProps, MapViewState} from '@deck.gl/core';
+import type {DeckAnimation, FormatConfigs, Timecode} from '@hubble.gl/core';
+
 import BasicControls from './basic-controls';
 import {useDeckAdapter, useNextFrame} from '../hooks';
-import {FormatConfigs} from '@hubble.gl/core';
 
 export const QuickAnimation = ({
   initialViewState,
@@ -14,6 +17,13 @@ export const QuickAnimation = ({
   resolution = {width: 640, height: 480},
   formatConfigs = {},
   deckProps = {}
+}: {
+  initialViewState: MapViewState;
+  animation: DeckAnimation;
+  timecode: Timecode;
+  resolution?: {width: number; height: number};
+  formatConfigs?: Partial<FormatConfigs>;
+  deckProps?: DeckProps | undefined;
 }) => {
   const deckRef = useRef<DeckGLRef>(null);
   const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
