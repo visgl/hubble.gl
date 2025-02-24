@@ -1,11 +1,11 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {createRoot} from 'react-dom/client';
-import DeckGL from '@deck.gl/react';
+import {DeckGL} from '@deck.gl/react';
 import {useHubbleGl, BasicControls} from '@hubble.gl/react';
-import {vignette, fxaa} from '@luma.gl/shadertools';
+import {vignette, fxaa} from '@luma.gl/effects';
 import {PostProcessEffect, MapView} from '@deck.gl/core';
-import {deckAnimation} from './layers';
 import {easeInOut} from 'popmotion';
+import {deckAnimation} from './layers';
 
 const INITIAL_VIEW_STATE = {
   longitude: -122.435,
@@ -111,12 +111,18 @@ export default function App() {
     <Container>
       <div style={{position: 'relative'}}>
         <DeckGL
-          ref={ref => deckRef.current = ref?.deck}
+          ref={ref => (deckRef.current = ref?.deck)}
           style={{position: 'unset'}}
-          views={new MapView({farZMultiplier: 3})}
+          views={
+            new MapView({
+              farZMultiplier: 3,
+              clear: {
+                color: [255, 255, 255, 1]
+              }
+            })
+          }
           parameters={{
-            depthTest: false,
-            clearColor: [61 / 255, 20 / 255, 76 / 255, 1]
+            depthTest: false
             // blend: true,
             // blendEquation: GL.FUNC_ADD,
             // blendFunc: [GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA]

@@ -36,8 +36,8 @@
     "prepublishOnly": "npm run build-bundle && npm run build-bundle -- --env.dev"
   },
   "dependencies": {
-    "@hubble.gl/core": "1.4.0",
-    "@hubble.gl/react": "1.4.0"
+    "@hubble.gl/core": "file:../core",
+    "@hubble.gl/react": "file:../react"
   },
   "peerDependencies": {
     "react": ">=18.3.0",
