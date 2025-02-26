@@ -1,6 +1,6 @@
 # JPEGSequenceEncoder
 
-A photo sequence encoder that inherits [FrameEncoder](/docs/api-reference/encoder/frame-encoder). Saves each frame as a photo contained in a `".tar"` archive.
+A photo sequence encoder that inherits [FrameEncoder](/docs/api-reference/encoder/frame-encoder). Saves each frame as a photo contained in a `".zip"` archive.
 
 ## Constructor
 
@@ -12,7 +12,7 @@ In addition to the [FrameEncoder](/docs/api-reference/encoder/frame-encoder) set
 
 * `quality` - See member note. Defaults to 1.0.
 
-* `archive` - `zip` or `tar`. Defaults to `tar`.
+* `archive` - `zip`.
 
 ## Members
 

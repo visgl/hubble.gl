@@ -53,11 +53,8 @@ const formatConfigs = {
   webm: {
     quality: 0.8
   },
-  png: {
-    archive: 'zip'
-  },
+  png: {},
   jpeg: {
-    archive: 'zip',
     quality: 0.8
   },
   gif: {
@@ -108,7 +105,9 @@ const randomColor = () => [
   Math.floor(Math.random() * 255)
 ];
 
-export default function App({mapStyle = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'}) {
+export default function App({
+  mapStyle = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
+}) {
   const deckRef = useRef(null);
   const mapRef = useRef(null);
   const [busy, setBusy] = useState(false);
@@ -170,10 +169,7 @@ export default function App({mapStyle = 'https://basemaps.cartocdn.com/gl/positr
           mapLib={maplibregl}
           // Note: 'reuseMap' prop with gatsby and mapbox extension causes stale reference error.
         >
-          <DeckGLOverlay 
-            ref={deckRef} 
-            {...deckProps} 
-          />
+          <DeckGLOverlay ref={deckRef} {...deckProps} />
         </Map>
       </div>
       <BasicControls

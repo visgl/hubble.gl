@@ -1,6 +1,6 @@
 # PNGSequenceEncoder
 
-A photo sequence encoder that inherits [FrameEncoder](/docs/api-reference/encoder/frame-encoder). Saves each frame as a photo contained in a `".tar"` archive.
+A photo sequence encoder that inherits [FrameEncoder](/docs/api-reference/encoder/frame-encoder). Saves each frame as a photo contained in a `".zip"` archive.
 
 ## Constructor
 
@@ -10,7 +10,7 @@ Construction of the encoder class is not required. Refer to [DeckAdapter.render]
 
 In addition to the [FrameEncoder](/docs/api-reference/encoder/frame-encoder) settings, these settings are available under the `png` namespace.
 
-* `archive` - `zip` or `tar`. Defaults to `tar`.
+* `archive` - `zip`.
 
 **Notes:**
 
