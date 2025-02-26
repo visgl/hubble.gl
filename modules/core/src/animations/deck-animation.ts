@@ -101,13 +101,13 @@ export default class DeckAnimation extends Animation {
     };
   }
 
-  animator(animation: DeckAnimation) {
-    if (animation.cameraKeyframe) {
-      animation.onCameraUpdate(animation.cameraKeyframe.getFrame());
+  draw() {
+    if (this.cameraKeyframe) {
+      this.onCameraUpdate(this.cameraKeyframe.getFrame());
     }
 
-    if (Object.values(animation.layerKeyframes).length > 0) {
-      animation.onLayersUpdate(this.getLayers(animation));
+    if (Object.values(this.layerKeyframes).length > 0) {
+      this.onLayersUpdate(this.getLayers(this));
     }
   }
 

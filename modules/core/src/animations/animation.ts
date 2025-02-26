@@ -46,11 +46,7 @@ export default class Animation {
     throw new Error('not implemented');
   }
 
-  animator(animation: this) {
+  draw(animation: this) {
     throw new Error('not implemented');
-  }
-
-  draw() {
-    return this.animator(this);
   }
 }
