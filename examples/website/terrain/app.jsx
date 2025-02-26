@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {createRoot} from 'react-dom/client';
-import DeckGL from '@deck.gl/react';
+import {DeckGL} from '@deck.gl/react';
 import {TerrainLayer} from '@deck.gl/geo-layers';
 import {BasicControls, useHubbleGl} from '@hubble.gl/react';
 import {hold, DeckAnimation} from '@hubble.gl/core';
@@ -170,7 +170,7 @@ export default function App() {
     <Container>
       <div style={{position: 'relative'}}>
         <DeckGL
-          ref={ref => deckRef.current = ref?.deck}
+          ref={ref => (deckRef.current = ref?.deck)}
           style={{position: 'unset'}}
           viewState={cameraFrame}
           onViewStateChange={({viewState: vs}) => {
