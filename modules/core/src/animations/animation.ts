@@ -46,7 +46,7 @@ export default class Animation {
     throw new Error('not implemented');
   }
 
-  draw(animation: this) {
+  draw() {
     throw new Error('not implemented');
   }
 }
