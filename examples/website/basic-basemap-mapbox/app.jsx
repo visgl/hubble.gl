@@ -52,11 +52,8 @@ const formatConfigs = {
   webm: {
     quality: 0.8
   },
-  png: {
-    archive: 'zip'
-  },
+  png: {},
   jpeg: {
-    archive: 'zip',
     quality: 0.8
   },
   gif: {
@@ -82,8 +79,7 @@ const DeckGLOverlay = forwardRef((props, ref) => {
   // @ts-expect-error private property
   setRef(ref, deck._deck);
   return null;
-}
-);
+});
 
 const Container = ({children}) => (
   <div
@@ -169,10 +165,7 @@ export default function App({mapStyle = 'mapbox://styles/mapbox/streets-v11'}) {
           onMove={onViewStateChange}
           // Note: 'reuseMap' prop with gatsby and mapbox extension causes stale reference error.
         >
-          <DeckGLOverlay 
-            ref={deckRef} 
-            {...deckProps} 
-          />
+          <DeckGLOverlay ref={deckRef} {...deckProps} />
         </Map>
       </div>
       <BasicControls

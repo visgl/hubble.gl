@@ -9,11 +9,8 @@ interface EncoderSettings extends FormatConfigs {
 }
 
 export interface FormatConfigs {
-  png: {
-    archive?: 'tar' | 'zip';
-  };
+  png: {};
   jpeg: {
-    archive?: 'tar' | 'zip';
     quality: number;
   };
   webm: {

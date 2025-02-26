@@ -13,8 +13,8 @@ Encoders are used to capture image frames of an HTML `<canvas/>` and encode them
 | [`WebMEncoder`](/docs/api-reference/encoder/webm-encoder) | Video     | Encodes `.webm` video using [Whammy](https://antimatter15.com/2012/08/whammy-a-real-time-javascript-webm-encoder/). |
 | [`GIFEncoder`](/docs/api-reference/encoder/gif-encoder) | Animated Image | Encodes `.gif` images using `gifshot.js`. | 
 | [`StreamEncoder`](/docs/api-reference/encoder/stream-encoder) | Video     | Encodes `.webm` rough previews, but drops frames. |
-| [`PNGSequenceEncoder`](/docs/api-reference/encoder/png-sequence-encoder) | Image Sequence | Encodes video frames as loseless `.png` contained in a `.tar`. |
-| [`JPEGSequenceEncoder`](/docs/api-reference/encoder/jpeg-sequence-encoder) | Image Sequence | Encodes video frames as compressed `.jpeg` contained in a `.tar`. |
+| [`PNGSequenceEncoder`](/docs/api-reference/encoder/png-sequence-encoder) | Image Sequence | Encodes video frames as loseless `.png` contained in a `.zip`. |
+| [`JPEGSequenceEncoder`](/docs/api-reference/encoder/jpeg-sequence-encoder) | Image Sequence | Encodes video frames as compressed `.jpeg` contained in a `.zip`. |
 
 ### Attributions
 

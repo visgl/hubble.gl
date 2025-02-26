@@ -102,11 +102,8 @@ const formatConfigs = {
   webm: {
     quality: 0.8
   },
-  png: {
-    archive: 'zip'
-  },
+  png: {},
   jpeg: {
-    archive: 'zip',
     quality: 0.8
   },
   gif: {
