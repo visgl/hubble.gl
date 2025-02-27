@@ -75,7 +75,6 @@ const deckAnimation = new DeckAnimation({
   layerKeyframes: [
     {
       id: 'terrain',
-      features: ['r', 'g', 'b'],
       keyframes: [
         {r: 255, g: 255, b: 255},
         {r: 255, g: 0, b: 0},

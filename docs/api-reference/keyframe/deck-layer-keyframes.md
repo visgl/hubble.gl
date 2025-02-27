@@ -1,6 +1,6 @@
 # DeckLayerKeyframes
 
-The `DeckLayerKeyframes` class extends the hubble.gl `Keyframes` class and offers support for animating deck.gl layers. The animated `features` can be any deck.gl layer prop, such as `getRadius`. The `id` property may be provided, and should match the layer id of the deck.gl layer it's linked too.
+The `DeckLayerKeyframes` class extends the hubble.gl `Keyframes` class and offers support for animating deck.gl layers.
 
 ## Usage
 
@@ -11,8 +11,6 @@ See `DeckAnimation`, the `layerKeyframes` parameter is passed to `DeckLayerKeyfr
 Parameters:
 
 * `id` (`string`) - deck.gl layer id.
-
-* `features` (`Array<string>`, Optional) - An array of features to animate. If not provided explicitly, the first keyframe must have all animated features.
 
 * `timings` (`Array<number>`) - "N" timestamps for beginning of keyframe.
 
