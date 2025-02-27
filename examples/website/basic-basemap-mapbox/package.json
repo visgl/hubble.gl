@@ -9,15 +9,15 @@
     "build": "vite build"
   },
   "dependencies": {
-    "deck.gl": "^8.9",
-    "hubble.gl": "^1.4.0",
+    "deck.gl": "^9.1",
+    "hubble.gl": "file:../../../modules/main",
+    "mapbox-gl": "^3.10.0",
+    "popmotion": "11.0.5",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
-    "react-map-gl": "^7.1.8",
-    "mapbox-gl": "^2.0.0",
-    "popmotion": "9.3.1"
+    "react-map-gl": "^8.0.1"
   },
   "devDependencies": {
-    "vite": "^4.0.0"
+    "vite": "^6.2.0"
   }
 }
