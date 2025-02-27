@@ -68,7 +68,6 @@ class KeplerTripKeyframes extends Keyframes<TripDataType> {
     interpolators
   }: KeplerTripKeyframeProps) {
     let params: KeyframeProps<TripDataType> = {
-      features: ['currentTime'],
       timings,
       keyframes,
       easings,

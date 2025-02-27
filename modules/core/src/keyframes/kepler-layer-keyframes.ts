@@ -12,16 +12,12 @@ export type KeplerLayer = {
   };
 };
 
-function getFeatures(layer?: KeplerLayer) {
-  return layer ? Object.keys(layer.config.visConfig) : [];
-}
-
 export type KeplerLayerKeyframeProps<T> = KeyframeProps<T> & {layer?: KeplerLayer};
 
 class KeplerLayerKeyframes<T extends object> extends Keyframes<T> {
   layer: KeplerLayer;
   constructor({layer, timings, keyframes, easings}: KeplerLayerKeyframeProps<T>) {
-    super({timings, keyframes, easings, features: getFeatures(layer)});
+    super({timings, keyframes, easings});
     // TODO: will this layer reference ever become outdated? layerVisConfigChange updates from this reference rather pulling from the store.
     this.layer = layer;
   }
