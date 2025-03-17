@@ -1,6 +1,6 @@
 # DeckLayerKeyframes
 
-The `DeckLayerKeyframes` class extends the hubble.gl `Keyframes` class and offers support for animating deck.gl layers.
+The `DeckLayerKeyframes` class extends the hubble.gl `Keyframes` class and offers support for animating deck.gl layers. The `id` property may be provided, and should match the layer id of the deck.gl layer it's linked too.
 
 ## Usage
 

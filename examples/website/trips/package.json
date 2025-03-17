@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "react-map-gl": "^8.0.1",
-    "hubble.gl": "file:../../../modules/main",
+    "hubble.gl": "^1.4.0",
     "maplibre-gl": "^3.6.2",
     "deck.gl": "^9.1",
     "react": "^18.3.0",

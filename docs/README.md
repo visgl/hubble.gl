@@ -16,7 +16,7 @@ Hubble.gl is a JavaScript library for animating and video encoding WebGL data vi
 <script src="https://unpkg.com/hubble.gl@latest/dist.min.js"></script>
 ```
 
-- [Standalone example](https://github.com/visgl/hubble.gl/tree/-release/examples/standalone)
+- [Standalone example](https://github.com/visgl/hubble.gl/tree/master/examples/standalone)
 
 ### NPM Module
 
@@ -26,13 +26,13 @@ npm install hubble.gl
 
 #### Pure JS
 
-- [Pure JS example](https://github.com/visgl/hubble.gl/tree/-release/examples/get-started/pure-js)
+- [Pure JS example](https://github.com/visgl/hubble.gl/tree/master/examples/get-started/pure-js)
 
 #### React
 
-- [Get started](https://github.com/visgl/hubble.gl/tree/-release/examples/website/camera)
+- [Get started](https://github.com/visgl/hubble.gl/tree/master/examples/website/camera)
 
-- [With basemap](https://github.com/visgl/hubble.gl/tree/-release/examples/website/trips)
+- [With basemap](https://github.com/visgl/hubble.gl/tree/master/examples/website/trips)
 
 ## Basic Animation
 

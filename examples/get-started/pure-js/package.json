@@ -9,7 +9,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@hubble.gl/core": "file:../../../modules/main",
+    "@hubble.gl/core": "^1.4.0",
     "deck.gl": "^9.1.3",
     "popmotion": "9.3.1"
   },

@@ -114,7 +114,7 @@ export default function App() {
             new MapView({
               farZMultiplier: 3,
               clear: {
-                color: [255, 255, 255, 1]
+                color: [61 / 255, 20 / 255, 76 / 255, 1]
               }
             })
           }
