@@ -128,10 +128,7 @@ export type TimeRangeKeyframeAccessor = ({
   timings: number[];
 }) => {keyframes: FilterDataType[]; easings: Easing; timings?: number[]};
 
-export type KeplerFilterKeyframeProps = Omit<
-  Omit<KeyframeProps<FilterDataType>, 'keyframes'>,
-  'features'
-> & {
+export type KeplerFilterKeyframeProps = Omit<KeyframeProps<FilterDataType>, 'keyframes'> & {
   getTimeRangeFilterKeyframes?: TimeRangeKeyframeAccessor;
   keyframes?: FilterDataType[];
   filter?: KeplerFilter;
@@ -250,7 +247,7 @@ class KeplerFilterKeyframes extends Keyframes<FilterDataType> {
     interpolators,
     getTimeRangeFilterKeyframes = undefined
   }: Omit<KeplerFilterKeyframeProps, 'filterIdx'>) {
-    let params = {features: ['value'], timings, keyframes, easings, interpolators};
+    let params = {timings, keyframes, easings, interpolators};
     if (filter && filter.type === 'timeRange' && keyframes === undefined) {
       if (!Array.isArray(timings) || timings.length !== 2)
         throw new Error('[start, end] timings required.');
