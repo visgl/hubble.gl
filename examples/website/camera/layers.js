@@ -86,14 +86,12 @@ export const deckAnimation = new DeckAnimation({
   layerKeyframes: [
     {
       id: 'scatterplot-layer',
-      features: ['radiusScale'],
       keyframes: [{radiusScale: 0}, {radiusScale: 6}],
       timings: [0, 2000],
       easings: [anticipate]
     },
     {
       id: 'text-layer',
-      features: ['opacity', 'pixelOffsetX'],
       keyframes: [
         {opacity: 0, pixelOffsetX: 200},
         {opacity: 1, pixelOffsetX: 32}

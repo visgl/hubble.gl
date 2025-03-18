@@ -207,18 +207,18 @@ export default class KeplerAnimation extends Animation {
     };
   }
 
-  animator(animation: this) {
-    if (animation.cameraKeyframe) {
-      animation.onCameraFrameUpdate(animation.cameraKeyframe.getFrame());
+  draw() {
+    if (this.cameraKeyframe) {
+      this.onCameraFrameUpdate(this.cameraKeyframe.getFrame());
     }
-    if (animation.tripKeyframe) {
-      animation.onTripFrameUpdate(animation.tripKeyframe.getFrame().currentTime);
+    if (this.tripKeyframe) {
+      this.onTripFrameUpdate(this.tripKeyframe.getFrame().currentTime);
     }
-    for (const filterKeyframe of Object.values(animation.filterKeyframes)) {
-      animation.onFilterFrameUpdate(filterKeyframe.filterIdx, 'value', filterKeyframe.getFrame());
+    for (const filterKeyframe of Object.values(this.filterKeyframes)) {
+      this.onFilterFrameUpdate(filterKeyframe.filterIdx, 'value', filterKeyframe.getFrame());
     }
-    for (const layerKeyframe of Object.values(animation.layerKeyframes)) {
-      animation.onLayerFrameUpdate(layerKeyframe.layer, layerKeyframe.getFrame());
+    for (const layerKeyframe of Object.values(this.layerKeyframes)) {
+      this.onLayerFrameUpdate(layerKeyframe.layer, layerKeyframe.getFrame());
     }
   }
 }
