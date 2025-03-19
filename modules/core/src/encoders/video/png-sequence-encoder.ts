@@ -20,7 +20,7 @@ class PNGSequenceEncoder extends FrameEncoder {
     }
 
     this.mimeType = ZipWriter.mimeTypes[0] || '';
-    this.extension = `.${ZipWriter.extensions[0]}`;
+    this.extension = `.${ZipWriter.extensions?.[0]}`;
   }
 
   start() {
