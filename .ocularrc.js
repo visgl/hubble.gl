@@ -27,7 +27,7 @@ const config = {
   },
 
   coverage: {
-    test: 'force-browser-tests'
+    test: 'force-browser-tests' // TODO: revert to 'browser' after resolving https://github.com/visgl/dev-tools/issues/10
   },
 
   entry: {
