@@ -103,7 +103,7 @@ const timecode = {
   framerate: 30
 };
 
-const Container = ({children}) => (
+const RenderContainer = ({children}) => (
   <div
     style={{
       display: 'flex',
@@ -228,7 +228,7 @@ export default function App({
   useEffect(() => onViewStateChange({viewState: cameraFrame}), []);
 
   return (
-    <Container>
+    <RenderContainer>
       <div style={{position: 'relative'}}>
         <Map
           ref={mapRef}
@@ -250,7 +250,7 @@ export default function App({
         timecode={timecode}
         filename="trips"
       />
-    </Container>
+    </RenderContainer>
   );
 }
 
