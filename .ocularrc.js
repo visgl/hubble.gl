@@ -27,7 +27,7 @@ const config = {
   },
 
   coverage: {
-    test: 'browser'
+    test: 'force-browser-tests'
   },
 
   entry: {
