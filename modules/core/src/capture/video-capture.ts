@@ -95,19 +95,19 @@ export class VideoCapture {
       // capture canvas
       this._capture(canvas)
         .then(data => {
-        this.capturing = false;
-        if (data.kind === 'next-frame') {
-          proceedToNextFrame(data.nextTimeMs);
-        } else if (data.kind === 'stop') {
-          this.onStop?.();
-        } else {
-          console.log(data);
-        }
+          this.capturing = false;
+          if (data.kind === 'next-frame') {
+            proceedToNextFrame(data.nextTimeMs);
+          } else if (data.kind === 'stop') {
+            this.onStop?.();
+          } else {
+            console.log(data);
+          }
         })
         .catch(error => {
           console.error('Error capturing frame:', error);
           this.capturing = false;
-      });
+        });
     }
   }
 

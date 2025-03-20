@@ -34,7 +34,7 @@ class Keyframes<T extends object> extends LumaKeyFrames<
     interpolate?: string;
   }
 > {
-  activeFeatures = {};
+  features: string[];
   /** Set when this is attached to an Animation */
   animationHandle?: number;
   timings!: number | number[];
@@ -44,10 +44,8 @@ class Keyframes<T extends object> extends LumaKeyFrames<
 
   constructor({timings, keyframes, easings = linear, interpolators = 'linear'}: KeyframeProps<T>) {
     super([]);
-    this._setActiveFeatures = this._setActiveFeatures.bind(this);
     this.getFrame = this.getFrame.bind(this);
     this.set = this.set.bind(this);
-
     this.set({timings, keyframes, easings, interpolators});
   }
 
@@ -62,7 +60,7 @@ class Keyframes<T extends object> extends LumaKeyFrames<
 
     const _timings = sanitizeTimings(keyframes, timings);
 
-    this._setActiveFeatures(keyframes);
+    this._setFeatures(keyframes);
     const _keyframes = merge<T>(_timings, keyframes, _easings, _interpolators);
     this.keyframes = keyframes;
     this.timings = timings;
@@ -86,24 +84,16 @@ class Keyframes<T extends object> extends LumaKeyFrames<
     const end = this.getEndData();
     const frame: T = {} as T;
 
-    Object.keys(this.activeFeatures).forEach(key => {
-      if (this.activeFeatures[key]) {
-        frame[key] = factorInterpolator(start[key], end[key], end.ease)(factor);
-      }
-    });
+    for (const feature of this.features) {
+      frame[feature] = factorInterpolator(start[feature], end[feature], end.ease)(factor);
+    }
 
     return frame;
   }
 
-  _setActiveFeatures(keyframes: T[]) {
+  _setFeatures(keyframes: T[]) {
     const firstKeyframe = keyframes[0];
-    this.activeFeatures = Object.keys(firstKeyframe).reduce((activeFeatures, key) => {
-      // activate only keys that are expected
-      if (firstKeyframe[key] !== undefined) {
-        activeFeatures[key] = true;
-      }
-      return activeFeatures;
-    }, this.activeFeatures);
+    this.features = Object.keys(firstKeyframe);
   }
 }
 

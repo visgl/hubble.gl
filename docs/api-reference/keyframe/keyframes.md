@@ -1,6 +1,6 @@
 # Keyframes (Class)
 
-The Keyframes class extends the luma.gl [Keyframes](https://luma.gl/docs/api-reference/engine/animation/key-frames) class and adds additional features. In your application, extend from hubble.gl's Keyframes as shown in the `CameraKeyFrames` example. 
+The Keyframes class extends the luma.gl [Keyframes](https://luma.gl/docs/api-reference/engine/animation/key-frames) class and adds additional features. In your application, extend from hubble.gl's Keyframes as shown in the `CameraKeyFrames` example. It's assumed the keyframe values used in your first keyframe continue to be defined in all subsequent keyframes.
 
 ## Usage
 
@@ -10,9 +10,7 @@ import {Keyframes} from '@hubble.gl/core';
 // Keyframes is typically extended, and not directly used in animations. 
 class CameraKeyFrames extends Keyframes {
   constructor(props) {
-    super({
-      ...props,
-    });
+    super(props);
   }
 }
 
@@ -26,14 +24,20 @@ Parameters:
 
 * `timings` (`Array<number>`) - "N" timestamps for beginning of keyframe.
 
-* `keyframes` (`Array<Object>`) - "N" camera objects to transition between.
+* `keyframes` (`Array<Object>`) - "N" objects to transition between.
 
-  * Each `feature` is a key in this object. The value defines the animation.
+  * The first object defines all of the keys in the animation.
 
 * `easings` (`Array<() => void`, Optional) - "N-1" easing functions between keyframes. Default: `t => t` (linear)
 
 * `interpolators` (`Array<string>`, Optional) - "N-1" position curve function between keyframes. Default: `'linear'`
 
+
+## Members
+
+##### `features` (`Array<string>`)
+
+The property names in the animation. Inferred from the first keyframe. i.e. the keyframe `{ latitude: 100, zoom: 10 }` will result in the features `["latitude", "zoom"]`.
 
 ## Methods
 
