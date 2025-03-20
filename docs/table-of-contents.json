@@ -30,7 +30,8 @@
         "type": "category",
         "label": "Animations",
         "items": [
-          "api-reference/animations/animation-manager"
+          "api-reference/animations/animation-manager",
+          "api-reference/animations/deck-animation"
         ]
       },
       {
