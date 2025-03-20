@@ -15,7 +15,7 @@ class CameraKeyFrames extends Keyframes {
 }
 
 // It can be used directly too.
-new Keyframes({timings, keyframes, easings = linear, interpolators = 'linear'})
+new Keyframes({ timings, keyframes, easings = linear, interpolators = 'linear'})
 ```
 
 ## Constructor

@@ -20,7 +20,7 @@
     "publish-beta": "ocular-publish version-only-beta",
     "publish-prod": "ocular-publish version-only-prod",
     "test": "ocular-test",
-    "test-fast": "ocular-lint && ocular-test node",
+    "test-fast": "ocular-lint && ocular-test browser-headless",
     "metrics": "ocular-metrics",
     "update-release-branch": "scripts/update-release-branch.sh"
   },
@@ -50,11 +50,9 @@
     "tape-catch": "^1.0.6"
   },
   "resolutions_comments": [
-    "@loaders.gl/video: https://github.com/visgl/loaders.gl/issues/2164",
     "@luma.gl/experimental: must include in devDeps for local dev examples"
   ],
   "resolutions": {
-    "@loaders.gl/video": "3.0.12",
     "@luma.gl/experimental": "8.5.21",
     "@probe.gl/log": "4.1.0",
     "@probe.gl/env": "4.1.0",
@@ -67,5 +65,6 @@
   "volta": {
     "node": "18.20.5",
     "yarn": "4.5.2"
-  }
+  },
+  "packageManager": "yarn@4.5.2"
 }

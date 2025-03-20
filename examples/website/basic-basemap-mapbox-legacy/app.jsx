@@ -80,6 +80,7 @@ const DeckGLOverlay = forwardRef((props, ref) => {
   setRef(ref, deck._deck);
   return null;
 });
+DeckGLOverlay.displayName = 'DeckGLOverlay';
 
 const Container = ({children}) => (
   <div

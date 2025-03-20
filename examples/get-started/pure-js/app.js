@@ -1,5 +1,5 @@
 /* global document, URL */
-import {Deck} from '@deck.gl/core';
+import {Deck, MapView} from '@deck.gl/core';
 import {GeoJsonLayer, ArcLayer} from '@deck.gl/layers';
 import {DeckAdapter, DeckAnimation, AnimationManager, WebMEncoder} from '@hubble.gl/core';
 import {easeInOut} from 'popmotion';
@@ -82,6 +82,12 @@ export const deck = new Deck({
     deck.setProps({viewState});
   },
   controller: true,
+  views: new MapView({
+    // most video formats don't fully support transparency
+    clear: {
+      color: [255, 255, 255, 1]
+    }
+  }),
   layers: [
     new GeoJsonLayer({
       id: 'base-map',
@@ -118,10 +124,6 @@ export const deck = new Deck({
       getWidth: 1
     })
   ],
-  // most video formats don't fully support transparency
-  parameters: {
-    clearColor: [255, 255, 255, 1]
-  },
   // retina displays will double resolution
   useDevicePixels: false
 });

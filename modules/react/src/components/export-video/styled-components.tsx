@@ -1,7 +1,7 @@
 // hubble.gl
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
-import styled from 'styled-components';
+import {styled} from 'styled-components';
 import {DEFAULT_ROW_GAP, DEFAULT_PADDING, DEFAULT_SETTINGS_WIDTH} from './constants';
 
 export const SliderWrapper = styled.div`

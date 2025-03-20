@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
 import React, {useCallback, useEffect, useMemo, useState, type PropsWithChildren} from 'react';
+import {DeckAdapter, FormatConfigs, Timecode} from '@hubble.gl/core';
+import {styled} from 'styled-components';
 
 import EncoderDropdown from './encoder-dropdown';
-import styled from 'styled-components';
 import {DownloadVideo} from './icons/index';
 import RenderPlayer from './render-player';
 import {ENCODERS, type Encoders, WEBM} from './encoders';
-import {DeckAdapter, FormatConfigs, Timecode} from '@hubble.gl/core';
 
 const RenderResult = styled.div`
   position: absolute;

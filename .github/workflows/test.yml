@@ -27,7 +27,7 @@ jobs:
 
       - name: Run tests
         run: |
-          yarn lint  
+          yarn lint
           yarn test ci
 
       - name: Coveralls

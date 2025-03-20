@@ -1,4 +1,5 @@
 import React, {useMemo} from 'react';
+import {MapView} from '@deck.gl/core';
 import {ScatterplotLayer, TextLayer} from '@deck.gl/layers';
 import {QuickAnimation, hold, DeckAnimation} from 'hubble.gl';
 import {anticipate, easeIn, reverseEasing} from 'popmotion';
@@ -76,9 +77,12 @@ export default function App() {
       resolution={RESOLUTION}
       animation={animation}
       deckProps={{
-        parameters: {
-          clearColor: [255, 255, 255, 1]
-        }
+        views: new MapView({
+          // most video formats don't fully support transparency
+          clear: {
+            color: [255, 255, 255, 1]
+          }
+        })
       }}
       timecode={TIMECODE}
     />

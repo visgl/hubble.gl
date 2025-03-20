@@ -1,4 +1,5 @@
 import React from 'react';
+import {MapView} from '@deck.gl/core';
 import {ScatterplotLayer, TextLayer} from '@deck.gl/layers';
 import DeckGL from '@deck.gl/react';
 
@@ -32,9 +33,12 @@ export default function App() {
       width={640}
       height={480}
       layers={layers}
-      parameters={{
-        clearColor: [255, 255, 255, 1]
-      }}
+      views={new MapView({
+        // most video formats don't fully support transparency
+        clear: {
+          color: [255, 255, 255, 1]
+        }
+      })}
     />
   );
 }

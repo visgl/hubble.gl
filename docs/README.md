@@ -1,5 +1,17 @@
 # Introduction
 
+<p align="center">
+  <span>These docs are for <a href="https://github.com/visgl/hubble.gl/blob/2.0-release/docs/README.md"><img src="https://img.shields.io/badge/hubble.gl-v2.0-brightgreen.svg?style=flat-square" /></a></span>
+  <br />
+  Looking for an old version?
+  <a href="https://github.com/visgl/hubble.gl/blob/1.4-release/docs/README.md">
+    <img src="https://img.shields.io/badge/hubble.gl-v1.4-green.svg?style=flat-square" />
+  </a>
+  <a href="https://github.com/visgl/hubble.gl/blob/1.3-release/docs/README.md">
+    <img src="https://img.shields.io/badge/hubble.gl-v1.3-green.svg?style=flat-square" />
+  </a>
+</p>
+
 Hubble.gl is a JavaScript library for animating and video encoding WebGL data visualizations.
 
 - **High Quality Video:** 60+fps framerates, up to 8k resolution, and a variety of formats. Render a quick draft or with loseless encoding. Fine tune timing and look with keyframe markers and render everything in the same app.

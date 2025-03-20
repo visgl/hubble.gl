@@ -3,17 +3,17 @@
 // Copyright (c) vis.gl contributors
 
 /* eslint-disable no-console */
+import {Deck, Layer, DeckProps} from '@deck.gl/core';
 import {type FrameEncoder, PreviewEncoder, type FormatConfigs} from '../encoders/index';
 import {AnimationManager} from '../animations/index';
 import {type Timecode, VideoCapture} from '../capture/video-capture';
-import type {Deck, Layer, DeckProps} from '@deck.gl/core/typed';
 
 export default class DeckAdapter {
   deck?: Deck;
   animationManager: AnimationManager;
   shouldAnimate: boolean;
   enabled: boolean;
-  glContext?: WebGLRenderingContext;
+  glContext?: WebGL2RenderingContext;
   videoCapture: VideoCapture;
 
   constructor({
@@ -21,7 +21,7 @@ export default class DeckAdapter {
     glContext = undefined
   }: {
     animationManager?: AnimationManager;
-    glContext?: WebGLRenderingContext;
+    glContext?: WebGL2RenderingContext;
   }) {
     this.animationManager = animationManager || new AnimationManager({});
     this.glContext = glContext;
@@ -46,7 +46,7 @@ export default class DeckAdapter {
     deck: Deck;
     onNextFrame?: (nextTimeMs: number) => void;
     extraProps?: DeckProps;
-  }) {
+  }): DeckProps {
     if (deck) {
       this.deck = deck;
     }
@@ -124,8 +124,7 @@ export default class DeckAdapter {
     const areAllLayersLoaded =
       this.deck && this.deck.props.layers.every(layer => (layer as Layer).isLoaded);
     if (this.videoCapture.isRecording() && areAllLayersLoaded && readyToCapture) {
-      // @ts-expect-error TODO use getCanvas
-      const canvas = this.deck.canvas;
+      const canvas = this.deck.getCanvas();
       this.videoCapture.capture(canvas, nextTimeMs => {
         this.seek({timeMs: nextTimeMs});
         proceedToNextFrame(nextTimeMs);

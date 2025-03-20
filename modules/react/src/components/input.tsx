@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) vis.gl contributors
 import React, {ChangeEvent, PureComponent} from 'react';
-import styled from 'styled-components';
+import {styled} from 'styled-components';
 
 const InputContainer = styled.div`
   position: relative;

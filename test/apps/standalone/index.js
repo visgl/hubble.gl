@@ -68,12 +68,14 @@ const adapter = new hubble.DeckAdapter({animationManager});
 const nonGeoExample = new deck.DeckGL({
   container: document.getElementById('non-geo'),
   mapbox: false /* disable map */,
-  views: [new deck.OrbitView()],
+  views: new deck.OrbitView({
+    // most video formats don't fully support transparency
+    clear: {
+      color: [255, 255, 255, 1]
+    }
+  }),
   initialViewState: {distance: 1, fov: 50, rotationX: 10, rotationOrbit: 160, zoom: 3.5},
   controller: false,
-  parameters: {
-    clearColor: [255, 255, 255, 1]
-  },
   // retina displays will double resolution
   useDevicePixels: false
 });

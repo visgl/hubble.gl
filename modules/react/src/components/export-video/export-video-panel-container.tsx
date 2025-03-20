@@ -20,7 +20,7 @@ import ExportVideoPanel from './export-video-panel';
 import {parseSetCameraType, scaleToVideoExport} from './utils';
 import {DEFAULT_FILENAME, getResolutionSetting} from './constants';
 import type {MapProps} from 'react-map-gl';
-import type {DeckProps, MapViewState} from '@deck.gl/core/typed';
+import type {DeckProps, MapViewState} from '@deck.gl/core';
 import {FILTER_VIEW_TYPES} from '@kepler.gl/constants';
 
 const ENCODERS = {
@@ -40,7 +40,7 @@ export type ExportVideoSettings = {
 
 type ExportVideoPanelContainerProps = {
   initialState?: Partial<ExportVideoPanelContainerState>;
-  glContext?: WebGLRenderingContext;
+  glContext?: WebGL2RenderingContext;
 
   exportVideoWidth: number;
   handleClose: () => void;

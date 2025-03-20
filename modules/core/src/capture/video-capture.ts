@@ -93,16 +93,21 @@ export class VideoCapture {
     if (!this.capturing && this.isRecording()) {
       this.capturing = true;
       // capture canvas
-      this._capture(canvas).then(data => {
-        this.capturing = false;
-        if (data.kind === 'next-frame') {
-          proceedToNextFrame(data.nextTimeMs);
-        } else if (data.kind === 'stop') {
-          this.onStop?.();
-        } else {
-          console.log(data);
-        }
-      });
+      this._capture(canvas)
+        .then(data => {
+          this.capturing = false;
+          if (data.kind === 'next-frame') {
+            proceedToNextFrame(data.nextTimeMs);
+          } else if (data.kind === 'stop') {
+            this.onStop?.();
+          } else {
+            console.log(data);
+          }
+        })
+        .catch(error => {
+          console.error('Error capturing frame:', error);
+          this.capturing = false;
+        });
     }
   }
 
@@ -137,7 +142,11 @@ export class VideoCapture {
         this.onStop = undefined;
       };
       if (!abort) {
-        this._save(onSave).then(finish);
+        this._save(onSave)
+          .then(finish)
+          .catch((reason: Error) =>
+            console.error('Error saving video:', reason.message, reason.stack)
+          );
       }
       finish();
     }

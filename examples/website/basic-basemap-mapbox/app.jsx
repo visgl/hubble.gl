@@ -8,7 +8,7 @@ import React, {useState, useRef, useEffect, forwardRef} from 'react';
 import {createRoot} from 'react-dom/client';
 import {BasicControls, useHubbleGl, useDeckAnimation} from '@hubble.gl/react';
 import {MapboxOverlay} from '@deck.gl/mapbox';
-import Map, {useControl} from 'react-map-gl';
+import {Map, useControl} from 'react-map-gl/mapbox';
 import {PolygonLayer} from '@deck.gl/layers';
 import {easeInOut} from 'popmotion';
 import {setRef} from './set-ref';
@@ -80,6 +80,7 @@ const DeckGLOverlay = forwardRef((props, ref) => {
   setRef(ref, deck._deck);
   return null;
 });
+DeckGLOverlay.displayName = 'DeckGLOverlay';
 
 const Container = ({children}) => (
   <div
