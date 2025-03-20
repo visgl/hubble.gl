@@ -27,12 +27,9 @@ const formatConfigs = {
   webm: {
     quality: 0.8
   },
-  png: {
-    archive: 'zip'
-  },
+  png: {},
   jpeg: {
-    quality: 0.8,
-    archive: 'zip'
+    quality: 0.8
   },
   gif: {
     sampleInterval: 1000,

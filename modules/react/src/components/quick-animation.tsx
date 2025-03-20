@@ -5,8 +5,8 @@ import React, {useState, useRef, useMemo} from 'react';
 import DeckGL, {DeckGLRef} from '@deck.gl/react/typed';
 import BasicControls from './basic-controls';
 import {useDeckAdapter, useNextFrame} from '../hooks';
-import type {MapViewState} from '@deck.gl/core/typed';
-import {FormatConfigs} from '@hubble.gl/core';
+import type {DeckProps, MapViewState} from '@deck.gl/core/typed';
+import type {DeckAnimation, FormatConfigs, Timecode} from '@hubble.gl/core';
 
 export const QuickAnimation = ({
   initialViewState,
@@ -15,6 +15,13 @@ export const QuickAnimation = ({
   resolution = {width: 640, height: 480},
   formatConfigs = {},
   deckProps = {}
+}: {
+  initialViewState: MapViewState;
+  animation: DeckAnimation;
+  timecode: Timecode;
+  resolution?: {width: number; height: number};
+  formatConfigs?: Partial<FormatConfigs>;
+  deckProps?: DeckProps;
 }) => {
   const deckRef = useRef<DeckGLRef>(null);
   const deck = useMemo(() => deckRef.current && deckRef.current.deck, [deckRef.current]);
@@ -29,11 +36,8 @@ export const QuickAnimation = ({
     webm: {
       quality: 0.8
     },
-    png: {
-      archive: 'zip'
-    },
+    png: {},
     jpeg: {
-      archive: 'zip',
       quality: 0.8
     },
     gif: {
