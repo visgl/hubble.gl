@@ -21,6 +21,10 @@ Ref: http://keepachangelog.com/en/0.3.0/
 
 ### hubble.gl v2.0 Prereleases
 
+#### hubble.gl [v2.0.0-alpha.3] - Mar 20 2025
+
+- fix github release script, attempt 2
+
 #### hubble.gl [v2.0.0-alpha.2] - Mar 20 2025
 
 - fix github release script
