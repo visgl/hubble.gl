@@ -9,13 +9,13 @@
     "build": "vite build"
   },
   "dependencies": {
-    "react-map-gl": "^8.0.1",
-    "hubble.gl": "^1.4.0",
-    "maplibre-gl": "^3.6.2",
     "deck.gl": "^9.1",
+    "hubble.gl": "^2.0.0-alpha.3",
+    "maplibre-gl": "^3.6.2",
+    "popmotion": "9.3.1",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
-    "popmotion": "9.3.1"
+    "react-map-gl": "^8.0.1"
   },
   "devDependencies": {
     "typescript": "^4.6.0",

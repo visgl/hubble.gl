@@ -5,19 +5,19 @@
     "build": "vite build"
   },
   "dependencies": {
-    "deck.gl": "8.9.27",
     "d3-request": "^1.0.6",
+    "deck.gl": "8.9.27",
     "global": "^4.3.0",
-    "hubble.gl": "^1.4.0",
+    "hubble.gl": "^2.0.0-alpha.3",
     "kepler.gl": "3.1.0",
     "mapbox-gl": "1.13.1",
     "maplibre-gl": "^3.6.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-intl": "^6.8.9",
     "react-map-gl": "^7.1.8",
     "react-markdown": "^6.0.3",
     "redux-thunk": "^1.0.0",
-    "react-intl": "^6.8.9",
     "styled-components": "6.1.8"
   },
   "devDependencies": {
@@ -32,7 +32,7 @@
     "@luma.gl/core": "8.5.21",
     "@luma.gl/shadertools": "8.5.21",
     "@luma.gl/experimental": "8.5.21",
-    "@hubble.gl/core": "1.4.0",
-    "@hubble.gl/react": "1.4.0"
+    "@hubble.gl/core": "2.0.0-alpha.3",
+    "@hubble.gl/react": "2.0.0-alpha.3"
   }
 }
