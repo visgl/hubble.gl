@@ -70,9 +70,7 @@ const nonGeoExample = new deck.DeckGL({
   mapbox: false /* disable map */,
   views: new deck.OrbitView({
     // most video formats don't fully support transparency
-    clear: {
-      color: [255, 255, 255, 1]
-    }
+    clearColor: [255, 255, 255, 1]
   }),
   initialViewState: {distance: 1, fov: 50, rotationX: 10, rotationOrbit: 160, zoom: 3.5},
   controller: false,
