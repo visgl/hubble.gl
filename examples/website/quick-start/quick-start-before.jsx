@@ -33,12 +33,11 @@ export default function App() {
       width={640}
       height={480}
       layers={layers}
-      views={new MapView({
-        // most video formats don't fully support transparency
-        clear: {
-          color: [255, 255, 255, 1]
-        }
-      })}
+      views={
+        new MapView({
+          clearColor: [255, 255, 255, 1]
+        })
+      }
     />
   );
 }
