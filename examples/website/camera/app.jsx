@@ -113,9 +113,7 @@ export default function App() {
           views={
             new MapView({
               farZMultiplier: 3,
-              clear: {
-                color: [61 / 255, 20 / 255, 76 / 255, 1]
-              }
+              clearColor: [255, 255, 255, 1]
             })
           }
           parameters={{

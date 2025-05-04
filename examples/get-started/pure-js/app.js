@@ -83,10 +83,7 @@ export const deck = new Deck({
   },
   controller: true,
   views: new MapView({
-    // most video formats don't fully support transparency
-    clear: {
-      color: [255, 255, 255, 1]
-    }
+    clearColor: [255, 255, 255, 1]
   }),
   layers: [
     new GeoJsonLayer({
