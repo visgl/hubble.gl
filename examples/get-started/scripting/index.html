@@ -2,10 +2,19 @@
   <head>
     <!-- deck.gl standalone bundle -->
     <script src="https://unpkg.com/deck.gl@9.1/dist.min.js"></script>
-    <script src="https://unpkg.com/hubble.gl@1.4.0/dist.min.js"></script>
+    <script src="https://unpkg.com/hubble.gl@2.0.0-alpha.3/dist.min.js"></script>
     <style>
-      body {margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif;}
-      #geo, #non-geo {position: absolute; width: 50vw; height: 50vh;}
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Helvetica, Arial, sans-serif;
+      }
+      #geo,
+      #non-geo {
+        position: absolute;
+        width: 50vw;
+        height: 50vh;
+      }
       /* #non-geo {left: 50vw; top: 0;} */
       .render-result {
         position: absolute;
@@ -109,9 +118,7 @@
       mapbox: false /* disable map */,
       views: new deck.OrbitView({
         // most video formats don't fully support transparency
-        clear: {
-          color: [255, 255, 255, 1]
-        }
+        clearColor: [255, 255, 255, 1]
       }),
       initialViewState: {distance: 1, fov: 50, rotationX: 10, rotationOrbit: 160, zoom: 3.5},
       controller: false,

@@ -58,7 +58,7 @@
     "@deck.gl/mapbox": ">=9.1.0",
     "@deck.gl/react": ">=9.1.0",
     "@deck.gl/widgets": ">=9.1.0",
-    "@hubble.gl/core": "1.4.0",
+    "@hubble.gl/core": "^2.0.0-alpha.3",
     "@loaders.gl/core": "^4.3.3",
     "mapbox-gl": ">=1.13.1",
     "react": ">=18.2",

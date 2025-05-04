@@ -9,8 +9,8 @@
     "build": "vite build"
   },
   "dependencies": {
-    "deck.gl": "^8.9",
-    "hubble.gl": "^1.4.0",
+    "deck.gl": "^9.1",
+    "hubble.gl": "^2.0.0-alpha.3",
     "popmotion": "9.3.1",
     "react": "^18.3.0",
     "react-dom": "^18.3.0"
