@@ -29,7 +29,9 @@ export {
   AnimationManager,
   Animation,
   DeckAnimation,
-  KeplerAnimation
+  KeplerAnimation,
+  // Config
+  FormatConfigs
 } from '@hubble.gl/core';
 
 export {
