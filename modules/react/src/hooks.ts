@@ -27,12 +27,12 @@ export function useDeckAdapter(
     a.animationManager.attachAnimation(deckAnimation);
     deckAnimation.draw();
     return a;
-  }, []);
+  }, [deckAnimation]);
   return {adapter, layers, cameraFrame, setCameraFrame};
 }
 
 export function useDeckAnimation(params: DeckAnimationConstructor) {
-  return useMemo(() => new DeckAnimation(params), []);
+  return useMemo(() => new DeckAnimation(params), [params]);
 }
 
 export function useHubbleGl<ReactMapRef extends MapRef>({
