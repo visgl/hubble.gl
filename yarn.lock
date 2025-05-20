@@ -580,7 +580,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hubble.gl/core@npm:2.0.0-alpha.3, @hubble.gl/core@workspace:modules/core":
+"@hubble.gl/core@npm:2.0.0-alpha.4, @hubble.gl/core@workspace:modules/core":
   version: 0.0.0-use.local
   resolution: "@hubble.gl/core@workspace:modules/core"
   dependencies:
@@ -604,7 +604,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@hubble.gl/react@npm:2.0.0-alpha.3, @hubble.gl/react@workspace:modules/react":
+"@hubble.gl/react@npm:2.0.0-alpha.4, @hubble.gl/react@workspace:modules/react":
   version: 0.0.0-use.local
   resolution: "@hubble.gl/react@workspace:modules/react"
   dependencies:
@@ -6148,8 +6148,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "hubble.gl@workspace:modules/main"
   dependencies:
-    "@hubble.gl/core": "npm:2.0.0-alpha.3"
-    "@hubble.gl/react": "npm:2.0.0-alpha.3"
+    "@hubble.gl/core": "npm:2.0.0-alpha.4"
+    "@hubble.gl/react": "npm:2.0.0-alpha.4"
   peerDependencies:
     react: ">=18.3.0"
     react-dom: ">=18.3.0"

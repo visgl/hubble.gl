@@ -21,6 +21,11 @@ Ref: http://keepachangelog.com/en/0.3.0/
 
 ### hubble.gl v2.0 Prereleases
 
+#### hubble.gl [v2.0.0-alpha.4] - May 19 2025
+
+- fix: set clearColor parameter (#328)
+- chore(deps): bump modules and examples to 2.0.0-alpha.3 (#325)
+
 #### hubble.gl [v2.0.0-alpha.3] - Mar 20 2025
 
 - fix github release script, attempt 2
