@@ -27,12 +27,12 @@ export function useDeckAdapter(
     a.animationManager.attachAnimation(deckAnimation);
     deckAnimation.draw();
     return a;
-  }, []);
+  }, [deckAnimation]);
   return {adapter, layers, cameraFrame, setCameraFrame};
 }
 
 export function useDeckAnimation(params: DeckAnimationConstructor) {
-  return useMemo(() => new DeckAnimation(params), []);
+  return useMemo(() => new DeckAnimation(params), [params]);
 }
 
 export function useHubbleGl<ReactMapRef extends MapRef>({
@@ -53,43 +53,33 @@ export function useHubbleGl<ReactMapRef extends MapRef>({
     initialViewState
   );
 
-  const onMapLoad = useCallback(() => {
-    if (mapRef) {
-      const map = mapRef.current.getMap();
-      map.on('render', () => adapter.onAfterRender(nextFrame, map.areTilesLoaded()));
-    }
-  }, [adapter, nextFrame]);
-
-  if (!mapRef) {
+  const mapProps = useMemo(() => {
+    if (!mapRef) return {};
     return {
-      adapter,
-      cameraFrame,
-      setCameraFrame,
-      mapProps: {},
-      deckProps: adapter.getProps({
-        deck,
-        onNextFrame: nextFrame,
-        extraProps: {
-          layers
+      onLoad: () => {
+        if (mapRef.current) {
+          const map = mapRef.current.getMap();
+          map.on('render', () => adapter.onAfterRender(nextFrame, map.areTilesLoaded()));
         }
-      })
+      },
+      preventStyleDiffing: true
     };
-  }
+  }, [mapRef, adapter, nextFrame]);
+
+  const deckProps = useMemo(() => {
+    if (!deck) return {};
+    return adapter.getProps({
+      deck,
+      onNextFrame: mapRef ? undefined : nextFrame,
+      extraProps: {layers}
+    });
+  }, [deck, adapter, layers, mapRef, nextFrame]);
 
   return {
     adapter,
     cameraFrame,
     setCameraFrame,
-    onMapLoad,
-    mapProps: {
-      onLoad: onMapLoad,
-      preventStyleDiffing: true
-    },
-    deckProps: adapter.getProps({
-      deck,
-      extraProps: {
-        layers
-      }
-    })
+    mapProps,
+    deckProps
   };
 }
