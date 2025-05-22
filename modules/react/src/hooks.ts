@@ -67,7 +67,7 @@ export function useHubbleGl<ReactMapRef extends MapRef>({
   }, [mapRef, adapter, nextFrame]);
 
   const deckProps = useMemo(() => {
-    if (!deck) return undefined;
+    if (!deck) return {};
     return adapter.getProps({
       deck,
       onNextFrame: mapRef ? undefined : nextFrame,
