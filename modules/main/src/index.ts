@@ -29,10 +29,11 @@ export {
   AnimationManager,
   Animation,
   DeckAnimation,
-  KeplerAnimation,
-  // Config
-  FormatConfigs
+  KeplerAnimation
 } from '@hubble.gl/core';
+
+// Config
+export type {FormatConfigs} from '@hubble.gl/core';
 
 export {
   useNextFrame,
