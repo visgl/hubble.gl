@@ -21,7 +21,9 @@ import {parseSetCameraType, scaleToVideoExport} from './utils';
 import {DEFAULT_FILENAME, getResolutionSetting} from './constants';
 import type {MapProps} from 'react-map-gl';
 import type {DeckProps, MapViewState} from '@deck.gl/core';
-import {FILTER_VIEW_TYPES} from '@kepler.gl/constants';
+
+// Keep Hubble's generic export panel independent from a specific Kepler release.
+const ENLARGED_FILTER_VIEW = 'enlarged';
 
 const ENCODERS = {
   gif: GifEncoder,
@@ -227,7 +229,7 @@ export class ExportVideoPanelContainer extends Component<
       Array.isArray(animatableFilters) && animatableFilters.length
         ? animatableFilters
         : // only animate an enlarged time filter if animatable filters aren't specified.
-          filters.filter(f => f.type === 'timeRange' && f.view === FILTER_VIEW_TYPES.enlarged)
+          filters.filter(f => f.type === 'timeRange' && f.view === ENLARGED_FILTER_VIEW)
     ).map(f => ({
       id: f.id,
       timings: [0, this.state.durationMs]
