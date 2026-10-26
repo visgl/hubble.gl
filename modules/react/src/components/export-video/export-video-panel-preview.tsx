@@ -15,6 +15,7 @@ import {RenderingSpinner} from './rendering-spinner';
 import {createKeplerLayers} from '../../kepler-layers';
 import {DeckAdapter} from '@hubble.gl/core';
 import {setRef} from './set-ref';
+import {withMaplibreV5Compat} from './maplibre-compat';
 
 export type ExportVideoPanelPreviewProps = {
   mapData: any;
@@ -184,6 +185,7 @@ export class ExportVideoPanelPreview extends Component<
     const {width, height} = this._getContainer();
     const doubleResolution = {width: resolution[0] * 2, height: resolution[1] * 2};
     const keplerLayers = this.createLayers(mapboxLayerBeforeId);
+    const compatMapProps = mapProps ? withMaplibreV5Compat(mapProps) : {};
     return (
       <>
         <DeckCanvas id="deck-canvas" $width={width} $height={height}>
@@ -200,7 +202,7 @@ export class ExportVideoPanelPreview extends Component<
               ref={this.mapRef}
               style={{width, height}}
               antialias
-              {...mapProps}
+              {...compatMapProps}
               {...viewState}
               mapStyle={mapStyle}
               mapboxAccessToken={mapboxAccessToken}
